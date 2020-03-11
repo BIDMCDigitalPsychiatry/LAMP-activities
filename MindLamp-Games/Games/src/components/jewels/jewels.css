@@ -1,0 +1,197 @@
+/**
+ * @file   jewels.css
+ * @brief  style sheet for jewels game
+ * @date   Feb , 2020
+ * @author ZCO Engineer
+ * @copyright (c) 2020, ZCO
+ */
+:root {
+	--square-size:84px;
+	--square-font-size:72px
+}
+
+body{background: rgba(53,159,254,1);}
+	nav a{color: #fff; padding: 10px; display: inline-block;}
+.App {
+	padding-top:2em;
+	text-align:center
+}
+.App-logo {
+	-webkit-animation:App-logo-spin infinite 20s linear;
+	animation:App-logo-spin infinite 20s linear;
+	height:80px
+}
+.info-text{
+	padding: 5px;
+}
+.App-header {
+	height:90px;
+	padding:20px;
+	color:#fff
+}
+.App-intro {
+	font-size:large
+}
+.diamond-style{
+	background-position: center;
+	background-size: contain;
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+	text-align: center;
+	
+	font-size: 20px;
+}
+.number-text{
+	font-size: 15px;
+	color: white;
+	line-height: 32px;
+}
+.jewel-info{
+	text-align: center;
+	position: fixed;
+	bottom: 10px;
+	width: 44%;
+	left: 28%;
+	padding: 10px;
+	background-color: #fff;
+	color: black;
+}
+.jewel-info .diamond-style{display: inline-block;}
+
+.game-over{
+	color: cornsilk;
+	text-align: center;
+}
+
+ .game-table
+{
+	position: fixed; 
+	top: 80px;   
+	width: 100%;
+} 
+.negative-points{
+	padding: 5px;
+    background-color: red;
+    color: white;
+    width: 33px;
+    font-size: 12px;
+    border-radius: 11px;
+	
+	margin-left: 5px;
+	position: absolute;
+    left: 57%;
+    
+}
+.heading{
+	text-align: center;
+	color: white;
+	padding: 15px;
+}
+.home-link{
+	float: left;
+}
+@-webkit-keyframes App-logo-spin {
+	0% {
+		-webkit-transform:rotate(0deg);
+		transform:rotate(0deg)
+	}
+	to {
+		-webkit-transform:rotate(1turn);
+		transform:rotate(1turn)
+	}
+}
+@keyframes App-logo-spin {
+	0% {
+		-webkit-transform:rotate(0deg);
+		transform:rotate(0deg)
+	}
+	to {
+		-webkit-transform:rotate(1turn);
+		transform:rotate(1turn)
+	}
+}
+body {
+	font:18px Helvetica,Arial,sans-serif;
+	margin:30px
+}
+ol,ul {
+	padding-left:30px
+}
+.status {
+	margin-bottom:10px
+}
+.square {
+	background:#fff;
+	border:1.7px solid #000;
+	float:left;
+	font-size:var(--square-font-size);
+	font-weight:700;
+	line-height:var(--square-size);
+	height:var(--square-size);
+	margin-right:-1px;
+	margin-top:-1px;
+	padding:0;
+	text-align:center;
+	vertical-align:middle;
+	width:var(--square-size);
+	margin-bottom:0;
+	border-radius:0
+}
+.board-row:first-child > .square {
+	border-top:none
+}
+.board-row:last-child > .square {
+	border-bottom:none
+}
+.board-row>.square:first-child {
+	border-left:none
+}
+.board-row>.square:last-child {
+	border-right:none
+}
+.kbd-navigation .square:focus {
+	background:#ddd
+}
+.game {
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	-ms-flex-direction:row;
+	flex-direction:row
+}
+.board-row,.game {
+	display:-webkit-box;
+	display:-ms-flexbox;
+	display:flex
+}
+.board-row {
+	-webkit-box-pack:center;
+	-ms-flex-pack:center;
+	justify-content:center
+}
+.board-row:after {
+	clear:both;
+	content:"";
+	display:table
+}
+.game-info {
+	margin-bottom:1em
+}
+.controls {
+	padding:2em
+}
+.winner {
+	-webkit-animation:blinker 1s linear infinite;
+	animation:blinker 1s linear infinite;
+	color:green!important
+}
+@-webkit-keyframes blinker {
+	50% {
+		opacity:0
+	}
+}
+@keyframes blinker {
+	50% {
+		opacity:0
+	}
+}
