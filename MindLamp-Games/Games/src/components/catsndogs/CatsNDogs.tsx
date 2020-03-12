@@ -1,6 +1,6 @@
 /**
- * @file   DogsNCats.tsx
- * @brief  DogsNCats component which is the initial point of Cats and Dogs game
+ * @file   CatsNDogs.tsx
+ * @brief  CatsNDogs component which is the initial point of Cats and Dogs game
  * @date   Mar , 2020
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
@@ -17,7 +17,7 @@ interface AppState {
     current:any;    
 }
 
-class DogsNCats extends React.Component<{}, AppState> {
+class CatsNDogs extends React.Component<{}, AppState> {
   
   constructor(props: {}) {
     super(props);
@@ -45,4 +45,4 @@ class DogsNCats extends React.Component<{}, AppState> {
   }
 }
 
-export default DogsNCats
+export default CatsNDogs
