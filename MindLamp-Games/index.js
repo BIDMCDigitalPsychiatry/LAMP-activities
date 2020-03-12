@@ -17,12 +17,12 @@ app.use(cors());
 let auth = '';
 let username = '';
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, 'CatsNDogs/build')));
+app.use(express.static(path.join(__dirname, 'Games/build')));
 
 
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
-	res.sendFile(path.join(__dirname+'/CatsNDogs/build/index.html'));
+	res.sendFile(path.join(__dirname+'/Games/build/index.html'));
 });
 
 const port = process.env.PORT || 5000;
