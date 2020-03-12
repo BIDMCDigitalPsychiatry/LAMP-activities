@@ -10,7 +10,6 @@ In order to run this project node.js and npm both need to have been installed.
 <li>Clone this repo</li>
 <li>cd Games</li>
 <li>npm install</li>
-<li>Visit http://localhost:3000/</li>
 </ol>
 Use any of the following to run the application Without using nodejs script
 <ol>
