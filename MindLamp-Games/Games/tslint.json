@@ -11,6 +11,7 @@
     "interface-name":  [true, "never-prefix"],
     "member-access": false,
     "member-ordering": false,
-    "no-console": false
+    "no-console": false,
+    "jsx-no-lambda": false
   }
 }

@@ -27,7 +27,7 @@ interface BoardState {
   gameOver: boolean;
   gameState: number;
   itemToCheck: number;
-  lastClickTime: any,
+  lastClickTime: any;
   modalText: string;
   randomPoints: Array<number>;
   startTime: any;
@@ -37,7 +37,7 @@ interface BoardState {
   successTaps: number;
   stateSuccessTaps: number;
   stateWrongTaps: number;
-  states: any,
+  states: any;
   wrongTaps: number;
   sendResoponse: boolean;
 }

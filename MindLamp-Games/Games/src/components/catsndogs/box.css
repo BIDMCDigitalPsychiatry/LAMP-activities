@@ -56,18 +56,7 @@ nav a{color: #fff; padding: 10px; display: inline-block;}
 .slideOut {
 	transform: translateY(100%);
 }
-.green-box-square{
-	background-color:green !important;
-	background-image: url('images/tick_icon.png');
-	background-repeat: no-repeat;
-	background-position: center;
-}
-.red-box-square{
-	background-color:#d40c0c !important;
-	background-image: url('images/wrong_icon.png');
-	background-repeat: no-repeat;
-	background-position: center;
-}
+
 .animal-cls{
 	position: absolute;
 
@@ -157,6 +146,18 @@ nav a{color: #fff; padding: 10px; display: inline-block;}
 .carousel-leave {
     animation: slideout 1s ease-in-out both;
 } 
+.green-box-square{
+	background-color:#40bd40 !important;
+	background-image: url('../common/images/tick_icon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.red-box-square{
+	background-color:#d40c0c !important;
+	background-image: url('../common/images/wrong_icon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
 @-webkit-keyframes App-logo-spin {
 	0% {

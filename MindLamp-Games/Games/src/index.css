@@ -9,9 +9,21 @@ body {
   text-align: center;
   width: 100%;
   color: #fff;
-  font-size: 13px;
-  min-height: 20px;
+  font-size: 14px;
+  min-height: 25px;
 }
 .modal-header{border-bottom: 0;}
 .modal-footer{border-top: 0;}
 .modal-body{padding: 0 1rem; font-size: 15px;}
+.green-box-square{
+	background-color:#40bd40 !important;
+	background-image: url('components/common/images/tick_icon@2x.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.red-box-square{
+	background-color:#d40c0c !important;
+	background-image: url('components/common/images/wrong_icon@2x.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
