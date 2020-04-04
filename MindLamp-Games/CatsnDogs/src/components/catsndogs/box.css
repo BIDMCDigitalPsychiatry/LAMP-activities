@@ -1,0 +1,265 @@
+/**
+ * @file   box.css
+ * @brief  style sheet for Cats and Dogs game game
+ * @date   Mar , 2020
+ * @author ZCO Engineer
+ * @copyright (c) 2020, ZCO
+ */
+:root {
+	--square-size:84px;
+	--square-font-size:72px
+}
+body{background: rgba(53,159,254,1);}
+nav a{color: #fff; padding: 10px; display: inline-block;}
+.App {
+	padding-top:2em;
+	text-align:center
+}
+.App-logo {
+	-webkit-animation:App-logo-spin infinite 20s linear;
+	animation:App-logo-spin infinite 20s linear;
+	height:80px
+}
+.App-header {
+	height:90px;
+	padding:20px;
+	color:#fff
+}
+.App-intro {
+	font-size:large
+}
+.timer-div{
+	min-height: 20px;
+}
+.box{
+	height: 50px;	
+	z-index: 999;
+	position: absolute;
+}
+.game-board{
+	color: #fff;
+	text-align: center;
+}
+.box-square{
+	transform: translateY(50px);
+  	transition: transform 400ms ease-in;
+	
+	height: 50px;
+	width:50px;
+	background-color: #fff;
+}
+
+.slideIn {
+	transform: translateY(0);
+  }
+  
+.slideOut {
+	transform: translateY(100%);
+}
+
+.animal-cls{
+	position: absolute;
+
+}
+.first{
+	margin-left: 11%;
+    margin-top: 22%;
+}
+.second{
+	margin-left: 26%;
+    margin-top: 64%;
+}
+.third{
+	margin-left: 51%;
+    margin-top: 77%;
+}
+.fourth{
+	margin-left: 72%;
+    margin-top: 72%;
+}
+.fifth{
+	margin-left: 42%;
+    margin-top: 40%;
+}
+.sixth{
+	margin-left: 59%;
+    margin-top: 15%;
+}
+.seventh{
+	margin-left: 26%;
+    margin-top: 1%;
+}
+.eightth{
+	margin-left: 10%;
+    margin-top: 85%;
+}
+.nineth{
+	margin-left: 73%;
+    margin-top: 34%;
+}
+.tenth{
+	margin-left: 77%;
+    margin-top: 0%;
+}
+.mt-30{
+	margin-top: 30px;
+}
+@keyframes slidein {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+@keyframes slideout {
+    0% {
+        top: 50%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+.carousel-img {
+	/* position: absolute; */
+	z-index: -1;
+	display: block;
+	width: 50px;
+}
+
+.carousel-img-white {
+	/* position: absolute; */
+	z-index: 10;
+	display: block;
+	width: 50px;
+}
+
+.carousel-appear {
+    animation: slidein 1s ease-in-out both;
+}
+
+.carousel-enter {
+    animation: slidein 1s ease-in-out both;
+}
+
+.carousel-leave {
+    animation: slideout 1s ease-in-out both;
+} 
+.green-box-square{
+	background-color:#40bd40 !important;
+	background-image: url('../common/images/tick_icon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.red-box-square{
+	background-color:#d40c0c !important;
+	background-image: url('../common/images/wrong_icon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+@-webkit-keyframes App-logo-spin {
+	0% {
+		-webkit-transform:rotate(0deg);
+		transform:rotate(0deg)
+	}
+	to {
+		-webkit-transform:rotate(1turn);
+		transform:rotate(1turn)
+	}
+}
+@keyframes App-logo-spin {
+	0% {
+		-webkit-transform:rotate(0deg);
+		transform:rotate(0deg)
+	}
+	to {
+		-webkit-transform:rotate(1turn);
+		transform:rotate(1turn)
+	}
+}
+body {
+	font:18px Helvetica,Arial,sans-serif;
+	margin:30px
+}
+ol,ul {
+	padding-left:30px
+}
+.status {
+	margin-bottom:10px
+}
+.square {
+	background:#fff;
+	border:1.7px solid #000;
+	float:left;
+	font-size:var(--square-font-size);
+	font-weight:700;
+	line-height:var(--square-size);
+	height:var(--square-size);
+	margin-right:-1px;
+	margin-top:-1px;
+	padding:0;
+	text-align:center;
+	vertical-align:middle;
+	width:var(--square-size);
+	margin-bottom:0;
+	border-radius:0
+}
+.board-row:first-child > .square {
+	border-top:none
+}
+.board-row:last-child > .square {
+	border-bottom:none
+}
+.board-row>.square:first-child {
+	border-left:none
+}
+.board-row>.square:last-child {
+	border-right:none
+}
+.kbd-navigation .square:focus {
+	background:#ddd
+}
+.game {
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	-ms-flex-direction:row;
+	flex-direction:row
+}
+.board-row,.game {
+	display:-webkit-box;
+	display:-ms-flexbox;
+	display:flex
+}
+.board-row {
+	-webkit-box-pack:center;
+	-ms-flex-pack:center;
+	justify-content:center
+}
+.board-row:after {
+	clear:both;
+	content:"";
+	display:table
+}
+.game-info {
+	margin-bottom:1em
+}
+.controls {
+	padding:2em
+}
+.winner {
+	-webkit-animation:blinker 1s linear infinite;
+	animation:blinker 1s linear infinite;
+	color:green!important
+}
+@-webkit-keyframes blinker {
+	50% {
+		opacity:0
+	}
+}
+@keyframes blinker {
+	50% {
+		opacity:0
+	}
+}
