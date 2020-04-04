@@ -17,14 +17,16 @@ Use any of the following to run the application Without using nodejs script
   <li>Visit http://127.0.0.1:3000/jewels for jewels game </li>
   <li>Visit http://127.0.0.1:3000/catsndogs for Cats and dogs game </li>
   <li>Visit http://127.0.0.1:3000/Box for box game </li>
+  <li>Visit http://127.0.0.1:3000/PopTheBubbles for PopTheBubbles game </li>
 </ol>
 OR using nodejs to load react application
 <ol>
 <li>Run npm run build - which will create a build folder</li>
   <li>cd .. && node index.js</li>
-  <li>Visit http://127.0.0.1:5000/jewels for jewels game </li>
-  <li>Visit http://127.0.0.1:5000/catsndogs for cats and Dogs game</li>
-  <li>Visit http://127.0.0.1:5000/Box for box game </li>
+  <li>Visit http://127.0.0.1:5000/box for box game </li>
+  <li>Visit http://127.0.0.1:5001/jewels for jewels game </li>
+  <li>Visit http://127.0.0.1:5002/catsndogs for cats and Dogs game</li>
+  <li>Visit http://127.0.0.1:5003/PopTheBubbles for PopTheBubbles game </li>  
 </ol>
 
 ## Built With
