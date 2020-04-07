@@ -112,11 +112,15 @@ class Board extends React.Component<BoardProps, BoardState> {
     return styles;
   }
   
-  handleClick = (e:any, i:number, toBeTapped : boolean) => {
+  handleClick = (e:any, index:number, lastClass : string, toBeTapped : boolean) => {
+    const pointsToReduce  = typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  lastClass !== this.state.bubbleStyles[index-1] ? 1 : 0;
+    const success = this.props.level === 1 ? (toBeTapped ? true :  false) : 
+      (toBeTapped &&(typeof this.state.bubbleStyles[index-1] === 'undefined' || 
+      (typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  lastClass !== this.state.bubbleStyles[index-1]))? true :  false) ;
     this.setState({
-      successTaps : toBeTapped ? this.state.successTaps + 1 :  this.state.successTaps,
-      wrongTaps : !toBeTapped ? this.state.wrongTaps + 1 :  this.state.wrongTaps      
-    });      
+      successTaps : success ? this.state.successTaps + 1 :  this.state.successTaps - pointsToReduce,
+      wrongTaps : !success ? this.state.wrongTaps + 1 :  this.state.wrongTaps      
+    });       
   }
 
   // Render the game board
@@ -141,12 +145,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         p = p + 500;
       }      
       board = bubbles; 
-    }
-    // if(this.state.completed) {
-    //   const percentage = this.state.successTaps / this.state.bubblesToTapCount * 100;
-    //   const score = Math.round(percentage);
-    //   this.props.onCompleted(score, this.state.successTaps, this.state.wrongTaps); 
-    // }
+    }   
     return (
       <div className="pop-the-bubble-board">
         <div className="mt-30">

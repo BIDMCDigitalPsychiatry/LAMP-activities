@@ -15,7 +15,7 @@ interface BubbleProps {
   text?:string,
   x : number,
   y : number,  
-  onClick(e:any, index: number, tapped : boolean): void
+  onClick(e:any, index: number, lastClass : string, tapped : boolean): void
 }
 interface BubbleState {
   tapped : boolean;
@@ -48,13 +48,15 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
     }
   }
   onPop = (e:any): void => {
-    this.setState({tapped : true});
-    setTimeout(() => {
-      this.setState({ 
-         visible : false,        
-      });
-    }, 500);
-    this.props.onClick(e, this.props.index, this.props.bubbleToTap);  
+    if(!this.props.text) {
+      this.setState({tapped : true});
+      setTimeout(() => {
+        this.setState({ 
+          visible : false,        
+        });
+      }, 500);
+    }
+    this.props.onClick(e, this.props.index,  this.props.class, this.props.bubbleToTap);    
   }
   // Game render function
   render() {   

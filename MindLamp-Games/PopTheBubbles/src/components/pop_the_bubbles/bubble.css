@@ -202,7 +202,13 @@ ol,ul {
 .game-info {
 	margin-bottom:1em
 }
-.heading{background-color: rgba(53,159,254,1);}
+.home-link{float: left;}
+.heading {
+	background-color: rgba(53,159,254,1);
+    text-align: center;
+    color: white;
+    padding: 15px;
+}
 
 .box-info{position: absolute; width: 98%; text-align: center; bottom: 0; background-color: #fff; color: #359ffe; padding: 5px; margin: 1%;}
 .box-alert{   
@@ -241,7 +247,7 @@ td{
 }
 
 @media only screen and (max-width: 767px) {
-	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 13px !important;}
+	.box-info, .game-board, .countdown-timer__text{font-size: 13px !important;}
 
 }
 
