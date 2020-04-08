@@ -31,6 +31,8 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
       visible : !this.props.text? false :true
     };
   } 
+
+  // Hanlde bubble rendering in 300ms and visible for 1 sec
   componentDidMount = () => {
     if(!this.props.text) {     
       setTimeout(() => {
@@ -47,6 +49,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
       }, this.props.delayed);
     }
   }
+  // On tapping bubble hide bubble with animate effect
   onPop = (e:any): void => {
     if(!this.props.text) {
       this.setState({tapped : true});
@@ -54,7 +57,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
         this.setState({ 
           visible : false,        
         });
-      }, 500);
+      }, 300);
     }
     this.props.onClick(e, this.props.index,  this.props.class, this.props.bubbleToTap);    
   }
@@ -73,7 +76,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
           transform: this.state.tapped && this.state.visible ? "scale(1.5)" : "" ,
           transition: "opacity 150ms ease, transform 150ms ease",
        }}
-        onClick={() => {  setTimeout(() => this.onPop(this), 150); }}
+        onClick={() => {  setTimeout(() => this.onPop(this), 100); }}
       >{this.props.text ? this.props.text : null}</div> 
     );
   }

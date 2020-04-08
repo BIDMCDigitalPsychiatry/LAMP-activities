@@ -255,3 +255,8 @@ td{
 .text-center{text-align: center;}
 .game-rule p{font-size: 13px;}
 h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top: 40%; width: 100%; text-align: center;}
+.success { 
+	color:#26bcff;
+	text-align: center;
+    text-transform: capitalize;
+}

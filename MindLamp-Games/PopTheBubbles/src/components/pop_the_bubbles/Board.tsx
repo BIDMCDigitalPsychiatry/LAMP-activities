@@ -63,6 +63,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   componentDidMount = () => {
     this.timer = setInterval(() => {
         if(this.state.showNo === 1) {
+          // Countdown timer
           clearInterval(this.timer);
           this.setState({  
             showGo : true,
@@ -73,14 +74,16 @@ class Board extends React.Component<BoardProps, BoardState> {
               showBoard : true,
               showGo : false
             });
+            // Game over interval
+            const timeoutPeriod = this.props.level === 1 ? 20000 : 27000;             
             setTimeout(() => {
               this.setState({ 
                 completed : true
               });
-              const percentage = this.state.successTaps / this.state.bubblesToTapCount * 100;
+             const percentage = this.state.successTaps / this.state.bubblesToTapCount * 100;
               const score = Math.round(percentage);
               this.props.onCompleted(score, this.state.successTaps, this.state.wrongTaps); 
-            }, 30000);    
+            }, timeoutPeriod);    
           }, 1000);
         } else {
           this.setState({  
@@ -97,7 +100,8 @@ class Board extends React.Component<BoardProps, BoardState> {
     const styles= { height : `${size}px`, width :  `${size}px`};  
     return styles
   } 
- 
+  
+  // Get random bubble styles
   getBubbleStyles = () : Array<string> => {
     let selectedStyle = null;    
     const styles = [];
@@ -111,7 +115,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }   
     return styles;
   }
-  
+  // Hanlde bubble taps here
   handleClick = (e:any, index:number, lastClass : string, toBeTapped : boolean) => {
     const pointsToReduce  = typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  lastClass !== this.state.bubbleStyles[index-1] ? 1 : 0;
     const success = this.props.level === 1 ? (toBeTapped ? true :  false) : 
@@ -137,12 +141,13 @@ class Board extends React.Component<BoardProps, BoardState> {
       const toBeSelected = this.props.level === 1 || this.props.level === 3 ? ['bubble-pink', 'bubble-yellow', 'bubble-blue'] 
         : ['bubble-yellow', 'bubble-blue'];
       let bubbleToTap = false;
+      // Set bubble rendering interval in 300ms
       let p = 300;
       for (let i = 0; i < this.props.bubbleCount; i++) {
         bubbleToTap = toBeSelected.indexOf(this.state.bubbleStyles[i]) > -1 ? true : false;       
         bubbles.push(<Bubble  delayed={p} x={this.props.xCoords[this.props.xPoints[i]]} index={i} y={this.props.yCoords[this.props.yPoints[i]]} 
               class={this.state.bubbleStyles[i]} bubbleToTap={bubbleToTap}  onClick={this.handleClick}/>)
-        p = p + 500;
+        p = p + 300;
       }      
       board = bubbles; 
     }   

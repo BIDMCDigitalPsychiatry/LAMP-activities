@@ -22,6 +22,7 @@ import './bubble.css';
 interface AppState {
     levelCompleted : boolean,
     gameLevel : number;
+    gameOver : boolean;
     level:number;    
     score : number;
     stateSuccessTaps:number;
@@ -34,13 +35,15 @@ interface AppState {
 
 class PopTheBubbles extends React.Component<{}, AppState> {
   private bubbleCount:number;
-  private gameOver : boolean;
   constructor(props: {}) {
     super(props);
     const xValues =  this.getCoords(window.innerWidth- (window.innerWidth * 20 /100), 1);
     const yValues =  this.getCoords(window.innerHeight - (window.innerHeight * 25 /100), 2);
+    this.bubbleCount = typeof (process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT) === 'undefined' ? 60 :
+      Number(process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT);
     this.state =  {
         gameLevel : 1, 
+        gameOver: false,
         level : 0,
         levelCompleted:false, 
         score : 0,   
@@ -51,10 +54,10 @@ class PopTheBubbles extends React.Component<{}, AppState> {
         yCoords : yValues,
         yPoints : this.getCoordPoints(yValues),
     } ;
-    this.bubbleCount = typeof (process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT) === 'undefined' ? 60 :
-      Number(process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT);
+  
   }
   
+  // Get random coordinates for bubbles
   getCoords =  (size : number, type : number) => {
     let i = 0;
     const coords = [];  
@@ -65,8 +68,9 @@ class PopTheBubbles extends React.Component<{}, AppState> {
     return coords;
   }
 
+  // Get random numbers for x,y coordinates
   getCoordPoints = (values : Array<number>) => {
-    return getRandomNumbers(60, 0, values.length);  
+    return getRandomNumbers(80, 0, values.length);  
   }
 
   // To refresh the game
@@ -74,6 +78,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
     window.location.reload(false);
   }
   
+  // To render the game screens
   handleClick = () => {
       this.setState({         
           level : this.state.level +  1,         
@@ -81,11 +86,11 @@ class PopTheBubbles extends React.Component<{}, AppState> {
           score : 0
       });      
   }
- 
 
+  // Once done with each level of each game, this function will be called
   onCompleted = (stateScore : number, successTaps : number, wrongTaps: number) => {
     if(this.state.gameLevel === 3) {
-      this.gameOver = true;
+      this.setState({ gameOver :true }) ;
     } else {
       this.setState({
         gameLevel : this.state.gameLevel + 1,
@@ -95,11 +100,18 @@ class PopTheBubbles extends React.Component<{}, AppState> {
         stateSuccessTaps : this.state.stateSuccessTaps + successTaps,
         stateWrongTaps : this.state.stateWrongTaps + wrongTaps,
       });
+      this.bubbleCount = typeof (process.env.REACT_APP_POP_LEVEL2_3_BUBBLE_COUNT) === 'undefined' ? 80 :
+        Number(process.env.REACT_APP_POP_LEVEL2_3_BUBBLE_COUNT);
     }
   }
+  // Set the screen content based on each level
   getLevelCases = () => {
-    if(this.gameOver) {
-      return 'congratulation';
+    if(this.state.gameOver) {
+      return  <div className="pop-the-bubble-board">
+                <div className="mt-30">
+                  <div className="success">congratulations</div>
+                </div>
+              </div>;
     }
     let infoSection = null;
     const x = window.innerWidth - (window.innerWidth * 77 /100) ;
@@ -107,8 +119,8 @@ class PopTheBubbles extends React.Component<{}, AppState> {
     this.bubbleCount =  this.state.gameLevel === 1 ?
       typeof (process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT) === 'undefined' ? 60 :
         Number(process.env.REACT_APP_POP_LEVEL1_BUBBLE_COUNT): 
-      typeof (process.env.REACT_APP_POP_LEVEL2_BUBBLE_COUNT) === 'undefined' ? 80 :
-        Number(process.env.REACT_APP_POP_LEVEL2_BUBBLE_COUNT);
+      typeof (process.env.REACT_APP_POP_LEVEL2_3_BUBBLE_COUNT) === 'undefined' ? 80 :
+        Number(process.env.REACT_APP_POP_LEVEL2_3_BUBBLE_COUNT);
     switch(this.state.level) {
       case  0 :
          infoSection = this.state.gameLevel === 1 ? <div className="pop-the-bubble-board">
@@ -123,40 +135,38 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                           <div><Bubble text="Tap to continue" bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue"
                           onClick={this.handleClick}/>
                           </div>
-                          </div>
-                          </div>;
+                        </div>
+                      </div>;
                     break;
       case 1:
           const alertTextTop = this.state.gameLevel === 1 ? alerts.LEVEL1_TOP : alerts.LEVEL2_3_TOP;
           const alertTextBottom = this.state.gameLevel === 1 ? alerts.LEVEL1_BOTTOM : this.state.gameLevel === 2 ? 
             alerts.LEVEL2_BOTTOM: alerts.LEVEL3_BOTTOM;
 
-
           infoSection = <div className="pop-the-bubble-board">
           <div className="mt-30"><h1>Level {this.state.gameLevel}</h1>
-          <div className="pl-30 pr-30 game-rule text-center">
-          <div className="pl-30 pr-30 game-rule text-center"><p>{alertTextTop}</p><br/><p>{alertTextBottom}</p></div>                   
-          </div>
-          <div><Bubble text="Tap to continue" bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue"
-          onClick={this.handleClick}/>
-          </div>
-          </div>
+            <div className="pl-30 pr-30 game-rule text-center">
+              <div className="pl-30 pr-30 game-rule text-center"><p>{alertTextTop}</p><br/><p>{alertTextBottom}</p></div>                   
+            </div>
+            <div>
+              <Bubble text="Tap to continue" bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue"
+            onClick={this.handleClick}/>
+            </div>
+            </div>
           </div>;
           break;
       case 2: 
-          infoSection =  
-          <Board bubbleCount={this.bubbleCount} onCompleted={this.onCompleted} level={this.state.gameLevel} xCoords={this.state.xCoords} yCoords={this.state.yCoords} xPoints={this.state.xPoints} yPoints={this.state.yPoints}  
-          />  ;
+          infoSection = <Board bubbleCount={this.bubbleCount} onCompleted={this.onCompleted} level={this.state.gameLevel}
+             xCoords={this.state.xCoords} yCoords={this.state.yCoords} xPoints={this.state.xPoints} yPoints={this.state.yPoints} />  ;
           break;
-}
+      }
     
-return infoSection
+    return infoSection
   }
 
   // Game render function
   render() { 
-    const infoSection = this.getLevelCases();
-   
+    const infoSection = this.getLevelCases();   
     return (
       <div>
         <nav className="home-link">
