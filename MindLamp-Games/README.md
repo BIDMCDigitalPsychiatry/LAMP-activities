@@ -8,7 +8,7 @@ In order to run this project node.js and npm both need to have been installed.
 ## Deployment
 <ol>
 <li>Clone this repo</li>
-<li>cd Games</li>
+<li>cd <Game-name></li>
 <li>npm install</li>
 </ol>
 Use any of the following to run the application Without using nodejs script
