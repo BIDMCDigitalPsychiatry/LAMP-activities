@@ -81,7 +81,6 @@ class PopTheBubbles extends React.Component<{}, AppState> {
  // Update the state values after each game state
  updateStateForEachState = (level : number,score : number, successTaps : number, wrongTaps : number) => {
   const states = [];
-  console.log(this.state.startTime + '--' +  Date.parse(this.state.startTime) + '--' +  new Date().getTime());
   const dif = new Date().getTime() - Date.parse(this.state.startTime);
   const lastclickTime = (dif / 1000);
   if (this.state.states !== null) {
@@ -216,7 +215,6 @@ class PopTheBubbles extends React.Component<{}, AppState> {
 
   // Game render function
   render() { 
-    console.log(this.state.states);
     const infoSection = this.getLevelCases();   
     return (
       <div>
