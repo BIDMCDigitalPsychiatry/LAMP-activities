@@ -18,6 +18,7 @@ Use any of the following to run the application Without using nodejs script
   <li>Visit http://127.0.0.1:3000/catsndogs for Cats and dogs game </li>
   <li>Visit http://127.0.0.1:3000/Box for box game </li>
   <li>Visit http://127.0.0.1:3000/PopTheBubbles for PopTheBubbles game </li>
+  <li>Visit http://127.0.0.1:3000/Balloons for BalloonRisk game </li>
 </ol>
 OR using nodejs to load react application
 <ol>
@@ -27,6 +28,7 @@ OR using nodejs to load react application
   <li>Visit http://127.0.0.1:5001/jewels for jewels game </li>
   <li>Visit http://127.0.0.1:5002/catsndogs for cats and Dogs game</li>
   <li>Visit http://127.0.0.1:5003/PopTheBubbles for PopTheBubbles game </li>  
+  <li>Visit http://127.0.0.1:5003/Balloons for BalloonRisk game </li>  
 </ol>
 
 ## Built With
