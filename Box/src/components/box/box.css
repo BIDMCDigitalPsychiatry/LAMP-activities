@@ -10,7 +10,10 @@
 	--square-font-size:72px
 }
 body{background: rgba(53,159,254,1);}
-nav a{color: #fff; padding: 10px; display: inline-block;}
+nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
+.timer-div {
+	margin-top: 10px;
+}
 .App {
 	padding-top:2em;
 	text-align:center
@@ -30,8 +33,9 @@ nav a{color: #fff; padding: 10px; display: inline-block;}
 }
 .heading{
 	text-align: center;
-	color: white;
+	color: rgba(53,159,254,1);
 	padding: 15px;
+	background: #fff;
 }
 .home-link{
 	float: left;
@@ -154,8 +158,7 @@ ol,ul {
 	margin-bottom:1em
 }
 
-
-.box-info{position: absolute; width: 98%; text-align: center; bottom: 0; background-color: #fff; color: #359ffe; padding: 5px; margin: 1%;}
+.box-info{position: absolute; width: 100%; text-align: center; bottom: 0; background-color: #fff; color: #359ffe; padding: 10px;}
 .box-alert{   
 	z-index: 111;
     position: absolute;
