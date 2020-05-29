@@ -10,6 +10,7 @@
 import * as React from 'react';
 
 interface DiamondProps {
+    diamondColor:string;
     diamondType: any;
     diamondNumber:number;
     index: number;   
@@ -22,9 +23,9 @@ export class Diamond extends React.Component<DiamondProps> {
     }
     
     render() {
+        const classVal = this.props.diamondType + ' ' + this.props.diamondType + '-' + this.props.diamondColor
         return (
-            <div onClick={this.onClick} key={this.props.index} className="diamond-style"
-                    style={{ backgroundImage:`url(${this.props.diamondType})` }}  >
+            <div onClick={this.onClick} key={this.props.index} className={classVal}>
                 <span className="number-text"> {this.props.index}</span>
             </div>
         );

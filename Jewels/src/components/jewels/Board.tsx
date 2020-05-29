@@ -9,16 +9,14 @@
 import * as React from 'react';
 import { Timer } from '../common/Timer';
 import { Diamond } from './Diamond';
-import diamond1_trans from "./images/jewelTrails/diamond1_trans.png";
-import diamond2_trans from "./images/jewelTrails/diamond2_trans.png";
-import diamond3_trans from "./images/jewelTrails/diamond3_trans.png";
-import diamond4_trans from "./images/jewelTrails/diamond4_trans.png";
+
 import { NegativePoints } from './NegativePoints';
 
 export interface BoardProps {
     totalDiamonds:number; 
     diamondSpots:Array<number>;   
     currentDiamond : any;     
+    diamondColor:string;
     diamondNumber: number;  
     diamondNumbers:Array<number>;   
 }
@@ -60,7 +58,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       this.setState({
         tapCount : this.state.tapCount + 1,
       });
-      const diamondTypeMaps = [diamond1_trans, diamond2_trans, diamond3_trans, diamond4_trans];
       if(this.state.stepNumber === i - 1) {
         if(i === 1) {
           const timerVal = typeof(process.env.REACT_APP_JEWELS_TIMOUT_PERIOD) === 'undefined' ? 180 :
@@ -84,7 +81,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         });
         // Load disabled image after correct tap
         const item = e.target.className === 'number-text' ? e.target.closest('div'): e.target;
-        item.style.backgroundImage = `url(${diamondTypeMaps[this.props.diamondNumber]})`;
+        item.className = item.className + ' diamond-disable';
 
         if(this.props.totalDiamonds === i) {
             // When all the diamonds are correctly tapped
@@ -158,6 +155,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
             if(this.props.diamondSpots.indexOf(p) > -1) {
                 children.push(<td key={p}>
                   <Diamond 
+                    diamondColor = {this.props.diamondColor}
                     diamondType={this.props.currentDiamond}            
                     index={this.props.diamondNumbers[k] + 1} diamondNumber={this.props.diamondNumber} 
                     onClick={this.handleClick}
@@ -225,10 +223,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
           negSection = this.state.negativePoints < 0 && this.state.displayNegativePoints ? 
             <NegativePoints startPoints={this.state.negativePoints} /> : null       
           // Jewel info in the bottom for the inital state
+          const classVal = this.props.currentDiamond + ' ' + this.props.currentDiamond + '-' + this.props.diamondColor
           jewelInfo = this.state.startTimer === 0 ? <div className="jewel-info">
               <span className="info-text">Jewels</span>
-              <div className="diamond-style"
-                    style={{ backgroundImage:`url(${this.props.currentDiamond})` }}  >
+              <div className={classVal}>
                   <span className="number-text"> 1</span>
               </div>           
             </div> : null         

@@ -11,7 +11,7 @@
 }
 
 body{background: rgba(53,159,254,1);}
-	nav a{color: #fff; padding: 10px; display: inline-block;}
+	nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .App {
 	padding-top:2em;
 	text-align:center
@@ -23,6 +23,12 @@ body{background: rgba(53,159,254,1);}
 }
 .info-text{
 	padding: 5px;
+    margin-right: -29%;
+}
+.jewel-info div{
+	float: right;
+    margin-right: 40%;
+    margin-top: -1%;
 }
 .App-header {
 	height:90px;
@@ -43,20 +49,20 @@ body{background: rgba(53,159,254,1);}
 	font-size: 20px;
 }
 .number-text{
-	font-size: 15px;
+	font-size: 14px;
 	color: white;
-	line-height: 32px;
+	line-height: 34px;
 }
 .jewel-info{
 	text-align: center;
 	position: fixed;
-	bottom: 10px;
-	width: 44%;
-	left: 28%;
+	bottom: 0px;
+	width: 100%;
 	padding: 10px;
 	background-color: #fff;
 	color: black;
 }
+
 .jewel-info .diamond-style{display: inline-block;}
 
 .game-over{
@@ -67,7 +73,7 @@ body{background: rgba(53,159,254,1);}
  .game-table
 {
 	position: fixed; 
-	top: 80px;   
+	top: 110px;   
 	width: 100%;
 } 
 .negative-points{
@@ -85,8 +91,9 @@ body{background: rgba(53,159,254,1);}
 }
 .heading{
 	text-align: center;
-	color: white;
-	padding: 15px;
+    color: rgba(53,159,254,1);
+    padding: 15px;
+    background: #fff;
 }
 .home-link{
 	float: left;
@@ -194,4 +201,222 @@ ol,ul {
 	50% {
 		opacity:0
 	}
+}
+
+.diamond-disable{opacity: 0.5;}
+
+.diamond1{background-image: url('images/diamond-01.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond1-pink {
+    background-position: -2px -2px;
+}
+.diamond1-green {
+    background-position: -40px -2px;
+}
+
+.diamond1-blue {
+    background-position: -78px -2px;
+}
+.diamond1-red {
+    background-position: -116px -2px;
+}
+.diamond1-violet {
+    background-position: -153px -2px;
+}
+.diamond1-orange {
+    background-position: -190px  -2px;
+}
+.diamond1-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond1-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond2{background-image: url('images/diamond-02.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond2-pink {
+    background-position: -2px -2px;
+}
+.diamond2-green {
+    background-position: -40px -2px;
+}
+
+.diamond2-blue {
+    background-position: -78px -2px;
+}
+.diamond2-red {
+    background-position: -116px -2px;
+}
+.diamond2-violet {
+    background-position: -153px -2px;
+}
+.diamond2-orange {
+    background-position: -190px  -2px;
+}
+.diamond2-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond2-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond3{background-image: url('images/diamond-03.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond3-pink {
+    background-position: -2px -2px;
+}
+.diamond3-green {
+    background-position: -40px -2px;
+}
+
+.diamond3-blue {
+    background-position: -78px -2px;
+}
+.diamond3-red {
+    background-position: -116px -2px;
+}
+.diamond3-violet {
+    background-position: -153px -2px;
+}
+.diamond3-orange {
+    background-position: -190px  -2px;
+}
+.diamond3-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond3-brown {
+    background-position: -266px -2px;
+}
+
+.diamond4{background-image: url('images/diamond-04.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond4-pink {
+    background-position: -2px -2px;
+}
+.diamond4-green {
+    background-position: -40px -2px;
+}
+
+.diamond4-blue {
+    background-position: -78px -2px;
+}
+.diamond4-red {
+    background-position: -116px -2px;
+}
+.diamond4-violet {
+    background-position: -153px -2px;
+}
+.diamond4-orange {
+    background-position: -190px  -2px;
+}
+.diamond4-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond4-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond5{background-image: url('images/diamond-05.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond5-pink {
+    background-position: -2px -2px;
+}
+.diamond5-green {
+    background-position: -40px -2px;
+}
+
+.diamond5-blue {
+    background-position: -78px -2px;
+}
+.diamond5-red {
+    background-position: -116px -2px;
+}
+.diamond5-violet {
+    background-position: -153px -2px;
+}
+.diamond5-orange {
+    background-position: -190px  -2px;
+}
+.diamond5-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond5-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond6{background-image: url('images/diamond-06.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond6-pink {
+    background-position: -2px -2px;
+}
+.diamond6-green {
+    background-position: -40px -2px;
+}
+
+.diamond6-blue {
+    background-position: -78px -2px;
+}
+.diamond6-red {
+    background-position: -116px -2px;
+}
+.diamond6-violet {
+    background-position: -153px -2px;
+}
+.diamond6-orange {
+    background-position: -190px  -2px;
+}
+.diamond6-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond6-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond7{background-image: url('images/diamond-07.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond7-pink {
+    background-position: -2px -2px;
+}
+.diamond7-green {
+    background-position: -40px -2px;
+}
+
+.diamond7-blue {
+    background-position: -78px -2px;
+}
+.diamond7-red {
+    background-position: -116px -2px;
+}
+.diamond7-violet {
+    background-position: -153px -2px;
+}
+.diamond7-orange {
+    background-position: -190px  -2px;
+}
+.diamond7-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond7-brown {
+    background-position: -266px  -2px;
+}
+
+.diamond8{background-image: url('images/diamond-08.svg'); background-repeat: no-repeat; width: 32px; height: 32px; background-size:300px; text-align: center;}
+.diamond8-pink {
+    background-position: -2px -2px;
+}
+.diamond8-green {
+    background-position: -40px -2px;
+}
+
+.diamond8-blue {
+    background-position: -78px -2px;
+}
+.diamond8-red {
+    background-position: -116px -2px;
+}
+.diamond8-violet {
+    background-position: -153px -2px;
+}
+.diamond8-orange {
+    background-position: -190px  -2px;
+}
+.diamond8-dark-blue {
+    background-position: -228px -2px;
+}
+.diamond8-brown {
+    background-position: -266px  -2px;
 }

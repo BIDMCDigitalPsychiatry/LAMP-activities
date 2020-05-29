@@ -14,18 +14,17 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Board from './Board';
-import diamond1 from "./images/jewelTrails/diamond1.png";
-import diamond2 from "./images/jewelTrails/diamond2.png";
-import diamond3 from "./images/jewelTrails/diamond3.png";
-import diamond4 from "./images/jewelTrails/diamond4.png";
+
 
 import './jewels.css';
 
-const diamondTypes = [diamond1, diamond2, diamond3, diamond4];
+const diamondTypes = ['diamond1', 'diamond2', 'diamond3', 'diamond4', 'diamond5', 'diamond6', 'diamond7', 'diamond8'];
+const colors = ['pink', 'green', 'blue', 'violet', 'brown', 'red', 'orange', 'dark-blue']
    
 interface AppState {
     current:any; 
     diamondCount: number;
+    diamondColor:string;
     diamondNumber:number;
     diamondNumbers:Array<number>;  
     diamondSpots:Array<number>;  
@@ -50,7 +49,8 @@ class Jewels extends React.Component<{}, AppState> {
       Number(process.env.REACT_APP_MAX_DIAMONDS);
     const numbers = this.shuffle(Array.from(Array(diamondCount).keys()));
     const state = { 
-      current : diamondTypes[diamondType],      
+      current : diamondTypes[diamondType],
+      diamondColor:this.getRandomColor(), 
       diamondCount:dCount,
       diamondNumber:diamondType,
       diamondNumbers:numbers,
@@ -83,6 +83,10 @@ class Jewels extends React.Component<{}, AppState> {
     return rand-1 ;
   }
 
+  getRandomColor = () => {
+    const rand = Math.round(1 + Math.random() * (colors.length - 1));  
+    return colors[rand-1];    
+  }
   // To refresh the game
   clickHome=() => {
     window.location.reload(false);
@@ -96,7 +100,7 @@ class Jewels extends React.Component<{}, AppState> {
         <div className="heading">Jewels</div>
         <div className="game-board">
         <Board  
-          totalDiamonds={this.state.diamondCount} diamondSpots={this.state.diamondSpots}
+          totalDiamonds={this.state.diamondCount} diamondSpots={this.state.diamondSpots} diamondColor={this.state.diamondColor}
           currentDiamond = {this.state.current} diamondNumber={this.state.diamondNumber} diamondNumbers={this.state.diamondNumbers}
         />          
       </div> 
