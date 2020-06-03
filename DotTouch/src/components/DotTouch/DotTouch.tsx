@@ -114,17 +114,13 @@ class DotTouch extends React.Component<{}, DotState> {
         tapCount : status ? this.state.tapCount + 1 : this.state.tapCount,
         totalTaps:this.state.totalTaps + 1
       });
-
+        let routeList:any;
         if(i === '1') {
           const timerVal = typeof(process.env.REACT_APP_TIMOUT_PERIOD) === 'undefined' ? 30 :
             Number(process.env.REACT_APP_TIMOUT_PERIOD);  
-            const routeList = []; 
+            routeList = []; 
             if(this.state.gameLevel > 1) {
-              const r = JSON.parse(this.state.stateRoutes);
-              Object.keys(r).forEach(key => {
-                routeList.push(r[key]);
-              });
-              routeList.push({Routes:JSON.parse(this.state.route)});
+              routeList = this.updateRouteList();    
             }
           const routes = [];      
           routes.push({'Alphabet' : i, 'status' : 1, 'TimeTaken' : 0});
@@ -159,6 +155,7 @@ class DotTouch extends React.Component<{}, DotState> {
       }
     }
   }
+
    // To track the timer expiring
    passTimerUpdate = (timerVal:number) => {     
      if(timerVal === 0) {
@@ -177,52 +174,53 @@ class DotTouch extends React.Component<{}, DotState> {
      const routes = [];
      const dif  = new Date().getTime() - this.state.lastClickTime;          
      const lastclickTime =  (dif / 1000);
-     const r = JSON.parse(this.state.route);
-     Object.keys(r).forEach(key => {
-       routes.push(r[key]);
-     });
+     if(this.state.route.length > 0) {
+        const r = JSON.parse(this.state.route);
+        Object.keys(r).forEach(key => {
+          routes.push(r[key]);
+        });
+     }
      const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
      routes.push(route);
     
      this.setState({ 
        lastClickTime:new Date().getTime(),
        route:JSON.stringify(routes),
-     });
-   
+     });   
    }
 
    // To create the game borad with dots on random positions
    createTable = () => {       
-       const table = []    
-       let k = 0;
-       let p = 0;
-       const rows = typeof(process.env.REACT_APP_ROWS) === 'undefined' ? 30 : Number(process.env.REACT_APP_ROWS);
-       const cols = typeof(process.env.REACT_APP_COLS) === 'undefined' ? 10 : Number(process.env.REACT_APP_COLS);
-       const dotValuesToRender = this.state.shuffledValues;
-       // Outer loop to create parent
-       for (let i = 0; i < rows; i++) {
-         const children = []
-         // Inner loop to create children
-         for (let j = 0; j < cols; j++) {
-           
-           if(this.state.dotSpots.indexOf(p) > -1) {
-               children.push(<td key={p}>
-                 <Dot 
-                   index={dotValuesToRender[k]} 
-                   onClick={this.handleClick}
-                   />
-                  </td>) 
-               k++;
-            } else {
-               children.push(<td key={p}/>)
-            }  
-            p++;         
-         }
-         // Create the parent and add the children
-         table.push(<tr key={i}>{children}</tr>)
-       }
-       return table
-     }  
+      const table = []    
+      let k = 0;
+      let p = 0;
+      const rows = typeof(process.env.REACT_APP_ROWS) === 'undefined' ? 30 : Number(process.env.REACT_APP_ROWS);
+      const cols = typeof(process.env.REACT_APP_COLS) === 'undefined' ? 10 : Number(process.env.REACT_APP_COLS);
+      const dotValuesToRender = this.state.shuffledValues;
+      // Outer loop to create parent
+      for (let i = 0; i < rows; i++) {
+        const children = []
+        // Inner loop to create children
+        for (let j = 0; j < cols; j++) {
+          
+          if(this.state.dotSpots.indexOf(p) > -1) {
+              children.push(<td key={p}>
+                <Dot 
+                  index={dotValuesToRender[k]} 
+                  onClick={this.handleClick}
+                  />
+                </td>) 
+              k++;
+          } else {
+              children.push(<td key={p}/>)
+          }  
+          p++;         
+        }
+        // Create the parent and add the children
+        table.push(<tr key={i}>{children}</tr>)
+      }
+      return table
+    }  
 
    // Call the API to pass game result
    sendGameResult = () => {
@@ -233,12 +231,7 @@ class DotTouch extends React.Component<{}, DotState> {
      const statusType = this.state.gameOver ? 2 :1; 
      const serverURL = typeof(process.env.REACT_APP_JEWELS_GAME_SERVER_URL) === 'undefined' ? '' : 
        process.env.REACT_APP_JEWELS_GAME_SERVER_URL;     
-      const routeList = [];
-      const r = JSON.parse(this.state.stateRoutes);
-      Object.keys(r).forEach(key => {
-        routeList.push(r[key]);
-      });
-      routeList.push({Routes:JSON.parse(this.state.route)});
+     const routeList = this.updateRouteList();    
      fetch(serverURL, {   
        body: JSON.stringify(
          {
@@ -267,16 +260,12 @@ class DotTouch extends React.Component<{}, DotState> {
        console.log(error);
      });
    }
+
    // Restart button action
    restartState = () => {
     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
     const randomArray = getRandomNumbers(this.state.dotSpots.length, 1, maxPlots);
-    const routeList = []; 
-    const r = JSON.parse(this.state.stateRoutes);
-    Object.keys(r).forEach(key => {
-      routeList.push(r[key]);
-    });
-    routeList.push({Routes:JSON.parse(this.state.route)});
+    const routeList = this.updateRouteList();    
                
      this.setState({  
        dotSpots : randomArray,
@@ -292,13 +281,30 @@ class DotTouch extends React.Component<{}, DotState> {
       });      
    }
 
+   // Update route list for API
+   updateRouteList = () => {
+    const routeList = [];
+    const r = JSON.parse(this.state.stateRoutes);
+    Object.keys(r).forEach(key => {
+      routeList.push(r[key]);
+    });
+    routeList.push({Routes:JSON.parse(this.state.route)});
+    return routeList;
+   }
+
    // Undo button action
    undoAction = () => {
      const item = this.state.lastWrongClick;
      if(item !== null) {
        item.className ='dot-style';
      }
+     const routeList = this.updateRouteList();     
+     this.setState({  
+       route:[], 
+       stateRoutes:JSON.stringify(routeList)     
+     });  
    }
+
    // Render the game board
    render() {     
      const alertMsg = this.state.gameOver ? 'Congrats !!' : (this.state.timeout ? 'Timeout !' : 
