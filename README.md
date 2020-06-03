@@ -17,7 +17,7 @@ To run the application :
   <li>Visit http://127.0.0.1:3000/Box for box game </li>
   <li>Visit http://127.0.0.1:3000/PopTheBubbles for PopTheBubbles game </li>
   <li>Visit http://127.0.0.1:3000/Balloons for BalloonRisk game </li>
-  <li>Visit http://127.0.0.1:3000/DotTouch for BalloonRisk game </li>
+  <li>Visit http://127.0.0.1:3000/DotTouch for Dot touch game </li>
 </ol>
 
 ## Built With
