@@ -143,7 +143,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     createTable = () => {       
         const table = []    
         let k=0;
-        let p = 1;
+        let p = 0;
         const rows = typeof(process.env.REACT_APP_ROWS) === 'undefined' ? 30 : Number(process.env.REACT_APP_ROWS);
         const cols = typeof(process.env.REACT_APP_COLS) === 'undefined' ? 10 : Number(process.env.REACT_APP_COLS);
         // Outer loop to create parent
