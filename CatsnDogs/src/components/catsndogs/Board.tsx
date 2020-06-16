@@ -336,10 +336,7 @@ class Board extends React.Component<{}, BoardState> {
     if (showModalInfoVal) {
       clearInterval(this.timer!);
     }
-    console.log(this.state.gameState);
-    console.log(catTempCount, dogTempCount);
     const rP = getRandomNumbers(catTempCount + dogTempCount, 1, 10);
-    console.log(rP);
     // State values for game state
     this.setState({
       animate: showModalInfoVal ? false : true,
