@@ -1,7 +1,7 @@
 # MindLamp Games
 
 ## Prerequisites
-In order to run this project node.js and npm both need to have been installed.
+In order to run this project, node.js and npm both need to have been installed.
 
 ## Deployment
 <ol>
@@ -17,6 +17,7 @@ To run the application :
   <li>Visit http://127.0.0.1:3000/Box for box game </li>
   <li>Visit http://127.0.0.1:3000/PopTheBubbles for PopTheBubbles game </li>
   <li>Visit http://127.0.0.1:3000/Balloons for BalloonRisk game </li>
+  <li>Visit http://127.0.0.1:3000/DotTouch for Dot touch game </li>
 </ol>
 
 ## Built With
