@@ -14,6 +14,10 @@ nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .timer-div {
 	margin-top: 10px;
 }
+svg.svg-inline--fa.fa-redo.fa-w-16 {
+    color: rgba(53,159,254,1);
+    margin: 16px 0 0 10px;
+}
 .App {
 	padding-top:2em;
 	text-align:center
@@ -176,13 +180,13 @@ td{
 }
 .green-box-square{
 	background-color:#40bd40 !important;
-	background-image: url('../common/images/tick_icon@2x.png');
+	background-image: url("data:image/svg+xml,%0A%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 397.37 394.67'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='cls-1' points='148.72 377.69 29.01 257.99 46.33 240.68 148.24 342.58 352.71 126.47 370.5 143.31 148.72 377.69'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: center;
 }
 .red-box-square{
 	background-color:#d40c0c !important;
-	background-image: url('../common/images/wrong_icon@2x.png');
+	background-image: url("data:image/svg+xml,%0A%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 397.37 394.67'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='cls-1' points='376.13 44.75 358.17 26.8 204.39 180.58 50.6 26.8 32.65 44.75 186.43 198.54 32.65 352.32 50.6 370.28 204.39 216.49 358.17 370.28 376.13 352.32 222.34 198.54 376.13 44.75'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: center;
 }

@@ -7,18 +7,13 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { AppContainer } from "react-hot-loader";
 import Jewels from './components/jewels/Jewels';
 import './index.css';
 
 ReactDOM.render(
-    <Router>
-      <div>
-       <Switch>
-          <Route exact={true} path="/Jewels" component={Jewels} />
-        </Switch>
-      </div>
-    </Router>
-  ,
-  document.getElementById('root') as HTMLElement
+      <AppContainer>
+        <Jewels/>
+      </AppContainer>,  
+    document.getElementById('root') as HTMLElement
 );

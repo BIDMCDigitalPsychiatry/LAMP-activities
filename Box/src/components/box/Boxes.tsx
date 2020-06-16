@@ -15,8 +15,6 @@ import * as React from 'react';
 
 import Board from './Board';
 
-import { Link } from "react-router-dom";
-
 interface AppState {
     current:any;    
 }
@@ -37,7 +35,7 @@ class Box extends React.Component<{}, AppState> {
     return (
       <div>
         <nav className="home-link">
-          <Link onClick={this.clickHome}><FontAwesomeIcon icon={faRedo} /></Link>
+          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
         </nav>
         <div className="heading">Box Game</div>
         <div className="game-board">

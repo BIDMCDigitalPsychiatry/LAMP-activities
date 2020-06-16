@@ -1,5 +1,5 @@
 {
-  "name": "jewels",
+  "name": "Box",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -26,7 +26,9 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "build": "npm run build:react && npm run build:bundle && npx gulp",
+    "build:react": "react-scripts build",
+    "build:bundle": "webpack --config webpack.config.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "predeploy": "gh-pages -d build",
@@ -43,7 +45,7 @@
     "gh-pages": "^1.1.0",
     "typescript": "^3.7.5"
   },
-  "proxy": "http://127.0.0.1:5000",
+  "homepage":"./",
   "browserslist": [
     ">0.2%",
     "not dead",

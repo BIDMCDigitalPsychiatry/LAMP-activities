@@ -17,6 +17,10 @@ h1{font-size: 26px !important; color: rgba(53,159,254,1); text-align: center; }
 	padding-top:2em;
 	text-align:center
 }
+svg.svg-inline--fa.fa-redo.fa-w-16 {
+    color: white;
+    margin: 16px 0 0 10px;
+}
 .mt-30per{margin-top: 30%;}
 .App-logo {
 	-webkit-animation:App-logo-spin infinite 20s linear;
@@ -226,18 +230,7 @@ td{
     padding: 0px;
 	border: #ccc solid 1px;
 }
-.green-box-square{
-	background-color:#40bd40 !important;
-	background-image: url('../common/images/tick_icon@2x.png');
-	background-repeat: no-repeat;
-	background-position: center;
-}
-.red-box-square{
-	background-color:#d40c0c !important;
-	background-image: url('../common/images/wrong_icon@2x.png');
-	background-repeat: no-repeat;
-	background-position: center;
-}
+
 .next-button button{border: #fff solid 1px; padding: 10px 20px; background: transparent; color: #fff; min-width: 170px; border-radius: 25px;}
 
 @media only screen and (min-width: 768px) {

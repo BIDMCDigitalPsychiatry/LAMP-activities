@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { AppContainer } from "react-hot-loader";
 import Balloon from './components/BallonRisk/Balloon';
 
-
 ReactDOM.render(
-  <Router>
-    <div>      
-      <Switch>
-        <Route exact={true} path="/Balloons" component={Balloon} />         
-      </Switch>
-    </div>
-  </Router>
-  ,
+  <AppContainer>
+    <Balloon/>
+  </AppContainer>,
   document.getElementById('root') as HTMLElement
 );

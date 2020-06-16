@@ -22,11 +22,11 @@ class BalloonHeader extends React.Component
         <div className="row">
           <div className="col">
             <a className="icn-menu menu-left" >
-                <img src="img/icn_home.svg" alt="Home Icon"/>
+              <div className="home"/>
             </a>
             <h4>{process.env.REACT_APP_GAME_TILE}</h4>
             <a className="icn-menu menu-right cursorPointer" onClick={ this.reloadPage }>
-              <img src="img/icn_refresh.svg" alt="Refresh Icon"/>
+            <div className="refresh"/>
             </a>
           </div>
         </div>

@@ -9,7 +9,10 @@
 	--square-size:84px;
 	--square-font-size:72px
 }
-
+nav.home-link svg {
+    color: rgba(53,159,254,1);
+    margin: 14px 0 0 10px;
+}
 body{background: rgba(53,159,254,1);}
 	nav a{color: #fff; padding: 10px; display: inline-block;}
 .App {

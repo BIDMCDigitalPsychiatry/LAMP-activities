@@ -14,8 +14,6 @@ import * as alerts from '../common/messages/dogsncats';
 import { Timer } from '../common/Timer';
 import { Box } from './Box';
 import './box.css';
-import cat from "./images/cat.png";
-import dog from "./images/dog.png";
 
 interface BoardState {
   animate: boolean;
@@ -99,7 +97,7 @@ class Board extends React.Component<{}, BoardState> {
 
     const rP = getRandomNumbers( catTempCount + dogTempCount, 1, 10);
     this.setState({
-      animate: true,
+      animate: this.state.gameState >= 1 ? true : false,
       boxClass: ['box-square'],
       catCount: catTempCount,
       dogCount: dogTempCount,
@@ -115,6 +113,7 @@ class Board extends React.Component<{}, BoardState> {
       wrongTaps: 0
     });
     this.resetBoxClass();
+    if( this.state.gameState >= 1) {
     setTimeout(
       () => {
         this.setState({
@@ -124,6 +123,7 @@ class Board extends React.Component<{}, BoardState> {
           wrongTaps: 0
         });
       }, 1000);
+    }
   }
   // Rest box styles after each load
   resetBoxClass = () => {
@@ -283,6 +283,7 @@ class Board extends React.Component<{}, BoardState> {
     let gameStateVal = this.state.gameState;
     let showModalInfoVal = this.state.showModalInfo;
     let modalTxt = this.state.modalText;
+   
     switch (this.state.dogCount) {
       case 0:
         dogTempCount = 1;
@@ -335,7 +336,10 @@ class Board extends React.Component<{}, BoardState> {
     if (showModalInfoVal) {
       clearInterval(this.timer!);
     }
+    console.log(this.state.gameState);
+    console.log(catTempCount, dogTempCount);
     const rP = getRandomNumbers(catTempCount + dogTempCount, 1, 10);
+    console.log(rP);
     // State values for game state
     this.setState({
       animate: showModalInfoVal ? false : true,
@@ -399,7 +403,7 @@ class Board extends React.Component<{}, BoardState> {
         }
         const boxClass = 'box-square';
         classn = 'box ' + numbers[i - 1];
-        const img = dogBoxFlag === true ? dog : (catBoxFlag === true ? cat : null);
+        const img = dogBoxFlag === true ? 'dog' : (catBoxFlag === true ? 'cat' : '');
 
         // To find the whether to enable or disable box tapping
         let enableStatus = false;

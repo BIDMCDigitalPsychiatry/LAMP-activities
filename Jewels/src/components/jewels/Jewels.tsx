@@ -6,7 +6,7 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { isUndefined } from 'util';
 import { getRandomNumbers} from '../../functions';
 
@@ -14,11 +14,9 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Board from './Board';
-
-
 import './jewels.css';
 
-const diamondTypes = ['diamond1', 'diamond2', 'diamond3', 'diamond4', 'diamond5', 'diamond6', 'diamond7', 'diamond8'];
+const diamondTypes = ['diamond-01', 'diamond-02', 'diamond-03', 'diamond-04', 'diamond-05', 'diamond-06', 'diamond-07', 'diamond-08'];
 const colors = ['pink', 'green', 'blue', 'violet', 'brown', 'red', 'orange', 'dark-blue']
    
 interface AppState {
@@ -94,9 +92,9 @@ class Jewels extends React.Component<{}, AppState> {
   render() {     
     return (
       <div>
-        <nav className="home-link">
-          <Link onClick={this.clickHome}><FontAwesomeIcon icon={faRedo} /></Link>
-        </nav>
+         <nav className="home-link">
+           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
+        </nav> 
         <div className="heading">Jewels</div>
         <div className="game-board">
         <Board  

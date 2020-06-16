@@ -45,7 +45,8 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.classes = ['bubble-pink', 'bubble-red', 'bubble-green', 'bubble-yellow', 'bubble-blue'];
     const bubbleStyleValues = this.getBubbleStyles();
     // Initailise state values 
-     this.state = {      
+    this.count = 0;
+    this.state = {      
       bubbleStyles: bubbleStyleValues,
       bubblesToTapCount : this.count,
       completed : false,
@@ -56,7 +57,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       showWait: true  ,
       successTaps : 0,
       wrongTaps : 0,    
-     };
+    };
   } 
   
   // On load function - set state of the gamne
@@ -80,9 +81,9 @@ class Board extends React.Component<BoardProps, BoardState> {
               this.setState({ 
                 completed : true
               });
-            const percentage = this.state.successTaps / this.state.bubblesToTapCount * 100;
-            const score = Math.round(percentage);
-            this.props.onCompleted(score, this.state.successTaps, this.state.wrongTaps); 
+             const percentage = this.state.successTaps / this.state.bubblesToTapCount * 100;
+              const score = Math.round(percentage);
+              this.props.onCompleted(score, this.state.successTaps, this.state.wrongTaps); 
             }, timeoutPeriod);    
           }, 1000);
         } else {
@@ -117,8 +118,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
   // Hanlde bubble taps here
   handleClick = (e:any, index:number, lastClass : string, toBeTapped : boolean) => {
-    const pointsToReduce  = this.props.level !== 1 && typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  
-      lastClass !== this.state.bubbleStyles[index-1] ? 1 : 0;
+    const pointsToReduce  = typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  lastClass !== this.state.bubbleStyles[index-1] ? 1 : 0;
     const success = this.props.level === 1 ? (toBeTapped ? true :  false) : 
       (toBeTapped &&(typeof this.state.bubbleStyles[index-1] === 'undefined' || 
       (typeof this.state.bubbleStyles[index-1] !== 'undefined' &&  lastClass !== this.state.bubbleStyles[index-1]))? true :  false) ;

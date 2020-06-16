@@ -6,11 +6,10 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from 'react';
-import { Link } from "react-router-dom";
+import Board from './Board';
 
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Board from './Board';
 
    
 interface AppState {
@@ -33,12 +32,11 @@ class CatsNDogs extends React.Component<{}, AppState> {
     return (
       <div>
         <nav className="home-link">
-          <Link onClick={this.clickHome}><FontAwesomeIcon icon={faRedo} /></Link>
+          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
         </nav>
         <div className="heading">Cats and Dogs</div>
         <div className="game-board">
-        <Board  
-        />          
+        <Board/>          
       </div> 
     </div> 
     );

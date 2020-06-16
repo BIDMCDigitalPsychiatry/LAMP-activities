@@ -2,7 +2,7 @@
 export function getRandomNumbers (dcount:number, min:number, max:number) {
     const randomArray:Array<number> =  []  ;
     for(let i = min; i <= dcount; i++) {      
-      randomArray[i-1] = randomNumber(max, 0, randomArray)       
+      randomArray[i-1] = randomNumber(max, 1, randomArray)       
     }       
     return randomArray;
   }

@@ -14,7 +14,6 @@ import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions
 import { Timer } from '../common/Timer';
 
 import UndoIcon from '@material-ui/icons/Undo';
-import { Link } from "react-router-dom";
 import './DotTouch.css';
 
 interface DotState { 
@@ -284,25 +283,29 @@ class DotTouch extends React.Component<{}, DotState> {
    // Update route list for API
    updateRouteList = () => {
     const routeList = [];
-    const r = JSON.parse(this.state.stateRoutes);
-    Object.keys(r).forEach(key => {
-      routeList.push(r[key]);
-    });
-    routeList.push({Routes:JSON.parse(this.state.route)});
+    if(this.state.route.length > 0) {
+      const r = JSON.parse(this.state.stateRoutes);
+      Object.keys(r).forEach(key => {
+        routeList.push(r[key]);
+      });
+      routeList.push({Routes:JSON.parse(this.state.route)});
+    }
     return routeList;
    }
 
    // Undo button action
    undoAction = () => {
-     const item = this.state.lastWrongClick;
-     if(item !== null) {
-       item.className ='dot-style';
+     if(this.state.startGame) {
+      const item = this.state.lastWrongClick;
+      if(item !== null) {
+        item.className ='dot-style';
+      }
+      const routeList = this.updateRouteList();     
+      this.setState({  
+        route:[], 
+        stateRoutes:JSON.stringify(routeList)     
+      });  
      }
-     const routeList = this.updateRouteList();     
-     this.setState({  
-       route:[], 
-       stateRoutes:JSON.stringify(routeList)     
-     });  
    }
 
    // Render the game board
@@ -317,7 +320,7 @@ class DotTouch extends React.Component<{}, DotState> {
      return (
        <div className="dot-touch-board">
          <nav className="home-link">
-           <Link onClick={this.undoAction}><UndoIcon color="primary" /></Link>
+           <UndoIcon color="primary" onClick={this.undoAction}/>
          </nav>
          <div className="heading">Dot touch</div>
          <div className="game-board">

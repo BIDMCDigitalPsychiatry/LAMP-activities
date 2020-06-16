@@ -11,17 +11,24 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.4",
+    "gulp": "^4.0.2",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-replace": "^1.0.0",
     "react": "^16.13.1",
     "react-compound-timer": "^1.2.0",
     "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "reservoir": "^0.1.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run build:react && npm run build:bundle && npx gulp",
+    "build:react": "react-scripts build",
+    "build:bundle": "webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.11"
   }
 }

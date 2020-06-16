@@ -14,7 +14,7 @@ interface BoxProps {
     boxClass: string;
     boxSQClass:string;
     enableTap:boolean;
-    img:any;
+    img:string;
     index: number;   
     itemType:number;
     onClick(e:any, index: number, type:number): void;
@@ -35,7 +35,7 @@ export class Box extends React.Component<BoxProps> {
       return (
             <div key="this.props.index" className={this.props.boxClass} onClick={this.onClick} >
                <div className={classN}/>
-               <img className="carousel-img" src={this.props.img}  alt={this.props.img}/>
+               <div className={this.props.img}/>
             </div>
           );
     }
