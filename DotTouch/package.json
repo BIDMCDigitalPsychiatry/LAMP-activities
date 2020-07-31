@@ -46,10 +46,16 @@
     "@types/react-dom": "^16.9.5",
     "@types/rx": "^4.1.1",
     "gh-pages": "^1.1.0",
-    "typescript": "^3.7.5"
+    "gulp": "^4.0.2",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-replace": "^1.0.0",
+    "react-hot-loader": "^4.12.21",
+    "react-scripts": "^3.4.1",
+    "typescript": "^3.7.5",
+    "webpack-cli": "^3.3.12"
   },
-  "homepage":"./",
-   "browserslist": [
+  "homepage": "./",
+  "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",

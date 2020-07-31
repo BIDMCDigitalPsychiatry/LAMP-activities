@@ -14,9 +14,6 @@
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.6",
     "dotenv": "^8.2.0",
-    "gulp": "^4.0.2",
-    "gulp-inline-source": "^4.0.0",
-    "gulp-replace": "^1.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "html-webpack-plugin": "^4.0.0-beta.4",
@@ -25,12 +22,10 @@
     "react": "^16.8.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.12.0",
-    "react-hot-loader": "^4.5.3",
     "react-router-dom": "^5.1.2",
     "react-scripts-ts": "^4.0.8",
     "rx": "^4.1.0",
-    "styled-components": "^5.0.1",
-    "webpack-cli": "^3.3.11"
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -51,7 +46,13 @@
     "@types/react-dom": "^16.9.5",
     "@types/rx": "^4.1.1",
     "gh-pages": "^1.1.0",
-    "typescript": "^3.7.5"
+    "gulp": "^4.0.2",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-replace": "^1.0.0",
+    "react-hot-loader": "^4.12.21",
+    "react-scripts": "^3.4.1",
+    "typescript": "^3.7.5",
+    "webpack-cli": "^3.3.12"
   },
   "homepage": "./",
   "browserslist": [
