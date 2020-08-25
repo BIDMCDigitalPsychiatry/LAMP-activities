@@ -72,7 +72,9 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
     position: fixed;
     top: 18%;
     left: 5%;
-    right: 5%;
+	right: 5%;
+	max-width: 400px;
+	max-height: 400px;
 }
 .next-button{
 	bottom: 22%;
@@ -200,6 +202,11 @@ td{
 
 @media only screen and (max-width: 767px) {
 	.box-info,  .game-board, .countdown-timer__text{font-size: 13px !important;}
+
+}
+
+@media only screen and (min-width: 768px) {
+	.box-table{position: relative; margin: 0 auto; left: auto; right: auto;}
 
 }
 
