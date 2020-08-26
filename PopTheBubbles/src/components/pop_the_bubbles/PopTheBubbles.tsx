@@ -123,12 +123,12 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       case  0 :
          infoSection = this.state.gameLevel === 1 ? <div className="pop-the-bubble-board">
                     <div className="mt-30">
-                    <h1 className="mt-30per">POP THE BUBBLES!</h1> 
+                    <h1>POP THE BUBBLES!</h1> 
                     <Bubble text="Tap to continue"  bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue" onClick={this.handleClick}/>
                     </div></div>: <div className="pop-the-bubble-board">
                       <div className="mt-30"><h1>Level {this.state.gameLevel - 1} Completed</h1>
-                          <div className="pl-30 pr-30 game-rule text-center">
-                          <div className="pl-30 pr-30 game-rule text-center"><h1>You got {this.state.score}%</h1></div>
+                          <div className=" game-rule text-center">
+                          <div className=" game-rule text-center"><h1>You got {this.state.score}%</h1></div>
                           </div>
                           <div><Bubble text="Tap to continue" bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue"
                           onClick={this.handleClick}/>
@@ -143,8 +143,8 @@ class PopTheBubbles extends React.Component<{}, AppState> {
 
           infoSection = <div className="pop-the-bubble-board">
           <div className="mt-30"><h1>Level {this.state.gameLevel}</h1>
-            <div className="pl-30 pr-30 game-rule text-center">
-              <div className="pl-30 pr-30 game-rule text-center"><p>{alertTextTop}</p><br/><p>{alertTextBottom}</p></div>                   
+            <div className="game-rule text-center">
+              <div className="game-rule text-center"><p>{alertTextTop}</p><br/><p>{alertTextBottom}</p></div>                   
             </div>
             <div>
               <Bubble text="Tap to continue" bubbleToTap={false} x={x} index={0} y={y} class="size-l bubble-blue"

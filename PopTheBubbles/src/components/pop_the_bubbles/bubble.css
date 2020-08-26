@@ -56,6 +56,16 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 }
 .mt-30{
 	margin-top: 30px;
+	margin: auto;
+	width: 350px;
+	height: 525px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	
+
 }
 body {
 	font:18px Helvetica,Arial,sans-serif;
@@ -86,6 +96,7 @@ body {
 	background: -ms-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
 	background: radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
 	background: -o-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
+	left: 0 !important; top: 0; right: 0; bottom: 0 !important; margin: 0; position: absolute !important; margin: auto;
 }
 
 .bubble-red {
@@ -247,7 +258,7 @@ td{
 .pl-30{padding-left: 30px; padding-right: 30px;}
 .text-center{text-align: center;}
 .game-rule p{font-size: 13px;}
-h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top: 40%; width: 100%; text-align: center;}
+h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top: 40%; width: 100%; text-align: center; left: 0;}
 .success { 
 	color:#26bcff;
 	text-align: center;
