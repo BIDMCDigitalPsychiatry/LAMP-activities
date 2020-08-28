@@ -5,79 +5,93 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-import * as React from 'react';
+import * as React from "react";
 
 interface BubbleProps {
-  bubbleToTap : boolean,
-  class : string,
-  delayed? : number,
-  index : number,
-  text?:string,
-  x : number,
-  y : number,  
-  onClick(e:any, index: number, lastClass : string, tapped : boolean): void
+  bubbleToTap: boolean;
+  class: string;
+  delayed?: number;
+  index: number;
+  text?: string;
+  x: number;
+  y: number;
+  onClick(e: any, index: number, lastClass: string, tapped: boolean): void;
 }
 interface BubbleState {
-  tapped : boolean;
-  visible : boolean;
+  tapped: boolean;
+  visible: boolean;
 }
 
-
-export class Bubble extends React.Component<BubbleProps, BubbleState> { 
-  constructor(props:BubbleProps) {
+export class Bubble extends React.Component<BubbleProps, BubbleState> {
+  constructor(props: BubbleProps) {
     super(props);
     this.state = {
-      tapped : false,
-      visible : !this.props.text? false :true
+      tapped: false,
+      visible: !this.props.text ? false : true,
     };
-  } 
+  }
 
   // Hanlde bubble rendering in 300ms and visible for 1 sec
   componentDidMount = () => {
-    if(!this.props.text) {     
+    if (!this.props.text) {
       setTimeout(() => {
-        this.setState ({
-          tapped : false,
-          visible : true
-        });  
+        this.setState({
+          tapped: false,
+          visible: true,
+        });
         setTimeout(() => {
-          this.setState ({
-            tapped : false,
-            visible : false
-          });  
-        }, 1000);
+          this.setState({
+            tapped: false,
+            visible: false,
+          });
+        }, 1500);
       }, this.props.delayed);
     }
-  }
+  };
   // On tapping bubble hide bubble with animate effect
-  onPop = (e:any): void => {
-    if(!this.props.text) {
-      this.setState({tapped : true});
+  onPop = (e: any): void => {
+    if (!this.props.text) {
+      this.setState({ tapped: true });
       setTimeout(() => {
-        this.setState({ 
-          visible : false,        
+        this.setState({
+          visible: false,
         });
       }, 300);
     }
-    this.props.onClick(e, this.props.index,  this.props.class, this.props.bubbleToTap);    
-  }
+    this.props.onClick(
+      e,
+      this.props.index,
+      this.props.class,
+      this.props.bubbleToTap
+    );
+  };
   // Game render function
-  render() {   
-     const cls = "size " + this.props.class;
+  render() {
+    const cls = "size " + this.props.class;
     return (
       <div
-       className={cls}
-        style={{             
+        className={cls}
+        style={{
           bottom: this.props.y,
-          display:this.state.visible ? 'block' : 'none'     ,
+          display: this.state.visible ? "block" : "none",
           left: this.props.x,
-          opacity: !this.state.tapped && this.state.visible ? 1.0 : (this.state.visible ? 1.0 : 0.0),
+          opacity:
+            !this.state.tapped && this.state.visible
+              ? 1.0
+              : this.state.visible
+              ? 1.0
+              : 0.0,
           position: "fixed",
-          transform: this.state.tapped && this.state.visible ? "scale(1.5)" : "" ,
-          transition: "opacity 150ms ease, transform 150ms ease",
-       }}
-        onClick={() => {  setTimeout(() => this.onPop(this), 100); }}
-      >{this.props.text ? this.props.text : null}</div> 
+          transform:
+            this.state.tapped && this.state.visible ? "scale(1.5)" : "",
+          transition: "opacity 100ms ease, transform 100ms ease",
+        }}
+        onClick={() => {
+          setTimeout(() => this.onPop(this), 100);
+        }}
+      >
+        {this.props.text ? this.props.text : null}
+      </div>
     );
   }
 }
