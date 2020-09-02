@@ -14,6 +14,8 @@ import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions
 import { Timer } from '../common/Timer';
 
 import UndoIcon from '@material-ui/icons/Undo';
+import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './DotTouch.css';
 
 interface DotState { 
@@ -320,7 +322,8 @@ class DotTouch extends React.Component<{}, DotState> {
      return (
        <div className="dot-touch-board">
          <nav className="home-link">
-           <UndoIcon color="primary" onClick={this.undoAction}/>
+           {/* <UndoIcon color="primary" onClick={this.undoAction}/> */}
+           <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/>
          </nav>
          <div className="heading">Dot touch</div>
          <div className="game-board">

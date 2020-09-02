@@ -96,7 +96,8 @@ body{background: rgba(53,159,254,1);}
     background: #fff;
 }
 .home-link{
-	float: left;
+	position: absolute;
+	right: 0;
 }
 @-webkit-keyframes App-logo-spin {
 	0% {
@@ -422,5 +423,5 @@ ol,ul {
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
-    margin: 16px 0 0 10px;
+    margin: 16px 18px 0 10px;
 }
