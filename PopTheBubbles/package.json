@@ -27,7 +27,7 @@
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "npm run build:react && npm run build:bundle && npx gulp",
-    "build:react": "react-scripts build",
+    "build:react": "react-scripts-ts build",
     "build:bundle": "webpack --config webpack.config.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
