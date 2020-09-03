@@ -6,16 +6,12 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from 'react';
-import * as alerts from '../../alerts';
 import Button from '@material-ui/core/Button';
 import { Dot } from './Dot';
 import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions';
+import UndoIcon from '@material-ui/icons/Undo';
 
 import { Timer } from '../common/Timer';
-
-import UndoIcon from '@material-ui/icons/Undo';
-import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './DotTouch.css';
 
 interface DotState { 
@@ -313,8 +309,8 @@ class DotTouch extends React.Component<{}, DotState> {
    // Render the game board
    render() {     
      const alertMsg = this.state.gameOver ? 'Congrats !!' : (this.state.timeout ? 'Timeout !' : 
-       this.state.tapCount === 0 ? (this.state.gameLevel === 1 ? alerts.ALERT1: alerts.ALERT3) :
-         (this.state.tapCount === 1 ? alerts.ALERT2 : 
+       this.state.tapCount === 0 ? (this.state.gameLevel === 1 ? "Tap '1' to start the test": "Tap '1' to begin") :
+         (this.state.tapCount === 1 ? "Pick the matching alphabet" : 
        <Button variant="outlined" color="primary" onClick={this.restartState}>
          Restart
        </Button>));
@@ -322,8 +318,8 @@ class DotTouch extends React.Component<{}, DotState> {
      return (
        <div className="dot-touch-board">
          <nav className="home-link">
-           {/* <UndoIcon color="primary" onClick={this.undoAction}/> */}
-           <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/>
+           <UndoIcon color="primary" onClick={this.undoAction}/>
+           {/* <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/> */}
          </nav>
          <div className="heading">Dot touch</div>
          <div className="game-board">

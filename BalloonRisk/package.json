@@ -15,6 +15,7 @@
     "react-compound-timer": "^1.2.0",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
+    "react-scripts-ts": "^3.1.0",
     "reservoir": "^0.1.2",
     "typescript": "^3.7.5",
     "uglifyjs-webpack-plugin": "^2.2.0"
@@ -22,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "npm run build:react && npm run build:bundle && npx gulp",
-    "build:react": "react-scripts build",
+    "build:react": "react-scripts-ts build",
     "build:bundle": "webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -33,7 +34,6 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead",
       "not op_mini all"
     ],
     "development": [

@@ -10,8 +10,11 @@ import * as React from 'react';
 import '././style.css';
 
 import BalloonHeader from './BalloonHeader';
+
 import BallonStandSVG from './BallonStandSVG';
+
 import BallonImageSVG from './BallonImageSVG';
+
 import TimerComponent from './TimerComponent';
 
 interface AppState {
@@ -35,45 +38,58 @@ class Balloons extends React.Component<{}, AppState>
 {
   constructor(props:any) {
     super(props);
-    let break_points_data = this.generateBreakPoints().sort((a,b) => 0.5 - Math.random());
+    const breakPointsData = this.generateBreakPoints().sort((a:any,b:any) => 0.5 - Math.random());
     this.state = {
-                  balloon_width:  100,
+      balloon_burst: false,
                   balloon_number : 1,
-                  new_current_point : 0,
-                  total_points : 0,
-                  btn_pump_disabled: null,
-                  collected_points: [],
-                  break_points_array: break_points_data,
+                  balloon_width:  100,
+                   break_points_array: breakPointsData,
                   btn_collect_disabled: "disabled",
-                  cls_btn_collect_disabled: "opacity_05",
-                  balloon_burst: false,
-                  cls_balloon_burst: null,                              
+                 btn_pump_disabled: null, 
+                 cls_balloon_burst: null,  
+                          cls_btn_collect_disabled: "opacity_05",
+                          collected_points: [],
+                          new_current_point : 0,
+                 
+                  
+                  
+                 
+                  
+                
+                                      
                   start: false,
                   stop: false,
                   stop_timer: false,
+                  total_points : 0,
                 }; 
   }
   
-  //Pump the balloon
+  // Pump the balloon
   pumpBalloon=() => {
     if(this.state.balloon_number === 15){
         alert('Game Over');
         return false;
     }
+    const balloonPumpLimit = typeof (process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT) === 'undefined' ? '' : 
+    Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
+
     this.setState({btn_collect_disabled: null});  
-    let current_point_id = document.getElementById('current_point_id');
-    let current_point_val = parseInt(current_point_id.getAttribute('data-current-point')); 
-    const balloon_pump_limit = typeof (process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT) === 'undefined' ? '' : 
-                                      Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
-    let new_current_point = current_point_val + 1; 
-    if(new_current_point === this.state.break_points_array[(this.state.balloon_number - 1)]){
+    const currentPointId = document.getElementById('currentPointId') || null;
+    let currentPointVal = 0
+    let newCurrentPoint = currentPointVal + 1; 
+    if(currentPointId !=  null) {
+    currentPointVal = parseInt(currentPointId.getAttribute('data-current-point')|| "", 10); 
+    newCurrentPoint = currentPointVal + 1; 
+    if(newCurrentPoint === this.state.break_points_array[(this.state.balloon_number - 1)]){
       // If break point is reached and balloon burst then increase balloon number, reset current points etc 
-      this.setState({
-                    balloon_number: this.state.balloon_number + 1, 
-                    total_points: 0,
-                    new_current_point: 0,
+      this.setState({ 
                     balloon_burst: true,
-                    cls_balloon_burst: "disabled"
+                    balloon_number: this.state.balloon_number + 1, 
+                    cls_balloon_burst: "disabled",
+                    
+                    new_current_point: 0,
+                    total_points: 0,
+                    
                   });      
       setTimeout(() => {
         this.setState({
@@ -81,37 +97,41 @@ class Balloons extends React.Component<{}, AppState>
           cls_balloon_burst: null
         });
       }, 2000);  
+    }
     }else{
-      if(current_point_val < balloon_pump_limit){          
+      if(currentPointVal < balloonPumpLimit){          
         // If currentpo9ints is less than ballon pumping maximum limit 128 
-        let ballon_id = document.getElementById('svgBallonImgIcon');
-        let balloon_width = parseInt(ballon_id.getAttribute('width')); 
-        let inc_ballon_width = balloon_width + 1;
-        if(this.state.balloon_burst === false){
-          this.setState({balloon_width: inc_ballon_width});
-          this.setState({new_current_point: new_current_point});
-        }
-        if(new_current_point >= 1){
-          this.setState({cls_btn_collect_disabled: true});
-        }else{
-          this.setState({cls_btn_collect_disabled: false});
+        const ballonId = document.getElementById('svgBallonImgIcon') || null;
+        if(ballonId != null) {
+          const balloonWidth = parseInt(ballonId.getAttribute('width') || "", 10); 
+          const incBallonWidth = balloonWidth + 1;
+          if(this.state.balloon_burst === false){
+            this.setState({balloon_width: incBallonWidth});
+            this.setState({new_current_point: newCurrentPoint});
+          }
+          if(newCurrentPoint >= 1){
+            this.setState({cls_btn_collect_disabled: true});
+          }else{
+            this.setState({cls_btn_collect_disabled: false});
+          }
         }
       }else{
         this.setState({btn_pump_disabled: "disabled"});
         this.setState({btn_collect_disabled: "disabled"});
       }
     }
+    return true;
   }
   
   // Break points Array Formatting
   generateBreakPoints=() => {
-    var Reservoir = require('reservoir');
-    var array_data = [...Array(128).keys()].map(i => i + 1);
-    var my_reservoir = Reservoir(15); 
-    array_data.forEach(function(e) {
-      my_reservoir.pushSome(e);
+    const Reservoir = require('reservoir');
+    const  arrayData = [...Array(128).keys()].map(i => i + 1);
+    const myReservoir = Reservoir(15); 
+    arrayData.forEach((e) => {
+      myReservoir.pushSome(e);
     });    
-    return my_reservoir;
+    return myReservoir;
   }
   
   // Update Ballon Number
@@ -121,8 +141,8 @@ class Balloons extends React.Component<{}, AppState>
 
   // Update Total Points
   updateTotalPoints=() => {
-    var new_total_points = this.state.total_points + this.state.new_current_point;
-    this.setState({total_points: new_total_points});
+    const  newTotalPoints = this.state.total_points + this.state.new_current_point;
+    this.setState({total_points: newTotalPoints});
   }
 
   // Update Current points
@@ -171,12 +191,12 @@ class Balloons extends React.Component<{}, AppState>
             </p>
           </div>
         </div>
-        <button className="display_none opaty_00" disabled >start</button>
-        <button className="display_none opaty_00" disabled >stop</button>
+        <button className="display_none opaty_00" disabled ={true}>start</button>
+        <button className="display_none opaty_00" disabled ={true}>stop</button>
         <div className="points">
             <div className="row">
                 <div className="col-8">Current Points</div>
-              <div className="col-4 p-value" data-current-point={this.state.new_current_point} id="current_point_id">
+              <div className="col-4 p-value" data-current-point={this.state.new_current_point} id="currentPointId">
                 {this.state.new_current_point}
               </div>
             </div>

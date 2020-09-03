@@ -8,12 +8,13 @@
 
 import * as React from 'react';
 
-type Props = {
+interface Props {
   balloon_width: any;
   balloon_burst: any;
 }
 
-class BallonImageSVG extends React.Component<Props > 
+
+class BallonImageSVG extends React.Component<Props> 
 {  
   // Game render function
   render() {

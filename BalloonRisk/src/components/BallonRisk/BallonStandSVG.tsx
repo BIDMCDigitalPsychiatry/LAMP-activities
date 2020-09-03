@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 
-type Props = {
+interface Props  {
   balloon_number?: any;
   new_current_point?: any;
   trigger_balloon_number?: any;
@@ -39,12 +39,12 @@ class BallonStandSVG extends React.Component<Props, AppState>
 {
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.state = { balloon_burst: true,
+                  balloon_number : 0,
+                  break_points_array: [],                 
                   collected_points :[],
                   new_current_point : 0,
-                  balloon_number : 0,
-                  break_points_array: [],
-                  balloon_burst: true,
+                  
                 }
   }   
   
@@ -62,21 +62,22 @@ class BallonStandSVG extends React.Component<Props, AppState>
 
   // Call the API to send data to server while clicking the Collect Points button
   sendCurrentpoints=() => {
-    
+    console.log('--')
   }
   
   // Update the Current points and store
   storeCurrentPoints=() => {
     this.sendCurrentpoints();
-    var collected_points_array = [];
-    collected_points_array.push({
+    const collectedPointsArray = [];
+    collectedPointsArray.push({
       [this.props.balloon_number]: this.props.new_current_point
     });
     this.setState({collected_points: this.props.collected_points});
-    var new_balloon_number = this.props.balloon_number + 1;
+    const newBalloonNumber = this.props.balloon_number + 1;
     this.setState({
+      balloon_number: newBalloonNumber,
       new_current_point: 0, 
-      balloon_number: new_balloon_number
+      
     });
     this.props.trigger_balloon_number();
     this.props.trigger_current_points();
@@ -112,7 +113,7 @@ class BallonStandSVG extends React.Component<Props, AppState>
         <input type="button" name="collect" id="collect" value="COLLECT POINTS" onClick={this.collectPoints} 
             className={`btn btn-sm collect ${  this.props.trigger_collect_button_class } ${this.props.balloon_burst ? "opacity_05" : ""} `} 
             disabled={ this.props.trigger_enable_collect_btn } /> 
-        <input type="text" name="radius_count" id="radius_count" value={this.props.balloon_number} className="form-control count" disabled/>
+        <input type="text" name="radius_count" id="radius_count" value={this.props.balloon_number} className="form-control count" disabled={true}/>
       </div>
     );
   }

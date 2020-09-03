@@ -10,7 +10,7 @@ import * as React from 'react';
 import Timer from "react-compound-timer";
 import '././style.css';
 
-type Props = {
+interface Props  {
   start?: boolean;
   stop?: boolean;
   trigger_stop_timer?: any;
@@ -29,8 +29,7 @@ class TimerComponent extends React.Component<Props, AppState>
 {   
   private timerStartButton: any;
   private timerStopButton: any;   
-  private start: any;   
-
+ 
   constructor(props: Props) {
     super(props);
     this.timerStartButton = React.createRef();
@@ -38,17 +37,17 @@ class TimerComponent extends React.Component<Props, AppState>
   }
   
   // Start TImer 
-  startTimer(start) {
+  startTimer(start:any) {
     start();
   }
 
   // Stop TImer 
-  stopTimer(stop) {
+  stopTimer(stop:any) {
     stop();
   }
 
   // Update when the state changes 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps:any) {
     // the only way for inner buttons is by using refs
     if (prevProps.start === false && this.props.start === true) {
       this.timerStartButton.current.click();
@@ -62,13 +61,13 @@ class TimerComponent extends React.Component<Props, AppState>
   render() {    
     return (
       <Timer formatValue={value => `${value < 10 ? `0${value}` : value}`} startImmediately={true}>      
-        {({ start, stop }) => (
+        {({ start, stop }:{start:any, stop:any}) => (
           <React.Fragment>
               <Timer.Hours />:
               <Timer.Minutes />:
               <Timer.Seconds />
-              <button hidden ref={this.timerStartButton} onClick={() => this.startTimer(start)}>Start</button>
-              <button hidden ref={this.timerStopButton} onClick={() => this.stopTimer(stop)}>Stop</button>    
+              <button hidden={true} ref={this.timerStartButton} onClick={() => this.startTimer(start)}>Start</button>
+              <button hidden={true} ref={this.timerStopButton} onClick={() => this.stopTimer(stop)}>Stop</button>    
           </React.Fragment>
         )}
       </Timer>
