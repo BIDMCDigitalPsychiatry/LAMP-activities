@@ -58,7 +58,7 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 	margin-top: 30px;
 	margin: auto;
 	width: 320px;
-	height: 425px;
+	height: 525px;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -264,4 +264,9 @@ h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top:
 	color:#26bcff;
 	text-align: center;
     text-transform: capitalize;
+}
+
+@media only screen and (max-width: 320px) {
+	.bubble-blue {position: relative !important;}
+	.mt-30{height: 425px;}
 }
