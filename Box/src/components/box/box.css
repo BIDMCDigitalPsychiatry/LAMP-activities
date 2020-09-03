@@ -13,6 +13,7 @@ body{background: rgba(53,159,254,1);}
 nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .timer-div {
 	margin-top: 10px;
+	min-height: 100px;
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
