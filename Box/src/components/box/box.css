@@ -16,7 +16,7 @@ nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
-    margin: 16px 0 0 10px;
+    margin: 16px 18px 0 10px;
 }
 .App {
 	padding-top:2em;
@@ -42,7 +42,8 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 	background: #fff;
 }
 .home-link{
-	float: left;
+	position: absolute;
+	right: 0;
 }
 .box-white{
 	height: 100%;	

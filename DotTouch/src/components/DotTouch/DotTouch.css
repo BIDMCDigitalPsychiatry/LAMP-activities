@@ -11,7 +11,7 @@
 }
 nav.home-link svg {
     color: rgba(53,159,254,1);
-    margin: 14px 0 0 10px;
+    margin: 16px 18px 0 10px;
 }
 body{background: rgba(53,159,254,1);}
 	nav a{color: #fff; padding: 10px; display: inline-block;}
@@ -96,7 +96,8 @@ body{background: rgba(53,159,254,1);}
     background: #fff;
 }
 .home-link{
-	float: left;
+	position: absolute;
+	right: 0;
 }
 @-webkit-keyframes App-logo-spin {
 	0% {

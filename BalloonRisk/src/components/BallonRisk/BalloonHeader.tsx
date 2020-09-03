@@ -21,9 +21,9 @@ class BalloonHeader extends React.Component
     return (
         <div className="row">
           <div className="col">
-            <a className="icn-menu menu-left" >
+            {/* <a className="icn-menu menu-left" >
               <div className="home"/>
-            </a>
+            </a> */}
             <h4>{process.env.REACT_APP_GAME_TILE}</h4>
             <a className="icn-menu menu-right cursorPointer" onClick={ this.reloadPage }>
             <div className="refresh"/>

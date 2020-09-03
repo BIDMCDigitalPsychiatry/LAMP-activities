@@ -19,7 +19,7 @@ h1{font-size: 26px !important; color: rgba(53,159,254,1); text-align: center; }
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: white;
-    margin: 16px 0 0 10px;
+    margin: 16px 18px 0 10px;
 }
 .mt-30per{margin-top: 30%;}
 .App-logo {
@@ -57,8 +57,8 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 .mt-30{
 	margin-top: 30px;
 	margin: auto;
-	width: 350px;
-	height: 525px;
+	width: 320px;
+	height: 425px;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -217,7 +217,8 @@ ol,ul {
 .game-info {
 	margin-bottom:1em
 }
-.home-link{float: left;}
+.home-link{position: absolute;
+	right: 0;}
 .heading {
 	background-color: rgba(53,159,254,1);
     text-align: center;
