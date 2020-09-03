@@ -434,11 +434,12 @@ class Board extends React.Component<{}, BoardState> {
           <br />
           {infoText}
         </div>
-        <div className="mt-30">
+        <div className="mt-30 box-game">
           {board}
+          {alert}
         </div>
         {nextButton}
-        {alert}
+        
         {alertText}
       </div>
     );
