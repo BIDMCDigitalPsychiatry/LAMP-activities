@@ -52,6 +52,14 @@ nav a{color: rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .game-board{
 	color: #fff;
 	text-align: center;
+	position: absolute;
+	width: 100%;
+	height: 90%;
+}
+.game-board>div{
+	position: absolute;
+	width: 100%;
+	height: 90%;
 }
 .box-square{
 	transform: translateY(50px);
@@ -79,43 +87,43 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 }
 .first{
 	margin-left: 11%;
-    margin-top: 22%;
+    top: 22%;
 }
 .second{
 	margin-left: 26%;
-    margin-top: 64%;
+    top: 64%;
 }
 .third{
 	margin-left: 51%;
-    margin-top: 77%;
+    top: 77%;
 }
 .fourth{
 	margin-left: 72%;
-    margin-top: 72%;
+    top: 72%;
 }
 .fifth{
 	margin-left: 42%;
-    margin-top: 40%;
+    top: 40%;
 }
 .sixth{
 	margin-left: 59%;
-    margin-top: 15%;
+    top: 15%;
 }
 .seventh{
 	margin-left: 26%;
-    margin-top: 1%;
+    top: 1%;
 }
 .eightth{
 	margin-left: 10%;
-    margin-top: 85%;
+    top: 85%;
 }
 .nineth{
 	margin-left: 73%;
-    margin-top: 34%;
+    top: 34%;
 }
 .tenth{
 	margin-left: 77%;
-    margin-top: 0%;
+    top: 0%;
 }
 .mt-30{
 	margin-top: 30px;
