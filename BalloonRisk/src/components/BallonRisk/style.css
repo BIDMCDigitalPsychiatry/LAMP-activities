@@ -116,7 +116,7 @@ body {
 }
 
 .b-container {
-    height: 400px;
+    height: 350px;
     text-align: center;
     position: relative;
     display: flex;
@@ -235,7 +235,7 @@ h4{
     top: 40%;
     text-align: center;
     width: 100%;   
-	padding: 5px;	
+	padding: 5px 0;	
 }
 .box-alert span{ 
     background: #359FFE;
