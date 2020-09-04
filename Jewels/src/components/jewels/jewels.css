@@ -23,11 +23,11 @@ body{background: rgba(53,159,254,1);}
 }
 .info-text{
 	padding: 5px;
-    margin-right: -29%;
+    
 }
 .jewel-info div{
-	float: right;
-    margin-right: 40%;
+	
+   display: inline-block;
     margin-top: -1%;
 }
 .App-header {
