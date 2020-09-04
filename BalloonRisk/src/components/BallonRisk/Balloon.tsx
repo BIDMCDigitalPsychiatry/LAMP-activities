@@ -39,6 +39,7 @@ class Balloons extends React.Component<{}, AppState>
   constructor(props:any) {
     super(props);
     const breakPointsData = this.generateBreakPoints().sort((a:any,b:any) => 0.5 - Math.random());
+    console.log(breakPointsData)
     this.state = {
       balloon_burst: false,
                   balloon_number : 1,
@@ -74,12 +75,14 @@ class Balloons extends React.Component<{}, AppState>
     Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
 
     this.setState({btn_collect_disabled: null});  
-    const currentPointId = document.getElementById('currentPointId') || null;
+    const currentPointId = document.getElementById('current_point_id') || null;
+    console.log(currentPointId)
     let currentPointVal = 0
-    let newCurrentPoint = currentPointVal + 1; 
+    let newCurrentPoint =0; 
     if(currentPointId !=  null) {
     currentPointVal = parseInt(currentPointId.getAttribute('data-current-point')|| "", 10); 
     newCurrentPoint = currentPointVal + 1; 
+    console.log( newCurrentPoint, this.state.break_points_array[(this.state.balloon_number - 1)])
     if(newCurrentPoint === this.state.break_points_array[(this.state.balloon_number - 1)]){
       // If break point is reached and balloon burst then increase balloon number, reset current points etc 
       this.setState({ 
@@ -98,7 +101,7 @@ class Balloons extends React.Component<{}, AppState>
         });
       }, 2000);  
     }
-    }else{
+    else{
       if(currentPointVal < balloonPumpLimit){          
         // If currentpo9ints is less than ballon pumping maximum limit 128 
         const ballonId = document.getElementById('svgBallonImgIcon') || null;
@@ -120,6 +123,7 @@ class Balloons extends React.Component<{}, AppState>
         this.setState({btn_collect_disabled: "disabled"});
       }
     }
+  }
     return true;
   }
   
@@ -196,7 +200,7 @@ class Balloons extends React.Component<{}, AppState>
         <div className="points">
             <div className="row">
                 <div className="col-8">Current Points</div>
-              <div className="col-4 p-value" data-current-point={this.state.new_current_point} id="currentPointId">
+              <div className="col-4 p-value" data-current-point={this.state.new_current_point} id="current_point_id">
                 {this.state.new_current_point}
               </div>
             </div>
