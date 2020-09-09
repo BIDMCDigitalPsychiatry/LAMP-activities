@@ -192,9 +192,10 @@ class Board extends React.Component<{}, BoardState> {
       this.setState({
         endTime: new Date(),
         timeout: true
-      });
-      this.updateStateWithTaps();
-      this.sendGameResult();
+      }, () => {
+        this.updateStateWithTaps();
+        this.sendGameResult();
+      });     
     }
     this.setState({
       startTimer: timerValue
@@ -250,44 +251,27 @@ class Board extends React.Component<{}, BoardState> {
     } else {
       points = points + 1;
     }
-    const serverURL = typeof (process.env.REACT_APP_BOX_GAME_SERVER_URL) === 'undefined' ? '' :
-      process.env.REACT_APP_BOX_GAME_SERVER_URL;
+    parent.postMessage(JSON.stringify(
+      {
+        "AdminBatchSchID": 0,
+        "BoxList": this.state.states,
+        "CorrectAnswers": this.state.stateSuccessTaps,
+        "EndTime": new Date(),
+        "IsNotificationGame": false,
+        "Point": points,
+        "Score": gameScore,
+        "SpinWheelScore": 5,
+        "StartTime": this.state.startTime,
+        "StatusType": 1,
+        "Type": 1,
+        "UserID": "219",
+        "WrongAnswers": this.state.stateWrongTaps
+      }
+    ), "*");  
 
-    if (serverURL.length > 0) {
-      fetch(serverURL, {
-        body: JSON.stringify(
-          {
-            "AdminBatchSchID": 0,
-            "BoxList": this.state.states,
-            "CorrectAnswers": this.state.stateSuccessTaps,
-            "EndTime": new Date(),
-            "IsNotificationGame": false,
-            "Point": points,
-            "Score": gameScore,
-            "SpinWheelScore": 5,
-            "StartTime": this.state.startTime,
-            "StatusType": 1,
-            "Type": 1,
-            "UserID": "219",
-            "WrongAnswers": this.state.stateWrongTaps
-          }
-        ),
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: 'POST',
-      })
-        .then(response => response.json())
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.setState({
-        sendResponse: true
-      });
-    }
+    this.setState({
+      sendResponse: true
+    });    
   }
 
 

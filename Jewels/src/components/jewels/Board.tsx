@@ -58,40 +58,30 @@ class Board extends React.Component<BoardProps, DiamondState> {
       this.setState({
         tapCount : this.state.tapCount + 1,
       });
+      console.log(this.state.stepNumber, i)
       if(this.state.stepNumber === i - 1) {
         if(i === 1) {
           const timerVal = typeof(process.env.REACT_APP_JEWELS_TIMOUT_PERIOD) === 'undefined' ? 180 :
             Number(process.env.REACT_APP_JEWELS_TIMOUT_PERIOD);   
-          const routes = [];      
-          routes.push({'Alphabet' : i, 'status' : 1, 'TimeTaken' : 0});
-          // state updation for diamond 1 click
+         // state updation for diamond 1 click
           this.setState({
-              lastClickTime:new Date().getTime(),
-              route:JSON.stringify(routes),
               startTime:new Date(),                           
-              startTimer : timerVal
+              startTimer : timerVal,
+              stepNumber : i,
+            }, () => {
+              this.updateStateWithTaps(i, true);
             });          
         } else {
           // Update the state values for each tas other than diamond 1
-          this.updateStateWithTaps(i);          
-        }
-        // Update the state for each click to track
-        this.setState({
-            stepNumber : i,
-        });
+          this.updateStateWithTaps(i, true);          
+        }       
         // Load disabled image after correct tap
         const item = e.target.className === 'number-text' ? e.target.closest('div'): e.target;
         item.className = item.className + ' diamond-disable';
 
-        if(this.props.totalDiamonds === i) {
-            // When all the diamonds are correctly tapped
-            this.setState({
-              endTime:new Date(),
-              gameOver : true
-            });  
-            this.sendGameResult(2);         
-        }
+       
       } else {
+        this.updateStateWithTaps(i, false);  
         if(this.state.startTimer > 0) {
           // When wrong diamond is tapped, update the negative point 
             const negPoints = typeof(process.env.REACT_APP_NEG_POINTS) === 'undefined' ? 2 : Number(process.env.REACT_APP_NEG_POINTS);
@@ -115,8 +105,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
         this.setState({
           endTime:new Date(),
           timeout : true
-        });     
-        this.sendGameResult(1);  
+        }, () => {
+          this.sendGameResult(1);  
+        });    
+        
       } 
       this.setState({
           startTimer : timerVal
@@ -124,20 +116,38 @@ class Board extends React.Component<BoardProps, DiamondState> {
     }
     
     // Update the state values for each taps other than jewel 1
-    updateStateWithTaps = (i:number) => {
+    updateStateWithTaps = (i:number, status:boolean) => {
+      console.log(i)
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif / 1000);
-      const r = JSON.parse(this.state.route);
-      Object.keys(r).forEach(key => {
-        routes.push(r[key]);
-      });
-      const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
+      if(this.state.route.length > 0) {
+        const r = JSON.parse(this.state.route);
+        Object.keys(r).forEach(key => {
+          routes.push(r[key]);
+        });
+      }
+    //   {
+    //     "item": "1",
+    //     "value": null,
+    //     "type": false,
+    //     "duration": 0,
+    //     "level": 1
+    // }
+      const route = {'item' : i,"value": null, 'status' : status, 'duration' : lastclickTime.toFixed(2), "level": 1};
       routes.push(route);
       this.setState({ 
+        endTime:new Date(),
+        gameOver : status === true && this.props.totalDiamonds === i ?  true : false,
         lastClickTime:new Date().getTime(),
         route:JSON.stringify(routes),
+        stepNumber : status === true ? i : this.state.stepNumber        
+      }, () => {
+        if(status === true && this.props.totalDiamonds === i ) {        
+          this.sendGameResult(2);         
+        }
       });
+      
     }
 
     createTable = () => {       
@@ -178,31 +188,43 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const score = (this.state.stepNumber / this.state.tapCount) * 100;
       const totalBonusCollected = this.state.startTimer - Math.abs(this.state.negativePoints);
       const totalJewelsCollected = this.state.stepNumber;
-      const totalAttempts=  this.state.tapCount;
-      const statusType = this.state.gameOver ? 2 :1; 
-      const serverURL = typeof(process.env.REACT_APP_JEWELS_GAME_SERVER_URL) === 'undefined' ? '' : 
-        process.env.REACT_APP_JEWELS_GAME_SERVER_URL;
+      const totalAttempts=  this.state.tapCount + 1;
+      // const statusType = this.state.gameOver ? 2 :1; 
+      const duration = new Date().getTime() - new Date(this.state.startTime).getTime()
       const routeList=[];
       routeList.push({Routes:JSON.parse(this.state.route)});
-      fetch(serverURL, {   
-        body: JSON.stringify(
-          {"AdminBatchSchID": 0, "EndTime": new Date(), "IsNotificationGame": false, "Point": point,
-           "RoutesList": routeList, "Score": score,"SpinWheelScore": 5,"StartTime": this.state.startTime, 
-           "StatusType": statusType,"TotalAttempts": totalAttempts, "TotalBonusCollected":totalBonusCollected, 
-           "TotalJewelsCollected": totalJewelsCollected,"UserID": "200"
-        }),
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }, 
-        method: 'POST',
-      })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+console.log(JSON.stringify({
+  "activity": "UmZy381afJk19",
+  "duration": duration,
+  
+  "static_data": {
+      "point": point,
+      "score": score,
+      "total_attempts": totalAttempts,
+      "total_bonus_collected": totalBonusCollected,
+      "total_jewels_collected": totalJewelsCollected
+  },
+  "temporal_slices": routeList,"timestamp":  new Date().getTime(),
+}))
+      parent.postMessage(JSON.stringify({
+        "activity": "UmZy381afJk19",
+        "duration": duration,
+        
+        "static_data": {
+            "point": point,
+            "score": score,
+            "total_attempts": totalAttempts,
+            "total_bonus_collected": totalBonusCollected,
+            "total_jewels_collected": totalJewelsCollected
+        },
+        "temporal_slices": routeList,"timestamp":  new Date().getTime(),
+    }), "*");
+      // parent.postMessage(JSON.stringify(
+      //   {"AdminBatchSchID": 0, "EndTime": new Date(), "IsNotificationGame": false, "Point": point,
+      //    "RoutesList": routeList, "Score": score,"SpinWheelScore": 5,"StartTime": this.state.startTime, 
+      //    "StatusType": statusType,"TotalAttempts": totalAttempts, "TotalBonusCollected":totalBonusCollected, 
+      //    "TotalJewelsCollected": totalJewelsCollected
+      // }), "*");
     }
     // Render the game board
     render() {     

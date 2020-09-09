@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import Jewels from './components/jewels/Jewels';
 import './index.css';
-
+   
 ReactDOM.render(
       <AppContainer>
         <Jewels/>

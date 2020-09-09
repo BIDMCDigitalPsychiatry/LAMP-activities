@@ -67,8 +67,9 @@ class Balloons extends React.Component<{}, AppState>
   
   // Pump the balloon
   pumpBalloon=() => {
-    if(this.state.balloon_number === 15){
-        alert('Game Over');
+    if(this.state.balloon_number === 15) {
+        this.setState({btn_pump_disabled: "disabled"});
+        this.setState({btn_collect_disabled: "disabled"});
         return false;
     }
     const balloonPumpLimit = typeof (process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT) === 'undefined' ? '' : 
@@ -88,8 +89,8 @@ class Balloons extends React.Component<{}, AppState>
       this.setState({ 
                     balloon_burst: true,
                     balloon_number: this.state.balloon_number + 1, 
-                    cls_balloon_burst: "disabled",
-                    
+                    balloon_width:100,
+                    cls_balloon_burst: "disabled",                    
                     new_current_point: 0,
                     total_points: 0,
                     
@@ -140,7 +141,7 @@ class Balloons extends React.Component<{}, AppState>
   
   // Update Ballon Number
   updateBalloonNumber=() => {
-    this.setState({balloon_number: this.state.balloon_number + 1});
+    this.setState({balloon_burst : this.state.balloon_number + 1 === 15 ? true : this.state.balloon_burst , balloon_number: this.state.balloon_number + 1});
   }
 
   // Update Total Points
@@ -191,7 +192,8 @@ class Balloons extends React.Component<{}, AppState>
         <div className="row">
           <div className="col timer">
             <p>
-              <TimerComponent start={start} stop={stop} trigger_stop_timer={this.clickStopTimer}  stop_timer_val={this.state.stop_timer}/>
+              {this.state.balloon_number === 15 && "Game Over !!!"}
+              { this.state.balloon_number < 15 && <TimerComponent start={start} stop={stop} trigger_stop_timer={this.clickStopTimer}  stop_timer_val={this.state.stop_timer}/>}
             </p>
           </div>
         </div>
@@ -209,15 +211,15 @@ class Balloons extends React.Component<{}, AppState>
                 <div className="col-4 p-value">{this.state.total_points}</div>
             </div>  
         </div>  
-       <BallonImageSVG balloon_width={this.state.balloon_width} balloon_burst={this.state.balloon_burst} />
+       <BallonImageSVG balloon_width={this.state.balloon_width} balloon_burst={this.state.balloon_number === 15 ? true : this.state.balloon_burst} />
        <BallonStandSVG new_current_point={this.state.new_current_point} balloon_number={this.state.balloon_number} 
           trigger_balloon_number={this.updateBalloonNumber} trigger_total_points={this.updateTotalPoints} 
           trigger_current_points={this.updateCurrentPoints} trigger_enable_pump_btn={this.enablePumpBtn} 
           trigger_reset_balloon_size={this.resetBalloonSize} trigger_collected_points={this.appendCollectedPoints} 
-          trigger_enable_collect_btn={this.state.btn_collect_disabled} trigger_collect_button_class={this.state.cls_btn_collect_disabled}
+          trigger_enable_collect_btn={this.state.balloon_number === 15 ? true : this.state.btn_collect_disabled} trigger_collect_button_class={this.state.cls_btn_collect_disabled}
           balloon_burst={this.state.balloon_burst} trigger_stop_timer={this.clickStopTimer} />
-        <input type="button" name="pump_balloon" id="pump_balloon" value="PUMP UP BALLOON" disabled={this.state.btn_pump_disabled} 
-            className={`btn ${this.state.balloon_burst ? "opacity_05" : ""}`} onClick={this.pumpBalloon}/>
+        <input type="button" name="pump_balloon" id="pump_balloon" value="PUMP UP BALLOON" disabled={this.state.balloon_number === 15 ? true : this.state.btn_pump_disabled} 
+            className={`btn ${this.state.balloon_number === 15 || this.state.balloon_burst ? "opacity_05" : ""}`} onClick={this.pumpBalloon}/>
       </div>
     );
   }

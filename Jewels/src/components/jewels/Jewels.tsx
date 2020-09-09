@@ -33,10 +33,38 @@ interface AppState {
 class Jewels extends React.Component<{}, AppState> {
   
   constructor(props: {}) {
-    super(props);
-    this.reset();    
+    super(props); 
+    console.log("test child")
+  const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+  const eventer = window[eventMethod]
+  const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+  // Listen to message from child window
+  eventer(
+    messageEvent, (e:any) => {
+      console.log("test child msg")
+      console.log("child received message!:  ", e.data)
+   },
+    false
+  )  
+  console.log("test child end")
+    this.reset(); 
   }
- 
+   
+ componentDidMount = () => {
+  console.log("test child")
+  const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+  const eventer = window[eventMethod]
+  const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+  // Listen to message from child window
+  eventer(
+    messageEvent, (e:any) => {
+      console.log("test child msg")
+      console.log("child received message!:  ", e.data)
+   },
+    false
+  )  
+  console.log("test child end")
+ }
   // Reset game board
   reset = () => {    
     const dCount = 10;

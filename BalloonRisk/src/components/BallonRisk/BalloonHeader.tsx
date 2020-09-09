@@ -24,7 +24,7 @@ class BalloonHeader extends React.Component
             {/* <a className="icn-menu menu-left" >
               <div className="home"/>
             </a> */}
-            <h4>{process.env.REACT_APP_GAME_TILE}</h4>
+            <h4 style={ {marginRight: "-25px" }}>{process.env.REACT_APP_GAME_TILE}</h4>
             <a className="icn-menu menu-right cursorPointer" onClick={ this.reloadPage }>
             <div className="refresh"/>
             </a>
