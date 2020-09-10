@@ -12,7 +12,6 @@ import { getRandomNumbers} from '../../functions';
 
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import Board from './Board';
 import './jewels.css';
 
@@ -26,62 +25,73 @@ interface AppState {
     diamondNumber:number;
     diamondNumbers:Array<number>;  
     diamondSpots:Array<number>;  
-    pauseTime : number;    
-    winnerLine?: Array<number>;    
+    gameTime:number;
+    loaded:boolean;
+    pauseTime : number; 
+    shapeCount:number;   
+    winnerLine?: Array<number>;  
+
 }
 
 class Jewels extends React.Component<{}, AppState> {
   
   constructor(props: {}) {
-    super(props); 
-    console.log("test child")
-  const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+    super(props);
+    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
   const eventer = window[eventMethod]
   const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
   // Listen to message from child window
+  const mode = typeof(process.env.REACT_APP_GAME_LEVEL) === 'undefined' ? 1 : Number(process.env.REACT_APP_GAME_LEVEL);
+  this.reset(false); 
   eventer(
     messageEvent, (e:any) => {
-      console.log("test child msg")
-      console.log("child received message!:  ", e.data)
+      let gameTimeVal = e.data.beginner_seconds
+      switch(mode) {
+        case 1:
+          gameTimeVal = e.data.beginner_seconds
+          break;
+        case 2:
+          gameTimeVal = e.data.intermediate_seconds
+          break;
+        case 3:
+          gameTimeVal = e.data.advanced_seconds
+          break;
+        case 4:
+          gameTimeVal = e.data.expert_seconds
+          break;
+        default:
+          gameTimeVal = e.data.beginner_seconds
+          break
+      }
+      this.setState({diamondCount:e.data.diamond_count,  loaded:true,  gameTime:gameTimeVal, shapeCount:e.data.shape_count}, () => {
+        this.reset(true); 
+      })
    },
     false
-  )  
-  console.log("test child end")
-    this.reset(); 
+  ) 
   }
    
- componentDidMount = () => {
-  console.log("test child")
-  const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-  const eventer = window[eventMethod]
-  const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-  // Listen to message from child window
-  eventer(
-    messageEvent, (e:any) => {
-      console.log("test child msg")
-      console.log("child received message!:  ", e.data)
-   },
-    false
-  )  
-  console.log("test child end")
- }
   // Reset game board
-  reset = () => {    
-    const dCount = 10;
+  reset = (loadedVal:boolean) => {    
+   
     const diamondType = this.getDiamond();
     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
-    const randomArray = getRandomNumbers(dCount, 1, maxPlots);
-    const diamondCount =  typeof(process.env.REACT_APP_MAX_DIAMONDS) === 'undefined' ? 10 : 
-      Number(process.env.REACT_APP_MAX_DIAMONDS);
-    const numbers = this.shuffle(Array.from(Array(diamondCount).keys()));
+  
+    const diamondCountVal =  this.state ? this.state.diamondCount : 15;
+    const numbers = this.shuffle(Array.from(Array(diamondCountVal).keys())); 
+   
+    const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
     const state = { 
       current : diamondTypes[diamondType],
       diamondColor:this.getRandomColor(), 
-      diamondCount:dCount,
+      diamondCount:diamondCountVal,
       diamondNumber:diamondType,
       diamondNumbers:numbers,
       diamondSpots: randomArray, 
+      gameTime:this.state ? this.state.gameTime : 90,
+      loaded:loadedVal, 
       pauseTime:0,
+      shapeCount : this.state ? this.state.shapeCount : 1,
       winnerLine: undefined      
     };
 
@@ -120,16 +130,17 @@ class Jewels extends React.Component<{}, AppState> {
   render() {     
     return (
       <div>
-         <nav className="home-link">
+        {this.state && this.state.loaded && (<div><nav className="home-link">
            <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
         </nav> 
         <div className="heading">Jewels</div>
         <div className="game-board">
         <Board  
+          gameTime={this.state.gameTime}
           totalDiamonds={this.state.diamondCount} diamondSpots={this.state.diamondSpots} diamondColor={this.state.diamondColor}
           currentDiamond = {this.state.current} diamondNumber={this.state.diamondNumber} diamondNumbers={this.state.diamondNumbers}
         />          
-      </div> 
+      </div></div>)}
     </div> 
     );
   }

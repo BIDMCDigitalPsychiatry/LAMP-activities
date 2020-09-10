@@ -19,6 +19,7 @@ export interface BoardProps {
     diamondColor:string;
     diamondNumber: number;  
     diamondNumbers:Array<number>;   
+    gameTime:number;
 }
 
 interface DiamondState { 
@@ -58,11 +59,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
       this.setState({
         tapCount : this.state.tapCount + 1,
       });
-      console.log(this.state.stepNumber, i)
       if(this.state.stepNumber === i - 1) {
         if(i === 1) {
-          const timerVal = typeof(process.env.REACT_APP_JEWELS_TIMOUT_PERIOD) === 'undefined' ? 180 :
-            Number(process.env.REACT_APP_JEWELS_TIMOUT_PERIOD);   
+          const timerVal = this.props.gameTime;   
          // state updation for diamond 1 click
           this.setState({
               startTime:new Date(),                           
@@ -117,24 +116,16 @@ class Board extends React.Component<BoardProps, DiamondState> {
     
     // Update the state values for each taps other than jewel 1
     updateStateWithTaps = (i:number, status:boolean) => {
-      console.log(i)
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
-      const lastclickTime =  (dif / 1000);
+      const lastclickTime =  (dif);
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
           routes.push(r[key]);
         });
-      }
-    //   {
-    //     "item": "1",
-    //     "value": null,
-    //     "type": false,
-    //     "duration": 0,
-    //     "level": 1
-    // }
-      const route = {'item' : i,"value": null, 'status' : status, 'duration' : lastclickTime.toFixed(2), "level": 1};
+      }   
+      const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 ? 0 : lastclickTime, "level": 1};
       routes.push(route);
       this.setState({ 
         endTime:new Date(),
@@ -189,42 +180,19 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const totalBonusCollected = this.state.startTimer - Math.abs(this.state.negativePoints);
       const totalJewelsCollected = this.state.stepNumber;
       const totalAttempts=  this.state.tapCount + 1;
-      // const statusType = this.state.gameOver ? 2 :1; 
       const duration = new Date().getTime() - new Date(this.state.startTime).getTime()
-      const routeList=[];
-      routeList.push({Routes:JSON.parse(this.state.route)});
-console.log(JSON.stringify({
-  "activity": "UmZy381afJk19",
-  "duration": duration,
-  
-  "static_data": {
-      "point": point,
-      "score": score,
-      "total_attempts": totalAttempts,
-      "total_bonus_collected": totalBonusCollected,
-      "total_jewels_collected": totalJewelsCollected
-  },
-  "temporal_slices": routeList,"timestamp":  new Date().getTime(),
-}))
+      
       parent.postMessage(JSON.stringify({
-        "activity": "UmZy381afJk19",
-        "duration": duration,
-        
-        "static_data": {
-            "point": point,
-            "score": score,
-            "total_attempts": totalAttempts,
-            "total_bonus_collected": totalBonusCollected,
-            "total_jewels_collected": totalJewelsCollected
-        },
-        "temporal_slices": routeList,"timestamp":  new Date().getTime(),
-    }), "*");
-      // parent.postMessage(JSON.stringify(
-      //   {"AdminBatchSchID": 0, "EndTime": new Date(), "IsNotificationGame": false, "Point": point,
-      //    "RoutesList": routeList, "Score": score,"SpinWheelScore": 5,"StartTime": this.state.startTime, 
-      //    "StatusType": statusType,"TotalAttempts": totalAttempts, "TotalBonusCollected":totalBonusCollected, 
-      //    "TotalJewelsCollected": totalJewelsCollected
-      // }), "*");
+            "duration": duration,            
+            "static_data": {
+                "point": point,
+                "score": score,
+                "total_attempts": totalAttempts,
+                "total_bonus_collected": totalBonusCollected,
+                "total_jewels_collected": totalJewelsCollected
+            },
+            "temporal_slices": JSON.parse(this.state.route),"timestamp":  new Date().getTime(),
+        }), "*");     
     }
     // Render the game board
     render() {     
