@@ -210,7 +210,7 @@ class Board extends React.Component<{}, BoardState> {
         states.push(r[key]);
       });
     }
-    const box = { "Boxes": JSON.parse(this.state.boxes) };
+    const box = JSON.parse(this.state.boxes);
     states.push(box);
     this.setState({
       states: JSON.stringify(states),
@@ -219,20 +219,14 @@ class Board extends React.Component<{}, BoardState> {
   // Update the state values after each game state
   updateWithTaps = (boxNo: number, status: boolean) => {
     const boxes = [];
-    const dif = new Date().getTime() - this.state.lastClickTime;
-    const lastclickTime = (dif / 1000);
+    const lastclickTime = new Date().getTime() - this.state.lastClickTime;
     if (this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
       Object.keys(r).forEach(key => {
         boxes.push(r[key]);
       });
     }
-    const route = {
-      "GameIndex": boxNo,
-      "Level": this.state.gameState,
-      "Status": status,
-      "TimeTaken": lastclickTime.toFixed(2),
-    };
+    const route = {'item' : boxNo, "value": this.state.gameState, 'status' : status, 'duration' : lastclickTime, "level": this.state.gameState};
     boxes.push(route);
     this.setState({
       boxes: JSON.stringify(boxes),
@@ -250,24 +244,18 @@ class Board extends React.Component<{}, BoardState> {
       points = points + 2;
     } else {
       points = points + 1;
-    }
-    parent.postMessage(JSON.stringify(
-      {
-        "AdminBatchSchID": 0,
-        "BoxList": this.state.states,
-        "CorrectAnswers": this.state.stateSuccessTaps,
-        "EndTime": new Date(),
-        "IsNotificationGame": false,
-        "Point": points,
-        "Score": gameScore,
-        "SpinWheelScore": 5,
+    }   
+    parent.postMessage(JSON.stringify({     
+      "static_data": {
+        "correct_answers": this.state.stateSuccessTaps,        
+        "point": points,
+        "score": gameScore,     
+        "EndTime": new Date(), "type":1,
+        "wrong_answers": this.state.stateWrongTaps,       
         "StartTime": this.state.startTime,
-        "StatusType": 1,
-        "Type": 1,
-        "UserID": "219",
-        "WrongAnswers": this.state.stateWrongTaps
-      }
-    ), "*");  
+      },
+      "temporal_slices": JSON.parse(this.state.boxes),"timestamp":  new Date().getTime(),
+    }), "*");   
 
     this.setState({
       sendResponse: true
@@ -295,7 +283,7 @@ class Board extends React.Component<{}, BoardState> {
       this.setState({
         animate: showWaitVal ? false : true,
         boxCount: boxTempCount,
-        boxes: null,
+       // boxes: null,
         enableTap: false,
         endTime: gameStateVal === 4 ? new Date() : this.state.endTime,
         failureCount: failureCountVal,
