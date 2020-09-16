@@ -239,6 +239,7 @@ class Board extends React.Component<{}, BoardState> {
   sendGameResult = () => {
     let points = 0;
     const r = JSON.parse(this.state.states);
+    console.log(r)
     const gameScore = r !== null ? (5 / r.length) * 100 : 0;
     if (gameScore === 100) {
       points = points + 2;

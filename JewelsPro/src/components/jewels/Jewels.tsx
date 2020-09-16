@@ -22,12 +22,14 @@ interface AppState {
     current:any; 
     diamondCount: number;
     diamondColor:string;
-    diamondNumbers:Array<any>;  
+    diamondNumbers:Array<number>;  
     diamondSpots:Array<number>;  
     gameTime:number;
     loaded:boolean;
+    orderNumbers:Array<number>;
     pauseTime : number; 
-    shapeCount:number;   
+    shapeCount:number;  
+    shapes:Array<string>; 
     winnerLine?: Array<number>;  
 
 }
@@ -49,8 +51,10 @@ class Jewels extends React.Component<{}, AppState> {
       diamondSpots: [], 
       gameTime:this.state ? this.state.gameTime : 90,
       loaded:false, 
-      pauseTime:0,
-      shapeCount : 0,
+      orderNumbers:[],
+      pauseTime:0,      
+      shapeCount : 2,
+      shapes:[],
       winnerLine: undefined      
     };
     this.state = state;
@@ -80,7 +84,8 @@ class Jewels extends React.Component<{}, AppState> {
         })
     },
       false
-    )   
+    )  
+    this.reset(true); 
   }
    
   // Reset game board
@@ -90,27 +95,46 @@ class Jewels extends React.Component<{}, AppState> {
     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
   
     const diamondCountVal =  this.state ? this.state.diamondCount : 15;
-    let initial 
-    if(noOfDimonds === 2) {
-      const numbers1 = Math.ceil(diamondCountVal/2)
-      const numbers2 = Math.floor(diamondCountVal/2)
-      initial = this.shuffle(Array.from(Array(numbers1).keys()))
-      initial = initial.concat(this.shuffle(Array.from(Array(numbers2).keys())))
-    } else {
-      initial = this.shuffle(Array.from(Array(diamondCountVal).keys()))
-    }
-
+    const shapesVals:Array<string> = [];
+      let numbers:Array<any> = []
+      const numArr:Array<any> = []
+      let loopNum
+      let order:Array<number> = []
+      for(let i = 0; i<noOfDimonds ; i++) {
+        numArr[i] = i === noOfDimonds-1 ?  Array.from(Array(Math.floor(diamondCountVal/noOfDimonds)).keys()): 
+        Array.from(Array(Math.ceil(diamondCountVal/noOfDimonds)).keys())
+        numbers = numbers.concat(numArr[i])
+        order = order.concat(numArr[i])
+      }
+     
+      numbers = this.shuffle(numbers)
+      
+      loopNum = numbers
+      
+     let type = -1
+     for (const i of loopNum) {
+        for( let k=0; k< noOfDimonds; k++) {
+          type = numArr[k].indexOf(i) > -1 ? k : -1
+          if(type > -1){ 
+            shapesVals.push(diamondType[k])  
+            numArr[k].splice(numArr[k].indexOf(i), 1) 
+             break
+          }         
+        }
+      }
     const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
     const state = { 
       current : diamondType,
       diamondColor:this.getRandomColor(), 
       diamondCount:diamondCountVal,
-      diamondNumbers:initial,
+      diamondNumbers:numbers,
       diamondSpots: randomArray, 
       gameTime:this.state ? this.state.gameTime : 90,
       loaded:loadedVal, 
+      orderNumbers:order.sort(),
       pauseTime:0,
       shapeCount : noOfDimonds,
+      shapes:shapesVals,
       winnerLine: undefined      
     };
    
@@ -129,14 +153,14 @@ class Jewels extends React.Component<{}, AppState> {
   // Get random diamond shape
   getDiamond = (noOfDimonds : number) => {  
     const diamonds = []
-    
-    let rand = Math.round(Math.random() * (diamondTypes.length - 1)); 
-    diamonds.push(diamondTypes[rand])  
-    if(noOfDimonds > 1) {
-      diamondTypes.splice(rand, 1);        
-      rand = Math.round(Math.random() * (diamondTypes.length - 1)); 
-      diamonds.push(diamondTypes[rand])  
-    }   
+    const types = diamondTypes
+    let rand
+     for( let i = 0; i < noOfDimonds ; i++ ){    
+      rand = Math.round(Math.random() * (types.length - 1)); 
+      diamonds.push(types[rand]) 
+      types.splice(rand, 1);  
+    } 
+      
     return diamonds;
   }
 
@@ -159,7 +183,8 @@ class Jewels extends React.Component<{}, AppState> {
         <Board  
           gameTime={this.state.gameTime}
           totalDiamonds={this.state.diamondCount} diamondSpots={this.state.diamondSpots} diamondColor={this.state.diamondColor}
-          currentDiamond = {this.state.current} diamondNumbers={this.state.diamondNumbers}
+          currentDiamond = {this.state.current} diamondNumbers={this.state.diamondNumbers} shapes={this.state.shapes}
+          orderNumbers={this.state.orderNumbers}
         />          
       </div></div>)}
     </div> 

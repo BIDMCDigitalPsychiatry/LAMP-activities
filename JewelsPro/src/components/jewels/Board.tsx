@@ -19,6 +19,8 @@ export interface BoardProps {
     diamondColor:string;
     diamondNumbers:Array<number>;   
     gameTime:number;
+    orderNumbers:Array<number>;
+    shapes:Array<string>;
 }
 
 interface DiamondState { 
@@ -65,9 +67,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
         tapCount : this.state.tapCount + 1,        
       });
       const lastItem = this.state.lastClickElement
-      if((this.state.lastClickElement === null && i===1 &&  diamondStyle === this.props.currentDiamond[0]) ||
-          (this.state.lastClickElement !== null && lastItem.diamond === this.props.currentDiamond[0] && diamondStyle ===  this.props.currentDiamond[1] && i === lastItem.item) ||
-          (this.state.lastClickElement !== null && lastItem.diamond === this.props.currentDiamond[1] && diamondStyle ===  this.props.currentDiamond[0] && i === lastItem.item+1))
+      const key = this.state.lastClickElement === null ? 0 : this.props.currentDiamond.indexOf(lastItem.diamond)
+      const nextKey = key === this.props.currentDiamond.length - 1  ? 0 : key + 1
+      if((this.state.lastClickElement === null && i===1 &&  diamondStyle === this.props.shapes[0]) ||
+          (this.state.lastClickElement !== null && diamondStyle ===  this.props.currentDiamond[nextKey] && 
+            i === this.props.orderNumbers[this.state.stepNumber] + 1))
       {
         if(this.state.lastClickElement === null && i===1 &&  diamondStyle === this.props.currentDiamond[0]){
           const timerVal = this.props.gameTime;  
@@ -80,7 +84,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
             });          
         } else {
           // Update the state values for each tas other than diamond 1
-          if(this.state.lastClickElement !== null && i===1){
+          if(this.state.stepNumber  === this.props.currentDiamond.length-1  && i===1){
             this.setState({
               bottomHelp:false
             }, () => {
@@ -142,10 +146,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
       routes.push(route);
     
       this.setState({ 
-        activeDiamond: status === true ? (this.state.activeDiamond === this.props.currentDiamond[0] ? this.props.currentDiamond[1] : this.props.currentDiamond[0]): this.state.activeDiamond,
+        activeDiamond: status === true ? diamondStyle: this.state.activeDiamond,
         endTime:new Date(),
         gameOver : status === true && this.props.totalDiamonds === i ?  true : false,
-        lastClickElement: status === true ? { "item":i, "diamond":this.state.activeDiamond} : this.state.lastClickElement,
+        lastClickElement: status === true ? { "item":i, "diamond":diamondStyle} : this.state.lastClickElement,
         lastClickTime:new Date().getTime(),
         route:JSON.stringify(routes),
         stepNumber : status === true ? this.state.stepNumber + 1 : this.state.stepNumber        
@@ -163,7 +167,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         let p = 0;
         const rows = typeof(process.env.REACT_APP_ROWS) === 'undefined' ? 30 : Number(process.env.REACT_APP_ROWS);
         const cols = typeof(process.env.REACT_APP_COLS) === 'undefined' ? 10 : Number(process.env.REACT_APP_COLS);
-        let diamondStyle = this.props.currentDiamond[0]
+       // let diamondStyle = this.props.currentDiamond[0]
         // Outer loop to create parent
         for (let i = 0; i < rows; i++) {
           const children = []
@@ -171,12 +175,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
           for (let j = 0; j < cols; j++) {
             
             if(this.props.diamondSpots.indexOf(p) > -1) {
-             
-              diamondStyle = k >= Math.ceil(this.props.diamondNumbers.length / 2) ?  this.props.currentDiamond[1] :this.props.currentDiamond[0]
+             //  diamondStyle = k >= Math.ceil(this.props.diamondNumbers.length / 2) ?  this.props.currentDiamond[1] :this.props.currentDiamond[0]
               children.push(<td key={p}>
                 <Diamond 
                   diamondColor = {this.props.diamondColor}
-                  diamondType={diamondStyle}            
+                  diamondType={this.props.shapes[k]}            
                   index={this.props.diamondNumbers[k] + 1} 
                   onClick={this.handleClick}
                   />
@@ -242,7 +245,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
           negSection = this.state.negativePoints < 0 && this.state.displayNegativePoints ? 
             <NegativePoints startPoints={this.state.negativePoints} /> : null       
           // Jewel info in the bottom for the inital state
-          const classVal = this.state.activeDiamond + ' ' + this.state.activeDiamond + '-' + this.props.diamondColor
+          const classVal = this.props.currentDiamond[this.state.stepNumber] + ' ' +  
+          this.props.currentDiamond[this.state.stepNumber] + '-' + this.props.diamondColor
           jewelInfo = this.state.bottomHelp ? <div className="jewel-info">
               <span className="info-text">Jewels</span>
               <div className={classVal}>
