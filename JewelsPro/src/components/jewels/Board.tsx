@@ -65,7 +65,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
     }
     // Each dimaond click is handled here
     handleClick = (e:any, i:number, diamondStyle:string) => {
-      console.log(diamondStyle)
       this.setState({
         tapCount : this.state.startTimer > 0 ? this.state.tapCount + 1 : 0,        
       });
@@ -102,7 +101,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       } else {
         this.updateStateWithTaps(i, false, diamondStyle);  
         const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
-        console.log(lastClickedItems, lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle))
         if(this.state.startTimer > 0 && lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle).length === 0) {  
           // When wrong diamond is tapped, update the negative point 
             const negPoints = typeof(process.env.REACT_APP_NEG_POINTS) === 'undefined' ? 2 : Number(process.env.REACT_APP_NEG_POINTS);
@@ -215,17 +213,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const totalJewelsCollected = this.state.stepNumber;
       const totalAttempts=  this.state.tapCount + 1;
       const duration = new Date().getTime() - new Date(this.state.startTime).getTime()
-      console.log(JSON.stringify({
-        "duration": duration,            
-        "static_data": {
-            "point": point,
-            "score": score,
-            "total_attempts": totalAttempts,
-            "total_bonus_collected": totalBonusCollected,
-            "total_jewels_collected": totalJewelsCollected
-        },
-        "temporal_slices": JSON.parse(this.state.route),"timestamp":  new Date().getTime(),
-    }))
+     
       parent.postMessage(JSON.stringify({
             "duration": duration,            
             "static_data": {

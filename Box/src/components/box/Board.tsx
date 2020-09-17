@@ -239,11 +239,10 @@ class Board extends React.Component<{}, BoardState> {
       const route = {'item' : boxNo, "value": this.state.gameState, 'status' : status, 'duration' : lastclickTime, "level": this.state.gameState};
       boxes.push(route);
     }
-    console.log(boxes)
-    this.setState({
+   this.setState({
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime()
-    });
+    }); 
   }
 
 
@@ -308,8 +307,7 @@ class Board extends React.Component<{}, BoardState> {
         successTaps: 0,
         wrongTaps: 0
       });
-      console.log("Point: " + rP)
-      this.timer = setTimeout(() => this.showBoxes(rP, 0), 1000);
+     this.timer = setTimeout(() => this.showBoxes(rP, 0), 1000);
     }
   }
 
