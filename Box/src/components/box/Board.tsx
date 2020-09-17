@@ -33,10 +33,12 @@ interface BoardState {
   timeout: boolean;
   showGo: boolean;
   showWait: boolean;
+  successStages:number,
   successTaps: number;
   stateSuccessTaps: number;
   stateWrongTaps: number;
   states: any;
+  wrongStages:number;
   wrongTaps: number;
   sendResponse: boolean;
 }
@@ -76,9 +78,12 @@ class Board extends React.Component<{}, BoardState> {
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
+      successStages:0,
       successTaps: 0,
       timeout: false,
-      wrongTaps: 0
+      wrongStages:0,
+      wrongTaps: 0,
+
     };
   }
   // On load function - set state of the gamne
@@ -106,15 +111,19 @@ class Board extends React.Component<{}, BoardState> {
       const statePassed = this.state.boxCount >= 2 && this.state.boxCount === this.state.successTaps
         || this.state.boxCount === 1 ? true : false;
       const gameStateVal = statePassed ? this.state.gameState + 1 : this.state.gameState;
+      const wrongStagesVal = statePassed ? this.state.wrongStages  : this.state.wrongStages + 1;
+      const successStagesVal = statePassed ? this.state.successStages + 1  : this.state.successStages;
       if (gameStateVal !== 6) {
         this.resetBoxClass();
       }
       this.setState({
+        gameState: gameStateVal,
         nextButton: false,
         orderNumber: -1,
         randomPoints: [],
+        successStages:successStagesVal,
+        wrongStages:wrongStagesVal
       });
-      this.setState({ gameState: gameStateVal, })
 
 
       // To show wait message
@@ -226,8 +235,11 @@ class Board extends React.Component<{}, BoardState> {
         boxes.push(r[key]);
       });
     }
-    const route = {'item' : boxNo, "value": this.state.gameState, 'status' : status, 'duration' : lastclickTime, "level": this.state.gameState};
-    boxes.push(route);
+    if(this.state.enableTap) {
+      const route = {'item' : boxNo, "value": this.state.gameState, 'status' : status, 'duration' : lastclickTime, "level": this.state.gameState};
+      boxes.push(route);
+    }
+    console.log(boxes)
     this.setState({
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime()
@@ -238,14 +250,25 @@ class Board extends React.Component<{}, BoardState> {
   // Call the API to pass game result
   sendGameResult = () => {
     let points = 0;
-    const r = JSON.parse(this.state.states);
-    console.log(r)
-    const gameScore = r !== null ? (5 / r.length) * 100 : 0;
+    const totalLevels=5
+    const totalStages= totalLevels + this.state.wrongStages    
+    const gameScore = Math.round((this.state.successStages/totalStages) * 100);
     if (gameScore === 100) {
       points = points + 2;
     } else {
       points = points + 1;
-    }   
+    }  
+    console.log(JSON.stringify({     
+      "static_data": {
+        "correct_answers": this.state.stateSuccessTaps,        
+        "point": points,
+        "score": gameScore,     
+        "EndTime": new Date(), "type":1,
+        "wrong_answers": this.state.stateWrongTaps,       
+        "StartTime": this.state.startTime,
+      },
+      "temporal_slices": JSON.parse(this.state.boxes),"timestamp":  new Date().getTime(),
+    })) 
     parent.postMessage(JSON.stringify({     
       "static_data": {
         "correct_answers": this.state.stateSuccessTaps,        
