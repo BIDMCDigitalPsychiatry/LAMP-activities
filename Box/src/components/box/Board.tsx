@@ -257,18 +257,7 @@ class Board extends React.Component<{}, BoardState> {
       points = points + 2;
     } else {
       points = points + 1;
-    }  
-    console.log(JSON.stringify({     
-      "static_data": {
-        "correct_answers": this.state.stateSuccessTaps,        
-        "point": points,
-        "score": gameScore,     
-        "EndTime": new Date(), "type":1,
-        "wrong_answers": this.state.stateWrongTaps,       
-        "StartTime": this.state.startTime,
-      },
-      "temporal_slices": JSON.parse(this.state.boxes),"timestamp":  new Date().getTime(),
-    })) 
+    }     
     parent.postMessage(JSON.stringify({     
       "static_data": {
         "correct_answers": this.state.stateSuccessTaps,        

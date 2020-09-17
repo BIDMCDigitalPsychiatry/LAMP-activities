@@ -122,20 +122,16 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif);
-      const clickedItems:Array<number> = []
+      const clickedItems:Array<number> = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
-          routes.push(r[key]);
-          if(r[key].status === true) {
-            clickedItems.push(r[key].item)
-          }
+          routes.push(r[key]);         
         });
-      } else {
-        if(status === true) {
-          clickedItems.push(i)
-        }
       }
+      if(status === true) {
+        clickedItems.push(i)
+      }      
       const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
       if(this.state.startTimer > 0 && lastClickedItems.indexOf(i) < 0) {  
         const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 ? 0 : lastclickTime, "level": 1};

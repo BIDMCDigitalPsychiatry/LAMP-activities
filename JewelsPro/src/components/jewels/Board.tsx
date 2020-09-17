@@ -101,8 +101,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
         item.className = item.className + ' diamond-disable';  
       } else {
         this.updateStateWithTaps(i, false, diamondStyle);  
-        const items = JSON.parse(this.state.clickedItems)
-        if(this.state.startTimer > 0 && items.indexOf(i) < 0) {
+        const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
+        console.log(lastClickedItems, lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle))
+        if(this.state.startTimer > 0 && lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle).length === 0) {  
           // When wrong diamond is tapped, update the negative point 
             const negPoints = typeof(process.env.REACT_APP_NEG_POINTS) === 'undefined' ? 2 : Number(process.env.REACT_APP_NEG_POINTS);
             this.setState({
@@ -140,20 +141,16 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif);
-      const clickedItems:Array<any> = []
+      const clickedItems:Array<any> = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
-          routes.push(r[key]);
-          if(r[key].status === true) {
-            clickedItems.push({item:r[key].item, style:diamondStyle})
-          }
+          routes.push(r[key]);          
         });
-      } else {
-        if(status === true) {
-          clickedItems.push({item:i, style:diamondStyle})
-        }
-      }
+      } 
+      if(status === true) {
+        clickedItems.push({item:i, style:diamondStyle})
+      }      
       const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
       if(this.state.startTimer > 0 && lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle).length === 0) {  
          const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
