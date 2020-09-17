@@ -59,11 +59,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
     // Each dimaond click is handled here
     handleClick = (e:any, i:number) => {
       this.setState({
-        tapCount : this.state.tapCount + 1,
+        tapCount : this.state.startTimer > 0 ? this.state.tapCount + 1 : 0,     
       });
       if(this.state.stepNumber === i - 1) {
         if(i === 1) {
-          const timerVal = this.props.gameTime;   
+          const timerVal = this.props.gameTime ?? 90;   
          // state updation for diamond 1 click
           this.setState({
               startTime:new Date(),                           
@@ -131,9 +131,14 @@ class Board extends React.Component<BoardProps, DiamondState> {
             clickedItems.push(r[key].item)
           }
         });
-      }   
-      if(this.state.startTimer > 0 && clickedItems.indexOf(i) < 0) {  
-        const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
+      } else {
+        if(status === true) {
+          clickedItems.push(i)
+        }
+      }
+      const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
+      if(this.state.startTimer > 0 && lastClickedItems.indexOf(i) < 0) {  
+        const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 ? 0 : lastclickTime, "level": 1};
         routes.push(route);
       }
       this.setState({ 

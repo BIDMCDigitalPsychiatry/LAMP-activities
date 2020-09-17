@@ -65,8 +65,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
     }
     // Each dimaond click is handled here
     handleClick = (e:any, i:number, diamondStyle:string) => {
+      console.log(diamondStyle)
       this.setState({
-        tapCount : this.state.tapCount + 1,        
+        tapCount : this.state.startTimer > 0 ? this.state.tapCount + 1 : 0,        
       });
       const lastItem = this.state.lastClickElement
       const key = this.state.lastClickElement === null ? 0 : this.props.currentDiamond.indexOf(lastItem.diamond)
@@ -76,8 +77,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
             i === this.props.orderNumbers[this.state.stepNumber] + 1))
       {
         if(this.state.lastClickElement === null && i===1 &&  diamondStyle === this.props.currentDiamond[0]){
-          const timerVal = this.props.gameTime;  
-         // state updation for diamond 1 click
+          const timerVal = this.props.gameTime ?? 90;
+          // state updation for diamond 1 click
           this.setState({
               startTime:new Date(),                           
               startTimer : timerVal,
@@ -139,18 +140,23 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif);
-      const clickedItems:Array<number> = []
+      const clickedItems:Array<any> = []
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
           routes.push(r[key]);
           if(r[key].status === true) {
-            clickedItems.push(r[key].item)
+            clickedItems.push({item:r[key].item, style:diamondStyle})
           }
         });
-      }   
-      if(this.state.startTimer > 0 && clickedItems.indexOf(i) < 0) {  
-        const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
+      } else {
+        if(status === true) {
+          clickedItems.push({item:i, style:diamondStyle})
+        }
+      }
+      const lastClickedItems = this.state.clickedItems.length > 0 ? JSON.parse(this.state.clickedItems) : []
+      if(this.state.startTimer > 0 && lastClickedItems.filter((item:any) => item.item === i && item.style === diamondStyle).length === 0) {  
+         const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
         routes.push(route);
       }
       this.setState({ 

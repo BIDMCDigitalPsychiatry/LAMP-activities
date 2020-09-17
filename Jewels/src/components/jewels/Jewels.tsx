@@ -28,7 +28,6 @@ interface AppState {
     gameTime:number;
     loaded:boolean;
     pauseTime : number; 
-    shapeCount:number;   
     winnerLine?: Array<number>;  
 
 }
@@ -42,7 +41,20 @@ class Jewels extends React.Component<{}, AppState> {
   const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
   // Listen to message from child window
   const mode = typeof(process.env.REACT_APP_GAME_LEVEL) === 'undefined' ? 1 : Number(process.env.REACT_APP_GAME_LEVEL);
-  this.reset(false); 
+  const state = { 
+    current : [],
+    diamondColor:"",
+    diamondCount:0,
+    diamondNumber:0,     
+    diamondNumbers:[],
+    diamondSpots: [], 
+    gameTime: 90,
+    loaded:false, 
+    orderNumbers:[],
+    pauseTime:0,
+    winnerLine: undefined      
+  };
+  this.state = state;
   eventer(
     messageEvent, (e:any) => {
       let gameTimeVal = e.data.beginner_seconds ?? 90
@@ -63,7 +75,7 @@ class Jewels extends React.Component<{}, AppState> {
           gameTimeVal = e.data.beginner_seconds
           break
       }
-      this.setState({diamondCount:e.data.diamond_count ?? 15,  loaded:true,  gameTime:gameTimeVal, shapeCount:e.data.shape_count ?? 1}, () => {
+      this.setState({diamondCount:e.data.diamond_count ?? 15,  loaded:true,  gameTime:gameTimeVal}, () => {
         this.reset(true); 
       })
    },
@@ -77,7 +89,7 @@ class Jewels extends React.Component<{}, AppState> {
     const diamondType = this.getDiamond();
     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
   
-    const diamondCountVal =  this.state ? this.state.diamondCount : 15;
+    const diamondCountVal =  this.state ? this.state.diamondCount ?? 15 : 15;
     const numbers = this.shuffle(Array.from(Array(diamondCountVal).keys())); 
    
     const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
@@ -91,7 +103,6 @@ class Jewels extends React.Component<{}, AppState> {
       gameTime:this.state ? this.state.gameTime : 90,
       loaded:loadedVal, 
       pauseTime:0,
-      shapeCount : this.state ? this.state.shapeCount : 1,
       winnerLine: undefined      
     };
 
