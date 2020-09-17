@@ -45,7 +45,7 @@ class Jewels extends React.Component<{}, AppState> {
   this.reset(false); 
   eventer(
     messageEvent, (e:any) => {
-      let gameTimeVal = e.data.beginner_seconds
+      let gameTimeVal = e.data.beginner_seconds ?? 90
       switch(mode) {
         case 1:
           gameTimeVal = e.data.beginner_seconds
@@ -63,7 +63,7 @@ class Jewels extends React.Component<{}, AppState> {
           gameTimeVal = e.data.beginner_seconds
           break
       }
-      this.setState({diamondCount:e.data.diamond_count,  loaded:true,  gameTime:gameTimeVal, shapeCount:e.data.shape_count}, () => {
+      this.setState({diamondCount:e.data.diamond_count ?? 15,  loaded:true,  gameTime:gameTimeVal, shapeCount:e.data.shape_count ?? 1}, () => {
         this.reset(true); 
       })
    },

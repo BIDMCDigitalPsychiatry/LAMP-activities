@@ -23,6 +23,7 @@ export interface BoardProps {
 }
 
 interface DiamondState { 
+  clickedItems:any;
   displayNegativePoints: boolean;
   endTime:any;
   gameOver:boolean;  
@@ -41,6 +42,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
       super(props); 
       // Initailise state values      
       this.state = {  
+          clickedItems:[],
           displayNegativePoints: false, 
           endTime:null,
           gameOver : false,
@@ -81,7 +83,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
        
       } else {
         this.updateStateWithTaps(i, false);  
-        if(this.state.startTimer > 0) {
+        const items = JSON.parse(this.state.clickedItems)
+        if(this.state.startTimer > 0 && items.indexOf(i) < 0) {
           // When wrong diamond is tapped, update the negative point 
             const negPoints = typeof(process.env.REACT_APP_NEG_POINTS) === 'undefined' ? 2 : Number(process.env.REACT_APP_NEG_POINTS);
             this.setState({
@@ -119,15 +122,22 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif);
+      const clickedItems:Array<number> = []
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
           routes.push(r[key]);
+          if(r[key].status === true) {
+            clickedItems.push(r[key].item)
+          }
         });
       }   
-      const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 ? 0 : lastclickTime, "level": 1};
-      routes.push(route);
+      if(this.state.startTimer > 0 && clickedItems.indexOf(i) < 0) {  
+        const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
+        routes.push(route);
+      }
       this.setState({ 
+        clickedItems:JSON.stringify(clickedItems),
         endTime:new Date(),
         gameOver : status === true && this.props.totalDiamonds === i ?  true : false,
         lastClickTime:new Date().getTime(),

@@ -25,6 +25,7 @@ export interface BoardProps {
 
 interface DiamondState { 
   activeDiamond:string;
+  clickedItems:any;
   bottomHelp:boolean;
   displayNegativePoints: boolean;
   endTime:any;
@@ -45,8 +46,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
       super(props); 
       // Initailise state values      
       this.state = {  
-          activeDiamond:this.props.currentDiamond[0],
+          activeDiamond:this.props.currentDiamond[0],         
           bottomHelp:true,
+          clickedItems:[],
           displayNegativePoints: false, 
           endTime:null,
           gameOver : false,
@@ -98,7 +100,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
         item.className = item.className + ' diamond-disable';  
       } else {
         this.updateStateWithTaps(i, false, diamondStyle);  
-        if(this.state.startTimer > 0) {
+        const items = JSON.parse(this.state.clickedItems)
+        if(this.state.startTimer > 0 && items.indexOf(i) < 0) {
           // When wrong diamond is tapped, update the negative point 
             const negPoints = typeof(process.env.REACT_APP_NEG_POINTS) === 'undefined' ? 2 : Number(process.env.REACT_APP_NEG_POINTS);
             this.setState({
@@ -136,23 +139,29 @@ class Board extends React.Component<BoardProps, DiamondState> {
       const routes = [];
       const dif  = new Date().getTime() - this.state.lastClickTime;          
       const lastclickTime =  (dif);
+      const clickedItems:Array<number> = []
       if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
           routes.push(r[key]);
+          if(r[key].status === true) {
+            clickedItems.push(r[key].item)
+          }
         });
       }   
-      const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 &&  this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
-      routes.push(route);
-    
+      if(this.state.startTimer > 0 && clickedItems.indexOf(i) < 0) {  
+        const route = {'item' : i,"value": null, 'status' : status, 'duration' : status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime, "level": 1};
+        routes.push(route);
+      }
       this.setState({ 
         activeDiamond: status === true ? diamondStyle: this.state.activeDiamond,
+        clickedItems:JSON.stringify(clickedItems),
         endTime:new Date(),
         gameOver : status === true && this.props.totalDiamonds === i ?  true : false,
         lastClickElement: status === true ? { "item":i, "diamond":diamondStyle} : this.state.lastClickElement,
         lastClickTime:new Date().getTime(),
         route:JSON.stringify(routes),
-        stepNumber : status === true ? this.state.stepNumber + 1 : this.state.stepNumber        
+        stepNumber : status === true ? this.state.stepNumber + 1 : this.state.stepNumber                
       }, () => {
         if(status === true && this.props.diamondNumbers.length === this.state.stepNumber) {        
           this.sendGameResult(2);         
