@@ -130,7 +130,9 @@ class Jewels extends React.Component<{}, AppState> {
       diamondSpots: randomArray, 
       gameTime:this.state ? this.state.gameTime : 90,
       loaded:loadedVal, 
-      orderNumbers:order.sort(),
+      orderNumbers:order.sort((a, b) => {
+        return a-b
+      }),
       pauseTime:0,
       shapeCount : noOfDimonds,
       shapes:shapesVals,

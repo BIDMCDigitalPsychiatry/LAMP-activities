@@ -75,6 +75,7 @@ body{background: rgba(53,159,254,1);}
 	position: fixed; 
 	top: 110px;   
 	width: 100%;
+	bottom: 50px;
 } 
 .negative-points{
 	padding: 5px;
