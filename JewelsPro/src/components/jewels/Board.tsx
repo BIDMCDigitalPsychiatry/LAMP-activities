@@ -243,7 +243,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
           timer = this.state.startTimer > 0 ?
              <Timer passTimerUpdate = {this.passTimerUpdate} startTimeInSeconds={this.state.startTimer} startTimer={1}/> : null;
           negSection = this.state.negativePoints < 0 && this.state.displayNegativePoints ? 
-            <NegativePoints startPoints={this.state.negativePoints} /> : null       
+            <NegativePoints startPoints={this.state.negativePoints} /> : null    
+          // negSection =  <NegativePoints startPoints={this.state.negativePoints} />   
           // Jewel info in the bottom for the inital state
           const classVal = this.props.currentDiamond[this.state.stepNumber] + ' ' +  
           this.props.currentDiamond[this.state.stepNumber] + '-' + this.props.diamondColor

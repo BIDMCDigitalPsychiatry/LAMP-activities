@@ -84,10 +84,11 @@ body{background: rgba(53,159,254,1);}
     width: 33px;
     font-size: 12px;
     border-radius: 11px;
-	
-	margin-left: 5px;
+	text-align: center;
+	margin: 0 auto;
+	/* margin-left: 5px;
 	position: absolute;
-    left: 57%;
+    left: 57%; */
     
 }
 .heading{
