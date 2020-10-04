@@ -208,7 +208,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
 
     // Call the API to pass game result
     sendGameResult = (point:number) => {
-      const score = (this.state.stepNumber / this.state.tapCount) * 100;
+      const score = (this.state.stepNumber / (this.state.tapCount + 1)) * 100;
       const totalBonusCollected = this.state.startTimer - Math.abs(this.state.negativePoints);
       const totalJewelsCollected = this.state.stepNumber;
       const totalAttempts=  this.state.tapCount + 1;
