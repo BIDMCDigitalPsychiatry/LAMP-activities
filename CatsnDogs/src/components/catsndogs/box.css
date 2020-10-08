@@ -111,7 +111,7 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 }
 .seventh{
 	margin-left: 26%;
-    top: 1%;
+    top: 2.5%;
 }
 .eightth{
 	margin-left: 10%;
@@ -123,7 +123,7 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 }
 .tenth{
 	margin-left: 77%;
-    top: 0%;
+    top: 3%;
 }
 .mt-30{
 	margin-top: 30px;
@@ -174,7 +174,8 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 	background-color:#40bd40 !important;
 	background-image: url("data:image/svg+xml,%0A%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 397.37 394.67'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='cls-1' points='148.72 377.69 29.01 257.99 46.33 240.68 148.24 342.58 352.71 126.47 370.5 143.31 148.72 377.69'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
-	background-position: center;
+	background-position-y: -7px;
+	
 }
 .red-box-square{
 	background-color:#d40c0c !important;
