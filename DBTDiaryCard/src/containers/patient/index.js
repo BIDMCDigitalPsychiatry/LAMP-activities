@@ -85,11 +85,11 @@ function HomeView(props) {
         if(active === 8) {
             let finalReport = createReport(props.report)
             finalReport.duration =  new Date().getTime() - time
+            console.log(finalReport)
             window.parent.postMessage(JSON.stringify(finalReport), "*"); 
         }
     }, [active])
-    console.log(createReport(props.report))
-
+  
     if(active === 0){
         return (
         
@@ -123,6 +123,8 @@ function HomeView(props) {
         return (<NoteView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)}/>)
     } else if(active === 7){
         return (<Overview {...props} onContinue={() => setActive(8)} onBack={() => setActive(6)}/>)
+    } else if(active == 8){
+        return null
     }
 }
 
