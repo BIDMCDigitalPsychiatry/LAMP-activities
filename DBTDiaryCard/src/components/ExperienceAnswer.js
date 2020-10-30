@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function ExperienceAnswer({ key, title, rate, setRate }) {
+export default function ExperienceAnswer({ title, rate, setRate }) {
     const classes = useStyles()
 
     const handleChange = (value) => {
@@ -38,7 +38,7 @@ export default function ExperienceAnswer({ key, title, rate, setRate }) {
     }
 
     return (
-        <div className={classes.container} key={key}>
+        <div className={classes.container}>
 
             <div className={classes.contentContainer}>
                     <div className={classes.titleContainer}>

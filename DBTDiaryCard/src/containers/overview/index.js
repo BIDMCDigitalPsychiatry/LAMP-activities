@@ -2,16 +2,10 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Grid } from '@material-ui/core'
 import EffortAnswer from '../../components/EffortAnswer'
 import InputBase from '@material-ui/core/InputBase'
 import HeaderView from '../../components/HeaderView'
 import RatioButton from '../../components/RatioButton'
-import {Link} from 'react-router-dom'
-import actions from '../home/action'
-import {connect} from 'react-redux'
-
-const {updateReport} = actions
 
 const CssTextField = withStyles({
   root: {
@@ -136,25 +130,25 @@ export default function OverviewView(props) {
           </div>
           <div className={classes.contentContainer} style={{ marginTop: 50 }}>
             <div style={{ width: 100 }}>
-              <RatioButton title='Yes' checked={er != ''} onChange={() => setEr('Psych')} />
+              <RatioButton title='Yes' checked={er !== ''} onChange={() => setEr('Psych')} />
             </div>
-            <div style={{ width: 100 }}><RatioButton title='No' checked={er == ''} onChange={() => setEr('')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='No' checked={er === ''} onChange={() => setEr('')} /></div>
           </div>
           <div className={classes.contentContainer} style={{ marginTop: 40 }}>
-            <div style={{ width: 100 }}><RatioButton title='Psych' checked={er == 'Psych'} unable={er == ''} onChange={() => setEr('Psych')} /></div>
-            <div style={{ width: 100 }}><RatioButton title='Medical' checked={er == 'Medical'} unable={er == ''} onChange={() => setEr('Medical')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='Psych' checked={er === 'Psych'} unable={er === ''} onChange={() => setEr('Psych')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='Medical' checked={er === 'Medical'} unable={er === ''} onChange={() => setEr('Medical')} /></div>
           </div>
 
           <div className={classes.contentContainer} style={{ marginTop: 80 }}>
             <Typography className={classes.questionTitle}>Were you hospitalized?</Typography>
           </div>
           <div className={classes.contentContainer} style={{ marginTop: 50 }}>
-            <div style={{ width: 100 }}><RatioButton title='Yes' checked={hospitalized != ''} onChange={() => setHospitalized('Psych')} /></div>
-            <div style={{ width: 100 }}><RatioButton title='No' checked={hospitalized == ''} onChange={() => setHospitalized('')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='Yes' checked={hospitalized !== ''} onChange={() => setHospitalized('Psych')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='No' checked={hospitalized === ''} onChange={() => setHospitalized('')} /></div>
           </div>
           <div className={classes.contentContainer} style={{ marginTop: 40 }}>
-            <div style={{ width: 100 }}><RatioButton title='Psych' checked={hospitalized == 'Psych'} unable={hospitalized == ''} onChange={() => setHospitalized('Psych')} /></div>
-            <div style={{ width: 100 }}> <RatioButton title='Medical' checked={hospitalized == 'Medical'} unable={hospitalized == ''} onChange={() => setHospitalized('Medical')} /></div>
+            <div style={{ width: 100 }}><RatioButton title='Psych' checked={hospitalized === 'Psych'} unable={hospitalized === ''} onChange={() => setHospitalized('Psych')} /></div>
+            <div style={{ width: 100 }}> <RatioButton title='Medical' checked={hospitalized === 'Medical'} unable={hospitalized === ''} onChange={() => setHospitalized('Medical')} /></div>
           </div>
 
           <div className={classes.contentContainer} style={{ marginTop: 80 }}>

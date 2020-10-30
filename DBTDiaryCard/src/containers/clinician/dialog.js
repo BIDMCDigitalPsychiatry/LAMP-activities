@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import InputBase from '@material-ui/core/InputBase'
 import Dialog from '@material-ui/core/Dialog'
@@ -61,7 +60,7 @@ export function TargetDialog(props) {
     }
 
     return (
-        <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={dialogOpen != ''}>
+        <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={dialogOpen !== ''}>
             <div className={classes.root}>
                 <Typography className={classes.dialogTitle}>Add a target behavior</Typography>
                 <div className={classes.inputContainer}>
@@ -75,19 +74,19 @@ export function TargetDialog(props) {
                         <RatioButton 
                             smallSpace={true} title='Times'
                             color='#618EF7'
-                            checked={measure == 'Times'} onChange={() => setMeasure('Times')} />
+                            checked={measure === 'Times'} onChange={() => setMeasure('Times')} />
                     </div>
                     <div className={classes.measureContainer} style={{ flex: 1 }}>
                         <RatioButton smallSpace={true}
                             title='Hours'
                             color='#618EF7'
-                            checked={measure == 'Hours'} onChange={() => setMeasure('Hours')} />
+                            checked={measure === 'Hours'} onChange={() => setMeasure('Hours')} />
                     </div>
                     <div className={classes.measureContainer} style={{ flex: 1 }}>
                         <RatioButton smallSpace={true}
                             title='Yes'
                             color='#618EF7'
-                            checked={measure == 'Yes'}
+                            checked={measure === 'Yes'}
                             onChange={() => setMeasure('Yes')} />
                     </div>
                 </div>

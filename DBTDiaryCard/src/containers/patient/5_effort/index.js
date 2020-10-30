@@ -2,14 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import {Link} from 'react-router-dom'
-import { Grid } from '@material-ui/core'
 import EffortAnswer from '../../../components/EffortAnswer'
 import HeaderView from '../../../components/HeaderView'
-import actions from '../../home/action'
-import {connect} from 'react-redux'
-
-const {updateReport} = actions
 
 const useStyles = makeStyles((theme) => ({
   root: {

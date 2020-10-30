@@ -2,14 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
-import { Grid } from '@material-ui/core'
 import SkillExpanded from '../../../components/SkillExpanded'
 import HeaderView from '../../../components/HeaderView'
-import actions from '../../home/action'
-import { connect } from 'react-redux'
-
-const { updateReport } = actions
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -124,7 +118,7 @@ export default function SkillYesView(props) {
             />
             {data.map((item) => {
                 return (
-                    <SkillExpanded title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
+                    <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
                 )
             })}
             <div className={classes.buttonsContainer}>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Toolbar from '@material-ui/core/Toolbar';
+import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton'
@@ -209,7 +208,7 @@ function Screen(props) {
                             </div>
                             {effectiveData.map((item, index) => {
                                 return (
-                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 == 0) ? '#ECF4FF' : 'transparent' }}>
+                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 === 0) ? '#ECF4FF' : 'transparent' }}>
                                         <Typography className={classes.contentText} style={{ flex: 1 }}>{item.target}</Typography>
                                         <Typography className={classes.contentText} style={{ width: 150 }}>{item.measure}</Typography>
                                         <ButtonBase onClick={() => removeTarget('effective', index)} className={classes.deleteButton}>
@@ -230,7 +229,7 @@ function Screen(props) {
                             </div>
                             {ineffectiveData.map((item, index) => {
                                 return (
-                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 == 0) ? '#ECF4FF' : 'transparent' }}>
+                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 === 0) ? '#ECF4FF' : 'transparent' }}>
                                         <Typography className={classes.contentText} style={{ flex: 1 }}>{item.target}</Typography>
                                         <Typography className={classes.contentText} style={{ width: 150 }}>{item.measure}</Typography>
                                         <ButtonBase onClick={() => removeTarget('ineffective', index)} className={classes.deleteButton}>
@@ -256,7 +255,7 @@ function Screen(props) {
                         <Grid item xs={10} sm={8}>
                             {emotions.map((item, index) => {
                                 return (
-                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 == 0) ? '#ECF4FF' : 'transparent' }}>
+                                    <div key={item.id} className={classes.rowContainer} style={{ backgroundColor: (index % 2 === 0) ? '#ECF4FF' : 'transparent' }}>
                                         <Typography className={classes.contentText} style={{ flex: 1 }}>{item.emotion}</Typography>
                                         <ButtonBase onClick={() => removeEmotion(index)} className={classes.deleteButton}>
                                             <Close />

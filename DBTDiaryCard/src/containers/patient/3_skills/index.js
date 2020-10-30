@@ -2,14 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
-import { Grid } from '@material-ui/core'
 import RatioButton from '../../../components/RatioButton'
 import HeaderView from '../../../components/HeaderView'
-import actions from '../../home/action'
-import { connect } from 'react-redux'
-
-const { updateReport } = actions
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,7 +58,7 @@ export default function SkillsView(props) {
         }
 
         if(onContinue){
-            onContinue(skillToday == 1 ? 41 : 42)
+            onContinue(skillToday === 1 ? 41 : 42)
           }
     }
 
@@ -78,10 +72,10 @@ export default function SkillsView(props) {
             />
             <div className={classes.contentContainer}>
                 <div>
-                    <RatioButton checked={skillToday == 1} onChange={() => setSkillToday(1)} title='Yes' />
+                    <RatioButton checked={skillToday === 1} onChange={() => setSkillToday(1)} title='Yes' />
                 </div>
                 <div className={classes.ratioContainer}>
-                    <RatioButton checked={skillToday == 0} onChange={() => setSkillToday(0)} title='No' />
+                    <RatioButton checked={skillToday === 0} onChange={() => setSkillToday(0)} title='No' />
                 </div>
             </div>
             <div className={classes.buttonsContainer}>

@@ -71,10 +71,7 @@ export default function HeaderView({title, question, currentStep, totalStep, des
 
     return (
         <div className={classes.root}>
-                    <div className={classes.headerContainer}>
-                        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="left-arrow">
-                            <ArrowBack />
-                        </IconButton> */}
+                    <div className={classes.headerContainer}>                        
                         <Typography className={classes.headerTitle}>{title}</Typography>
                     </div>
                     <div className={classes.progressContainer}>
