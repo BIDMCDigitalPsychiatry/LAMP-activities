@@ -101,11 +101,14 @@ export default function OverviewView(props) {
   const [hospitalized, setHospitalized] = React.useState('')
   const [er, setEr] = React.useState('')
   const [urge, setUrge] = React.useState(0)
+  const [suicideUrge, setSuicideUrge] = React.useState(0)
+  const [dieUrge, setDieUrge] = React.useState(0)
+  const [skillHelped, setSkillHelped] = React.useState(1)
 
   const onUpdateReport = () => {
     const {updateReport, onContinue} = props
     if(updateReport){
-      updateReport('overview', {urge: urge, er: er, hospitalized: hospitalized, selectedNormative: selectedNormative})
+      updateReport('overview', {urge: urge, skillHelped:skillHelped, suicideUrge:suicideUrge, dieUrge:dieUrge, er: er, hospitalized: hospitalized, selectedNormative: selectedNormative})
     }
 
     if(onContinue){
@@ -125,6 +128,34 @@ export default function OverviewView(props) {
           <div className={classes.contentContainer}>
             <EffortAnswer selectedLevel={urge} onChange={(level) => setUrge(level)}/>
           </div>
+
+          <div className={classes.contentContainer} style={{ marginTop: 80 }}>
+            <Typography className={classes.questionTitle}>Did the skills help?</Typography>
+          </div>
+          
+            <div className={classes.contentContainer} style={{ marginTop : 50 }}>
+                <div>
+                    <RatioButton checked={skillHelped === 1} onChange={() => setSkillHelped(1)} title='Yes' />
+                </div>
+                <div className={classes.ratioContainer}>
+                    <RatioButton checked={skillHelped === 0} onChange={() => setSkillHelped(0)} title='No' />
+                </div>
+            </div>
+            <div className={classes.contentContainer} style={{ marginTop: 80 }}>
+            <Typography className={classes.questionTitle}>Did you have an urge to commit suicide this week?</Typography>
+          </div>
+           
+          <div className={classes.contentContainer} style={{ marginTop : 50 }}>
+            <EffortAnswer selectedLevel={suicideUrge} onChange={(level) => setSuicideUrge(level)}/>
+          </div>
+          <div className={classes.contentContainer} style={{ marginTop: 80 }}>
+            <Typography className={classes.questionTitle}>Did you have the urge to die?</Typography>
+          </div>
+         
+          <div className={classes.contentContainer} style={{ marginTop : 50 }}>
+            <EffortAnswer selectedLevel={dieUrge} onChange={(level) => setDieUrge(level)}/>
+          </div>
+
           <div className={classes.contentContainer} style={{ marginTop: 80 }}>
             <Typography className={classes.questionTitle}>Did you go to the ER this week?</Typography>
           </div>

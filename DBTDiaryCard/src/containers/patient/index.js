@@ -113,6 +113,8 @@ function HomeView(props) {
         return (<EmotionView settings={settings} {...props} onContinue={() => setActive(3)} onBack={() => setActive(1)}/>)
     } else if(active === 3){
         return (<SkillsView {...props} onContinue={(mode) => setActive(mode)} onBack={() => setActive(2)}/>)
+    } else if(active === 4){
+        return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)}/>)
     } else if(active === 41){
         return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)}/>)
     } else if(active === 42){

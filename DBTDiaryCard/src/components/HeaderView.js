@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#2F9D7E', fontSize: 14, fontWeight: '500', textAlign: 'center', marginTop: 20,
     },
     questionContainer: {
-        width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center'
+        width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
     },
     questionTitle: {
         fontWeight: 'bold', fontSize: 18, color: 'rgba(0, 0, 0, 0.75)', marginTop: 33, marginLeft: 40, marginRight: 40

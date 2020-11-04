@@ -88,8 +88,11 @@ export default function RateCountAnswer({ title, unit, separator, urgeValue, sel
                 <Grid item xs={4}>
                     <Typography className={classes.typeTitle} >Acted</Typography>
                     <Grid direction='row' container>
-                        <CssTextField disabled={urgeValue === 0} value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
-                        <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.7)'}}>{unit}</Typography>
+                        <CssTextField disabled={urgeValue === 0} 
+                        style={{width:unit === "Custom"? "130px" : "25px"}}
+                        value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
+                        {unit !== "Custom" && 
+                        <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.7)'}}>{unit}</Typography>}
                     </Grid>
                 </Grid>
             </Grid>
