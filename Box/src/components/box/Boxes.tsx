@@ -16,13 +16,29 @@ import * as React from 'react';
 import Board from './Board';
 
 interface AppState {
-    current:any;    
+    loaded:boolean;
+    order:boolean;    
 }
 
 class Box extends React.Component<{}, AppState> {
   
   constructor(props: {}) {
     super(props);
+    const state = { 
+      loaded:false, 
+      order:false
+    };
+    this.state = state;
+    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+    const eventer = window[eventMethod]
+    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+    // Listen to message from child window
+    eventer(
+      messageEvent, (e:any) => {
+        this.setState({order:e.data.order})
+    },
+      false
+    )  
   }
   
   // To refresh the game
@@ -34,14 +50,17 @@ class Box extends React.Component<{}, AppState> {
   render() {     
     return (
       <div>
-        <nav className="home-link">
+        {this.state && this.state.loaded && (
+        <div>
+          <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
         </nav>
         <div className="heading">Box Game</div>
         <div className="game-board">
-        <Board  
+        <Board order={this.state.order} 
         />          
       </div> 
+      </div>)}
     </div> 
     );
   }

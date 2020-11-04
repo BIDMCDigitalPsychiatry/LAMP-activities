@@ -39,17 +39,22 @@ interface BoardState {
   stateWrongTaps: number;
   states: any;
   wrongStages:number;
-  wrongTaps: number;
-  sendResponse: boolean;
+  wrongTaps: number; 
+  reverse:boolean;
+  sendResponse: boolean; 
 }
 
-class Board extends React.Component<{}, BoardState> {
+interface BoardProps {
+  order :boolean
+}
+
+class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
   private timerBox: any;
   private resetWaitBox: any;
   private resetGoBox: any;
 
-  constructor(props: {}) {
+  constructor(props: BoardProps) {
     super(props);
     // Initailise state values   
     const timerValue = typeof (process.env.REACT_APP_BOX_TIMOUT_PERIOD) === 'undefined' ? 120 :
@@ -70,6 +75,7 @@ class Board extends React.Component<{}, BoardState> {
       nextButton: false,
       orderNumber: -1,
       randomPoints: [],
+      reverse:this.props.order,
       sendResponse: false,
       showGo: false,
       showWait: true,
@@ -172,18 +178,23 @@ class Board extends React.Component<{}, BoardState> {
 
   // Each box click is handled here
   handleClick = (e: any) => {
-    if (this.state.enableTap && this.state.orderNumber + 1 < this.state.randomPoints.length) {
+    if (this.state.enableTap && 
+      ((!this.state.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
+       (this.state.reverse && this.state.orderNumber >= 0 ))) {
       let success = false;
       const order = this.state.randomPoints.indexOf(parseInt(e.target.getAttribute('data-key'), 10));
-      success = order === this.state.orderNumber + 1 ? true : false;
+      success = (!this.state.reverse && order === this.state.orderNumber + 1) ||
+        (this.state.reverse && order === this.state.orderNumber - 1)? true : false;
       const item = e.target.className === 'box-white' ? e.target : e.target.children[0];
       if (typeof item !== 'undefined') {
         item.className = success ? 'box-white green-box-square' : 'box-white red-box-square';
 
         this.setState({
-          enableTap: this.state.orderNumber + 1 < this.state.randomPoints.length ? true : false,
-          nextButton: this.state.orderNumber + 2 >= this.state.randomPoints.length ? true : false,
-          orderNumber: this.state.orderNumber + 1,
+          enableTap: (!this.state.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
+            (this.state.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
+          nextButton: (!this.state.reverse && this.state.orderNumber + 2 >= this.state.randomPoints.length) ||
+            (this.state.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
+          orderNumber: this.state.reverse ? this.state.orderNumber - 1 : this.state.orderNumber + 1,
           stateSuccessTaps: success ? this.state.stateSuccessTaps + 1 : this.state.stateSuccessTaps,
           stateWrongTaps: !success ? this.state.stateWrongTaps + 1 : this.state.stateWrongTaps,
           successTaps: success ? this.state.successTaps + 1 : this.state.successTaps,
@@ -279,7 +290,7 @@ class Board extends React.Component<{}, BoardState> {
   setGameState = () => {
     const statePassed = this.state.boxCount >= 2 && this.state.boxCount === this.state.successTaps
       || this.state.boxCount === 1 ? true : false;
-
+console.log(statePassed)
     const boxTempCount = statePassed ? this.state.boxCount + 1 : this.state.boxCount;
     const gameStateVal = this.state.gameState;
     const showWaitVal = statePassed && this.state.failureCount + 1 < 2 ? this.state.showWait : false;
@@ -302,6 +313,7 @@ class Board extends React.Component<{}, BoardState> {
         gameOver: gameOverVal,
         // gameState: gameStateVal,
         nextButton: false,
+        orderNumber:this.state.reverse ? rP.length : -1,
         randomPoints: rP,
         showWait: showWaitVal,
         successTaps: 0,
