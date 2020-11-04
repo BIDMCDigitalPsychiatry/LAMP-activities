@@ -35,7 +35,7 @@ class Box extends React.Component<{}, AppState> {
     // Listen to message from child window
     eventer(
       messageEvent, (e:any) => {
-        this.setState({order:e.data.order, loaded:true})
+        this.setState({order:e.data.reverse_tapping, loaded:true})
     },
       false
     )  
