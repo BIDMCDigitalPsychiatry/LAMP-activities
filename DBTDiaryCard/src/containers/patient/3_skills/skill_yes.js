@@ -75,9 +75,9 @@ const useStyles = makeStyles((theme) => ({
 
 const data = [
     { title: 'Mindfulness', data: ['Wise Mind', 'Observe: Just notice (Urge Surfing)', 'Describe: Put words on', 'Participate: Enter into the experience', 'Nonjudgmental stance', 'One-Mindfully: In-the-moment', 'Effectiveness: Focus on what works', 'Loving Kindness: Build compassion'] },
-    { title: 'Interpersonal', data: ['Wise Mind', 'Observe: Just notice (Urge Surfing)', 'Describe: Put words on', 'Participate: Enter into the experience', 'Nonjudgmental stance', 'One-Mindfully: In-the-moment', 'Effectiveness: Focus on what works', 'Loving Kindness: Build compassion'] },
-    { title: 'Emotion Regulation', data: ['Wise Mind', 'Observe: Just notice (Urge Surfing)', 'Describe: Put words on', 'Participate: Enter into the experience', 'Nonjudgmental stance', 'One-Mindfully: In-the-moment', 'Effectiveness: Focus on what works', 'Loving Kindness: Build compassion'] },
-    { title: 'Distress Tolerance', data: ['Wise Mind', 'Observe: Just notice (Urge Surfing)', 'Describe: Put words on', 'Participate: Enter into the experience', 'Nonjudgmental stance', 'One-Mindfully: In-the-moment', 'Effectiveness: Focus on what works', 'Loving Kindness: Build compassion'] },
+    { title: 'Interpersonal', data: ["Objective effectiveness: DEAR MAN", "Relationship effectiveness: GIVE", "Self-respect effectiveness: FAST", "Validating Others", "Self-Validation", "Behavior change: reinforce/extinguish", "Mindfulness of others", "Find others and get them to like you", "End relationships"] },
+    { title: 'Emotion Regulation', data: ["Check the Facts to change emotions", "Opposite Action to change emotions", "Problem Solving to change emotions", "Accumulate positive emotions", "Build Mastery", "Cope Ahead", "PLEASE: Take care of your body"] },
+    { title: 'Distress Tolerance', data: ["STOP Skill", "Pros and Cons of acting on urges", "TIP: Change body chemistry", "Paired Muscle Relaxation", "Effective Rethinking/Paired Relax", "Distracting: Wise Mind ACCEPTS", "Self-Soothing", "Body Scan Meditation", "IMPROVE the Moment ", "Sensory Awareness", "Radical Acceptance", "Turning the Mind", "Replace Willfulness with Willingness", "Half-Smiling and Willing Hands", "Dialectical Abstinence", "Alternate Rebellion / Adaptive Denial"] },
 ]
 
 export default function SkillYesView(props) {
