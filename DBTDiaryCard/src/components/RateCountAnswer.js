@@ -18,6 +18,19 @@ const CssTextField = withStyles({
     }
 })(InputBase)
 
+const CssCustomTextField = withStyles({
+    root: {
+        'label + &': {
+        },
+        marginRight: 3
+    },
+    input: {
+        fontSize: 16, fontWeight: '600', color: 'rgba(0, 0, 0, 0.75)',
+        width: 80, borderBottom: '3px solid #92E7CA', padding: 0, borderRadius: 0,
+        textAlign: 'left', fontFamily: 'Inter'
+    }
+})(InputBase)
+
 const useStyles = makeStyles((theme) => ({
     rateContainer: {
         display: 'flex',
@@ -88,9 +101,11 @@ export default function RateCountAnswer({ title, unit, separator, urgeValue, sel
                 <Grid item xs={4}>
                     <Typography className={classes.typeTitle} >Acted</Typography>
                     <Grid direction='row' container>
-                        <CssTextField disabled={urgeValue === 0} 
-                        style={{width:unit === "Custom"? "130px" : "25px"}}
-                        value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
+                        {unit !== "Custom" ? <CssTextField disabled={urgeValue === 0} 
+                            value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
+                            : <CssCustomTextField disabled={urgeValue === 0} 
+                            value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
+                        }
                         {unit !== "Custom" && 
                         <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.7)'}}>{unit}</Typography>}
                     </Grid>
