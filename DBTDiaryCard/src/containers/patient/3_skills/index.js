@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -70,6 +71,8 @@ export default function SkillsView(props) {
                 totalStep={6}
                 question='Did you use any of the skills today?'
             />
+             <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
             <div className={classes.contentContainer}>
                 <div>
                     <RatioButton checked={skillToday === 1} onChange={() => setSkillToday(1)} title='Yes' />
@@ -89,6 +92,7 @@ export default function SkillsView(props) {
                     <Typography className={classes.backText}>Back</Typography>
                 </Button>
             </div>
+            </Grid></Grid>
         </div>
     )
 }

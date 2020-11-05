@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import HeaderView from '../../../components/HeaderView'
+import { Grid } from '@material-ui/core'
 
 const CssTextField = withStyles({
     root: {
@@ -93,6 +94,8 @@ export default function NotesView(props) {
                         totalStep={6}
                         question='Optional: Are there any other details you want to share about your day?'
                     />
+<Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
                             <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{disableunderline: 'true'}} multiline rows={8}/>
@@ -110,6 +113,7 @@ export default function NotesView(props) {
 
                         </Button>
                     </div>
+                    </Grid></Grid>
         </div>
     )
 }

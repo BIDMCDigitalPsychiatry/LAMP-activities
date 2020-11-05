@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
   headerTitle: {
     color: '#2F9D7E', fontSize: 12, fontWeight: '600', textTransform: 'uppercase', marginLeft: 20, marginRight: 20
-  }
+  },
+  containerWidth: { maxWidth: 1055 },
 }))
 
 
@@ -136,6 +137,7 @@ export default function TargetView({settings, ...props}) {
 
   return (
     <div className={classes.root}>
+
           <HeaderView
             title='Target behaviors'
             description='0= not at all, 5 = extremely'
@@ -143,6 +145,8 @@ export default function TargetView({settings, ...props}) {
             totalStep={6}
             question='Which target behaviors did you experience today?'
           />
+           <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
           <div className={classes.headerContainer}>
             <Typography className={classes.headerTitle}>Effective</Typography>
           </div>
@@ -171,6 +175,7 @@ export default function TargetView({settings, ...props}) {
             const urgeValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].urge) ? targets.ineffective["ineffective"+ index].urge : 0
 
             return(
+             
               <RateCountAnswer
                 title={item.target}
                 key={ "ineffective"+ index}
@@ -197,6 +202,8 @@ export default function TargetView({settings, ...props}) {
 
             </Button>
           </div>
+          </Grid>
+          </Grid>
     </div>
   )
 }

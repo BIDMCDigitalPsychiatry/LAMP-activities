@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import SkillExpanded from '../../../components/SkillExpanded'
 import HeaderView from '../../../components/HeaderView'
+import { Grid } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -116,6 +117,8 @@ export default function SkillYesView(props) {
                 totalStep={6}
                 question='Which skills did you use?'
             />
+             <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
             {data.map((item) => {
                 return (
                     <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
@@ -130,6 +133,8 @@ export default function SkillYesView(props) {
                     <Typography className={classes.backText}>Back</Typography>
                 </Button>
             </div>
+            </Grid>
+            </Grid>
         </div>
     )
 }
