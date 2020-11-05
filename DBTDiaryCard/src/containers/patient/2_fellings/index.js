@@ -95,6 +95,8 @@ export default function FellingView({settings, ...props}) {
         totalStep={6}
         question='Which emotions did you experience today?'
       />
+      <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
       {emotions.map((item, index) => {
         const rate = result && result.felling && result.felling["emotion"+ index] ? result.felling["emotion"+ index].rate : 0
         return (
@@ -114,6 +116,8 @@ export default function FellingView({settings, ...props}) {
           <Typography className={classes.backText}>Back</Typography>
         </Button>
       </div>
+      </Grid>
+      </Grid>
     </div>
   )
 }
