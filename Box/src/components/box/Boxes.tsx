@@ -17,7 +17,7 @@ import Board from './Board';
 
 interface AppState {
     loaded:boolean;
-    order:boolean;    
+    reverse:boolean;    
 }
 
 class Box extends React.Component<{}, AppState> {
@@ -26,7 +26,7 @@ class Box extends React.Component<{}, AppState> {
     super(props);
     const state = { 
       loaded:false, 
-      order:false
+      reverse:false
     };
     this.state = state;
     const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
@@ -35,7 +35,8 @@ class Box extends React.Component<{}, AppState> {
     // Listen to message from child window
     eventer(
       messageEvent, (e:any) => {
-        this.setState({order:e.data.reverse_tapping, loaded:true})
+        console.log(e.data.reverse_tapping, e.data.reverse_tapping ? "sdf" : "wer")
+        this.setState({reverse:e.data.reverse_tapping, loaded:true})
     },
       false
     )  
@@ -47,18 +48,18 @@ class Box extends React.Component<{}, AppState> {
   }
 
   // Game render function
-  render() {     
+  render() {    
+   
     return (
       <div>
         {this.state && this.state.loaded && (
-        <div>
+        <div> 
           <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
         </nav>
         <div className="heading">Box Game</div>
         <div className="game-board">
-        <Board order={this.state.order} 
-        />          
+         <Board reverse={this.state.reverse} />          
       </div> 
       </div>)}
     </div> 

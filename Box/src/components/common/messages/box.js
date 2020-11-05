@@ -11,4 +11,5 @@ export const ALERT2 = "Now tap on the boxes in the order they were highlighted."
 export const wait = "Please wait and Watch.";
 export const go = "Go";
 export const info = "please remember the sequence";
+export const REVALERT2 = "Now tap on the boxes in the reverse order they were highlighted.";
 

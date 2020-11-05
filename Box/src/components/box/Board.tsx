@@ -40,12 +40,11 @@ interface BoardState {
   states: any;
   wrongStages:number;
   wrongTaps: number; 
-  reverse:boolean;
   sendResponse: boolean; 
 }
 
 interface BoardProps {
-  order :boolean
+  reverse:boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -59,6 +58,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     // Initailise state values   
     const timerValue = typeof (process.env.REACT_APP_BOX_TIMOUT_PERIOD) === 'undefined' ? 120 :
       Number(process.env.REACT_APP_BOX_TIMOUT_PERIOD);
+      console.log(this.props.reverse)
     this.state = {
       activeCell: 0,
       animate: false,
@@ -75,7 +75,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       nextButton: false,
       orderNumber: -1,
       randomPoints: [],
-      reverse:this.props.order,
       sendResponse: false,
       showGo: false,
       showWait: true,
@@ -88,8 +87,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       successTaps: 0,
       timeout: false,
       wrongStages:0,
-      wrongTaps: 0,
-
+      wrongTaps: 0
     };
   }
   // On load function - set state of the gamne
@@ -178,23 +176,24 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Each box click is handled here
   handleClick = (e: any) => {
+    console.log(this.props.reverse)
     if (this.state.enableTap && 
-      ((!this.state.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
-       (this.state.reverse && this.state.orderNumber >= 0 ))) {
+      ((!this.props.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
+       (this.props.reverse && this.state.orderNumber >= 0 ))) {
       let success = false;
       const order = this.state.randomPoints.indexOf(parseInt(e.target.getAttribute('data-key'), 10));
-      success = (!this.state.reverse && order === this.state.orderNumber + 1) ||
-        (this.state.reverse && order === this.state.orderNumber - 1)? true : false;
+      success = (!this.props.reverse && order === this.state.orderNumber + 1) ||
+        (this.props.reverse && order === this.state.orderNumber - 1)? true : false;
       const item = e.target.className === 'box-white' ? e.target : e.target.children[0];
       if (typeof item !== 'undefined') {
         item.className = success ? 'box-white green-box-square' : 'box-white red-box-square';
 
         this.setState({
-          enableTap: (!this.state.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
-            (this.state.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
-          nextButton: (!this.state.reverse && this.state.orderNumber + 2 >= this.state.randomPoints.length) ||
-            (this.state.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
-          orderNumber: this.state.reverse ? this.state.orderNumber - 1 : this.state.orderNumber + 1,
+          enableTap: (!this.props.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
+            (this.props.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
+          nextButton: (!this.props.reverse && this.state.orderNumber + 2 >= this.state.randomPoints.length) ||
+            (this.props.reverse && this.state.orderNumber - 1 >= 0) ? true : false,
+          orderNumber: this.props.reverse ? this.state.orderNumber - 1 : this.state.orderNumber + 1,
           stateSuccessTaps: success ? this.state.stateSuccessTaps + 1 : this.state.stateSuccessTaps,
           stateWrongTaps: !success ? this.state.stateWrongTaps + 1 : this.state.stateWrongTaps,
           successTaps: success ? this.state.successTaps + 1 : this.state.successTaps,
@@ -313,7 +312,7 @@ console.log(statePassed)
         gameOver: gameOverVal,
         // gameState: gameStateVal,
         nextButton: false,
-        orderNumber:this.state.reverse ? rP.length : -1,
+        orderNumber:this.props.reverse ? rP.length : -1,
         randomPoints: rP,
         showWait: showWaitVal,
         successTaps: 0,
@@ -418,7 +417,7 @@ console.log(statePassed)
       // Game state
       level = this.state.gameState > 0 ? <span>Level {this.state.gameState}</span> : null;
       // Show the alert on bottom of game board
-      alertText = this.state.gameSequence ? <div className="box-info" >{alerts.ALERT1}</div> : (this.state.gameState > 0 ? <div className="box-info" >{alerts.ALERT2}</div> : null);
+      alertText = this.state.gameSequence ? <div className="box-info" >{alerts.ALERT1}</div> : (this.state.gameState > 0 ? <div className="box-info" >{this.props.reverse? alerts.REVALERT2: alerts.ALERT2}</div> : null);
     }
 
     return (
