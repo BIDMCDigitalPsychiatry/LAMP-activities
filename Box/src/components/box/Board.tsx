@@ -176,10 +176,9 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Each box click is handled here
   handleClick = (e: any) => {
-    console.log(this.props.reverse)
     if (this.state.enableTap && 
       ((!this.props.reverse && this.state.orderNumber + 1 < this.state.randomPoints.length) ||
-       (this.props.reverse && this.state.orderNumber >= 0 ))) {
+       (this.props.reverse && this.state.orderNumber - 1 >= 0 ))) {
       let success = false;
       const order = this.state.randomPoints.indexOf(parseInt(e.target.getAttribute('data-key'), 10));
       success = (!this.props.reverse && order === this.state.orderNumber + 1) ||
@@ -289,7 +288,6 @@ class Board extends React.Component<BoardProps, BoardState> {
   setGameState = () => {
     const statePassed = this.state.boxCount >= 2 && this.state.boxCount === this.state.successTaps
       || this.state.boxCount === 1 ? true : false;
-console.log(statePassed)
     const boxTempCount = statePassed ? this.state.boxCount + 1 : this.state.boxCount;
     const gameStateVal = this.state.gameState;
     const showWaitVal = statePassed && this.state.failureCount + 1 < 2 ? this.state.showWait : false;
