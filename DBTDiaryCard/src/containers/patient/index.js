@@ -90,6 +90,7 @@ function HomeView(props) {
         }
     }, [active])
   
+    console.log(active)
     if(active === 0){
         return (
         
@@ -113,18 +114,18 @@ function HomeView(props) {
         return (<EmotionView settings={settings} {...props} onContinue={() => setActive(3)} onBack={() => setActive(1)}/>)
     } else if(active === 3){
         return (<SkillsView {...props} onContinue={(mode) => setActive(mode)} onBack={() => setActive(2)}/>)
-    } else if(active === 4){
+    } else if(active === 4) {
         return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)}/>)
     } else if(active === 41){
         return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)}/>)
     } else if(active === 42){
-        return (<SkillNoView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)}/>)
-    } else if(active === 5){
-        return (<EffortView {...props} onContinue={() => setActive(6)} onBack={() => setActive(4)}/>)
+        return (<SkillNoView {...props} onContinue={() => setActive(7)} onBack={() => setActive(3)}/>)
+    } else if(active === 5 ){
+        return (<EffortView {...props} onContinue={() => setActive(6)} onBack={() => setActive(41)}/>)
     } else if(active === 6){
         return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)}/>)
     }else if(active === 7){
-        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(6)}/>)
+        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(props.reports && props.reports.skillToday ? 6 : 42)}/>)
     } else if(active == 8){
         return null
     }

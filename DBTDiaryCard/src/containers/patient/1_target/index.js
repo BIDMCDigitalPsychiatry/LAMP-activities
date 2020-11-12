@@ -48,9 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TargetView({settings, ...props}) {
   const classes = useStyles()
-  const [targets, setTargets] = React.useState({effective: {}, ineffective: {}})
+  const [targets, setTargets] = React.useState(props.report && props.report.targets ? props.report.targets : {effective: {}, ineffective: {}})
   const [targetEffective, setTargetEffective] = React.useState(settings?.targetEffective ?? [])
   const [targetIneffective, setTargetIneffective] = React.useState(settings?.targetIneffective ?? [])
+
+  console.log(props.repot)
 
   const updateUrge = (type, target, key, value) => {
     if(type == 'effective'){
@@ -142,7 +144,7 @@ export default function TargetView({settings, ...props}) {
             title='Target behaviors'
             description='0= not at all, 5 = extremely'
             currentStep={1}
-            totalStep={7}
+            totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
             question='Which target behaviors did you experience today?'
           />
            <Grid container direction="row" justify="center" alignItems="flex-start">
@@ -151,7 +153,8 @@ export default function TargetView({settings, ...props}) {
             <Typography className={classes.headerTitle}>Effective</Typography>
           </div>
           {targetEffective.map((item, index) => {
-            const actValue = (targets.effective && targets.effective["effective"+ index] && targets.effective["effective"+ index].act) ? targets.effective["effective"+ index].act : ''
+            const actValue = (targets.effective && targets.effective["effective"+ index] && targets.effective["effective"+ index].act) ? 
+              (targets.effective["effective"+ index].act.trim().length === 0 ? 0 : targets.effective["effective"+ index].act) : ''
             const urgeValue = (targets.effective && targets.effective["effective"+ index] && targets.effective["effective"+ index].urge) ? targets.effective["effective"+ index].urge : 0
 
             return(
@@ -172,7 +175,8 @@ export default function TargetView({settings, ...props}) {
             <Typography className={classes.headerTitle}>Ineffective</Typography>
           </div>
           {targetIneffective.map((item, index) => {
-            const actValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].act) ? targets.ineffective["ineffective"+ index].act : ''
+            const actValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].act) ? 
+              (targets.ineffective["ineffective"+ index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective"+ index].act) : ''
             const urgeValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].urge) ? targets.ineffective["ineffective"+ index].urge : 0
 
             return(

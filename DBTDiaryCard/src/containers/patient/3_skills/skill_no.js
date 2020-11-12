@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillNoView(props) {
     const classes = useStyles();
-    const [reason, setReason] = React.useState('')
+    const [reason, setReason] = React.useState(props.report && props.report.skill && props.report.skill.reason ? props.report.skill.reason : '')
 
     const onUpdateReport = () => {
         const {updateReport, onContinue} = props
@@ -90,7 +90,7 @@ export default function SkillNoView(props) {
                     <HeaderView
                         title='Skills'
                         currentStep={4}
-                        totalStep={7}
+                        totalStep={5}
                         question='Why didn’t you use any skills?'
                     />
                     <Grid container direction="row" justify="center" alignItems="flex-start">

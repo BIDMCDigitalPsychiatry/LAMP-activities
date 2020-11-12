@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillHelpView(props) {
   const classes = useStyles()
-  const [skillHelped, setSkillHelped] = React.useState(1)
+  const [skillHelped, setSkillHelped] = React.useState(props.report ? props.report.skillHelped : 1)
 
   const onUpdateReport = () => {
     const {updateReport, onContinue} = props
