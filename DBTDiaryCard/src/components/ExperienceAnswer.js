@@ -46,6 +46,11 @@ export default function ExperienceAnswer({ title, rate, setRate }) {
                     </div>
                     <div className={classes.rateContainer}>
                         <RateAnswer
+                            checked={rate === 0}
+                            onChange={handleChange}
+                            value={0}
+                        />
+                        <RateAnswer
                             checked={rate === 1}
                             onChange={handleChange}
                             value={1}

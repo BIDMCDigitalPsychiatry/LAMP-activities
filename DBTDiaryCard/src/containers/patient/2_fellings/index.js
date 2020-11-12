@@ -92,7 +92,7 @@ export default function FellingView({settings, ...props}) {
         title='Emotions'
         description='0= not at all, 5 = extremely'
         currentStep={2}
-        totalStep={6}
+        totalStep={7}
         question='Which emotions did you experience today?'
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">

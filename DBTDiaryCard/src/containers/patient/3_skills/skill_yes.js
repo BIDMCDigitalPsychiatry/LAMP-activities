@@ -114,7 +114,7 @@ export default function SkillYesView(props) {
                 title='Skills'
                 description='Select all that apply'
                 currentStep={4}
-                totalStep={6}
+                totalStep={7}
                 question='Which skills did you use?'
             />
              <Grid container direction="row" justify="center" alignItems="flex-start">

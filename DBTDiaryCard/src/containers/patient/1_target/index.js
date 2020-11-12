@@ -142,7 +142,7 @@ export default function TargetView({settings, ...props}) {
             title='Target behaviors'
             description='0= not at all, 5 = extremely'
             currentStep={1}
-            totalStep={6}
+            totalStep={7}
             question='Which target behaviors did you experience today?'
           />
            <Grid container direction="row" justify="center" alignItems="flex-start">
@@ -159,6 +159,7 @@ export default function TargetView({settings, ...props}) {
                 title={item.target}
                 key={"effective"+ index}
                 unit={item.measure}
+                customunit={item.customUnit}
                 separator={index <(targetEffective.length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
@@ -180,6 +181,7 @@ export default function TargetView({settings, ...props}) {
                 title={item.target}
                 key={ "ineffective"+ index}
                 unit={item.measure}
+                customunit={item.customUnit}
                 separator={index <(targetIneffective.length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}

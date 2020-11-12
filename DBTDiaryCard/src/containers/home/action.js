@@ -97,16 +97,10 @@ const actions = {
             activity: "", // <-- static, always ""
             duration: 0, // <-- static, always 0
             static_data: {
-                urge: report && report.overview ? report.overview.urge : 0, // <-- report.overview.urge
-                dieUrge: report && report.overview ? report.overview.dieUrge : 0, // <-- report.overview.dieurge
-                suicideUrge: report && report.overview ? report.overview.suicideUrge : 0, // <-- report.overview.suicideurge
-                er: report && report.overview && report.overview.er, // <-- report.overview.er
-                hospitalized: report && report.overview && report.overview.hospitalized, // <-- report.overview.hospitalized
-                selectedNormative: report && report.overview ? report.overview.selectedNormative : 0, // <-- report.overview.selectedNormative
                 effort: report ? report.effort : 0, // <-- report.effort
                 notes: report ? report.notes : '', // <-- report.notes
-                skillToday: report && report.skill && report.skill.skillToday, // <-- report.skillToday
-                skillHelped: report && report.skill && report.skill.skillHelped,
+                skillToday: report ? report.skillToday : 0, // <-- report.skillToday
+                skillHelped: report ? report.skillHelped : 0,
             },
             temporal_slices: temporal_slices
         }

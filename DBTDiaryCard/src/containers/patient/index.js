@@ -11,8 +11,8 @@ import SkillsView from './3_skills'
 import SkillNoView from './3_skills/skill_no'
 import SkillYesView from './3_skills/skill_yes'
 import EffortView from './5_effort'
-import NoteView from './6_notes'
-import Overview from '../overview'
+import NoteView from './7_notes'
+import SkillHelpView from './6_skillhelp'
 
 import actions from '../home/action'
 
@@ -122,9 +122,9 @@ function HomeView(props) {
     } else if(active === 5){
         return (<EffortView {...props} onContinue={() => setActive(6)} onBack={() => setActive(4)}/>)
     } else if(active === 6){
-        return (<NoteView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)}/>)
-    } else if(active === 7){
-        return (<Overview {...props} onContinue={() => setActive(8)} onBack={() => setActive(6)}/>)
+        return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)}/>)
+    }else if(active === 7){
+        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(6)}/>)
     } else if(active == 8){
         return null
     }
