@@ -71,14 +71,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function SkillNoView(props) {
-    const classes = useStyles();
-    const [reason, setReason] = React.useState('')
+export default function NotesView(props) {
+    const classes = useStyles()
+    const [notes, setNotes] = React.useState('')
 
     const onUpdateReport = () => {
         const {updateReport, onContinue} = props
         if(updateReport){
-          updateReport('skill', {skillToday: false, reason: reason})
+          updateReport('notes', notes)
         }
         if(onContinue){
             onContinue()
@@ -88,29 +88,32 @@ export default function SkillNoView(props) {
     return (
         <div className={classes.root}>
                     <HeaderView
-                        title='Skills'
-                        currentStep={4}
+                        title='Additional Notes'
+                        description='Short answer (1-2 sentences)'
+                        currentStep={7}
                         totalStep={7}
-                        question='Why didn’t you use any skills?'
+                        question='Optional: Are there any other details you want to share about your day?'
                     />
-                    <Grid container direction="row" justify="center" alignItems="flex-start">
+<Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
-                            <CssTextField value={reason} onChange={(event) => setReason(event.target.value)} inputProps={{ disableunderline: 'true' }} multiline rows={8} />
-                            <Typography className={classes.description}>{`${reason.length} / 300 max characters`}</Typography>
+                            <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{disableunderline: 'true'}} multiline rows={8}/>
+                            <Typography className={classes.description}>{`${notes.length} / 300 max characters`}</Typography>
                         </div>
+
                     </div>
                     <div className={classes.buttonsContainer}>
                         <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                            <Typography className={classes.buttonText}>Next</Typography>
+                                <Typography className={classes.buttonText}>Submit</Typography>
+
                         </Button>
                         <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                            <Typography className={classes.backText}>Back</Typography>
+                                <Typography className={classes.backText}>Back</Typography>
+
                         </Button>
                     </div>
-                    </Grid>
-                    </Grid>
+                    </Grid></Grid>
         </div>
     )
 }

@@ -55,7 +55,7 @@ export default function SkillsView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skill', { skillToday: skillToday })
+            updateReport('skillToday', skillToday)
         }
 
         if(onContinue){
@@ -68,7 +68,7 @@ export default function SkillsView(props) {
             <HeaderView
                 title='Skills'
                 currentStep={3}
-                totalStep={6}
+                totalStep={7}
                 question='Did you use any of the skills today?'
             />
              <Grid container direction="row" justify="center" alignItems="flex-start">

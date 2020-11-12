@@ -35,6 +35,11 @@ export default function EffortAnswer({ selectedLevel, onChange }) {
 
             <Grid direction='row' container>
                 <RateAnswer
+                    checked={selectedLevel === 0}
+                    onChange={onChange}
+                    value={0}
+                />
+                <RateAnswer
                     checked={selectedLevel === 1}
                     onChange={onChange}
                     value={1}

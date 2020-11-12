@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
@@ -55,12 +55,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function RateCountAnswer({ title, unit, separator, urgeValue, selectedUrge, selectedActed, actedValue }) {
+export default function RateCountAnswer({ title, unit, customunit, separator, urgeValue, selectedUrge, selectedActed, actedValue }) {
     const classes = useStyles()
 
     const handleChange = (value) => {
         selectedUrge && selectedUrge(value);
     }
+
+    useEffect(() => {
+        handleChange(0)
+    },[])
 
     return (
         <div className={classes.container}>
@@ -71,6 +75,11 @@ export default function RateCountAnswer({ title, unit, separator, urgeValue, sel
                 <Grid item xs={8}>
                     <Typography className={classes.typeTitle} >Urge</Typography>
                     <Grid direction='row' container>
+                        <RateAnswer
+                            checked={urgeValue === 0}
+                            onChange={handleChange}
+                            value={0}
+                        />
                         <RateAnswer
                             checked={urgeValue === 1}
                             onChange={handleChange}
@@ -101,13 +110,10 @@ export default function RateCountAnswer({ title, unit, separator, urgeValue, sel
                 <Grid item xs={4}>
                     <Typography className={classes.typeTitle} >Acted</Typography>
                     <Grid direction='row' container>
-                        {unit !== "Custom" ? <CssTextField disabled={urgeValue === 0} 
+                        <CssTextField disabled={urgeValue === 0} 
                             value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
-                            : <CssCustomTextField disabled={urgeValue === 0} 
-                            value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
-                        }
-                        {unit !== "Custom" && 
-                        <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.7)'}}>{unit}</Typography>}
+                        <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 
+                            'rgba(0, 0, 0, 0.7)'}}>{unit !== "Custom" ? unit : customunit}</Typography>
                     </Grid>
                 </Grid>
             </Grid>
