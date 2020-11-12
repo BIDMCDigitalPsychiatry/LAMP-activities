@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NotesView(props) {
     const classes = useStyles()
-    const [notes, setNotes] = React.useState('')
+    const [notes, setNotes] = React.useState(props.report && props.report.notes ? props.report.notes : '')
 
     const onUpdateReport = () => {
         const {updateReport, onContinue} = props
@@ -90,8 +90,8 @@ export default function NotesView(props) {
                     <HeaderView
                         title='Additional Notes'
                         description='Short answer (1-2 sentences)'
-                        currentStep={7}
-                        totalStep={7}
+                        currentStep={props.report && props.report.skillToday ? 7 : 5}
+                        totalStep={props.report && props.report.skillToday ? 7 : 5}
                         question='Optional: Are there any other details you want to share about your day?'
                     />
 <Grid container direction="row" justify="center" alignItems="flex-start">

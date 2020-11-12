@@ -83,7 +83,7 @@ const data = [
 
 export default function SkillYesView(props) {
     const classes = useStyles()
-    const [skill, setSkill] = React.useState({ skillToday: true, skills: [] })
+    const [skill, setSkill] = React.useState(props.report && props.report.skill ? props.report.skill : { skillToday: true, skills: [] })
 
     const onChangeList = (section, i) => {
         var list = skill.skills
