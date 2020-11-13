@@ -9,9 +9,9 @@ import * as React from "react";
 
 import { getRandomNumbers } from "../../functions";
 
-import { Timer } from "../common/Timer";
-
 import i18n from "./../../i18n";
+
+import { Timer } from "../common/Timer";
 
 import "./box.css";
 
@@ -492,7 +492,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       // Next button rendering controlled here
       nextButton = this.state.nextButton ? (
         <div className="next-button">
-          <button onClick={this.resetState}>Next</button>
+          <button onClick={this.resetState}>{i18n.t("NEXT")}</button>
         </div>
       ) : null;
       // Timer to be shown or not
@@ -524,7 +524,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       // Game state
       level =
         this.state.gameState > 0 ? (
-          <span>Level {this.state.gameState}</span>
+          <span>{i18n.t("LEVEL")} {this.state.gameState}</span>
         ) : null;
       // Show the alert on bottom of game board
       alertText = this.state.gameSequence ? (
