@@ -9,61 +9,67 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
-import * as React from 'react';
+import * as React from "react";
 
-import Board from './Board';
+import Board from "./Board";
+
+import i18n from "./../../i18n";
 
 interface AppState {
-    loaded:boolean;
-    reverse:boolean;    
+  loaded: boolean;
+  reverse: boolean;
 }
 
 class Box extends React.Component<{}, AppState> {
-  
   constructor(props: {}) {
     super(props);
-    const state = { 
-      loaded:false, 
-      reverse:false
+    const state = {
+      loaded: false,
+      reverse: false,
     };
     this.state = state;
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+    const eventMethod = window.addEventListener
+      ? "addEventListener"
+      : "attachEvent";
+    const eventer = window[eventMethod];
+    const messageEvent =
+      eventMethod === "attachEvent" ? "onmessage" : "message";
     // Listen to message from child window
     eventer(
-      messageEvent, (e:any) => {
-        this.setState({reverse:e.data.reverse_tapping, loaded: true})
-    },
+      messageEvent,
+      (e: any) => {
+        i18n.changeLanguage(!!e.data.language ? e.data.language : "en_US");
+        this.setState({ reverse: e.data.reverse_tapping, loaded: true });
+      },
       false
-    )  
-  }
-  
-  // To refresh the game
-  clickHome=() => {
-    window.location.reload(false);
+    );
   }
 
+  // To refresh the game
+  clickHome = () => {
+    window.location.reload(false);
+  };
+
   // Game render function
-  render() {    
-   
+  render() {
     return (
       <div>
         {this.state && this.state.loaded && (
-        <div> 
-          <nav className="home-link">
-          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome}/>
-        </nav>
-        <div className="heading">Box Game</div>
-        <div className="game-board">
-         <Board reverse={this.state.reverse} />          
-      </div> 
-      </div>)}
-    </div> 
+          <div>
+            <nav className="home-link">
+              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+            </nav>
+            <div className="heading">{i18n.t("BOX_GAME")}</div>
+            <div className="game-board">
+              <Board reverse={this.state.reverse} language={i18n.language} />
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 }
 
-export default Box
+export default Box;
