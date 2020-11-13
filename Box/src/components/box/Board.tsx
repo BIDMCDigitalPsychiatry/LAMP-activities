@@ -6,9 +6,13 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from "react";
+
 import { getRandomNumbers } from "../../functions";
-import i18n from "./../../i18n";
+
 import { Timer } from "../common/Timer";
+
+import i18n from "./../../i18n";
+
 import "./box.css";
 
 interface BoardState {
@@ -278,7 +282,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     });
   };
   // Update the state values after each game state
-  updateWithTaps = (boxNo: number, status: boolean) => {
+  updateWithTaps = (boxNo: number, statusVal: boolean) => {
     const boxes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
     if (this.state.boxes !== null) {
@@ -291,7 +295,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       const route = {
         item: boxNo,
         value: this.state.gameState,
-        status: status,
+        status: statusVal,
         duration: lastclickTime,
         level: this.state.gameState,
       };
