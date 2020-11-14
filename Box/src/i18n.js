@@ -5,6 +5,8 @@ const resources = {
   en_US: {
     translation: {
       BOX_GAME: "Box Game",
+      CONGRATS: "Congrats",
+      GAME_OVER: "Game Over",
       GO: "Go",
       LEVEL: "Level",
       NEXT: "Next",
@@ -21,6 +23,8 @@ const resources = {
   hi_IN: {
     translation: {
       BOX_GAME: "खेल बॉक्स",
+      CONGRATS: "बधाई हो ",
+      GAME_OVER: "खेल खत्म",
       GO: "जाए",    
       LEVEL: "स्तर",   
       NEXT: "आगे",    

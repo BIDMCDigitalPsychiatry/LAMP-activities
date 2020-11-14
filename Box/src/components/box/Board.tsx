@@ -477,11 +477,11 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.state.gameOver &&
         this.state.failureCount <= 1 &&
         this.state.wrongTaps === 0
-          ? "Congrats !!!"
+          ? i18n.t("CONGRATS") + " !!!"
           : this.state.gameOver || this.state.failureCount === 2
-          ? "Game Over  !!"
+          ? i18n.t("GAME_OVER") + " !!!"
           : this.state.timeout
-          ? "Time Out !!!"
+          ? i18n.t("TIME_OUT") + " !!!"
           : null;
     } else {
       board = (
