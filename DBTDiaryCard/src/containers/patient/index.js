@@ -74,7 +74,7 @@ function HomeView(props) {
     
         eventer(
             messageEvent, (e) => {
-              setSettings(e.data)
+              setSettings(e.data.settings)
               setTime(new Date().getTime())
            },
             false
