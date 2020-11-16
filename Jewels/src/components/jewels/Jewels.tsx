@@ -81,28 +81,30 @@ class Jewels extends React.Component<{}, AppState> {
     eventer(
       messageEvent,
       (e: any) => {
-        let gameTimeVal = e.data.beginner_seconds ?? 90;
+        const settings = e.data.settings;
+        const configuration = e.data.configuration;
+        let gameTimeVal = settings.beginner_seconds ?? 90;
         switch (mode) {
           case 1:
-            gameTimeVal = e.data.beginner_seconds;
+            gameTimeVal = settings.beginner_seconds;
             break;
           case 2:
-            gameTimeVal = e.data.intermediate_seconds;
+            gameTimeVal = settings.intermediate_seconds;
             break;
           case 3:
-            gameTimeVal = e.data.advanced_seconds;
+            gameTimeVal = settings.advanced_seconds;
             break;
           case 4:
-            gameTimeVal = e.data.expert_seconds;
+            gameTimeVal = settings.expert_seconds;
             break;
           default:
-            gameTimeVal = e.data.beginner_seconds;
+            gameTimeVal = settings.beginner_seconds;
             break;
         }
-        i18n.changeLanguage(e.data.language);
+        i18n.changeLanguage(configuration.language);
         this.setState(
           {
-            diamondCount: e.data.diamond_count ?? 15,
+            diamondCount: settings.diamond_count ?? 15,
             loaded: true,
             gameTime: gameTimeVal,
           },

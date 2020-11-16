@@ -31,7 +31,8 @@ class CatsNDogs extends React.Component<{}, AppState> {
     eventer(
       messageEvent,
       (e: any) => {
-        i18n.changeLanguage(!!e.data.language ? e.data.language : "en_US");
+        const configuration = e.data.configuration;
+        i18n.changeLanguage(!!configuration ? configuration.language : "en_US");
         this.setState({ loaded: false }, () => {
           this.reset(true);
         });

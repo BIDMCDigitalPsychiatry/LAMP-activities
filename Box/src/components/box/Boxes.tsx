@@ -40,8 +40,10 @@ class Box extends React.Component<{}, AppState> {
     eventer(
       messageEvent,
       (e: any) => {
-        i18n.changeLanguage(!!e.data.language ? e.data.language : "en_US");
-        this.setState({ reverse: e.data.reverse_tapping, loaded: true });
+        const settings = e.data.settings;
+        const configuration = e.data.configuration;
+        i18n.changeLanguage(!!configuration ? configuration.language : "en_US");
+        this.setState({ reverse: settings ? (settings.reverse_tapping ? settings.reverse_tapping : false) : false, loaded: true });
       },
       false
     );
