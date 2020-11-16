@@ -61,9 +61,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FellingView({settings, ...props}) {
   const classes = useStyles()
-  const [result, setResult] = React.useState({ felling: {} })
+  const [result, setResult] = React.useState(props.report && props.report.emotion ? props.report.emotion : { felling: {} })
   const [emotions, setEmotions] = React.useState(settings?.emotions ?? [])
-
+console.log(!props.report || (props.report && props.report.skillToday), props.report)
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
     if (currentFelling[key] && currentFelling[key].rate === rate) {
@@ -92,7 +92,7 @@ export default function FellingView({settings, ...props}) {
         title='Emotions'
         description='0= not at all, 5 = extremely'
         currentStep={2}
-        totalStep={6}
+        totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
         question='Which emotions did you experience today?'
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">

@@ -83,7 +83,7 @@ const data = [
 
 export default function SkillYesView(props) {
     const classes = useStyles()
-    const [skill, setSkill] = React.useState({ skillToday: true, skills: [] })
+    const [skill, setSkill] = React.useState(props.report && props.report.skill ? props.report.skill : { skillToday: true, skills: [] })
 
     const onChangeList = (section, i) => {
         var list = skill.skills
@@ -114,7 +114,7 @@ export default function SkillYesView(props) {
                 title='Skills'
                 description='Select all that apply'
                 currentStep={4}
-                totalStep={6}
+                totalStep={7}
                 question='Which skills did you use?'
             />
              <Grid container direction="row" justify="center" alignItems="flex-start">

@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillEffortView(props) {
   const classes = useStyles()
-  const [effortLevel, setEffortLevel] = React.useState(0)
+  const [effortLevel, setEffortLevel] = React.useState(props.report && props.report.effort ? props.report.effort :0)
 
   const onUpdateReport = () => {
     const {updateReport, onContinue} = props
@@ -75,7 +75,7 @@ export default function SkillEffortView(props) {
             title='Skills'
             description='0= not at all, 5 = extremely'
             currentStep={5}
-            totalStep={6}
+            totalStep={7}
             question='How much effort did you put into the skills?'
           />
           <div className={classes.contentContainer}>

@@ -50,12 +50,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillsView(props) {
     const classes = useStyles();
-    const [skillToday, setSkillToday] = React.useState(1)
-
+    const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : 1)
+console.log(props.report)
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skill', { skillToday: skillToday })
+            updateReport('skillToday', skillToday)
         }
 
         if(onContinue){
@@ -68,7 +68,7 @@ export default function SkillsView(props) {
             <HeaderView
                 title='Skills'
                 currentStep={3}
-                totalStep={6}
+                totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
                 question='Did you use any of the skills today?'
             />
              <Grid container direction="row" justify="center" alignItems="flex-start">
