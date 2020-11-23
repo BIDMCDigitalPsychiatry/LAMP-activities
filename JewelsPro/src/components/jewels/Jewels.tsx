@@ -83,13 +83,13 @@ class Jewels extends React.Component<{}, AppState> {
     this.state = state;
     eventer(
       messageEvent,
-      (e: any) => {
+      (e: any) => {        
         const settings = e.data.settings;
         const configuration = e.data.configuration;
         let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
         switch (mode) {
           case 1:
-            gameTimeVal = settings.beginner_seconds;
+            gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
             break;
           case 2:
             gameTimeVal = settings.intermediate_seconds;
@@ -104,13 +104,14 @@ class Jewels extends React.Component<{}, AppState> {
             gameTimeVal = settings.beginner_seconds;
             break;
         }
-        i18n.changeLanguage(configuration.language);
+        const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en_US") : "en_US"
+        i18n.changeLanguage(langugae);
         this.setState(
           {
-            diamondCount: settings.diamond_count ?? 15,
+            diamondCount: settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
             loaded: false,
             gameTime: gameTimeVal,
-            shapeCount: settings.shape_count ?? 2,
+            shapeCount: settings ? (settings.shape_count ? settings.shape_count : 2 ) : 2,
           },
           () => {
             this.reset(true);
@@ -121,7 +122,7 @@ class Jewels extends React.Component<{}, AppState> {
     );
     this.reset(true);
   }
-
+  
   // Reset game board
   reset = (loadedVal: boolean) => {
     const noOfDimonds = this.state ? this.state.shapeCount : 2;

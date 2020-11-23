@@ -9,8 +9,6 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
 import * as React from "react";
 
 import Board from "./Board";

@@ -40,7 +40,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
       false
     );
   }
-
+    
   // Reset game board
   reset = (loadedVal: boolean) => {
     const state = {
