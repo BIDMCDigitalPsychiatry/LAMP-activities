@@ -87,12 +87,12 @@ export default function SkillHelpView(props) {
                     <div className={classes.buttonsContainer}>
                         <Button onClick={onUpdateReport} className={classes.buttonContainer}>
                             <Typography className={classes.buttonText}>
-                                Next
+                            {t("NEXT")}
                             </Typography>
 
                         </Button>
                         <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                            <Typography className={classes.backText}>Back</Typography>
+                            <Typography className={classes.backText}>{t("Back")}</Typography>
                         </Button>
                     </div>
                 </Grid></Grid>
