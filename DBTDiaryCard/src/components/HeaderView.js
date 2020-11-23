@@ -1,8 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import ArrowBack from '@material-ui/icons/ArrowBack'
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -68,22 +67,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeaderView({title, question, currentStep, totalStep, description}) {
     const classes = useStyles();
-
+    const { t } = useTranslation();
     return (
         <div className={classes.root}>
-                    <div className={classes.headerContainer}>                        
-                        <Typography className={classes.headerTitle}>{title}</Typography>
-                    </div>
-                    <div className={classes.progressContainer}>
-                        <div className={classes.progressContent} style={{width: (currentStep / totalStep * 100) + '%'}}/>
-                        <div className={classes.remainProgressContent}/>
-                    </div>
-                    <Typography className={classes.progressText}>{`${currentStep} of ${totalStep}`}</Typography>
-                    <div className={classes.questionContainer}>
-                        <Typography className={classes.questionTitle}>{question}</Typography>
-                        {!!description && <Typography className={classes.descriptionTitle}>{description}</Typography>}
-                    </div>
-                    <div className={classes.viewWidth} />
+            <div className={classes.headerContainer}>                        
+                <Typography className={classes.headerTitle}>{t(title)}</Typography>
+            </div>
+            <div className={classes.progressContainer}>
+                <div className={classes.progressContent} style={{width: (currentStep / totalStep * 100) + '%'}}/>
+                <div className={classes.remainProgressContent}/>
+            </div>
+            <Typography className={classes.progressText}>{`${currentStep} of ${totalStep}`}</Typography>
+            <div className={classes.questionContainer}>
+                <Typography className={classes.questionTitle}>{t(question)}</Typography>
+                {!!description && <Typography className={classes.descriptionTitle}>{t(description)}</Typography>}
+            </div>
+            <div className={classes.viewWidth} />
         </div>
     )
 }

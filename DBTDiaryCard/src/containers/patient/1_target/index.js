@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom'
 import { Grid } from '@material-ui/core'
 import RateCountAnswer from '../../../components/RateCountAnswer'
 import HeaderView from '../../../components/HeaderView'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import actions from '../../home/action'
+import { useTranslation } from "react-i18next"
 
 
-const {updateReport} = actions
+const { updateReport } = actions
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,19 +47,20 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function TargetView({settings, ...props}) {
+export default function TargetView({ settings, ...props }) {
   const classes = useStyles()
-  const [targets, setTargets] = React.useState(props.report && props.report.targets ? props.report.targets : {effective: {}, ineffective: {}})
+  const [targets, setTargets] = React.useState(props.report && props.report.target ? props.report.target : { effective: {}, ineffective: {} })
   const [targetEffective, setTargetEffective] = React.useState(settings?.targetEffective ?? [])
   const [targetIneffective, setTargetIneffective] = React.useState(settings?.targetIneffective ?? [])
+  const { t } = useTranslation()
 
   console.log(props.repot)
 
   const updateUrge = (type, target, key, value) => {
-    if(type == 'effective'){
+    if (type == 'effective') {
       let newEffective = targets.effective
       let object = newEffective[key]
-      if(!object){
+      if (!object) {
         object = {
           act: '0',
           urge: 0,
@@ -66,18 +68,18 @@ export default function TargetView({settings, ...props}) {
         }
       }
 
-      if(object.urge == value){
+      if (object.urge == value) {
         delete newEffective[key]
       } else {
         object.urge = value
         newEffective[key] = object
       }
-      
-      setTargets({...targets, effective: newEffective})
+
+      setTargets({ ...targets, effective: newEffective })
     } else {
       let newIneffective = targets.ineffective
       let object = newIneffective[key]
-      if(!object){
+      if (!object) {
         object = {
           act: '0',
           urge: 0,
@@ -85,22 +87,22 @@ export default function TargetView({settings, ...props}) {
         }
       }
 
-      if(object.urge == value){
+      if (object.urge == value) {
         delete newIneffective[key]
       } else {
         object.urge = value
         newIneffective[key] = object
       }
 
-      setTargets({...targets, ineffective: newIneffective})
+      setTargets({ ...targets, ineffective: newIneffective })
     }
   }
 
   const updateAct = (type, target, key, value) => {
-    if(type == 'effective'){
+    if (type == 'effective') {
       let newEffective = targets.effective
       let object = newEffective[key]
-      if(!object){
+      if (!object) {
         object = {
           act: '0',
           urge: 0,
@@ -109,11 +111,11 @@ export default function TargetView({settings, ...props}) {
       }
       object.act = value
       newEffective[key] = object
-      setTargets({...targets, effective: newEffective})
+      setTargets({ ...targets, effective: newEffective })
     } else {
       let newIneffective = targets.ineffective
       let object = newIneffective[key]
-      if(!object){
+      if (!object) {
         object = {
           act: '0',
           urge: 0,
@@ -122,17 +124,17 @@ export default function TargetView({settings, ...props}) {
       }
       object.act = value
       newIneffective[key] = object
-      setTargets({...targets, ineffective: newIneffective})
+      setTargets({ ...targets, ineffective: newIneffective })
     }
   }
 
   const onUpdateReport = () => {
-    const {updateReport, onContinue} = props
+    const { updateReport, onContinue } = props
     // console.log(target)
-    if(updateReport){
+    if (updateReport) {
       updateReport('target', targets)
     }
-    if(onContinue){
+    if (onContinue) {
       onContinue()
     }
   }
@@ -140,76 +142,74 @@ export default function TargetView({settings, ...props}) {
   return (
     <div className={classes.root}>
 
-          <HeaderView
-            title='Target behaviors'
-            description='0= not at all, 5 = extremely'
-            currentStep={1}
-            totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
-            question='Which target behaviors did you experience today?'
-          />
-           <Grid container direction="row" justify="center" alignItems="flex-start">
+      <HeaderView
+        title={t("TARGET_BEHAVIORS")}
+        description={t("ANSWER_RADIO_RATING_FORMATS")}
+        currentStep={1}
+        totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
+        question={t("WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY")}
+      />
+      <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
           <div className={classes.headerContainer}>
-            <Typography className={classes.headerTitle}>Effective</Typography>
+            <Typography className={classes.headerTitle}>{t("EFFECTIVE")}</Typography>
           </div>
           {targetEffective.map((item, index) => {
-            const actValue = (targets.effective && targets.effective["effective"+ index] && targets.effective["effective"+ index].act) ? 
-              (targets.effective["effective"+ index].act.trim().length === 0 ? 0 : targets.effective["effective"+ index].act) : ''
-            const urgeValue = (targets.effective && targets.effective["effective"+ index] && targets.effective["effective"+ index].urge) ? targets.effective["effective"+ index].urge : 0
+            const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
+              (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
+            const urgeValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].urge) ? targets.effective["effective" + index].urge : 0
 
-            return(
+            return (
               <RateCountAnswer
                 title={item.target}
-                key={"effective"+ index}
+                key={"effective" + index}
                 unit={item.measure}
                 customunit={item.customUnit}
-                separator={index <(targetEffective.length - 1)}
+                separator={index < (targetEffective.length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
-                selectedActed={(value) => updateAct('effective', item.target, "effective"+ index, value)}
-                selectedUrge={(value) => updateUrge('effective', item.target,   "effective"+ index, value)}
+                selectedActed={(value) => updateAct('effective', item.target, "effective" + index, value)}
+                selectedUrge={(value) => updateUrge('effective', item.target, "effective" + index, value)}
               />
             )
           })}
           <div className={classes.headerContainer}>
-            <Typography className={classes.headerTitle}>Ineffective</Typography>
+            <Typography className={classes.headerTitle}>{t("INEFFECTIVE")}</Typography>
           </div>
           {targetIneffective.map((item, index) => {
-            const actValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].act) ? 
-              (targets.ineffective["ineffective"+ index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective"+ index].act) : ''
-            const urgeValue = (targets.ineffective && targets.ineffective["ineffective"+ index] && targets.ineffective["ineffective"+ index].urge) ? targets.ineffective["ineffective"+ index].urge : 0
+            const actValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].act) ?
+              (targets.ineffective["ineffective" + index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective" + index].act) : ''
+            const urgeValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].urge) ? targets.ineffective["ineffective" + index].urge : 0
 
-            return(
-             
+            return (
+
               <RateCountAnswer
                 title={item.target}
-                key={ "ineffective"+ index}
+                key={"ineffective" + index}
                 unit={item.measure}
                 customunit={item.customUnit}
-                separator={index <(targetIneffective.length - 1)}
+                separator={index < (targetIneffective.length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
-                selectedActed={(value) => updateAct('ineffective', item.target, "ineffective"+ index, value)}
-                selectedUrge={(value) => updateUrge('ineffective', item.target, "ineffective"+ index, value)}
+                selectedActed={(value) => updateAct('ineffective', item.target, "ineffective" + index, value)}
+                selectedUrge={(value) => updateUrge('ineffective', item.target, "ineffective" + index, value)}
               />
             )
           })}
           <div className={classes.buttonsContainer}>
             <Button onClick={onUpdateReport} className={classes.buttonContainer}>
               <Typography className={classes.buttonText}>
-                Next
-                    </Typography>
-
+                {t("NEXT")}
+              </Typography>
             </Button>
             <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
               <Typography className={classes.backText}>
-                Back
-                </Typography>
-
+                {t("BACK")}
+              </Typography>
             </Button>
           </div>
-          </Grid>
-          </Grid>
+        </Grid>
+      </Grid>
     </div>
   )
 }

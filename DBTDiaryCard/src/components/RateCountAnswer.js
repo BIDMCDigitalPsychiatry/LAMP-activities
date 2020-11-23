@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import { Grid } from '@material-ui/core'
 import RateAnswer from './RateAnswer'
+import { useTranslation } from "react-i18next"
 
 const CssTextField = withStyles({
     root: {
@@ -57,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RateCountAnswer({ title, unit, customunit, separator, urgeValue, selectedUrge, selectedActed, actedValue }) {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     const handleChange = (value) => {
         selectedUrge && selectedUrge(value);
@@ -70,10 +72,10 @@ export default function RateCountAnswer({ title, unit, customunit, separator, ur
         <div className={classes.container}>
             <Grid container spacing={0} className={classes.contentContainer}>
                 <Grid item xs={12}>
-                    <Typography className={classes.questionTitle}>{title}</Typography>
+                    <Typography className={classes.questionTitle}>{t(title)}</Typography>
                 </Grid>
                 <Grid item xs={8}>
-                    <Typography className={classes.typeTitle} >Urge</Typography>
+                    <Typography className={classes.typeTitle} >{t("URGE")}</Typography>
                     <Grid direction='row' container>
                         <RateAnswer
                             checked={urgeValue === 0}
@@ -108,12 +110,12 @@ export default function RateCountAnswer({ title, unit, customunit, separator, ur
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
-                    <Typography className={classes.typeTitle} >Acted</Typography>
+                    <Typography className={classes.typeTitle} >{t("ACTED")}</Typography>
                     <Grid direction='row' container>
                         <CssTextField disabled={urgeValue === 0} 
-                            value={actedValue} onChange={event => selectedActed && selectedActed(event.target.value)} />
+                            value={t(actedValue)} onChange={event => selectedActed && selectedActed(event.target.value)} />
                         <Typography className={classes.unitTitle} style={{color: urgeValue === 0 ? 'rgba(0, 0, 0, 0.4)' : 
-                            'rgba(0, 0, 0, 0.7)'}}>{unit !== "Custom" ? unit : customunit}</Typography>
+                            'rgba(0, 0, 0, 0.7)'}}>{t(unit.toUpperCase())}</Typography>
                     </Grid>
                 </Grid>
             </Grid>

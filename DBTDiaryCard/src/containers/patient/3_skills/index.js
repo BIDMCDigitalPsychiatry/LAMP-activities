@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import RatioButton from '../../../components/RatioButton'
 import HeaderView from '../../../components/HeaderView'
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,48 +52,50 @@ const useStyles = makeStyles((theme) => ({
 export default function SkillsView(props) {
     const classes = useStyles();
     const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : 1)
-console.log(props.report)
+    const { t } = useTranslation()
+
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
             updateReport('skillToday', skillToday)
         }
 
-        if(onContinue){
+        if (onContinue) {
             onContinue(skillToday === 1 ? 41 : 42)
-          }
+        }
     }
 
     return (
         <div className={classes.root}>
             <HeaderView
-                title='Skills'
+                title={t("SKILLS")}
                 currentStep={3}
                 totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
-                question='Did you use any of the skills today?'
+                question={t("DID_YOU_USE_ANY_OF_THE_SKILLS_TODAY")}
             />
-             <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12}>
-            <div className={classes.contentContainer}>
-                <div>
-                    <RatioButton checked={skillToday === 1} onChange={() => setSkillToday(1)} title='Yes' />
-                </div>
-                <div className={classes.ratioContainer}>
-                    <RatioButton checked={skillToday === 0} onChange={() => setSkillToday(0)} title='No' />
-                </div>
-            </div>
-            <div className={classes.buttonsContainer}>
-                <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                    <Typography className={classes.buttonText}>
-                        Next
+            <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item lg={4} sm={10} xs={12}>
+                    <div className={classes.contentContainer}>
+                        <div>
+                            <RatioButton checked={skillToday === 1} onChange={() => setSkillToday(1)} title={t("YES")} />
+                        </div>
+                        <div className={classes.ratioContainer}>
+                            <RatioButton checked={skillToday === 0} onChange={() => setSkillToday(0)} title={t("NO")} />
+                        </div>
+                    </div>
+                    <div className={classes.buttonsContainer}>
+                        <Button onClick={onUpdateReport} className={classes.buttonContainer}>
+                            <Typography className={classes.buttonText}>
+                                {t("NEXT")}
                             </Typography>
 
-                </Button>
-                <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                    <Typography className={classes.backText}>Back</Typography>
-                </Button>
-            </div>
-            </Grid></Grid>
+                        </Button>
+                        <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
+                            <Typography className={classes.backText}>{t("BACK")}</Typography>
+                        </Button>
+                    </div>
+                </Grid>
+            </Grid>
         </div>
     )
 }

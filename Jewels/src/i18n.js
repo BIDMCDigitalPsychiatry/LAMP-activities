@@ -9,6 +9,13 @@ const resources = {
       TIMEOUT: "Timeout",
     },
   },
+  es_ES: {
+    translation: {
+      JEWELS: "Jewels",
+      CONGRATS: "Congrats",
+      TIMEOUT: "Timeout",
+    },
+  },
   hi_IN: {
     translation: {
       JEWELS: "गहने",

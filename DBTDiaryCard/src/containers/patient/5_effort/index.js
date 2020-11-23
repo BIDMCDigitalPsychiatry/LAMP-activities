@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import EffortAnswer from '../../../components/EffortAnswer'
 import HeaderView from '../../../components/HeaderView'
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,40 +58,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillEffortView(props) {
   const classes = useStyles()
-  const [effortLevel, setEffortLevel] = React.useState(props.report && props.report.effort ? props.report.effort :0)
+  const [effortLevel, setEffortLevel] = React.useState(props.report && props.report.effort ? props.report.effort : 0)
+  const { t } = useTranslation()
 
   const onUpdateReport = () => {
-    const {updateReport, onContinue} = props
-    if(updateReport){
+    const { updateReport, onContinue } = props
+    if (updateReport) {
       updateReport('effort', effortLevel)
     }
-    if(onContinue){
+    if (onContinue) {
       onContinue()
     }
   }
 
   return (
     <div className={classes.root}>
-          <HeaderView
-            title='Skills'
-            description='0= not at all, 5 = extremely'
-            currentStep={5}
-            totalStep={7}
-            question='How much effort did you put into the skills?'
-          />
-          <div className={classes.contentContainer}>
-            <EffortAnswer selectedLevel={effortLevel} onChange={(level) => setEffortLevel(level)}/>
-          </div>
-          <div className={classes.buttonsContainer}>
-            <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                <Typography className={classes.buttonText}>Next</Typography>
+      <HeaderView
+        title={t("SKILLS")}
+        description={t("ANSWER_RADIO_RATING_FORMATS")}
+        currentStep={5}
+        totalStep={7}
+        question={t("HOW_MUCH_EFFORT_DID_YOU_PUT_INTO_THE_SKILLS")}
+      />
+      <div className={classes.contentContainer}>
+        <EffortAnswer selectedLevel={effortLevel} onChange={(level) => setEffortLevel(level)} />
+      </div>
+      <div className={classes.buttonsContainer}>
+        <Button onClick={onUpdateReport} className={classes.buttonContainer}>
+          <Typography className={classes.buttonText}>{t("NEXT")}</Typography>
 
-            </Button>
-            <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                <Typography className={classes.backText}>Back</Typography>
+        </Button>
+        <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
+          <Typography className={classes.backText}>{t("BACK")}</Typography>
 
-            </Button>
-          </div>
+        </Button>
+      </div>
     </div>
   )
 }

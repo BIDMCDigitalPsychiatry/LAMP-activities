@@ -8,6 +8,7 @@ import ExperienceAnswer from '../../../components/ExperienceAnswer'
 import HeaderView from '../../../components/HeaderView'
 import actions from '../../home/action'
 import { connect } from 'react-redux'
+import { useTranslation } from "react-i18next"
 
 const { updateReport } = actions
 
@@ -59,11 +60,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function FellingView({settings, ...props}) {
+export default function FellingView({ settings, ...props }) {
   const classes = useStyles()
   const [result, setResult] = React.useState(props.report && props.report.emotion ? props.report.emotion : { felling: {} })
   const [emotions, setEmotions] = React.useState(settings?.emotions ?? [])
-console.log(!props.report || (props.report && props.report.skillToday), props.report)
+  const { t } = useTranslation()
+
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
     if (currentFelling[key] && currentFelling[key].rate === rate) {
@@ -89,34 +91,34 @@ console.log(!props.report || (props.report && props.report.skillToday), props.re
   return (
     <div className={classes.root}>
       <HeaderView
-        title='Emotions'
-        description='0= not at all, 5 = extremely'
+        title={t("EMOTIONS")}
+        description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={2}
         totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
-        question='Which emotions did you experience today?'
+        question={t("WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY")}
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
-      {emotions.map((item, index) => {
-        const rate = result && result.felling && result.felling["emotion"+ index] ? result.felling["emotion"+ index].rate : 0
-        return (
-          <ExperienceAnswer
-            title={item.emotion}
-            key={"emotion"+ index}
-            setRate={(rate) => updateRate("emotion"+ index, item.emotion, rate)}
-            rate={rate}
-          />
-        )
-      })}
-      <div className={classes.buttonsContainer}>
-        <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-          <Typography className={classes.buttonText}>Next</Typography>
-        </Button>
-        <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-          <Typography className={classes.backText}>Back</Typography>
-        </Button>
-      </div>
-      </Grid>
+          {emotions.map((item, index) => {
+            const rate = result && result.felling && result.felling["emotion" + index] ? result.felling["emotion" + index].rate : 0
+            return (
+              <ExperienceAnswer
+                title={item.emotion}
+                key={"emotion" + index}
+                setRate={(rate) => updateRate("emotion" + index, item.emotion, rate)}
+                rate={rate}
+              />
+            )
+          })}
+          <div className={classes.buttonsContainer}>
+            <Button onClick={onUpdateReport} className={classes.buttonContainer}>
+              <Typography className={classes.buttonText}>{t("NEXT")}</Typography>
+            </Button>
+            <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
+              <Typography className={classes.backText}>{t("BACK")}</Typography>
+            </Button>
+          </div>
+        </Grid>
       </Grid>
     </div>
   )

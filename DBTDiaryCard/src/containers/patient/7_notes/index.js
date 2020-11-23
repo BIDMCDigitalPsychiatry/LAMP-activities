@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import HeaderView from '../../../components/HeaderView'
 import { Grid } from '@material-ui/core'
+import { useTranslation } from "react-i18next"
 
 const CssTextField = withStyles({
     root: {
@@ -74,47 +75,47 @@ const useStyles = makeStyles((theme) => ({
 export default function NotesView(props) {
     const classes = useStyles()
     const [notes, setNotes] = React.useState(props.report && props.report.notes ? props.report.notes : '')
+    const { t } = useTranslation()
 
     const onUpdateReport = () => {
-        const {updateReport, onContinue} = props
-        if(updateReport){
-          updateReport('notes', notes)
+        const { updateReport, onContinue } = props
+        if (updateReport) {
+            updateReport('notes', notes)
         }
-        if(onContinue){
+        if (onContinue) {
             onContinue()
-          }
-      }
+        }
+    }
 
     return (
         <div className={classes.root}>
-                    <HeaderView
-                        title='Additional Notes'
-                        description='Short answer (1-2 sentences)'
-                        currentStep={props.report && props.report.skillToday ? 7 : 5}
-                        totalStep={props.report && props.report.skillToday ? 7 : 5}
-                        question='Optional: Are there any other details you want to share about your day?'
-                    />
-<Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12}>
+            <HeaderView
+                title={t("ADDITIONAL_NOTES")}
+                description={t("SHORT_ANSWER_SENETENCES")}
+                currentStep={props.report && props.report.skillToday ? 7 : 5}
+                totalStep={props.report && props.report.skillToday ? 7 : 5}
+                question={t("OPTIONAL_ARE_THERE_ANY_OTHER_DETAILS_YOU_WANT_TO_SHARE_ABOUT_YOUR_DAY")}
+            />
+            <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
-                            <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{disableunderline: 'true'}} multiline rows={8}/>
-                            <Typography className={classes.description}>{`${notes.length} / 300 max characters`}</Typography>
+                            <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{ disableunderline: 'true' }} multiline rows={8} />
+                            <Typography className={classes.description}>{`${notes.length} / ` + t("MAX_300_CHARACTERS")}</Typography>
                         </div>
 
                     </div>
                     <div className={classes.buttonsContainer}>
                         <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                                <Typography className={classes.buttonText}>Submit</Typography>
+                            <Typography className={classes.buttonText}>{t("SUBMIT")}</Typography>
 
                         </Button>
                         <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                                <Typography className={classes.backText}>Back</Typography>
+                            <Typography className={classes.backText}>{t("BACK")}</Typography>
 
                         </Button>
                     </div>
-                    </Grid></Grid>
+                </Grid></Grid>
         </div>
     )
 }
-  

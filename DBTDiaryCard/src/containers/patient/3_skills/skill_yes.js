@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import SkillExpanded from '../../../components/SkillExpanded'
 import HeaderView from '../../../components/HeaderView'
 import { Grid } from '@material-ui/core'
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,16 +75,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const data = [
-    { title: 'Mindfulness', data: ['Wise Mind', 'Observe: Just notice (Urge Surfing)', 'Describe: Put words on', 'Participate: Enter into the experience', 'Nonjudgmental stance', 'One-Mindfully: In-the-moment', 'Effectiveness: Focus on what works', 'Loving Kindness: Build compassion'] },
-    { title: 'Interpersonal', data: ["Objective effectiveness: DEAR MAN", "Relationship effectiveness: GIVE", "Self-respect effectiveness: FAST", "Validating Others", "Self-Validation", "Behavior change: reinforce/extinguish", "Mindfulness of others", "Find others and get them to like you", "End relationships"] },
-    { title: 'Emotion Regulation', data: ["Check the Facts to change emotions", "Opposite Action to change emotions", "Problem Solving to change emotions", "Accumulate positive emotions", "Build Mastery", "Cope Ahead", "PLEASE: Take care of your body"] },
-    { title: 'Distress Tolerance', data: ["STOP Skill", "Pros and Cons of acting on urges", "TIP: Change body chemistry", "Paired Muscle Relaxation", "Effective Rethinking/Paired Relax", "Distracting: Wise Mind ACCEPTS", "Self-Soothing", "Body Scan Meditation", "IMPROVE the Moment ", "Sensory Awareness", "Radical Acceptance", "Turning the Mind", "Replace Willfulness with Willingness", "Half-Smiling and Willing Hands", "Dialectical Abstinence", "Alternate Rebellion / Adaptive Denial"] },
-]
-
 export default function SkillYesView(props) {
     const classes = useStyles()
     const [skill, setSkill] = React.useState(props.report && props.report.skill ? props.report.skill : { skillToday: true, skills: [] })
+    const { t } = useTranslation()
+    const data = [
+        { title: t("MINDFULNESS"), data: [t("WISE_MIND"), t("OBSERVE_JUST_NOTICE_URGE_SURFING"), t("DESCRIBE_PUT_WORDS_ON"), t("PARTICIPATE_ENTER_INTO_THE_EXPERIENCE"), t("NONJUDGMENTAL_STANCE"), t("ONE_MINDFULLY_IN_THE_MOMENT"), t("EFFECTIVENESS_FOCUS_ON_WHAT_WORKS"), t("LOVING_KINDNESS_BUILD_COMPASSION")] },
+        { title: t("INTERPERSONAL"), data: [t("OBJECTIVE_EFFECTIVENESS_DEAR_MAN"), t("RELATIONSHIP_EFFECTIVENESS_GIVE"), t("SELF_RESPECT_EFFECTIVENESS_FAST"), t("VALIDATING_OTHERS"), t("SELF_VALIDATION"), t("BEHAVIOR_CHANGE_REINFORCE_EXTINGUISH"), t("MINDFULNESS_OF_OTHERS"), t("FIND_OTHERS_AND_GET_THEM_TO_LIKE_YOU"), t("END_RELATIONSHIPS")] },
+        { title: t("EMOTION_REGULATION"), data: [t("CHECK_THE_FACTS_TO_CHANGE_EMOTIONS"), t("OPPOSITE_ACTION_TO_CHANGE_EMOTIONS"), t("PROBLEM_SOLVING_TO_CHANGE_EMOTIONS"), t("ACCUMULATE_POSITIVE_EMOTIONS"), t("BUILD_MASTERY"), t("COPE_AHEAD"), t("PLEASE_TAKE_CARE_OF_YOUR_BODY")] },
+        { title: t("DISTRESS_TOLERANCE"), data: [t("STOP_SKILL"), t("PROS_AND_CONS_OF_ACTING_ON_URGES"), t("TIP_CHANGE_BODY_CHEMISTRY"), t("PAIRED_MUSCLE_RELAXATION"), t("EFFECTIVE_RETHINKING_PAIRED_RELAX"), t("DISTRACTING_WISE_MIND_ACCEPTS"), t("SELF_SOOTHING"), t("BODY_SCAN_MEDITATION"), t("IMPROVE_THE_MOMENT"), t("SENSORY_AWARENESS"), t("RADICAL_ACCEPTANCE"), t("TURNING_THE_MIND"), t("REPLACE_WILLFULNESS_WITH_WILLINGNESS"), t("HALF_SMILING_AND_WILLING_HANDS"), t("DIALECTICAL_ABSTINENCE"), t("ALTERNATE_REBELLION_ADAPTIVE_DENIAL")] },
+    ]
 
     const onChangeList = (section, i) => {
         var list = skill.skills
@@ -111,29 +112,29 @@ export default function SkillYesView(props) {
     return (
         <div className={classes.root}>
             <HeaderView
-                title='Skills'
-                description='Select all that apply'
+                title={t("SKILLS")}
+                description={t("SELECT_ALL_THAT_APPLY")}
                 currentStep={4}
                 totalStep={7}
-                question='Which skills did you use?'
+                question={t("WHICH_SKILLS_DID_YOU_USE")}
             />
-             <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12}>
-            {data.map((item) => {
-                return (
-                    <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
-                )
-            })}
-            <div className={classes.buttonsContainer}>
-                <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                    <Typography className={classes.buttonText}>Next</Typography>
+            <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item lg={4} sm={10} xs={12}>
+                    {data.map((item) => {
+                        return (
+                            <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
+                        )
+                    })}
+                    <div className={classes.buttonsContainer}>
+                        <Button onClick={onUpdateReport} className={classes.buttonContainer}>
+                            <Typography className={classes.buttonText}>{t("NEXT")}</Typography>
 
-                </Button>
-                <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                    <Typography className={classes.backText}>Back</Typography>
-                </Button>
-            </div>
-            </Grid>
+                        </Button>
+                        <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
+                            <Typography className={classes.backText}>{t("BACK")}</Typography>
+                        </Button>
+                    </div>
+                </Grid>
             </Grid>
         </div>
     )

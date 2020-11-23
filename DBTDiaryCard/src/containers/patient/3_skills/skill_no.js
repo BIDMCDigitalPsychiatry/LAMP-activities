@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import HeaderView from '../../../components/HeaderView'
 import { Grid } from '@material-ui/core'
+import { useTranslation } from "react-i18next"
 
 const CssTextField = withStyles({
     root: {
@@ -74,44 +75,44 @@ const useStyles = makeStyles((theme) => ({
 export default function SkillNoView(props) {
     const classes = useStyles();
     const [reason, setReason] = React.useState(props.report && props.report.skill && props.report.skill.reason ? props.report.skill.reason : '')
+    const { t } = useTranslation()
 
     const onUpdateReport = () => {
-        const {updateReport, onContinue} = props
-        if(updateReport){
-          updateReport('skill', {skillToday: false, reason: reason})
+        const { updateReport, onContinue } = props
+        if (updateReport) {
+            updateReport('skill', { skillToday: false, reason: reason })
         }
-        if(onContinue){
+        if (onContinue) {
             onContinue()
-          }
-      }
+        }
+    }
 
     return (
         <div className={classes.root}>
-                    <HeaderView
-                        title='Skills'
-                        currentStep={4}
-                        totalStep={5}
-                        question='Why didn’t you use any skills?'
-                    />
-                    <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12}>
+            <HeaderView
+                title={t("SKILLS")}
+                currentStep={4}
+                totalStep={5}
+                question={t("WHY_DIDNT_YOU_USE_ANY_SKILLS")}
+            />
+            <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
                             <CssTextField value={reason} onChange={(event) => setReason(event.target.value)} inputProps={{ disableunderline: 'true' }} multiline rows={8} />
-                            <Typography className={classes.description}>{`${reason.length} / 300 max characters`}</Typography>
+                            <Typography className={classes.description}>{`${reason.length} / ` + t("MAX_300_CHARACTERS")}</Typography>
                         </div>
                     </div>
                     <div className={classes.buttonsContainer}>
                         <Button onClick={onUpdateReport} className={classes.buttonContainer}>
-                            <Typography className={classes.buttonText}>Next</Typography>
+                            <Typography className={classes.buttonText}>{t("NEXT")}</Typography>
                         </Button>
                         <Button onClick={() => props.onBack && props.onBack()} className={classes.backContainer}>
-                            <Typography className={classes.backText}>Back</Typography>
+                            <Typography className={classes.backText}>{t("BACK")}</Typography>
                         </Button>
                     </div>
-                    </Grid>
-                    </Grid>
+                </Grid>
+            </Grid>
         </div>
     )
 }
-  
