@@ -200,12 +200,12 @@ class Board extends React.Component<BoardProps, DiamondState> {
       ).length === 0
     ) {
       const route = {
-        item: i,
-        value: null,
-        status: statusVal,
         duration:
         statusVal && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime,
+        item: i,
         level: 1,
+        status: statusVal,
+        value: null          
       };
       routes.push(route);
     }

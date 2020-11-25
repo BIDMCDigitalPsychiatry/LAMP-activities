@@ -62,10 +62,6 @@ class Jewels extends React.Component<{}, AppState> {
     const messageEvent =
       eventMethod === "attachEvent" ? "onmessage" : "message";
     // Listen to message from child window
-    const mode =
-      typeof process.env.REACT_APP_GAME_LEVEL === "undefined"
-        ? 1
-        : Number(process.env.REACT_APP_GAME_LEVEL);
     const state = {
       current: [],
       diamondColor: "",
@@ -85,7 +81,9 @@ class Jewels extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {        
         const settings = e.data.settings;
+        console.log(settings)
         const configuration = e.data.configuration;
+        const mode = settings ? settings.mode : 1
         let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
         switch (mode) {
           case 1:
@@ -109,9 +107,10 @@ class Jewels extends React.Component<{}, AppState> {
         this.setState(
           {
             diamondCount: settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
-            loaded: false,
             gameTime: gameTimeVal,
-            shapeCount: settings ? (settings.shape_count ? settings.shape_count : 2 ) : 2,
+            loaded: false,           
+            shapeCount: settings ? (settings.shape_count ? settings.shape_count : 
+              settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1,
           },
           () => {
             this.reset(true);
