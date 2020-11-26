@@ -106,11 +106,11 @@ class Jewels extends React.Component<{}, AppState> {
         i18n.changeLanguage(langugae);
         this.setState(
           {
-            diamondCount: settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
+            diamondCount:  settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
             gameTime: gameTimeVal,
             loaded: false,           
-            shapeCount: settings ? (settings.shape_count ? settings.shape_count : 
-              settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1,
+            shapeCount:  settings ? (settings.shape_count ? settings.shape_count : 
+               settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1,
           },
           () => {
             this.reset(true);
@@ -138,18 +138,21 @@ class Jewels extends React.Component<{}, AppState> {
     let loopNum;
     let order: Array<number> = [];
     for (let i = 0; i < noOfDimonds; i++) {
-      numArr[i] =
-        i === noOfDimonds - 1
-          ? Array.from(Array(Math.floor(diamondCountVal / noOfDimonds)).keys())
-          : Array.from(Array(Math.ceil(diamondCountVal / noOfDimonds)).keys());
+      numArr[i] = Array.from(Array(Math.ceil(diamondCountVal / noOfDimonds)).keys());
       numbers = numbers.concat(numArr[i]);
       order = order.concat(numArr[i]);
     }
-
+    order = order.sort((a, b) => {
+      return a - b;
+    }).slice(0, diamondCountVal)
+  
+    numbers = numbers.sort((a, b) => {
+      return a - b;
+    })
+    numbers = numbers.slice(0, diamondCountVal)
     numbers = this.shuffle(numbers);
 
     loopNum = numbers;
-
     let type = -1;
     for (const i of loopNum) {
       for (let k = 0; k < noOfDimonds; k++) {
@@ -161,6 +164,7 @@ class Jewels extends React.Component<{}, AppState> {
         }
       }
     }
+   
     const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
     const state = {
       current: diamondType,
@@ -170,9 +174,7 @@ class Jewels extends React.Component<{}, AppState> {
       diamondSpots: randomArray,
       gameTime: this.state ? this.state.gameTime : 90,
       loaded: loadedVal,
-      orderNumbers: order.sort((a, b) => {
-        return a - b;
-      }),
+      orderNumbers: order,
       pauseTime: 0,
       shapeCount: noOfDimonds,
       shapes: shapesVals,
