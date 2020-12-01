@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import RateAnswer from './RateAnswer'
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     rateContainer: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ExperienceAnswer({ title, rate, setRate }) {
     const classes = useStyles()
-
+    const { t } = useTranslation();
     const handleChange = (value) => {
         setRate && setRate(value);
     }
@@ -42,7 +43,7 @@ export default function ExperienceAnswer({ title, rate, setRate }) {
 
             <div className={classes.contentContainer}>
                     <div className={classes.titleContainer}>
-                    <Typography className={classes.typeTitle}>{title}</Typography>
+                    <Typography className={classes.typeTitle}>{t(title)}</Typography>
                     </div>
                     <div className={classes.rateContainer}>
                         <RateAnswer

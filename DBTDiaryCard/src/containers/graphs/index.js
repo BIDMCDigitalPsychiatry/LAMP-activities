@@ -10,7 +10,7 @@ import { Vega } from 'react-vega'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
 import NativeSelect from '@material-ui/core/NativeSelect'
-
+import { useTranslation } from "react-i18next"
 const emotions_chart = require('./charts/emotions_chart.json')
 const effective_chart = require('./charts/effective_chart.json')
 const ineffective_chart = require('./charts/ineffective_chart.json')
@@ -92,17 +92,17 @@ const useStyles = makeStyles((theme) => ({
 
 function Screen(props) {
     const classes = useStyles()
-
+    const { t } = useTranslation()
     return (
         <div className={classes.root}>
             <div className={classes.headerContainer}>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="left-arrow">
                     <ArrowBack />
                 </IconButton>
-                <Typography className={classes.headerTitle}>DBT Diary</Typography>
+                <Typography className={classes.headerTitle}>{t("DBT_DIARY")}</Typography>
                 <div className={classes.headerButton}>
                     <Icon style={{ color: 'white', fontSize: 20 }}>add</Icon>
-                    <Typography className={classes.buttonText}>Add</Typography>
+                    <Typography className={classes.buttonText}>{t("ADD")}</Typography>
                 </div>
             </div>
             <Grid container spacing={0}>
@@ -112,9 +112,9 @@ function Screen(props) {
                         <NativeSelect
                             className={classes.selector}
                         >
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                            <option value={10}>{t("TEN")}</option>
+                            <option value={20}>{t("TWENTY")}</option>
+                            <option value={30}>{t("THIRTY")}</option>
                         </NativeSelect>
 
                         <Vega spec={emotions_chart} />
@@ -124,9 +124,9 @@ function Screen(props) {
                         <NativeSelect
                             className={classes.selector}
                         >
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                             <option value={10}>{t("TEN")}</option>
+                            <option value={20}>{t("TWENTY")}</option>
+                            <option value={30}>{t("THIRTY")}</option>
                         </NativeSelect>
 
                         <Vega spec={effective_chart} />
@@ -136,9 +136,9 @@ function Screen(props) {
                         <NativeSelect
                             className={classes.selector}
                         >
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                             <option value={10}>{t("TEN")}</option>
+                            <option value={20}>{t("TWENTY")}</option>
+                            <option value={30}>{t("THIRTY")}</option>
                         </NativeSelect>
 
                         <Vega spec={ineffective_chart} />
@@ -148,9 +148,9 @@ function Screen(props) {
                         <NativeSelect
                             className={classes.selector}
                         >
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                             <option value={10}>{t("TEN")}</option>
+                            <option value={20}>{t("TWENTY")}</option>
+                            <option value={30}>{t("THIRTY")}</option>
                         </NativeSelect>
 
                         <Vega spec={actions_chart} />
@@ -160,9 +160,9 @@ function Screen(props) {
                         <NativeSelect
                             className={classes.selector}
                         >
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+                             <option value={10}>{t("TEN")}</option>
+                            <option value={20}>{t("TWENTY")}</option>
+                            <option value={30}>{t("THIRTY")}</option>
                         </NativeSelect>
 
                         <Vega spec={selfcare_chart} />
@@ -174,7 +174,7 @@ function Screen(props) {
                                 <div className={classes.addButton}>
                                     <AddCircleOutline />
                                 </div>
-                                <Typography className={classes.addButtonTitle}>Add item</Typography>
+                                <Typography className={classes.addButtonTitle}>{t("ADD_ITEM")}</Typography>
                             </ButtonBase>
                         </div>
                     </div>

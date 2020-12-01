@@ -62,10 +62,6 @@ class Jewels extends React.Component<{}, AppState> {
     const messageEvent =
       eventMethod === "attachEvent" ? "onmessage" : "message";
     // Listen to message from child window
-    const mode =
-      typeof process.env.REACT_APP_GAME_LEVEL === "undefined"
-        ? 1
-        : Number(process.env.REACT_APP_GAME_LEVEL);
     const state = {
       current: [],
       diamondColor: "",
@@ -83,32 +79,38 @@ class Jewels extends React.Component<{}, AppState> {
     this.state = state;
     eventer(
       messageEvent,
-      (e: any) => {
-        let gameTimeVal = e.data.beginner_seconds ?? 90;
+      (e: any) => {        
+        const settings = e.data.settings;
+        console.log(settings)
+        const configuration = e.data.configuration;
+        const mode = settings ? settings.mode : 1
+        let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
         switch (mode) {
           case 1:
-            gameTimeVal = e.data.beginner_seconds;
+            gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
             break;
           case 2:
-            gameTimeVal = e.data.intermediate_seconds;
+            gameTimeVal = settings.intermediate_seconds;
             break;
           case 3:
-            gameTimeVal = e.data.advanced_seconds;
+            gameTimeVal = settings.advanced_seconds;
             break;
           case 4:
-            gameTimeVal = e.data.expert_seconds;
+            gameTimeVal = settings.expert_seconds;
             break;
           default:
-            gameTimeVal = e.data.beginner_seconds;
+            gameTimeVal = settings.beginner_seconds;
             break;
         }
-        i18n.changeLanguage(e.data.language);
+        const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en_US") : "en_US"
+        i18n.changeLanguage(langugae);
         this.setState(
           {
-            diamondCount: e.data.diamond_count ?? 15,
-            loaded: false,
+            diamondCount:  settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
             gameTime: gameTimeVal,
-            shapeCount: e.data.shape_count ?? 2,
+            loaded: false,           
+            shapeCount:  settings ? (settings.shape_count ? settings.shape_count : 
+               settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1,
           },
           () => {
             this.reset(true);
@@ -119,7 +121,7 @@ class Jewels extends React.Component<{}, AppState> {
     );
     this.reset(true);
   }
-
+  
   // Reset game board
   reset = (loadedVal: boolean) => {
     const noOfDimonds = this.state ? this.state.shapeCount : 2;
@@ -136,18 +138,21 @@ class Jewels extends React.Component<{}, AppState> {
     let loopNum;
     let order: Array<number> = [];
     for (let i = 0; i < noOfDimonds; i++) {
-      numArr[i] =
-        i === noOfDimonds - 1
-          ? Array.from(Array(Math.floor(diamondCountVal / noOfDimonds)).keys())
-          : Array.from(Array(Math.ceil(diamondCountVal / noOfDimonds)).keys());
+      numArr[i] = Array.from(Array(Math.ceil(diamondCountVal / noOfDimonds)).keys());
       numbers = numbers.concat(numArr[i]);
       order = order.concat(numArr[i]);
     }
-
+    order = order.sort((a, b) => {
+      return a - b;
+    }).slice(0, diamondCountVal)
+  
+    numbers = numbers.sort((a, b) => {
+      return a - b;
+    })
+    numbers = numbers.slice(0, diamondCountVal)
     numbers = this.shuffle(numbers);
 
     loopNum = numbers;
-
     let type = -1;
     for (const i of loopNum) {
       for (let k = 0; k < noOfDimonds; k++) {
@@ -159,6 +164,7 @@ class Jewels extends React.Component<{}, AppState> {
         }
       }
     }
+   
     const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
     const state = {
       current: diamondType,
@@ -168,9 +174,7 @@ class Jewels extends React.Component<{}, AppState> {
       diamondSpots: randomArray,
       gameTime: this.state ? this.state.gameTime : 90,
       loaded: loadedVal,
-      orderNumbers: order.sort((a, b) => {
-        return a - b;
-      }),
+      orderNumbers: order,
       pauseTime: 0,
       shapeCount: noOfDimonds,
       shapes: shapesVals,

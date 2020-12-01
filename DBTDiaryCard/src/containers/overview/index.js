@@ -130,7 +130,7 @@ export default function OverviewView(props) {
           </div>
 
           <div className={classes.contentContainer} style={{ marginTop: 80 }}>
-            <Typography className={classes.questionTitle}>Did the skills help?</Typography>
+            <Typography className={classes.questionTitle}>{t("DID_THE_SKILLS_HELP")}</Typography>
           </div>
           
             <div className={classes.contentContainer} style={{ marginTop : 50 }}>

@@ -6,13 +6,10 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from "react";
-
 import { getRandomNumbers } from "../../functions";
-
 import i18n from "./../../i18n";
 
 import { Timer } from "../common/Timer";
-
 import "./box.css";
 
 interface BoardState {
@@ -293,11 +290,11 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     if (this.state.enableTap) {
       const route = {
-        item: boxNo,
-        value: this.state.gameState,
-        status: statusVal,
         duration: lastclickTime,
+        item: boxNo,
         level: this.state.gameState,
+        status: statusVal,
+        value: this.state.gameState,
       };
       boxes.push(route);
     }
@@ -323,13 +320,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     parent.postMessage(
       JSON.stringify({
         static_data: {
+          EndTime: new Date(),
+          StartTime: this.state.startTime,
           correct_answers: this.state.stateSuccessTaps,
           point: points,
           score: gameScore,
-          EndTime: new Date(),
           type: 1,
           wrong_answers: this.state.stateWrongTaps,
-          StartTime: this.state.startTime,
         },
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
@@ -483,7 +480,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           : this.state.timeout
           ? i18n.t("TIME_OUT") + " !!!"
           : null;
-    } else {
+    } else {  
       board = (
         <table className="box-table" style={this.getTableStyles()}>
           <tbody>{this.createTable()}</tbody>

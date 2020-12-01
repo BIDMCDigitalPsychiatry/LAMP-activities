@@ -172,7 +172,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
   };
 
   // Update the state values for each taps other than jewel 1
-  updateStateWithTaps = (i: number, status: boolean, diamondStyle: string) => {
+  updateStateWithTaps = (i: number, statusVal: boolean, diamondStyle: string) => {
     const routes = [];
     const dif = new Date().getTime() - this.state.lastClickTime;
     const lastclickTime = dif;
@@ -186,7 +186,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         routes.push(r[key]);
       });
     }
-    if (status === true) {
+    if (statusVal === true) {
       clickedItems.push({ item: i, style: diamondStyle });
     }
     const lastClickedItems =
@@ -200,35 +200,35 @@ class Board extends React.Component<BoardProps, DiamondState> {
       ).length === 0
     ) {
       const route = {
-        item: i,
-        value: null,
-        status: status,
         duration:
-          status && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime,
+        statusVal && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime,
+        item: i,
         level: 1,
+        status: statusVal,
+        value: null          
       };
       routes.push(route);
     }
     this.setState(
       {
         activeDiamond:
-          status === true ? diamondStyle : this.state.activeDiamond,
+        statusVal === true ? diamondStyle : this.state.activeDiamond,
         clickedItems: JSON.stringify(clickedItems),
         endTime: new Date(),
         gameOver:
-          status === true && this.props.totalDiamonds === i ? true : false,
+        statusVal === true && this.props.totalDiamonds === i ? true : false,
         lastClickElement:
-          status === true
+        statusVal === true
             ? { item: i, diamond: diamondStyle }
             : this.state.lastClickElement,
         lastClickTime: new Date().getTime(),
         route: JSON.stringify(routes),
         stepNumber:
-          status === true ? this.state.stepNumber + 1 : this.state.stepNumber,
+        statusVal === true ? this.state.stepNumber + 1 : this.state.stepNumber,
       },
       () => {
         if (
-          status === true &&
+          statusVal === true &&
           this.props.diamondNumbers.length === this.state.stepNumber
         ) {
           this.sendGameResult(2);
@@ -280,21 +280,21 @@ class Board extends React.Component<BoardProps, DiamondState> {
   };
 
   // Call the API to pass game result
-  sendGameResult = (point: number) => {
-    const score = (this.state.stepNumber / (this.state.tapCount + 1)) * 100;
+  sendGameResult = (pointVal: number) => {
+    const scoreVal = (this.state.stepNumber / (this.state.tapCount + 1)) * 100;
     const totalBonusCollected =
       this.state.startTimer - Math.abs(this.state.negativePoints);
     const totalJewelsCollected = this.state.stepNumber;
     const totalAttempts = this.state.tapCount + 1;
-    const duration =
+    const durationVal =
       new Date().getTime() - new Date(this.state.startTime).getTime();
 
     parent.postMessage(
       JSON.stringify({
-        duration: duration,
+        duration: durationVal,
         static_data: {
-          point: point,
-          score: score,
+          point: pointVal,
+          score: scoreVal,
           total_attempts: totalAttempts,
           total_bonus_collected: totalBonusCollected,
           total_jewels_collected: totalJewelsCollected,

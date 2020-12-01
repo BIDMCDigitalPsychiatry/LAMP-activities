@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import RatioButton from './RatioButton';
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { useTranslation } from "react-i18next"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,14 +73,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function SkillExpaned({ title, list, selectedList, onSelect }) {
+export default function SkillExpanded({ title, list, selectedList, onSelect }) {
     const classes = useStyles()
     const [expaned, setExpaned] = React.useState(false)
+    const { t } = useTranslation()
 
     return (
         <div className={classes.root} key={title}>
             <div onClick={() => setExpaned(!expaned)} className={classes.headerContainer}>
-                <Typography className={classes.headerTitle}>{title}</Typography>
+                <Typography className={classes.headerTitle}>{t(title)}</Typography>
                 {expaned ? <ExpandLess className={classes.arrow}/> : <ExpandMore className={classes.arrow}/>}
             </div>
             {expaned && list &&
@@ -91,7 +93,7 @@ export default function SkillExpaned({ title, list, selectedList, onSelect }) {
 
                             return (
                                 <div key={item} className={classes.itemContainer}>
-                                    <RatioButton title={item} checked={checked} onChange={onSelect} value={index} />
+                                    <RatioButton title={t(item)} checked={checked} onChange={onSelect} value={index} />
                                 </div>
                             )
                         })

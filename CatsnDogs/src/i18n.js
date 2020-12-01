@@ -12,7 +12,20 @@ const resources = {
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "Tap the boxes that have a dog behind them.",
       OK: "Ok",
-	  GAME_OVER: "Game Over"
+      GAME_OVER: "Game Over",
+    },
+  },
+  es_ES: {
+    translation: {
+      CATS_AND_DOGS: "Cats and Dogs",
+      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
+        "Continue to tap the boxes that have a dog behind them. Don't tap the boxes with a cat behind them",
+      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
+        "Now tap the boxes that have a cat behind them. Don't tap the boxes with a dog behind them.",
+      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
+        "Tap the boxes that have a dog behind them.",
+      OK: "Ok",
+      GAME_OVER: "Game Over",
     },
   },
   hi_IN: {
@@ -25,7 +38,7 @@ const resources = {
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "उन बॉक्सों को दबाए जिनके पीछे एक कुत्ता है।",
       OK: "ठीक है",
-	  GAME_OVER: "खेल खत्म"
+      GAME_OVER: "खेल खत्म",
     },
   },
 };

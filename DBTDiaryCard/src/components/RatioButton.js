@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RatioButton({ checked, onChange, title, value, unable, smallSpace, color }) {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     return (
         <div className={classes.root}>
             <div onClick={() => !unable && onChange(value)} 
                 className={unable ? classes.unableContainer : (checked ? classes.checkedContainer : classes.uncheckContainer)}
                 style={{marginRight: smallSpace ? 17 : 10, backgroundColor: checked ? (color ? color : '#2F9D7E') : 'transparent'}}/>
-            <Typography className={unable ? classes.unableCheck : (checked ? classes.titleChecked : classes.titleUncheck)}>{title}</Typography>
+            <Typography className={unable ? classes.unableCheck : (checked ? classes.titleChecked : classes.titleUncheck)}>{t(title)}</Typography>
         </div>
 
     )

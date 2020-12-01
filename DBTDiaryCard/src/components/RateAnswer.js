@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     uncheckContainer: {
@@ -39,11 +40,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RateAnswer({ checked, onChange, value }) {
     const classes = useStyles()
+    const { t } = useTranslation();
 
     return (
         <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
             {checked &&
-                <Typography className={classes.checkText}>{value}</Typography>
+                <Typography className={classes.checkText}>{t(value)}</Typography>
             }
         </div>
     )
