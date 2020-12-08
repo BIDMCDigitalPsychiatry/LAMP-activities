@@ -25,6 +25,7 @@ export interface BoardProps {
 interface BoardState {
   animate: boolean;
   boxClass: Array<string>;
+  boxes: any,
   dogCount: number;
   catCount: number;
   enableTap: boolean;
@@ -43,6 +44,7 @@ interface BoardState {
   stateSuccessTaps: number;
   stateWrongTaps: number;
   states: any;
+  status:any;
   wrongTaps: number;
   sendResponse: boolean;
 }
@@ -61,6 +63,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.state = {
       animate: false,
       boxClass: ["box-square"],
+      boxes: null,
       catCount: 0,
       dogCount: 0,
       enableTap: false,
@@ -78,6 +81,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
+      status:null,
       successTaps: 0,
       timeout: false,
       wrongTaps: 0,
@@ -117,8 +121,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       randomPoints: rP,
       showModalInfo: false,
       startTime: this.state.gameState === 1 ? new Date() : this.state.startTime,
-      stateSuccessTaps: 0,
-      stateWrongTaps: 0,
       successTaps: 0,
       wrongTaps: 0,
     });
@@ -188,6 +190,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         : this.state.successTaps,
       wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
     });
+
+    this.updateWithTaps(i, success)
   };
 
   // To track the timer expiring
@@ -216,74 +220,95 @@ class Board extends React.Component<BoardProps, BoardState> {
         states.push(r[key]);
       });
     }
+    const box = JSON.parse(this.state.boxes);
+    states.push(box);
+    const status = []
+    if (this.state.status !== null) {
+      const r = JSON.parse(this.state.status);
+      Object.keys(r).forEach((key) => {
+        status.push(r[key]);
+      });
+    }
     const route = {
       CorrectAnswer: this.state.stateSuccessTaps,
       TimeTaken: lastclickTime.toFixed(2),
       WrongAnswer: this.state.stateWrongTaps,
     };
-    states.push(route);
+    status.push(route);
+
     this.setState({
       lastClickTime: new Date().getTime(),
       states: JSON.stringify(states),
+      status:JSON.stringify(status)
     });
   };
 
+  // Update the state values after each game state
+  updateWithTaps = (boxNo: number, statusVal: boolean) => {
+    const boxes = [];
+    const lastclickTime = new Date().getTime() - this.state.lastClickTime;
+    if (this.state.boxes !== null) {
+      const r = JSON.parse(this.state.boxes);
+      Object.keys(r).forEach((key) => {
+        boxes.push(r[key]);
+      });
+    }
+    if (this.state.enableTap) {
+      const route = {
+        duration: lastclickTime,
+        item: boxNo,
+        level: this.state.gameState,
+        status: statusVal,
+        value: null,
+      };
+      boxes.push(route);
+    }
+    this.setState({
+      boxes: JSON.stringify(boxes),
+      lastClickTime: new Date().getTime(),
+    });
+  };
+
+  
+
   // Call the API to pass game result
   sendGameResult = () => {
-    let totalSuccessTaps = 0;
-    let totalWrongTaps = 0;
-    let points = 0;
-    const r = JSON.parse(this.state.states);
-    Object.keys(r).forEach((key) => {
-      totalSuccessTaps += r[key].CorrectAnswer;
-      totalWrongTaps += r[key].WrongAnswer;
-    });
-    const gameScore = Math.round((totalSuccessTaps / 45) * 100);
+    const gameScore = Math.round(
+      (this.state.stateSuccessTaps / 45) * 100
+    );
+    let points = 0;    
     if (gameScore === 100) {
       points = points + 2;
     } else {
       points = points + 1;
     }
-    const serverURL =
-      typeof process.env.REACT_APP_CATSANDDOGS_GAME_SERVER_URL === "undefined"
-        ? ""
-        : process.env.REACT_APP_CATSANDDOGS_GAME_SERVER_URL;
-    fetch(serverURL, {
-      body: JSON.stringify({
-        AdminBatchSchID: 0,
-        CorrectAnswers: totalSuccessTaps,
-        EndTime: new Date(),
-        GameLevelDetailList: this.state.states,
-        IsNotificationGame: false,
-        Point: points,
-        Score: gameScore,
-        SpinWheelScore: 5,
-        StartTime: this.state.startTime,
-        StatusType: 2,
-        UserID: "200",
-        WrongAnswers: totalWrongTaps,
+     parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          StartTime: this.state.startTime,
+          correct_answers: this.state.stateSuccessTaps,
+          point: points,
+          score: gameScore,
+          type: 1,
+          wrong_answers: this.state.stateWrongTaps,
+        },
+        temporal_slices: JSON.parse(this.state.boxes),
+        timestamp: new Date().getTime(),
       }),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      "*"
+    );
+
     this.setState({
       sendResponse: true,
     });
+
   };
 
   // Modal close is handled here
   handleClose = (status: boolean) => {
     this.setState({
-      showModalInfo: status,
+      lastClickTime: new Date().getTime(),
+      showModalInfo: status     
     });
     this.resetState();
     this.startTimer();

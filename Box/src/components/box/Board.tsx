@@ -294,7 +294,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         item: boxNo,
         level: this.state.gameState,
         status: statusVal,
-        value: this.state.gameState,
+        value: null,
       };
       boxes.push(route);
     }
