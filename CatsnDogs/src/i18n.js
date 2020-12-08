@@ -7,25 +7,25 @@ const resources = {
       CATS_AND_DOGS: "Cats and Dogs",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "Continue to tap the boxes that have a dog behind them. Don't tap the boxes with a cat behind them",
+      GAME_OVER: "Game Over",  
       NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
         "Now tap the boxes that have a cat behind them. Don't tap the boxes with a dog behind them.",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tap the boxes that have a dog behind them.",
       OK: "Ok",
-      GAME_OVER: "Game Over",
+      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
+        "Tap the boxes that have a dog behind them.",     
     },
   },
   es_ES: {
     translation: {
-      CATS_AND_DOGS: "Cats and Dogs",
+      CATS_AND_DOGS: "Gatos y Perros",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continue to tap the boxes that have a dog behind them. Don't tap the boxes with a cat behind them",
+        "Continúa tocando las cajas que tienen un perro detrás de ellas/ ellos. Don't tap the boxes with a cat behind them",
+      GAME_OVER: "Juego Terminado",
       NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Now tap the boxes that have a cat behind them. Don't tap the boxes with a dog behind them.",
+        "No toque las cajas con un gato detrás de ellas. No toque las cajas con un perro detrás de ellas",
+      OK: "Okay",     
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tap the boxes that have a dog behind them.",
-      OK: "Ok",
-      GAME_OVER: "Game Over",
+        "Toque las cajas que tienen un perro detrás de ellas/ellos",     
     },
   },
   hi_IN: {
@@ -33,12 +33,12 @@ const resources = {
       CATS_AND_DOGS: "बिल्लियां और कुत्ते",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "उन बॉक्सों को दबाना जारी रखें जिनके पीछे एक पीछे कुत्ता है। उन बॉक्सों को ना दबाए जिनके पीछे एक बिल्ली है",
+      GAME_OVER: "खेल खत्म",  
       NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
         "अब उन बॉक्सों को दबाए जिनके पीछे एक बिल्ली है। उन बॉक्सों को ना दबाए जिनके पीछे एक कुत्ता है",
+      OK: "ठीक है",     
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "उन बॉक्सों को दबाए जिनके पीछे एक कुत्ता है।",
-      OK: "ठीक है",
-      GAME_OVER: "खेल खत्म",
     },
   },
 };

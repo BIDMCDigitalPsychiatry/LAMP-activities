@@ -77,7 +77,7 @@ export default function HeaderView({title, question, currentStep, totalStep, des
                 <div className={classes.progressContent} style={{width: (currentStep / totalStep * 100) + '%'}}/>
                 <div className={classes.remainProgressContent}/>
             </div>
-            <Typography className={classes.progressText}>{`${currentStep} of ${totalStep}`}</Typography>
+            <Typography className={classes.progressText}>{t("QUESTION_NUMBER_OF_TOTAL", { number: currentStep, total: totalStep })}</Typography>
             <div className={classes.questionContainer}>
                 <Typography className={classes.questionTitle}>{t(question)}</Typography>
                 {!!description && <Typography className={classes.descriptionTitle}>{t(description)}</Typography>}

@@ -23,21 +23,21 @@ const resources = {
   },
   es_ES: {
     translation: {
-      BOX_GAME: "Box Game",
-      CONGRATS: "Congrats",
-      GAME_OVER: "Game Over",
-      GO: "Go",
-      LEVEL: "Level",
+      BOX_GAME: "Juego de caja",
+      CONGRATS: "Felicidades",
+      GAME_OVER: "Juego Terminado",
+      GO: "Vamos",
+      LEVEL: "Nivel",
       NEXT: "siguiente",
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the order they were highlighted.",
+        "Ahora toque las cajas en el orden en que fueron resaltadas.",
       NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
         "Now tap on the boxes in the reverse order they were highlighted.",
-      PLEASE_REMEMBER_THE_SEQUENCE: "Please remember the sequence",
-      PLEASE_WAIT_AND_WATCH: "Please wait and watch",
+      PLEASE_REMEMBER_THE_SEQUENCE: "Por favor recuerda la secuencia",
+      PLEASE_WAIT_AND_WATCH: "Por favor espera y mira",
       REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
-        "Remember the highlighted boxes in the order you see them.",
-      TIME_OUT: "Time Out",
+        "Recuerde las cajas resaltados en el orden en que los ve.",
+      TIME_OUT: "Se acabó el tiempo",
     },
   },
   hi_IN: {
