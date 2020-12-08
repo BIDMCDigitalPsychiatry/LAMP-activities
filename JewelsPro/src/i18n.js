@@ -11,9 +11,9 @@ const resources = {
   },
   es_ES: {
     translation: {
-      CONGRATS: "Congrats",
-      JEWELS: "Jewels",
-      TIMEOUT: "Timeout",
+      CONGRATS: "Felicidades",
+      JEWELS: "Joyas",
+      TIMEOUT: "el tiempo muerto",
     },
   },
   hi_IN: {
