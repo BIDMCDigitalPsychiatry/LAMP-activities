@@ -101,6 +101,7 @@ const actions = {
                 notes: report ? report.notes : '', // <-- report.notes
                 skillToday: report ? report.skillToday : 0, // <-- report.skillToday
                 skillHelped: report ? report.skillHelped : 0,
+                reason: report ? report.reason : '',
             },
             temporal_slices: temporal_slices
         }

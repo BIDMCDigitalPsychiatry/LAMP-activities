@@ -74,18 +74,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillNoView(props) {
     const classes = useStyles();
-    const [reason, setReason] = React.useState(props.report && props.report.skill && props.report.skill.reason ? props.report.skill.reason : '')
+    const [reason, setReason] = React.useState(props.report && props.report.reason ? props.report.reason : '')
     const { t } = useTranslation()
 
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skill', { skillToday: false, reason: reason })
+            updateReport('reason', reason)
         }
         if (onContinue) {
             onContinue()
         }
     }
+
 
     return (
         <div className={classes.root}>
