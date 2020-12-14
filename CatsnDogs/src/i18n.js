@@ -19,7 +19,7 @@ const resources = {
     translation: {
       CATS_AND_DOGS: "Gatos y Perros",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continúa tocando las cajas que tienen un perro detrás de ellas/ ellos. Don't tap the boxes with a cat behind them",
+      "Continúa tocando las cajas que tienen un perro detrás de ellas/ ellos. Continúa tocando las cajas que tienen un gato detrás de ellas/ ellos",
       GAME_OVER: "Juego Terminado",
       NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
         "No toque las cajas con un gato detrás de ellas. No toque las cajas con un perro detrás de ellas",
