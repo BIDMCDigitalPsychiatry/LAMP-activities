@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     typeTitle: {
-        marginBottom: 10, fontSize: 12, color: 'rgba(0, 0, 0, 0.5)', marginTop: -10
+        marginBottom: 10, fontSize: 12, color: 'rgba(0, 0, 0, 0.75)', marginTop: -10, fontWeight: '600'
     },
     unitTitle: {
         color: 'rgba(0, 0, 0, 0.7)', fontSize: 16, fontWeight: '600'
