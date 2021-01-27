@@ -243,11 +243,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
     let p = 0;
     const rows =
       typeof process.env.REACT_APP_ROWS === "undefined"
-        ? 30
+        ? 10
         : Number(process.env.REACT_APP_ROWS);
     const cols =
       typeof process.env.REACT_APP_COLS === "undefined"
-        ? 10
+        ? 8
         : Number(process.env.REACT_APP_COLS);
     // let diamondStyle = this.props.currentDiamond[0]
     // Outer loop to create parent
