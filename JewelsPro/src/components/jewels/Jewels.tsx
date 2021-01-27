@@ -81,7 +81,6 @@ class Jewels extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {        
         const settings = e.data.settings;
-        console.log(settings)
         const configuration = e.data.configuration;
         const mode = settings ? settings.mode : 1
         let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
@@ -128,7 +127,7 @@ class Jewels extends React.Component<{}, AppState> {
     const diamondType = this.getDiamond(noOfDimonds);
     const maxPlots =
       typeof process.env.REACT_APP_MAX_PLOTS === "undefined"
-        ? 200
+        ? 80
         : Number(process.env.REACT_APP_MAX_PLOTS);
 
     const diamondCountVal = this.state ? this.state.diamondCount : 15;
