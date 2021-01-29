@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  en_US: {
+  "en-US": {
     translation: {
       CATS_AND_DOGS: "Cats and Dogs",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
@@ -15,7 +15,7 @@ const resources = {
         "Tap the boxes that have a dog behind them.",     
     },
   },
-  es_ES: {
+  "es-ES": {
     translation: {
       CATS_AND_DOGS: "Gatos y Perros",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
@@ -28,7 +28,7 @@ const resources = {
         "Toque las cajas que tienen un perro detrás de ellas/ellos",     
     },
   },
-  hi_IN: {
+  "hi-IN": {
     translation: {
       CATS_AND_DOGS: "बिल्लियां और कुत्ते",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:

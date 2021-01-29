@@ -6,7 +6,7 @@ import EffortAnswer from '../../components/EffortAnswer'
 import InputBase from '@material-ui/core/InputBase'
 import HeaderView from '../../components/HeaderView'
 import RatioButton from '../../components/RatioButton'
-
+import { useTranslation } from "react-i18next";
 const CssTextField = withStyles({
   root: {
     'label + &': {
@@ -104,6 +104,7 @@ export default function OverviewView(props) {
   const [suicideUrge, setSuicideUrge] = React.useState(0)
   const [dieUrge, setDieUrge] = React.useState(0)
   const [skillHelped, setSkillHelped] = React.useState(1)
+  const { t } = useTranslation()
 
   const onUpdateReport = () => {
     const {updateReport, onContinue} = props
