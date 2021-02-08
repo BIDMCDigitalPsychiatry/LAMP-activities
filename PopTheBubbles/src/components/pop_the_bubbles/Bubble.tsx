@@ -16,6 +16,7 @@ interface BubbleProps {
   x: number;
   y: number;
   onClick(e: any, index: number, lastClass: string, tapped: boolean): void;
+  bubbleDuration: number;
 }
 interface BubbleState {
   tapped: boolean;
@@ -33,6 +34,9 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
 
   // Hanlde bubble rendering in 300ms and visible for 1 sec
   componentDidMount = () => {
+    const bubbleDurationVal = this.props.bubbleDuration
+      ? 1000 * this.props.bubbleDuration
+      : 1500;
     if (!this.props.text) {
       setTimeout(() => {
         this.setState({
@@ -44,10 +48,11 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
             tapped: false,
             visible: false,
           });
-        }, 1500);
+        }, bubbleDurationVal);
       }, this.props.delayed);
     }
   };
+
   // On tapping bubble hide bubble with animate effect
   onPop = (e: any): void => {
     if (!this.props.text) {
@@ -65,12 +70,14 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
       this.props.bubbleToTap
     );
   };
+  
   // Game render function
   render() {
-    const cls = "size " + this.props.class;
+    const cls = "bubble-colors size " + this.props.class;
+    const clsToTap = !this.props.bubbleToTap ? " animate-bottom " : "";
     return (
-      <div
-        className={cls}
+      <div  
+        className={cls + " " + clsToTap}
         style={{
           bottom: this.props.y,
           display: this.state.visible ? "block" : "none",

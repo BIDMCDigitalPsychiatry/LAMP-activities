@@ -6,223 +6,504 @@
  * @copyright (c) 2020, ZCO
  */
 
-import * as React from 'react';
-import '././style.css';
-
-import BalloonHeader from './BalloonHeader';
-
-import BallonStandSVG from './BallonStandSVG';
-
-import BallonImageSVG from './BallonImageSVG';
-
-import TimerComponent from './TimerComponent';
+import * as React from "react";
+import "././style.css";
+import BallonStandSVG from "./BallonStandSVG";
+import BallonImageSVG from "./BallonImageSVG";
+import TimerComponent from "./TimerComponent";
+import i18n from "./../../i18n";
 
 interface AppState {
-    balloon_width: any;
-    balloon_number: any;
-    new_current_point: any;
-    total_points:any;
-    btn_pump_disabled: any;
-    collected_points: any;
-    break_points_array: any;
-    btn_collect_disabled: any;
-    cls_btn_collect_disabled: any;
-    balloon_burst: boolean;
-    cls_balloon_burst: any;    
-    start: boolean,
-    stop: boolean,
-    stop_timer: boolean,
-} 
+  balloon_width: any;
+  balloon_number: any;
+  new_current_point: any;
+  total_points: any;
+  btn_pump_disabled: any;
+  collected_points: any;
+  break_point: number;
+  btn_collect_disabled: any;
+  cls_btn_collect_disabled: any;
+  balloon_burst: boolean;
+  cls_balloon_burst: any;
+  start: boolean;
+  stop: boolean;
+  stop_timer: boolean;
+  route: any;
+  item: number;
+  level: number;
+  lastClickTime: number;
+  loaded: boolean;
+  breakpoint_mean: number;
+  breakpoint_std: number;
+  balloon_count: number;
+  reset_data: boolean;
+  participant_id: number;
+  break_point_array: any;
+}
 
-class Balloons extends React.Component<{}, AppState> 
-{
-  constructor(props:any) {
+class Balloons extends React.Component<{}, AppState> {
+  constructor(props: any) {
     super(props);
-    const breakPointsData = this.generateBreakPoints().sort((a:any,b:any) => 0.5 - Math.random());
-    console.log(breakPointsData)
+    const eventMethodObj: any = window.addEventListener;
+    const eventMethod = eventMethodObj ? "addEventListener" : "attachEvent";
+    const eventer = window[eventMethod];
+    const messageEvent =
+      eventMethod === "attachEvent" ? "onmessage" : "message";
     this.state = {
       balloon_burst: false,
-                  balloon_number : 1,
-                  balloon_width:  100,
-                   break_points_array: breakPointsData,
-                  btn_collect_disabled: "disabled",
-                 btn_pump_disabled: null, 
-                 cls_balloon_burst: null,  
-                          cls_btn_collect_disabled: "opacity_05",
-                          collected_points: [],
-                          new_current_point : 0,
-                 
-                  
-                  
-                 
-                  
-                
-                                      
-                  start: false,
-                  stop: false,
-                  stop_timer: false,
-                  total_points : 0,
-                }; 
-  }
-  
-  // Pump the balloon
-  pumpBalloon=() => {
-    if(this.state.balloon_number === 15) {
-        this.setState({btn_pump_disabled: "disabled"});
-        this.setState({btn_collect_disabled: "disabled"});
-        return false;
-    }
-    const balloonPumpLimit = typeof (process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT) === 'undefined' ? '' : 
-    Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
+      balloon_count: 5,
+      balloon_number: 1,
+      balloon_width: 100,
+      break_point: 0,
+      breakpoint_mean: 64.5,
+      breakpoint_std: 37,
+      btn_collect_disabled: "disabled",
+      btn_pump_disabled: null,
+      cls_balloon_burst: null,
+      cls_btn_collect_disabled: "opacity_05",
+      collected_points: [],
+      item: 0,
+      lastClickTime: new Date().getTime(),
+      level: 1,
+      loaded: false,
+      new_current_point: 0,
+      route: [],
+      start: false,
+      stop: false,
+      stop_timer: false,
+      total_points: 0,
+      reset_data: false,
+      participant_id: 0,
+      break_point_array: [],
+    };
 
-    this.setState({btn_collect_disabled: null});  
-    const currentPointId = document.getElementById('current_point_id') || null;
-    console.log(currentPointId)
-    let currentPointVal = 0
-    let newCurrentPoint =0; 
-    if(currentPointId !=  null) {
-    currentPointVal = parseInt(currentPointId.getAttribute('data-current-point')|| "", 10); 
-    newCurrentPoint = currentPointVal + 1; 
-    console.log( newCurrentPoint, this.state.break_points_array[(this.state.balloon_number - 1)])
-    if(newCurrentPoint === this.state.break_points_array[(this.state.balloon_number - 1)]){
-      // If break point is reached and balloon burst then increase balloon number, reset current points etc 
-      this.setState({ 
-                    balloon_burst: true,
-                    balloon_number: this.state.balloon_number + 1, 
-                    balloon_width:100,
-                    cls_balloon_burst: "disabled",                    
-                    new_current_point: 0,
-                    total_points: 0,
-                    
-                  });      
-      setTimeout(() => {
+    eventer(
+      messageEvent,
+      (e: any) => {
+        const configuration = e.data.configuration;
+        const settings = e.data.settings;
         this.setState({
-          balloon_burst: false,
-          cls_balloon_burst: null
+          balloon_count: settings
+            ? settings.balloon_count
+            : this.state.balloon_count,
+          breakpoint_mean: settings
+            ? settings.breakpoint_mean
+            : this.state.breakpoint_mean,
+          breakpoint_std: settings
+            ? settings.breakpoint_std
+            : this.state.breakpoint_std,
+          participant_id: !!configuration ? configuration.participant_id : 0,
         });
-      }, 2000);  
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+      },
+      false
+    );
+    const participantData = localStorage.getItem(
+      "balloonrisk_" + this.state.participant_id
+    );
+    if (!participantData) {
+      const currentDate = this.dateFormating();
+      localStorage.setItem(
+        "balloonrisk_" + this.state.participant_id,
+        JSON.stringify({
+          currentDate,
+          balloonCount: this.state.balloon_count,
+          breakpointMean: this.state.breakpoint_mean,
+          breakpointStd: this.state.breakpoint_std,
+        })
+      );
     }
-    else{
-      if(currentPointVal < balloonPumpLimit){          
-        // If currentpo9ints is less than ballon pumping maximum limit 128 
-        const ballonId = document.getElementById('svgBallonImgIcon') || null;
-        if(ballonId != null) {
-          const balloonWidth = parseInt(ballonId.getAttribute('width') || "", 10); 
-          const incBallonWidth = balloonWidth + 1;
-          if(this.state.balloon_burst === false){
-            this.setState({balloon_width: incBallonWidth});
-            this.setState({new_current_point: newCurrentPoint});
-          }
-          if(newCurrentPoint >= 1){
-            this.setState({cls_btn_collect_disabled: true});
-          }else{
-            this.setState({cls_btn_collect_disabled: false});
-          }
+  }
+
+  getRandomGaussian = function (mean: any, std: any) {
+    let u = 0;
+    let v = 0;
+    while (u === 0) {
+      u = Math.random();
+    }
+    while (v === 0) {
+      v = Math.random();
+    }
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    num = num / 10.0 + 0.5;
+    if (num > 1 || num < 0) {
+      return this.getRandomGaussian();
+    }
+    return num * std + mean;
+  };
+
+  // Pump the balloon
+  pumpBalloon = async () => {
+    if (this.state.balloon_number > this.state.balloon_count) {
+      this.setState({ btn_pump_disabled: "disabled" });
+      this.setState({ btn_collect_disabled: "disabled" });
+      return false;
+    }
+    const balloonPumpLimit =
+      typeof process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT === "undefined"
+        ? ""
+        : Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
+
+    this.setState({
+      btn_collect_disabled: null,
+      lastClickTime: new Date().getTime(),
+    });
+    const currentPointId = document.getElementById("current_point_id") || null;
+    let currentPointVal = 0;
+    let newCurrentPoint = 0;
+    let route = {};
+    const dif = new Date().getTime() - this.state.lastClickTime;
+    const lastclickTime = dif;
+    if (currentPointId != null) {
+      this.setState({
+        item: this.state.item + 1,
+      });
+      currentPointVal = parseInt(
+        currentPointId.getAttribute("data-current-point") || "",
+        10
+      );
+      newCurrentPoint = currentPointVal + 1;
+      if (
+        this.state.break_point !== 0 &&
+        newCurrentPoint === this.state.break_point
+      ) {
+        // If break point is reached and balloon burst then increase balloon number, reset current points etc
+        this.setState({
+          balloon_burst: true,
+          balloon_number: this.state.balloon_number + 1,
+          balloon_width: 100,
+          cls_balloon_burst: "disabled",
+          new_current_point: 0,
+          // total_points: 0,
+        });
+        const currentRoute = this.state.route;
+        route = {
+          duration: lastclickTime,
+          item: currentRoute.length === 0 ? 1 : this.state.item + 1,
+          level: this.state.level,
+          type: false,
+          value: 0,
+        };
+        await this.setState((prevState) => ({
+          route: [...prevState.route, route],
+        }));
+        setTimeout(() => {
+          const participantData: any = JSON.parse(
+            localStorage.getItem("balloonrisk_" + this.state.participant_id) ||
+              "{}"
+          );
+          const breakPointData = this.getBreakPoinData(participantData);
+          this.setState((prevState) => ({
+            break_point_array: [...prevState.break_point_array, breakPointData],
+            balloon_burst: false,
+            break_point: breakPointData,
+            cls_balloon_burst: null,
+            item: 0,
+            level: this.state.level + 1,
+          }));
+        }, 2000);
+        // Call API
+        if (this.state.balloon_number > this.state.balloon_count) {
+          this.sendGameData();
         }
-      }else{
-        this.setState({btn_pump_disabled: "disabled"});
-        this.setState({btn_collect_disabled: "disabled"});
+      } else {
+        if (currentPointVal < balloonPumpLimit) {
+          // If currentpoints is less than ballon pumping maximum limit 128
+          const ballonId = document.getElementById("svgBallonImgIcon") || null;
+          if (ballonId != null) {
+            if (this.state.break_point === 0) {
+              const participantData: any = JSON.parse(
+                localStorage.getItem(
+                  "balloonrisk_" + this.state.participant_id
+                ) || "{}"
+              );
+              const breakPointData = this.getBreakPoinData(participantData);
+              this.setState((prevState) => ({
+                break_point_array: [
+                  ...prevState.break_point_array,
+                  breakPointData,
+                ],
+                break_point: breakPointData,
+              }));
+            }
+            const currentRoute = this.state.route;
+            route = {
+              duration: lastclickTime,
+              item: currentRoute.length === 0 ? 1 : this.state.item + 1,
+              level: this.state.level,
+              type: true,
+              value: 1,
+            };
+            await this.setState((prevState) => ({
+              route: [...prevState.route, route],
+            }));
+            const balloonWidth = parseInt(
+              ballonId.getAttribute("width") || "",
+              10
+            );
+            const incBallonWidth = balloonWidth + 1;
+            if (this.state.balloon_burst === false) {
+              this.setState({
+                balloon_width: incBallonWidth,
+                new_current_point: newCurrentPoint,
+              });
+            }
+            if (newCurrentPoint >= 1) {
+              this.setState({ cls_btn_collect_disabled: true });
+            } else {
+              this.setState({ cls_btn_collect_disabled: false });
+            }
+          }
+        } else {
+          this.setState({
+            btn_pump_disabled: "disabled",
+            btn_collect_disabled: "disabled",
+          });
+        }
       }
     }
-  }
+    this.setState({ reset_data: true });
     return true;
-  }
-  
-  // Break points Array Formatting
-  generateBreakPoints=() => {
-    const Reservoir = require('reservoir');
-    const  arrayData = [...Array(128).keys()].map(i => i + 1);
-    const myReservoir = Reservoir(15); 
-    arrayData.forEach((e) => {
-      myReservoir.pushSome(e);
-    });    
-    return myReservoir;
-  }
-  
+  };
+
+  getBreakPoinData = (participantData: any, flag = true) => {
+    const currentDate = this.dateFormating();
+    return participantData.currentDate === currentDate &&
+      participantData.hasOwnProperty("breakPointArray") &&
+      this.state.balloon_count === participantData.balloonCount &&
+      this.state.breakpoint_mean === participantData.breakpointMean &&
+      this.state.breakpoint_std === participantData.breakpointStd
+      ? participantData.breakPointArray[
+          flag ? this.state.balloon_number - 1 : this.state.balloon_number
+        ]
+      : Math.round(
+          this.getRandomGaussian(
+            this.state.breakpoint_mean,
+            this.state.breakpoint_std
+          )
+        );
+  };
+
+  sendGameData = async () => {
+    const currentDate = this.dateFormating();
+    localStorage.setItem(
+      "balloonrisk_" + this.state.participant_id,
+      JSON.stringify({
+        currentDate,
+        breakPointArray: this.state.break_point_array,
+        balloonCount: this.state.balloon_count,
+        breakpointMean: this.state.breakpoint_mean,
+        breakpointStd: this.state.breakpoint_std,
+      })
+    );
+    parent.postMessage(
+      JSON.stringify({
+        balloon_count: this.state.balloon_count,
+        breakpoint_mean: this.state.breakpoint_mean,
+        breakpoint_std: this.state.breakpoint_std,
+        static_data: {
+          points: this.state.total_points + this.state.new_current_point,
+        },
+        temporal_slices: this.state.route,
+        timestamp: new Date().getTime(),
+      }),
+      "*"
+    );
+  };
+
+  dateFormating = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    return date + "-" + month + "-" + year;
+  };
+
   // Update Ballon Number
-  updateBalloonNumber=() => {
-    this.setState({balloon_burst : this.state.balloon_number + 1 === 15 ? true : this.state.balloon_burst , balloon_number: this.state.balloon_number + 1});
-  }
+  updateBalloonNumber = () => {
+    this.setState({
+      balloon_burst:
+        this.state.balloon_number + 1 > this.state.balloon_count
+          ? true
+          : this.state.balloon_burst,
+      balloon_number: this.state.balloon_number + 1,
+    });
+  };
 
   // Update Total Points
-  updateTotalPoints=() => {
-    const  newTotalPoints = this.state.total_points + this.state.new_current_point;
-    this.setState({total_points: newTotalPoints});
-  }
+  updateTotalPoints = () => {
+    const newTotalPoints =
+      this.state.total_points + this.state.new_current_point;
+    this.setState({ total_points: newTotalPoints });
+  };
 
   // Update Current points
-  updateCurrentPoints=() => {
-    this.setState({new_current_point: 0});
-  }
+  updateCurrentPoints = () => {
+    this.setState({ new_current_point: 0 });
+  };
 
-  // Enable the Pump Balloon Button from  disabled 
-  enablePumpBtn=() => {
-    this.setState({btn_pump_disabled: null});
-  }
+  // Enable the Pump Balloon Button from  disabled
+  enablePumpBtn = () => {
+    this.setState({ btn_pump_disabled: null });
+  };
 
   // Increase the balloon width on Pumping
-  resetBalloonSize=() => {
-    this.setState({balloon_width: 100});
-  }
+  resetBalloonSize = () => {
+    this.setState({ balloon_width: 100 });
+  };
 
   // Append collected points
-  appendCollectedPoints=() => {    
-    this.setState(prevState => ({ 
-      collected_points: [...prevState.collected_points, this.state.collected_points]
+  appendCollectedPoints = () => {
+    const dif = new Date().getTime() - this.state.lastClickTime;
+    const lastclickTime = dif;
+    const participantData: any = JSON.parse(
+      localStorage.getItem("balloonrisk_" + this.state.participant_id) || "{}"
+    );
+    const breakPointData = this.getBreakPoinData(participantData, false);
+    this.setState((prevState) => ({
+      collected_points: [
+        ...prevState.collected_points,
+        this.state.collected_points,
+      ],
+      break_point_array: [...prevState.break_point_array, breakPointData],
+      break_point: breakPointData,
+      item: 0,
+      level: this.state.level + 1,
     }));
-  }
-  
-  // Enable the Collect Points Button from  disabled 
-  enableCollectBtn=() => {
-    this.setState({btn_collect_disabled: "disabled"});
-    this.setState({cls_btn_collect_disabled: "opacity_05"});
-  }
-  
-  // Stop the Timer 
+    // Call API
+    if (this.state.balloon_number + 1 > this.state.balloon_count) {
+      this.sendGameData();
+    }
+  };
+
+  // Enable the Collect Points Button from  disabled
+  enableCollectBtn = () => {
+    this.setState({ btn_collect_disabled: "disabled" });
+    this.setState({ cls_btn_collect_disabled: "opacity_05" });
+  };
+
+  // Stop the Timer
   clickStopTimer = () => {
-    this.setState({ stop_timer: true});
-  }
+    this.setState({ stop_timer: true });
+  };
+
+  updateResetData = () => {
+    this.setState({ reset_data: false });
+  };
+
+  reloadPage = () => {
+    window.location.reload(false);
+  };
 
   // Game render function
-  render() {       
+  render() {
     const { start, stop } = this.state;
     return (
-      <div>        
-        <BalloonHeader />
+      <div>
+        <div className="row">
+          <div className="col">
+            <h4 style={{ marginRight: "-25px" }}>{i18n.t("BALLOON_RISK")}</h4>
+            <a
+              className="icn-menu menu-right cursorPointer"
+              onClick={this.reloadPage}
+            >
+              <div className="refresh" />
+            </a>
+          </div>
+        </div>
         <div className="row">
           <div className="col timer">
             <p>
-              {this.state.balloon_number === 15 && "Game Over !!!"}
-              { this.state.balloon_number < 15 && <TimerComponent start={start} stop={stop} trigger_stop_timer={this.clickStopTimer}  stop_timer_val={this.state.stop_timer}/>}
+              {this.state.balloon_number <= this.state.balloon_count && (
+                <TimerComponent
+                  start={start}
+                  stop={stop}
+                  trigger_stop_timer={this.clickStopTimer}
+                  stop_timer_val={this.state.stop_timer}
+                />
+              )}
             </p>
           </div>
         </div>
-        <button className="display_none opaty_00" disabled ={true}>start</button>
-        <button className="display_none opaty_00" disabled ={true}>stop</button>
+        <button className="display_none opaty_00" disabled={true}>
+          start
+        </button>
+        <button className="display_none opaty_00" disabled={true}>
+          stop
+        </button>
         <div className="points">
-            <div className="row">
-                <div className="col-8">Current Points</div>
-              <div className="col-4 p-value" data-current-point={this.state.new_current_point} id="current_point_id">
-                {this.state.new_current_point}
-              </div>
+          <div className="row">
+            <div className="col-8">{i18n.t("CURRENT_POINTS")}</div>
+            <div
+              className="col-4 p-value"
+              data-current-point={this.state.new_current_point}
+              id="current_point_id"
+            >
+              {this.state.new_current_point}
             </div>
-            <div className="row">
-                <div className="col-8">Total Points</div>
-                <div className="col-4 p-value">{this.state.total_points}</div>
-            </div>  
-        </div>  
-       <BallonImageSVG balloon_width={this.state.balloon_width} balloon_burst={this.state.balloon_number === 15 ? true : this.state.balloon_burst} />
-       <BallonStandSVG new_current_point={this.state.new_current_point} balloon_number={this.state.balloon_number} 
-          trigger_balloon_number={this.updateBalloonNumber} trigger_total_points={this.updateTotalPoints} 
-          trigger_current_points={this.updateCurrentPoints} trigger_enable_pump_btn={this.enablePumpBtn} 
-          trigger_reset_balloon_size={this.resetBalloonSize} trigger_collected_points={this.appendCollectedPoints} 
-          trigger_enable_collect_btn={this.state.balloon_number === 15 ? true : this.state.btn_collect_disabled} trigger_collect_button_class={this.state.cls_btn_collect_disabled}
-          balloon_burst={this.state.balloon_burst} trigger_stop_timer={this.clickStopTimer} />
-        <input type="button" name="pump_balloon" id="pump_balloon" value="PUMP UP BALLOON" disabled={this.state.balloon_number === 15 ? true : this.state.btn_pump_disabled} 
-            className={`btn ${this.state.balloon_number === 15 || this.state.balloon_burst ? "opacity_05" : ""}`} onClick={this.pumpBalloon}/>
+          </div>
+          <div className="row">
+            <div className="col-8">{i18n.t("TOTAL_POINTS")}</div>
+            <div className="col-4 p-value">{this.state.total_points}</div>
+          </div>
+        </div>
+        <BallonImageSVG
+          balloon_width={this.state.balloon_width}
+          balloon_burst={this.state.balloon_burst}
+          balloon_count_limit={
+            this.state.balloon_number > this.state.balloon_count ? true : false
+          }
+          language={i18n.language}
+        />
+        <BallonStandSVG
+          new_current_point={this.state.new_current_point}
+          balloon_number={
+            this.state.balloon_number > this.state.balloon_count
+              ? this.state.balloon_count
+              : this.state.balloon_number
+          }
+          trigger_balloon_number={this.updateBalloonNumber}
+          trigger_total_points={this.updateTotalPoints}
+          trigger_current_points={this.updateCurrentPoints}
+          trigger_enable_pump_btn={this.enablePumpBtn}
+          trigger_reset_balloon_size={this.resetBalloonSize}
+          trigger_collected_points={this.appendCollectedPoints}
+          trigger_enable_collect_btn={
+            this.state.balloon_number > this.state.balloon_count
+              ? true
+              : this.state.btn_collect_disabled
+          }
+          trigger_collect_button_class={this.state.cls_btn_collect_disabled}
+          balloon_burst={this.state.balloon_burst}
+          trigger_stop_timer={this.clickStopTimer}
+          balloon_count={this.state.balloon_count}
+          route={this.state.route}
+          reset_status={this.updateResetData}
+          reset_data={this.state.reset_data}
+          language={i18n.language}
+        />
+        <input
+          type="button"
+          name="pump_balloon"
+          id="pump_balloon"
+          value={i18n.t("PUMP_UP_BALLOON") as string}
+          disabled={
+            this.state.balloon_number > this.state.balloon_count ||
+            this.state.balloon_burst === true
+              ? true
+              : this.state.btn_pump_disabled
+          }
+          className={`btn ${
+            this.state.balloon_number > this.state.balloon_count ||
+            this.state.balloon_burst
+              ? "opacity_05"
+              : ""
+          }`}
+          onClick={this.pumpBalloon}
+        />
       </div>
     );
   }
 }
-
-export default Balloons
+  
+export default Balloons;

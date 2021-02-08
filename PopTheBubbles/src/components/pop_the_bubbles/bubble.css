@@ -56,17 +56,21 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 }
 .mt-30{
 	margin-top: 30px;
-	margin: auto;
+	margin: auto;	
 	width: 320px;
-	height: 525px;
+	height: 525px;		
+	width: 590px;
+	height: 650px;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	position: absolute;
-	
-
 }
+.mt-10{
+	margin-top: 10px !important;
+}
+
 body {
 	font:18px Helvetica,Arial,sans-serif;
 	margin:30px
@@ -244,6 +248,17 @@ td{
 }
 
 .next-button button{border: #fff solid 1px; padding: 10px 20px; background: transparent; color: #fff; min-width: 170px; border-radius: 25px;}
+
+.textLabel{font-size: 16px !important; line-height: 23px}
+		
+.pop-the-bubble-content{ border: 2px solid red !important; min-height: 700px !important;}
+
+.animate-ball-movement{	
+    position:relative;
+    animation: combined 2s linear ;
+    -webkit-animation: combined 2s linear;
+    left:0;bottom:0;
+}
 
 @media only screen and (min-width: 768px) {
 

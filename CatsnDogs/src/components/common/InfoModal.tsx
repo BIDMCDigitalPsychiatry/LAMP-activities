@@ -24,7 +24,7 @@ interface State {
 export class InfoModal extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    i18n.changeLanguage(!!props.language ? props.language : "en_US");
+    i18n.changeLanguage(!!props.language ? props.language : "en-US");
     this.state = {
       showStatus: this.props.show,
     };

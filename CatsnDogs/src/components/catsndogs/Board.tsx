@@ -54,7 +54,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   constructor(props: BoardProps) {
     super(props);
-    i18n.changeLanguage(!props.language ? "en_US" : props.language);
+    i18n.changeLanguage(!props.language ? "en-US" : props.language);
     // Initailise state values
     const timerValue =
       typeof process.env.REACT_APP_DNC_TIMOUT_PERIOD === "undefined"

@@ -101,7 +101,7 @@ class Jewels extends React.Component<{}, AppState> {
             gameTimeVal = settings.beginner_seconds;
             break;
         }
-        const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en_US") : "en_US"
+        const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en-US") : "en-US"
         i18n.changeLanguage(langugae);
         this.setState(
           {
