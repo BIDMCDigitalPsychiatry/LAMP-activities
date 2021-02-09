@@ -1098,10 +1098,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     return (
       <div className="pop-the-bubble-board">
-        <div className="mt-30 ">{board}</div>
-        <div>
-          <b>All Bubbles :</b> {JSON.stringify(this.state.colorsArray)}
-        </div>
+        <div className="mt-30 ">{board}</div>       
       </div>
     );
   }

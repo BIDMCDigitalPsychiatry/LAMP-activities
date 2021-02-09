@@ -73,7 +73,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       
     this.state = {
       allRoutes: [],
-      bubble_count: [3, 80, 80],
+      bubble_count: [60, 80, 80],
       bubble_duration: 1.0, // 0,
       bubble_speed: [30, 40, 50],
       completed: false,
