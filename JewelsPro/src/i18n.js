@@ -2,21 +2,21 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  en_US: {
+  "en-US": {
     translation: {
       CONGRATS: "Congrats",
       JEWELS: "Jewels",
       TIMEOUT: "Timeout",
     },
   },
-  es_ES: {
+  "es-ES": {
     translation: {
       CONGRATS: "Felicidades",
       JEWELS: "Joyas",
       TIMEOUT: "el tiempo muerto",
     },
   },
-  hi_IN: {
+  "hi-IN": {
     translation: {
       CONGRATS: "बधाई हो",
       JEWELS: "गहने",
