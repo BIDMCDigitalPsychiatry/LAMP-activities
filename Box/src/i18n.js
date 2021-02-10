@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  en_US: {
+  "en-US": {
     translation: {
       BOX_GAME: "Box Game",
       CONGRATS: "Congrats",
@@ -21,7 +21,7 @@ const resources = {
       TIME_OUT: "Time Out",
     },
   },
-  es_ES: {
+  "es-ES": {
     translation: {
       BOX_GAME: "Juego de caja",
       CONGRATS: "Felicidades",
@@ -40,7 +40,7 @@ const resources = {
       TIME_OUT: "Se acabó el tiempo",
     },
   },
-  hi_IN: {
+  "hi-IN": {
     translation: {
       BOX_GAME: "खेल बॉक्स",
       CONGRATS: "बधाई हो ",

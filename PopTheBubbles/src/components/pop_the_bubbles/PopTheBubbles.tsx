@@ -7,6 +7,7 @@
  */
 
 import * as React from "react";
+import {Animated} from "react-animated-css";
 
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +17,7 @@ import i18n from "./../../i18n";
 import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
+
 
 interface AppState {
   levelCompleted: boolean;
@@ -296,17 +298,23 @@ class PopTheBubbles extends React.Component<{}, AppState> {
           this.state.gameLevel === 1 ? (
             <div className="pop-the-bubble-board">
               <div className="mt-30">
+              
+   
+              <Animated animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
                 <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
+                </Animated>
+                <Animated animationIn="bounceInUp" animationInDuration={1500} className="bubble-blue size-l" animationOut="fadeOut" isVisible={true}>
                 <Bubble
                   text={i18n.t("TAP_TO_CONTINUE")}
                   bubbleToTap={false}
                   x={x}
                   index={0}
                   y={y}
-                  class="size-l bubble-blue"
+                  class="bubble-text"
                   onClick={this.handleClick}
                   bubbleDuration={this.state.bubble_duration}
                 />
+                </Animated>
               </div>
             </div>
           ) : (
@@ -316,7 +324,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                 <div className="pl-30 pr-30 game-rule text-center">
                   <div className=" pr-30 game-rule text-center">
                     <h1>
-                      {i18n.t("YOU_GOT_PERCENT", {percentage: Math.round((this.state.correctGoCount / this.bubbleCount) * 100)})}
+                      {i18n.t("YOU_GOT_PERCENT", {percentage: Math.round((this.state.correctGoCount / this.state.totalGoCount) * 100)})}
                       %
                     </h1>
 
@@ -351,8 +359,6 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                     </div>
 
                     <div className="textLabel">
-
-
                     {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS", {
                     percentage: this.state.totalNoGoCount > 0
                     ? Math.round(
@@ -419,8 +425,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
               <h1 className="mt-10">{i18n.t("LEVEL_NUMBER", {gameLevel: this.state.gameLevel})}</h1>
               <div className="pl-30 pr-30 game-rule text-center">
                 <div className="pl-30 pr-30 game-rule text-center">
-                  <p>{alertTextTop}</p>
-                  <br />
+                  <p>{alertTextTop}</p> 
                   <p>{alertTextBottom}</p>
                 </div>
               </div>

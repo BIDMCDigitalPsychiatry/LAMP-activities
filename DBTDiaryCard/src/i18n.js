@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  en_US: {
+  "en-US": {
     translation: {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
       CONTINUE: "Continue",
@@ -123,7 +123,7 @@ const resources = {
       QUESTION_NUMBER_OF_TOTAL: " {{ number }} of {{ total }}"
     },
   },
-  hi_IN: {
+  "hi-IN": {
     translation: {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
       CONTINUE: "Continue",
@@ -244,7 +244,7 @@ const resources = {
       QUESTION_NUMBER_OF_TOTAL: " {{ number }} की {{ total }}"
     },
   },
-  es_ES: {
+  "es-ES": {
     translation: {
       LIFE_WORTH_LIVING_GOAL: "Vida digna de Ser Vivida. (Metas)",
       CONTINUE: "continuar",
