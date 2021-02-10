@@ -9,7 +9,7 @@
 	--square-size:84px;
 	--square-font-size:72px
 }
-body{background-color:#f1f3f0 !important;}
+body{background-color:#f1f3f0 !important; overflow: hidden;}
 nav a{color: #fff; padding: 10px; display: inline-block;}
 h1{font-size: 26px !important; color: rgba(53,159,254,1); text-align: center; }
 
@@ -57,10 +57,10 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 .mt-30{
 	margin-top: 30px;
 	margin: auto;	
-	width: 320px;
+	
 	height: 525px;		
 	width: 590px;
-	height: 650px;
+	
 	left: 0;
 	right: 0;
 	top: 0;
@@ -249,7 +249,7 @@ td{
 
 .next-button button{border: #fff solid 1px; padding: 10px 20px; background: transparent; color: #fff; min-width: 170px; border-radius: 25px;}
 
-.textLabel{font-size: 16px !important; line-height: 23px}
+.textLabel{font-size: 16px !important; line-height: 23px; color: #305f8a;}
 		
 .pop-the-bubble-content{ border: 2px solid red !important; min-height: 700px !important;}
 
@@ -264,16 +264,17 @@ td{
 
 	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 24px !important;}
 	.next-button{bottom: 7%;}
+	.mt-30{height: 650px;}
 }
 
 @media only screen and (max-width: 767px) {
 	.box-info, .game-board, .countdown-timer__text{font-size: 13px !important;}
-
+.mt-30{width: 320px;}
 }
 
 .pl-30{padding-left: 30px; padding-right: 30px;}
 .text-center{text-align: center;}
-.game-rule p{font-size: 13px;}
+.game-rule p{font-size: 13px; color: #305f8a; margin-top: 25px;}
 h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top: 40%; width: 100%; text-align: center; left: 0;}
 .success { 
 	color:#26bcff;
@@ -284,4 +285,9 @@ h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top:
 @media only screen and (max-width: 320px) {
 	.bubble-blue {position: relative !important;}
 	.mt-30{height: 425px;}
+}
+.bubble-text{left: auto !important;
+bottom: auto !important;
+width: 100%;
+position: relative !important;
 }

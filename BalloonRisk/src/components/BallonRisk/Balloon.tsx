@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-
+  
 import * as React from "react";
 import "././style.css";
 import BallonStandSVG from "./BallonStandSVG";
@@ -40,7 +40,7 @@ interface AppState {
   participant_id: number;
   break_point_array: any;
 }
-
+  
 class Balloons extends React.Component<{}, AppState> {
   constructor(props: any) {
     super(props);
@@ -51,7 +51,7 @@ class Balloons extends React.Component<{}, AppState> {
       eventMethod === "attachEvent" ? "onmessage" : "message";
     this.state = {
       balloon_burst: false,
-      balloon_count: 5,
+      balloon_count: 15,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,
@@ -92,19 +92,18 @@ class Balloons extends React.Component<{}, AppState> {
           breakpoint_std: settings
             ? settings.breakpoint_std
             : this.state.breakpoint_std,
-          participant_id: !!configuration ? configuration.participant_id : 0,
         });
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
       },
       false
     );
     const participantData = localStorage.getItem(
-      "balloonrisk_" + this.state.participant_id
+      "balloonrisk_"
     );
     if (!participantData) {
       const currentDate = this.dateFormating();
       localStorage.setItem(
-        "balloonrisk_" + this.state.participant_id,
+        "balloonrisk_",
         JSON.stringify({
           currentDate,
           balloonCount: this.state.balloon_count,
@@ -189,7 +188,7 @@ class Balloons extends React.Component<{}, AppState> {
         }));
         setTimeout(() => {
           const participantData: any = JSON.parse(
-            localStorage.getItem("balloonrisk_" + this.state.participant_id) ||
+            localStorage.getItem("balloonrisk_") ||
               "{}"
           );
           const breakPointData = this.getBreakPoinData(participantData);
@@ -214,7 +213,7 @@ class Balloons extends React.Component<{}, AppState> {
             if (this.state.break_point === 0) {
               const participantData: any = JSON.parse(
                 localStorage.getItem(
-                  "balloonrisk_" + this.state.participant_id
+                  "balloonrisk_"
                 ) || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
@@ -287,7 +286,7 @@ class Balloons extends React.Component<{}, AppState> {
   sendGameData = async () => {
     const currentDate = this.dateFormating();
     localStorage.setItem(
-      "balloonrisk_" + this.state.participant_id,
+      "balloonrisk_",
       JSON.stringify({
         currentDate,
         breakPointArray: this.state.break_point_array,
@@ -357,7 +356,7 @@ class Balloons extends React.Component<{}, AppState> {
     const dif = new Date().getTime() - this.state.lastClickTime;
     const lastclickTime = dif;
     const participantData: any = JSON.parse(
-      localStorage.getItem("balloonrisk_" + this.state.participant_id) || "{}"
+      localStorage.getItem("balloonrisk_") || "{}"
     );
     const breakPointData = this.getBreakPoinData(participantData, false);
     this.setState((prevState) => ({

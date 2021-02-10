@@ -1098,7 +1098,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     return (
       <div className="pop-the-bubble-board">
-        <div className="mt-30 ">{board}</div>       
+        <div className="mt-30 ">{board}</div>
       </div>
     );
   }

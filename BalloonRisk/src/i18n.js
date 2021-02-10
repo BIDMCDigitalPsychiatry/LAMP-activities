@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  en_US: {
+  "en-US": {
     translation: {
       BALLOON_RISK: "Balloon Risk",
       GAME_OVER: "Game Over",
@@ -14,7 +14,7 @@ const resources = {
       BALLOON_BURSTED: "Balloon Bursted",
     },
   },
-  es_ES: {
+  "es-ES": {
     translation: {
       BALLOON_RISK: "Balloon Risk",
       GAME_OVER: "Juego Terminado",
@@ -26,7 +26,7 @@ const resources = {
       BALLOON_BURSTED: "Balloon Bursted",
     },
   },
-  hi_IN: {
+  "hi-IN": {
     translation: {
       BALLOON_RISK: "Balloon Risk",
       GAME_OVER: "खेल खत्म",
