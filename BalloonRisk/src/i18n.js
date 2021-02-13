@@ -11,7 +11,7 @@ const resources = {
       TOTAL_POINTS: "Total Points",
       CURRENT_POINTS: "Current Points",
       COLLECT_POINTS: "COLLECT POINTS",
-      BALLOON_BURSTED: "Balloon Bursted",
+      BALLOON_BURSTED: "Balloon Burst",
     },
   },
   "es-ES": {
@@ -23,7 +23,7 @@ const resources = {
       TOTAL_POINTS: "Total Points",
       CURRENT_POINTS: "Current Points",
       COLLECT_POINTS: "COLLECT POINTS",
-      BALLOON_BURSTED: "Balloon Bursted",
+      BALLOON_BURSTED: "Balloon Burst",
     },
   },
   "hi-IN": {
@@ -35,7 +35,7 @@ const resources = {
       TOTAL_POINTS: "Total Points",
       CURRENT_POINTS: "Current Points",
       COLLECT_POINTS: "COLLECT POINTS",
-      BALLOON_BURSTED: "Balloon Bursted",
+      BALLOON_BURSTED: "Balloon Burst",
     },
   },
 };
