@@ -87,7 +87,7 @@ export default function SkillYesView(props) {
     ]
 
     const onChangeList = (section, i) => {
-        var list = skill.skills
+        var list = skill.skills ?? []
         const filter = list.filter((item) => item.id === section.data[i] && item.section === section.title)
         const index = (filter && filter.length > 0) ? list.indexOf(filter[0]) : -1
         if (index > -1) {
@@ -95,7 +95,6 @@ export default function SkillYesView(props) {
         } else {
             list.push({ section: section.title, id: section.data[i] })
         }
-        // console.log({list})
         setSkill({ ...skill, skills: list })
     }
 
@@ -122,7 +121,7 @@ export default function SkillYesView(props) {
                 <Grid item lg={4} sm={10} xs={12}>
                     {data.map((item) => {
                         return (
-                            <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills} onSelect={i => onChangeList(item, i)} />
+                            <SkillExpanded key={item.title} title={item.title} list={item.data} selectedList={skill.skills ?? []} onSelect={i => onChangeList(item, i)} />
                         )
                     })}
                     <div className={classes.buttonsContainer}>

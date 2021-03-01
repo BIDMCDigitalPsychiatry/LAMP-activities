@@ -88,7 +88,7 @@ export default function SkillExpanded({ title, list, selectedList, onSelect }) {
                 <div className={classes.listContainer}>
                     {
                         list.map((item, index) => {
-                            const filter = selectedList.filter(i => i.id === item && i.section === title)
+                            const filter = selectedList ? selectedList.filter(i => i.id === item && i.section === title) : []
                             const checked = (filter && filter.length > 0)
 
                             return (
