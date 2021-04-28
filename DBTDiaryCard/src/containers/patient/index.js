@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeView(props) {
     const classes = useStyles()
-    const [active, setActive] = useState(0)
+    const [active, setActive] = useState(-1)
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
@@ -73,18 +73,21 @@ function HomeView(props) {
         const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
         const eventer = window[eventMethod]
         const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-
         eventer(
-            messageEvent, (e) => {
+            messageEvent, (e) => {             
                 const settings = e.data.settings;
                 const configuration = e.data.configuration;
                 setSettings(settings);
-                i18n.changeLanguage(!!configuration ? configuration.language : "en_US");
+                i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
                 setTime(new Date().getTime());
             },
             false
         )
     }, [])
+
+    useEffect(() => {
+        if(!!settings) setActive(0)
+    }, [settings])
 
     useEffect(() => {
         if (active === 8) {
@@ -130,7 +133,7 @@ function HomeView(props) {
         return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)} />)
     } else if (active === 7) {
         return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(props.report && props.report.skillToday ? 6 : 42)} />)
-    } else if (active == 8) {
+    } else {
         return null
     }
 }
