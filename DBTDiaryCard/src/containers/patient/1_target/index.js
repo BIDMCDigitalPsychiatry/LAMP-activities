@@ -134,7 +134,11 @@ export default function TargetView({ settings, ...props }) {
     if (updateReport) {
       updateReport('target', targets)
     }
-    if (onContinue) {
+    console.log(targetIneffective, targetEffective, targets,targets.ineffective.length, targets.effective.length)
+    if (onContinue) { //  && (
+      // targetIneffective.length === 0 || ( targetIneffective.length > 0 && targets.ineffective.length > 0)) &&
+      // (
+      //   targetEffective.length === 0 || ( targetEffective.length > 0 && targets.effective.length > 0))) {
       onContinue()
     }
   }
@@ -157,7 +161,7 @@ export default function TargetView({ settings, ...props }) {
           {targetEffective.map((item, index) => {
             const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
               (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
-            const urgeValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].urge) ? targets.effective["effective" + index].urge : 0
+            const urgeValue = (!!targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].urge) >= 0 ? targets.effective["effective" + index].urge : -1
 
             return (
               <RateCountAnswer
@@ -179,7 +183,7 @@ export default function TargetView({ settings, ...props }) {
           {targetIneffective.map((item, index) => {
             const actValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].act) ?
               (targets.ineffective["ineffective" + index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective" + index].act) : ''
-            const urgeValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].urge) ? targets.ineffective["ineffective" + index].urge : 0
+            const urgeValue = (!!targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].urge) >= 0 ? targets.ineffective["ineffective" + index].urge : -1
 
             return (
 

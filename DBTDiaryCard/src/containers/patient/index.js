@@ -64,20 +64,22 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeView(props) {
     const classes = useStyles()
-    const [active, setActive] = useState(-1)
+    const [active, setActive] = useState(0)
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
+        console.log(props)
         const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
         const eventer = window[eventMethod]
         const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
         eventer(
             messageEvent, (e) => {             
-                const settings = e.data.settings;
+                const settings = e.data.activity.settings;
                 const configuration = e.data.configuration;
                 setSettings(settings);
+                updateReport(null)
                 i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
                 setTime(new Date().getTime());
             },
@@ -92,9 +94,8 @@ function HomeView(props) {
     useEffect(() => {
         if (active === 8) {
             let finalReport = createReport(props.report)
-            finalReport.duration = new Date().getTime() - time
-            console.log(finalReport)
-            window.parent.postMessage(JSON.stringify(finalReport), "*");
+            finalReport.duration = new Date().getTime() - time           
+            window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
     }, [active])
 

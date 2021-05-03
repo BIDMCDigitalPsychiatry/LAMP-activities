@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillHelpView(props) {
     const classes = useStyles()
-    const [skillHelped, setSkillHelped] = React.useState(props.report ? props.report.skillHelped : 1)
+    const [skillHelped, setSkillHelped] = React.useState(props.report ? props.report.skillHelped : -1)
     const { t } = useTranslation()
 
     const onUpdateReport = () => {
@@ -60,7 +60,7 @@ export default function SkillHelpView(props) {
         if (updateReport) {
             updateReport('skillHelped', skillHelped)
         }
-        if (onContinue) {
+        if (onContinue && skillHelped >= 0) {
             onContinue()
         }
     }

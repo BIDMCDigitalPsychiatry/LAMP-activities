@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillEffortView(props) {
   const classes = useStyles()
-  const [effortLevel, setEffortLevel] = React.useState(props.report && props.report.effort ? props.report.effort : 0)
+  const [effortLevel, setEffortLevel] = React.useState(props.report && props.report.effort >= 0 ? props.report.effort : -1)
   const { t } = useTranslation()
 
   const onUpdateReport = () => {
@@ -66,7 +66,7 @@ export default function SkillEffortView(props) {
     if (updateReport) {
       updateReport('effort', effortLevel)
     }
-    if (onContinue) {
+    if (onContinue && effortLevel >= 0) {
       onContinue()
     }
   }

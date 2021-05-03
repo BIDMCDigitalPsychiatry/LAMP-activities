@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NotesView(props) {
     const classes = useStyles()
-    const [notes, setNotes] = React.useState(props.report && props.report.notes ? props.report.notes : '')
+    const [notes, setNotes] = React.useState(props.report && !!props.report.notes ? props.report.notes : '')
     const { t } = useTranslation()
 
     const onUpdateReport = () => {
