@@ -9,6 +9,7 @@ import HeaderView from '../../../components/HeaderView'
 import actions from '../../home/action'
 import { connect } from 'react-redux'
 import { useTranslation } from "react-i18next"
+// import { useSnackbar } from "notistack"
 
 const { updateReport } = actions
 
@@ -65,6 +66,7 @@ export default function FellingView({ settings, ...props }) {
   const [result, setResult] = React.useState(props.report && !!props.report.emotion ? props.report.emotion : { felling: {} })
   const [emotions, setEmotions] = React.useState(settings?.emotions ?? [])
   const { t } = useTranslation()
+  // const { enqueueSnackbar } = useSnackbar()
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
@@ -82,8 +84,12 @@ export default function FellingView({ settings, ...props }) {
     if (updateReport) {
       updateReport('emotion', result)
     }
-    if (onContinue && (emotions.length === 0 || (emotions.length > 0 && Object.keys(result.felling).length > 0))) {
+    if (onContinue && (emotions.length === 0 || (emotions.length > 0 && Object.keys(result.felling).length === emotions.length))) {
       onContinue()
+    } else {
+      // enqueueSnackbar(t("Rating required for each item."), {
+      //   variant: "error",
+      // })
     }
   }
 
@@ -99,7 +105,7 @@ export default function FellingView({ settings, ...props }) {
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
           {emotions.map((item, index) => {
-            const rate = result && !!result.felling && !!result.felling["emotion" + index] ? result.felling["emotion" + index].rate : -1
+            const rate = result && !!result.felling && result.felling["emotion" + index]?.rate >= 0 ? result.felling["emotion" + index].rate : -1
             return (
               <ExperienceAnswer
                 title={item.emotion}

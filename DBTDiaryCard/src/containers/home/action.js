@@ -4,6 +4,7 @@ const actions = {
     UPDATE_TARGET_INEFFECTIVE: 'UPDATE_TARGET_INEFFECTIVE',
     UPDATE_EMOTIONS: 'UPDATE_EMOTIONS',
     UPDATE_REPORT: 'UPDATE_REPORT',
+    
     updateReport: (key, value) => {
         return {
             type: actions.UPDATE_REPORT,

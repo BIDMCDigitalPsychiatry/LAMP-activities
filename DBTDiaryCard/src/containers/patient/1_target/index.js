@@ -9,7 +9,7 @@ import HeaderView from '../../../components/HeaderView'
 import { connect } from 'react-redux'
 import actions from '../../home/action'
 import { useTranslation } from "react-i18next"
-
+// import { useSnackbar } from "notistack"
 
 const { updateReport } = actions
 
@@ -53,50 +53,28 @@ export default function TargetView({ settings, ...props }) {
   const [targetEffective, setTargetEffective] = React.useState(settings?.targetEffective ?? [])
   const [targetIneffective, setTargetIneffective] = React.useState(settings?.targetIneffective ?? [])
   const { t } = useTranslation()
-
-  console.log(props.repot)
+  // const { enqueueSnackbar } = useSnackbar()
 
   const updateUrge = (type, target, key, value) => {
     if (type == 'effective') {
       let newEffective = targets.effective
-      let object = newEffective[key]
-      if (!object) {
-        object = {
-          act: '0',
-          urge: 0,
-          target
-        }
+      newEffective[key] = {
+        act: '0',
+        urge: value,
+        target
       }
-
-      if (object.urge == value) {
-        delete newEffective[key]
-      } else {
-        object.urge = value
-        newEffective[key] = object
-      }
-
       setTargets({ ...targets, effective: newEffective })
     } else {
       let newIneffective = targets.ineffective
-      let object = newIneffective[key]
-      if (!object) {
-        object = {
+      newIneffective[key] = {
           act: '0',
-          urge: 0,
+          urge: value,
           target
         }
-      }
-
-      if (object.urge == value) {
-        delete newIneffective[key]
-      } else {
-        object.urge = value
-        newIneffective[key] = object
-      }
-
       setTargets({ ...targets, ineffective: newIneffective })
     }
   }
+
 
   const updateAct = (type, target, key, value) => {
     if (type == 'effective') {
@@ -134,10 +112,14 @@ export default function TargetView({ settings, ...props }) {
       updateReport('target', targets)
     }
     if (onContinue && (
-      targetIneffective.length === 0 || ( targetIneffective.length > 0 && Object.keys(targets.ineffective).length > 0)) &&
+      targetIneffective.length === 0 || ( targetIneffective.length > 0 && Object.keys(targets.ineffective).length === targetIneffective.length)) &&
       (
-        targetEffective.length === 0 || ( targetEffective.length > 0 && Object.keys(targets.effective).length > 0))) {
+        targetEffective.length === 0 || ( targetEffective.length > 0 && Object.keys(targets.effective).length === targetEffective.length))) {
       onContinue()
+    } else {
+      // enqueueSnackbar(t("Rating required for each item."), {
+      //   variant: "error",
+      // })
     }
   }
 
@@ -159,7 +141,7 @@ export default function TargetView({ settings, ...props }) {
           {targetEffective.map((item, index) => {
             const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
               (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
-            const urgeValue = (!!targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].urge) >= 0 ? targets.effective["effective" + index].urge : -1
+            const urgeValue = !!targets.effective && targets.effective["effective" + index]?.urge >= 0 ? targets.effective["effective" + index].urge : -1
 
             return (
               <RateCountAnswer
@@ -181,7 +163,7 @@ export default function TargetView({ settings, ...props }) {
           {targetIneffective.map((item, index) => {
             const actValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].act) ?
               (targets.ineffective["ineffective" + index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective" + index].act) : ''
-            const urgeValue = (!!targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].urge) >= 0 ? targets.ineffective["ineffective" + index].urge : -1
+            const urgeValue = !!targets.ineffective && targets.ineffective["ineffective" + index]?.urge >= 0 ? targets.ineffective["ineffective" + index].urge : -1
 
             return (
 
