@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FellingView({ settings, ...props }) {
   const classes = useStyles()
   const [result, setResult] = React.useState(props.report && !!props.report.emotion ? props.report.emotion : { felling: {} })
-  const [emotions, setEmotions] = React.useState(settings?.emotions ?? ["sf","sdf"])
+  const [emotions, setEmotions] = React.useState(settings?.emotions ?? [])
   const { t } = useTranslation()
   // const { enqueueSnackbar } = useSnackbar()
 
