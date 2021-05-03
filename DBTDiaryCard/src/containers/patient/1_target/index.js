@@ -130,15 +130,13 @@ export default function TargetView({ settings, ...props }) {
 
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
-    // console.log(target)
     if (updateReport) {
       updateReport('target', targets)
     }
-    console.log(targetIneffective, targetEffective, targets,targets.ineffective.length, targets.effective.length)
-    if (onContinue) { //  && (
-      // targetIneffective.length === 0 || ( targetIneffective.length > 0 && targets.ineffective.length > 0)) &&
-      // (
-      //   targetEffective.length === 0 || ( targetEffective.length > 0 && targets.effective.length > 0))) {
+    if (onContinue && (
+      targetIneffective.length === 0 || ( targetIneffective.length > 0 && Object.keys(targets.ineffective).length > 0)) &&
+      (
+        targetEffective.length === 0 || ( targetEffective.length > 0 && Object.keys(targets.effective).length > 0))) {
       onContinue()
     }
   }

@@ -79,12 +79,10 @@ export default function FellingView({ settings, ...props }) {
 
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
-    // console.log(result)
     if (updateReport) {
       updateReport('emotion', result)
     }
-    console.log(result)
-    if (onContinue) { // && (emotions.length === 0 || (emotions.length > 0 && result.felling.filter((k) => k >= 0).length > 0))) {
+    if (onContinue && (emotions.length === 0 || (emotions.length > 0 && Object.keys(result.felling).length > 0))) {
       onContinue()
     }
   }
