@@ -59,7 +59,7 @@ export default function TargetView({ settings, ...props }) {
     if (type == 'effective') {
       let newEffective = targets.effective
       newEffective[key] = {
-        act: '0',
+        act: newEffective[key]?.act ?? '0',
         urge: value,
         target
       }
@@ -67,7 +67,7 @@ export default function TargetView({ settings, ...props }) {
     } else {
       let newIneffective = targets.ineffective
       newIneffective[key] = {
-          act: '0',
+          act:  newIneffective[key]?.act ?? '0',
           urge: value,
           target
         }
