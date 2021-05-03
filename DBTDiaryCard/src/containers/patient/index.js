@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeView(props) {
     const classes = useStyles()
-    const [active, setActive] = useState(0)
+    const [active, setActive] = useState(-1)
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
