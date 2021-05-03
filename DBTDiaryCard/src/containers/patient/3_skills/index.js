@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillsView(props) {
     const classes = useStyles();
-    const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : 1)
+    const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : -1)
     const { t } = useTranslation()
 
     const onUpdateReport = () => {

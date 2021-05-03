@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FellingView({ settings, ...props }) {
   const classes = useStyles()
-  const [result, setResult] = React.useState(props.report && props.report.emotion ? props.report.emotion : { felling: {} })
+  const [result, setResult] = React.useState(props.report && !!props.report.emotion ? props.report.emotion : { felling: {} })
   const [emotions, setEmotions] = React.useState(settings?.emotions ?? [])
   const { t } = useTranslation()
 
@@ -79,11 +79,10 @@ export default function FellingView({ settings, ...props }) {
 
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
-    // console.log(result)
     if (updateReport) {
       updateReport('emotion', result)
     }
-    if (onContinue) {
+    if (onContinue && (emotions.length === 0 || (emotions.length > 0 && Object.keys(result.felling).length > 0))) {
       onContinue()
     }
   }
@@ -100,7 +99,7 @@ export default function FellingView({ settings, ...props }) {
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
           {emotions.map((item, index) => {
-            const rate = result && result.felling && result.felling["emotion" + index] ? result.felling["emotion" + index].rate : 0
+            const rate = result && !!result.felling && !!result.felling["emotion" + index] ? result.felling["emotion" + index].rate : -1
             return (
               <ExperienceAnswer
                 title={item.emotion}

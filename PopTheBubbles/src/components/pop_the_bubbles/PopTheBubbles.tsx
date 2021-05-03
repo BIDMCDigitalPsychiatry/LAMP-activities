@@ -82,7 +82,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       correctGoCount: 0,
       correctNoGo: 0,
       falseHitsCount: 0,
-      gameLevel: 1,
+      gameLevel: 0,
       gameOver: false,
       intertrial_duration: 1.0,
       isGameStarted: false,
@@ -111,7 +111,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.settings;
+        const settings = e.data.activity.settings;
         this.setState({
           bubble_count: settings
             ? settings.bubble_count
@@ -122,11 +122,14 @@ class PopTheBubbles extends React.Component<{}, AppState> {
           bubble_speed: settings
             ? settings.bubble_speed
             : this.state.bubble_speed,
+          gameLevel:1,
           intertrial_duration: settings
             ? settings.intertrial_duration
             : this.state.intertrial_duration,
-        });
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        }, () => {
+          i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+          this.setState({gameLevel:1})
+       });        
       },
       false
     );
@@ -476,15 +479,20 @@ class PopTheBubbles extends React.Component<{}, AppState> {
 
   // Game render function
   render() {
+    if(this.state.gameLevel === 0) {
+      return null
+    }
     const infoSection = this.getLevelCases();
     return (
-      <div id="pop-the-bubble-body">
-        <nav className="home-link">
-          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-        </nav>
-        <div className="heading">{i18n.t("POP_THE_BUBBLES")}</div>
-        {infoSection}
-      </div>
+      this.state.gameLevel > 0 ? (
+        <div id="pop-the-bubble-body">
+          <nav className="home-link">
+            <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+          </nav>
+          <div className="heading">{i18n.t("POP_THE_BUBBLES")}</div>
+          {infoSection}
+        </div>
+      ) : null
     );
   }
 }

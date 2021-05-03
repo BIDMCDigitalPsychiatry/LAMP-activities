@@ -14,6 +14,6 @@ const store = createStore(
   persistedReducer 
 );
 
-let persistor = persistStore(store)
+// let persistor = persistStore(store)
 
-export { store, persistor };
+export { store }; // , persistor };

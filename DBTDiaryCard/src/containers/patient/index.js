@@ -75,9 +75,10 @@ function HomeView(props) {
         const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
         eventer(
             messageEvent, (e) => {             
-                const settings = e.data.settings;
+                const settings = e.data.activity.settings;
                 const configuration = e.data.configuration;
                 setSettings(settings);
+                updateReport(null)
                 i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
                 setTime(new Date().getTime());
             },
@@ -92,9 +93,8 @@ function HomeView(props) {
     useEffect(() => {
         if (active === 8) {
             let finalReport = createReport(props.report)
-            finalReport.duration = new Date().getTime() - time
-            console.log(finalReport)
-            window.parent.postMessage(JSON.stringify(finalReport), "*");
+            finalReport.duration = new Date().getTime() - time           
+            window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
     }, [active])
 

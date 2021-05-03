@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SkillYesView(props) {
     const classes = useStyles()
-    const [skill, setSkill] = React.useState(props.report && props.report.skill ? props.report.skill : { skillToday: true, skills: [] })
+    const [skill, setSkill] = React.useState(props.report && !!props.report.skill ? props.report.skill : { skillToday: true, skills: [] })
     const { t } = useTranslation()
     const data = [
         { title: t("MINDFULNESS"), data: [t("WISE_MIND"), t("OBSERVE_JUST_NOTICE_URGE_SURFING"), t("DESCRIBE_PUT_WORDS_ON"), t("PARTICIPATE_ENTER_INTO_THE_EXPERIENCE"), t("NONJUDGMENTAL_STANCE"), t("ONE_MINDFULLY_IN_THE_MOMENT"), t("EFFECTIVENESS_FOCUS_ON_WHAT_WORKS"), t("LOVING_KINDNESS_BUILD_COMPASSION")] },
@@ -103,7 +103,7 @@ export default function SkillYesView(props) {
         if (updateReport) {
             updateReport('skill', skill)
         }
-        if (onContinue) {
+        if (onContinue && skill.skills.length > 0) {
             onContinue()
         }
     }

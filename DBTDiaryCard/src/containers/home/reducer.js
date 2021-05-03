@@ -29,8 +29,11 @@ export default function appReducer(state = initState, action) {
       return { ...state, config: { ...state.config, emotions: action.emotions } }
     case actions.UPDATE_REPORT:
       let report = state.report
-      report[action.key] = action.value
-      return { ...state, report: report }
+      if(!!action.key) {
+        report[action.key] = action.value
+        return { ...state, report: report }
+       } else
+        return { ...state, report: null, config: null }
     default:
       return state;
   }

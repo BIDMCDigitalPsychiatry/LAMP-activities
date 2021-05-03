@@ -339,8 +339,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         newArrayGoIndx = [newArrayGoIndx, newPinkIndx]
           .reduce(
-            (r, a: any) => (
-              a.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
+            (r, ap: any) => (
+              ap.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
             ),
             []
           )
@@ -749,8 +749,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         newArrayGoIndexes = [newArrayGoIndexes, newPinkIndexes]
           .reduce(
-            (r, a: any) => (
-              a.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
+            (r, ap: any) => (
+              ap.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
             ),
             []
           )
