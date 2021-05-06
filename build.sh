@@ -14,11 +14,11 @@ for dir in $UNIT_LIST; do (
 		echo "Building $name..."
 
 		# Install & Build
-		npm install || continue
-		npm run build || continue
+		npm install || exit 1
+		npm run build || exit 1
 
 		# Compress for distribution and move to /dist/ directory.
-		../dist/compress_activity.sh || continue
+		../dist/compress_activity.sh || exit 1
 		mv dist.html ../dist/in/$name.html
 		mv dist.html.b64 ../dist/out/$name.html.b64
 	fi
