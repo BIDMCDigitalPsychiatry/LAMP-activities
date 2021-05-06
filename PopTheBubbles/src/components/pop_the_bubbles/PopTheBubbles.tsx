@@ -111,7 +111,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.activity.settings;
+        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         this.setState({
           bubble_count: settings
             ? settings.bubble_count

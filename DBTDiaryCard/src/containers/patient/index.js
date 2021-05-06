@@ -75,7 +75,7 @@ function HomeView(props) {
         const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
         eventer(
             messageEvent, (e) => {             
-                const settings = e.data.activity.settings;
+                const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
                 const configuration = e.data.configuration;
                 setSettings(settings);
                 updateReport(null)

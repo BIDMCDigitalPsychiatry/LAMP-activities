@@ -232,7 +232,7 @@ export default function Breathe({ ...props }) {
     eventer(
       messageEvent,
       (e: any) => {
-        const settingsData = e.data.activity.settings
+        const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {})
         const configuration = e.data.configuration
         const langugae = configuration
           ? configuration.hasOwnProperty("language")

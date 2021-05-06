@@ -80,7 +80,7 @@ class Jewels extends React.Component<{}, AppState> {
     eventer(
       messageEvent,
       (e: any) => {        
-        const settings = e.data.activity.settings;
+        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         const mode = settings ? settings.mode : 1
         let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
