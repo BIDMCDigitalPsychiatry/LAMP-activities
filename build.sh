@@ -5,9 +5,9 @@ ALL_ARGS=${*:1} # Join all args as one big string.
 UNIT_LIST=${ALL_ARGS:-*/} # If no args provided, use */ glob instead.
 
 # All directories with a package.json are treated as build units.
-for dir in $UNIT_LIST; do
-	if [ -f $dir/package.json ]; then
-		pushd $dir
+for dir in $UNIT_LIST; do (
+	if [ -f $dir/package.json ]; then 
+		cd $dir
 
 		# Enter the sub-project.
 		name=$(basename "$PWD" | awk '{print tolower($0)}')
@@ -21,11 +21,12 @@ for dir in $UNIT_LIST; do
 		../dist/compress_activity.sh || continue
 		mv dist.html ../dist/in/$name.html
 		mv dist.html.b64 ../dist/out/$name.html.b64
-
-		popd
 	fi
-done
+); done
 
-# Patch for Jewels -> JewelsPro
-cp ./dist/in/jewelspro.html ./dist/in/jewels.html
-cp ./dist/out/jewelspro.html.b64 ./dist/out/jewels.html.b64
+# Patch for copying Jewels -> JewelsPro (if it was modified/built).
+if [ -f ./dist/*/jewelspro.html.* ]; then 
+	echo "Patching jewels..."
+	cp ./dist/in/jewelspro.html ./dist/in/jewels.html
+	cp ./dist/out/jewelspro.html.b64 ./dist/out/jewels.html.b64
+fi
