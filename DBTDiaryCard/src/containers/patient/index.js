@@ -70,20 +70,12 @@ function HomeView(props) {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-        const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-        const eventer = window[eventMethod]
-        const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-        eventer(
-            messageEvent, (e) => {             
-                const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
-                const configuration = e.data.configuration;
-                setSettings(settings);
-                updateReport(null)
-                i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-                setTime(new Date().getTime());
-            },
-            false
-        )
+        const settings = props.data.activity?.settings ?? (props.data.settings ?? {});
+        const configuration = props.data.configuration;
+        setSettings(settings);
+        updateReport(null)
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        setTime(new Date().getTime());
     }, [])
 
     useEffect(() => {
