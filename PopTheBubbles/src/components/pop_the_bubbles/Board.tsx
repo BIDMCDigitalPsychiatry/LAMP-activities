@@ -86,7 +86,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.totalGoCount = 0;
     this.totalNoGoCount = 0;
     const bubbleStyleValues: any = this.getBubbleStyles();
-    // Initailise state values
+    // Initailise state values	
     this.state = {
       bubbleStyles: bubbleStyleValues,
       bubblesToTapCount: this.count,
@@ -339,8 +339,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         newArrayGoIndx = [newArrayGoIndx, newPinkIndx]
           .reduce(
-            (r, ap: any) => (
-              ap.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
+            (r, a: any) => (
+              a.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
             ),
             []
           )
@@ -749,8 +749,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         newArrayGoIndexes = [newArrayGoIndexes, newPinkIndexes]
           .reduce(
-            (r, ap: any) => (
-              ap.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
+            (r, a: any) => (
+              a.forEach((a: any, i: any) => (r[i] = r[i] || []).push(a)), r
             ),
             []
           )
