@@ -70,21 +70,17 @@ function HomeView(props) {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-        const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-        const eventer = window[eventMethod]
-        const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-        eventer(
-            messageEvent, (e) => {             
-                const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
-                const configuration = e.data.configuration;
-                setSettings(settings);
-                updateReport(null)
-                i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-                setTime(new Date().getTime());
-            },
-            false
-        )
-    }, [])
+      const settings = localStorage.getItem("lamp-activity-settings")
+        ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
+        : {};
+      const configuration = localStorage.getItem("lamp-language")
+        ? localStorage.getItem("lamp-language")
+        : "en-US";
+      updateReport(null);
+      setSettings(settings);
+      i18n.changeLanguage(!!configuration ? configuration : "en-US");
+      setTime(new Date().getTime());
+    }, []);
 
     useEffect(() => {
         if(!!settings) setActive(0)
