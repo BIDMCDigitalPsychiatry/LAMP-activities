@@ -81,7 +81,7 @@ class Balloons extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.settings;
+        const settings = e.data.activity?.settings ?? (e.data.settings ?? {})
         this.setState({
           balloon_count: settings
             ? settings.balloon_count
@@ -123,7 +123,7 @@ class Balloons extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.settings;
+        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         this.setState({
           balloon_count: settings
             ? settings.balloon_count
