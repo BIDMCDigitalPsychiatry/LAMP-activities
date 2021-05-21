@@ -1178,85 +1178,7 @@ export default function SurveyQuestions({...props}) {
     )
   }
   
-  useEffect(() => {    
-  //   const data = JSON.parse(JSON.stringify({
-  //     "activity": {
-  //         "name": "S1",
-  //         "description": "S1 desc",
-  //         "sections": [
-  //             {
-  //                 "id": "m52s452624qcxjn1khyx",
-  //                 "spec": "lamp.survey",
-  //                 "photo": "data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FwYV8xIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PHBhdGggZD0ibTI1NiAzMGgtMTk1djQ4MmgxOTUgMTk1di00ODJ6IiBmaWxsPSIjZmY2YzZjIi8+PHBhdGggZD0ibTI1NiAzMGgxOTV2NDgyaC0xOTV6IiBmaWxsPSIjZTYzOTUwIi8+PHBhdGggZD0ibTMxNiA2MC0zMC0zMGgtMzAtMzBsLTMwIDMwaC0xMDV2NDIyaDE2NSAxNjV2LTQyMnoiIGZpbGw9IiNmMGY3ZmYiLz48cGF0aCBkPSJtNDIxIDYwaC0xMDVsLTMwLTMwaC0zMHY0NTJoMTY1eiIgZmlsbD0iI2RmZTdmNCIvPjxnIGZpbGw9IiNjN2NmZTEiPjxwYXRoIGQ9Im0yNzEgMTIxaDEyMHYzMGgtMTIweiIvPjxwYXRoIGQ9Im0yNzEgMTgxaDYwdjMwaC02MHoiLz48cGF0aCBkPSJtMjcxIDI0MWgxMjB2MzBoLTEyMHoiLz48cGF0aCBkPSJtMjcxIDMwMWg2MHYzMGgtNjB6Ii8+PHBhdGggZD0ibTI3MSAzNjFoMTIwdjMwaC0xMjB6Ii8+PHBhdGggZD0ibTI3MSA0MjFoNjB2MzBoLTYweiIvPjwvZz48cGF0aCBkPSJtMjExIDIxMWgtOTB2LTkwaDkweiIgZmlsbD0iIzk3ZGUzZCIvPjxwYXRoIGQ9Im0yMTEgMzMxaC05MHYtOTBoOTB6IiBmaWxsPSIjOTdkZTNkIi8+PHBhdGggZD0ibTIxMSA0NTFoLTkwdi05MGg5MHoiIGZpbGw9IiM5N2RlM2QiLz48cGF0aCBkPSJtMTUxIDE1MWgzMHYzMGgtMzB6IiBmaWxsPSIjZjBmN2ZmIi8+PHBhdGggZD0ibTE1MSAyNzFoMzB2MzBoLTMweiIgZmlsbD0iI2YwZjdmZiIvPjxwYXRoIGQ9Im0xNTEgMzkxaDMwdjMwaC0zMHoiIGZpbGw9IiNmMGY3ZmYiLz48cGF0aCBkPSJtMjU2IDBoLTYwdjYwaDYwIDYwdi02MHoiIGZpbGw9IiM0NzRmNTQiLz48cGF0aCBkPSJtMjU2IDBoNjB2NjBoLTYweiIgZmlsbD0iIzMyMzkzZiIvPjwvZz48L3N2Zz4=",
-  //                 "schedule": [],
-  //                 "settings": [
-  //                     {
-  //                         "text": "Q1",
-  //                         "type": "text",
-  //                         "description": "q1 desc",
-  //                         "options": null
-  //                     },
-  //                     {
-  //                         "text": "Q2",
-  //                         "type": "boolean",
-  //                         "description": "Q2 desc",
-  //                         "options": null
-  //                     },
-  //                     {
-  //                         "text": "Q3",
-  //                         "type": "short",
-  //                         "description": "Q3 desc",
-  //                         "options": null
-  //                     },
-  //                     {
-  //                         "text": "q4",
-  //                         "type": "multiselect",
-  //                         "options": [
-  //                             {
-  //                                 "value": "gbb",
-  //                                 "description": "sdf"
-  //                             },
-  //                             {
-  //                                 "value": "fg",
-  //                                 "description": "sdf3"
-  //                             }
-  //                         ]
-  //                     },
-  //                     {
-  //                         "text": "fes",
-  //                         "type": "slider",
-  //                         "options": [
-  //                             {
-  //                                 "value": "3",
-  //                                 "description": "dfg"
-  //                             },
-  //                             {
-  //                                 "value": "5",
-  //                                 "description": "df2g"
-  //                             },
-  //                             {
-  //                                 "value": "6",
-  //                                 "description": "d1fg"
-  //                             }
-  //                         ]
-  //                     }
-  //                 ]
-  //             }
-  //         ],
-  //         "partialValidationOnly": false,
-  //         "validate": true,
-  //         "toolBarBack": false,
-  //         "type": "S1",
-  //         "spec": "lamp.survey"
-  //     },
-  //     "configuration": {
-  //         "language": "en-US"
-  //     }
-  // }))
-  //   responses.current = !!data.activity.prefillData ? Object.assign({}, data.activity.prefillData) : {}
-  //   setContent(data.activity)
-  //   i18n.changeLanguage(data.configuration.langugae)
-  //   setTime(new Date().getTime())      
+  useEffect(() => {  
     const activity = localStorage.getItem("lamp-activity-settings")
       ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
       : {}
@@ -1265,28 +1187,7 @@ export default function SurveyQuestions({...props}) {
       : "en-US"   
     responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
     setContent(activity)
-    i18n.changeLanguage(!!configuration ? configuration : "en-US")
-    // const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    // const eventer = window[eventMethod]
-    // const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // // Listen to message from child window
-    // eventer(
-    //   messageEvent,
-    //   (e: any) => {
-    //     console.log(e.data)
-    //     const activity = e.data.activity ?? (e.data ?? {})
-    //     const configuration = e.data?.configuration ?? null
-    //     const langugae = !!configuration
-    //       ? configuration.hasOwnProperty("language")
-    //         ? configuration.language
-    //         : "en-US"
-    //       : "en-US"
-    //     responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
-    //     setContent(activity)
-    //     i18n.changeLanguage(langugae)      
-    //   },
-    //   false
-    // )
+    i18n.changeLanguage(!!configuration ? configuration : "en-US")    
   }, [])
 
   return (
