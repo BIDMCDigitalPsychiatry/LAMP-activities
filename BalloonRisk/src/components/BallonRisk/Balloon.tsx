@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-  
+
 import * as React from "react";
 import "././style.css";
 import BallonStandSVG from "./BallonStandSVG";
@@ -40,7 +40,7 @@ interface AppState {
   participant_id: number;
   break_point_array: any;
 }
-  
+
 class Balloons extends React.Component<{}, AppState> {
   constructor(props: any) {
     super(props);
@@ -81,7 +81,7 @@ class Balloons extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
+        const settings = e.data.settings;
         this.setState({
           balloon_count: settings
             ? settings.balloon_count
@@ -97,9 +97,7 @@ class Balloons extends React.Component<{}, AppState> {
       },
       false
     );
-    const participantData = localStorage.getItem(
-      "balloonrisk_"
-    );
+    const participantData = localStorage.getItem("balloonrisk_");
     if (!participantData) {
       const currentDate = this.dateFormating();
       localStorage.setItem(
@@ -113,6 +111,35 @@ class Balloons extends React.Component<{}, AppState> {
       );
     }
   }
+
+  componentDidMount = () => {
+    const eventMethodObj: any = window.addEventListener;
+    const eventMethod = eventMethodObj ? "addEventListener" : "attachEvent";
+    const eventer = window[eventMethod];
+    const messageEvent =
+      eventMethod === "attachEvent" ? "onmessage" : "message";
+
+    eventer(
+      messageEvent,
+      (e: any) => {
+        const configuration = e.data.configuration;
+        const settings = e.data.settings;
+        this.setState({
+          balloon_count: settings
+            ? settings.balloon_count
+            : this.state.balloon_count,
+          breakpoint_mean: settings
+            ? settings.breakpoint_mean
+            : this.state.breakpoint_mean,
+          breakpoint_std: settings
+            ? settings.breakpoint_std
+            : this.state.breakpoint_std,
+        });
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+      },
+      false
+    );
+  };
 
   getRandomGaussian = function (mean: any, std: any) {
     let u = 0;
@@ -188,8 +215,7 @@ class Balloons extends React.Component<{}, AppState> {
         }));
         setTimeout(() => {
           const participantData: any = JSON.parse(
-            localStorage.getItem("balloonrisk_") ||
-              "{}"
+            localStorage.getItem("balloonrisk_") || "{}"
           );
           const breakPointData = this.getBreakPoinData(participantData);
           this.setState((prevState) => ({
@@ -212,9 +238,7 @@ class Balloons extends React.Component<{}, AppState> {
           if (ballonId != null) {
             if (this.state.break_point === 0) {
               const participantData: any = JSON.parse(
-                localStorage.getItem(
-                  "balloonrisk_"
-                ) || "{}"
+                localStorage.getItem("balloonrisk_") || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
               this.setState((prevState) => ({
@@ -504,5 +528,5 @@ class Balloons extends React.Component<{}, AppState> {
     );
   }
 }
-  
+
 export default Balloons;
