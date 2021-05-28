@@ -1,0 +1,14 @@
+import React from 'react'
+import {
+    Box
+  } from "@material-ui/core"
+
+const Backgroud01 = () => {
+  return (
+    <Box>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 900"><defs>
+  <symbol id="New_Symbol" data-name="New Symbol" viewBox="0 0 224.7 259.52"><circle style={{fill:"#6d6d6d"}} cx="20.57" cy="128.18" r="20.57"/><circle style={{fill:"#6d6d6d"}} cx="110.77" cy="132.92" r="15.82"/><circle style={{fill:"#6d6d6d"}} cx="82.29" cy="36.4" r="36.4"/><circle style={{fill:"#6d6d6d"}} cx="164.57" cy="216.79" r="23.74"/><circle style={{fill:"#6d6d6d"}} cx="202.55" cy="109.19" r="22.15"/><circle style={{fill:"#6d6d6d"}} cx="47.47" cy="218.37" r="41.14"/></symbol></defs><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 1061.72, -14.6)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 1033.76, 449.97)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 687.75, 388.34)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 463.81, 228.06)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 694.2, 695.03)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 501.37, 696.61)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 659.14, 75.04)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 745.15, 33.78)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 354.13, -31.97)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 216.73, 305.62)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 219.38, 592.2)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 419.48, 474.86)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 956.75, 198.82)" xlinkHref="#New_Symbol"/><use width="224.7" height="259.52" transform="matrix(-0.01, 1, -1, -0.01, 1004.37, 797.41)" xlinkHref="#New_Symbol"/><ellipse style={{fill:"#6d6d6d"}} cx="689.12" cy="646.8" rx="26.11" ry="28.48"/><circle style={{fill:"#6d6d6d"}} cx="786.44" cy="718.01" r="14.24"/><circle style={{fill:"#6d6d6d"}} cx="855.27" cy="722.76" r="28.48"/><circle style={{fill:"#6d6d6d"}} cx="74.35" cy="214.8" r="26.11"/><circle style={{fill:"#6d6d6d"}} cx="138.44" cy="236.16" r="16.62"/><circle style={{fill:"#6d6d6d"}} cx="24.51" cy="65.26" r="30.86"/><circle style={{fill:"#6d6d6d"}} cx="50.62" cy="141.22" r="14.24"/></svg>
+</Box>)
+
+}
+export default Backgroud01;
