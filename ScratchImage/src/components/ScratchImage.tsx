@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 function CanvasElement({ setCanvas, ...props }) {
   return <canvas style={{ position: "absolute", zIndex: 2, width: "100%" }} ref={(el) => setCanvas(el)} />
 }
+
 function BrushElement({ setBrush, ...props }) {
   return <img ref={(el) => setBrush(el)} width={150} height={150} src="data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20viewBox%3D%220%200%20512%20512%22%20style%3D%22enable-background%3Anew%200%200%20512%20512%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20d%3D%22M256%2C0C115.39%2C0%2C0%2C115.39%2C0%2C256s115.39%2C256%2C256%2C256s256-115.39%2C256-256S396.61%2C0%2C256%2C0z%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fsvg%3E"
    style={{ display: "none" }} />
@@ -98,7 +99,6 @@ export default function ScratchImage({ ...props }) {
   const [canvas, setCanvas] = useState(null)
   const [visibility, setVisibility] = useState(false)
   const [done, setDone] = useState(false)
-  const [canvasComponent, setCanvasComponent] = useState(<CanvasElement setCanvas={setCanvas} />)
   const [image, setImage] = useState(null)
   const { t } = useTranslation()
   const [time, setTime] = useState(new Date().getTime())
@@ -107,8 +107,9 @@ export default function ScratchImage({ ...props }) {
   const [savedY, setSavedY] = useState([])
   const [brush, setBrush] = useState(null)
   const [cover, setCover] = useState(null)
-  const [brushComponent, setBrushComponent] = useState(<BrushElement setBrush={setBrush} />)
-  const [coverComponent, setCoverComponent] = useState(<CoverElement setCover={setCover} />)
+  const [brushComponent, setBrushComponent] = useState(null)
+  const [coverComponent, setCoverComponent] = useState(null)
+  const [canvasComponent, setCanvasComponent] = useState(null) 
   const [settings, setSettings] = useState(null)
   const [complete, setComplete] = useState(false)
   const classes = useStyles()
@@ -151,10 +152,9 @@ export default function ScratchImage({ ...props }) {
         static_data: {},
       }
       parent.postMessage(JSON.stringify(data), "*")
-
       setBrushComponent(null)
       setCanvasComponent(null)
-      setCoverComponent(null)    
+      setCoverComponent(null)
     }
   }, [done])
 
@@ -163,10 +163,10 @@ export default function ScratchImage({ ...props }) {
     const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
     const eventer = window[eventMethod]
     const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // Listen to message from child window
+    // Listen to message from child window     
     setBrushComponent(<BrushElement setBrush={setBrush} />)
     setCanvasComponent(<CanvasElement setCanvas={setCanvas} />)
-    setCoverComponent(<CoverElement setCover={setCover} />)     
+    setCoverComponent(<CoverElement setCover={setCover} />)   
     eventer(
       messageEvent,
       (e: any) => {
@@ -175,10 +175,10 @@ export default function ScratchImage({ ...props }) {
         const langugae = configuration
           ? configuration.hasOwnProperty("language")
             ? configuration.language
-            : "es-ES"
-          : "es-ES"
+            : "en-US"
+          : "en-US"
         i18n.changeLanguage(langugae)
-        setSettings(settingsData)          
+        setSettings(settingsData)             
       },
       false
     )
@@ -233,16 +233,17 @@ export default function ScratchImage({ ...props }) {
       canvas.addEventListener("touchmove", touchMove)
       canvas.addEventListener("mouseup", touchEnd)
       canvas.addEventListener("touchend", touchEnd)
-      cover.onload = () => {
+      // cover.onload = () => {
         context.drawImage(cover, 0, 0, canvas.width, canvas.height)
         context.textAlign = "center"
         context.font = "bold 30px inter"
+        // context.
         context.fillText(t("Swipe around the"), canvas.width / 2, canvas.height / 2 - 35)
         context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
         context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
         setImage(background())
         setLoading(false)
-      }
+      // }
     }
   }, [canvas])
 
