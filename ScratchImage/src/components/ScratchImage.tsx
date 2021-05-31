@@ -154,8 +154,8 @@ export default function ScratchImage({ ...props }) {
       parent.postMessage(JSON.stringify(data), "*")
       setBrushComponent(null)
       setCanvasComponent(null)
-      setCoverComponent(null)
-    }
+      setCoverComponent(null)     
+   }
   }, [done])
 
   
@@ -233,17 +233,19 @@ export default function ScratchImage({ ...props }) {
       canvas.addEventListener("touchmove", touchMove)
       canvas.addEventListener("mouseup", touchEnd)
       canvas.addEventListener("touchend", touchEnd)
-      // cover.onload = () => {
+      const img = new Image()
+      img.src = cover.src
+      img.onload = () => {
         context.drawImage(cover, 0, 0, canvas.width, canvas.height)
         context.textAlign = "center"
         context.font = "bold 30px inter"
-        // context.
         context.fillText(t("Swipe around the"), canvas.width / 2, canvas.height / 2 - 35)
         context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
         context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
         setImage(background())
         setLoading(false)
-      // }
+      }
+      console.log(cover)
     }
   }, [canvas])
 
