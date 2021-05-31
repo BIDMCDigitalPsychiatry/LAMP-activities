@@ -223,6 +223,7 @@ export default function ScratchImage({ ...props }) {
   }
 
   useEffect(() => {
+    // Checking canvas status
     if (canvas != null && cover !== null && brush !== null) {
       canvas.width = window.innerWidth
       canvas.height = document.getElementById("canvasDiv").clientHeight
