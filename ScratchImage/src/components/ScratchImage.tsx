@@ -245,7 +245,6 @@ export default function ScratchImage({ ...props }) {
         setImage(background())
         setLoading(false)
       }
-      console.log(cover)
     }
   }, [canvas])
 
