@@ -1,0 +1,12 @@
+{
+	"question": "question",
+	"Question number of total": "Question {{ number }} of {{ total }}",
+	"Next" : "Next",
+	"Submit": "Submit",
+	"Mood": "Mood",
+	"Sleep and Social": "Sleep and Social",
+	"Anxiety": "Anxiety",
+	"Psychosis and Social": "Psychosis and Social",
+	"App Usability": "App Usability",
+	"Water and Nutrition": "Water and Nutrition"	
+}
