@@ -1,0 +1,100 @@
+{
+  "name": "lamp_dashboard",
+  "version": "1.0.0",
+  "author": "BIDMC Division of Digital Psychiatry",
+  "description": "LAMP Dashboard",
+  "private": true,
+  "homepage": ".",
+  "devDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-is": "^16.7.1",
+    "@types/react-router-dom": "^4.3.4",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "http-server": "^0.12.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.3",
+    "prettier": "2.0.4",
+    "react-hot-loader": "^4.13.0",
+    "react-scripts": "^4.0.3",
+    "typescript": "3.8"
+  },
+  "dependencies": {
+    "@date-io/date-fns": "^1.3.13",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.48",
+    "@material-ui/pickers": "^3.2.8",
+    "@nodelib/fs.walk": "^1.2.6",
+    "core-js": "^3.6.5",
+    "cross-spawn": "^7.0.3",
+    "date-fns": "^2.0.0-beta.5",
+    "enhanced-resolve": "*",
+    "i18next": "^19.8.3",
+    "i18next-http-backend": "^1.0.21",
+    "javascript-time-ago": "^2.0.4",
+    "material-icons": "^0.5.4",
+    "notistack": "^0.9.9",
+    "react": "^16.14.0",
+    "react-beautiful-dnd": "^13.0.0",
+    "react-circular-progressbar": "^2.0.3",
+    "react-dom": "^16.8.6",
+    "react-error-boundary": "^3.1.0",
+    "react-i18next": "^11.7.3",
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^5.0.1",
+    "regenerator-runtime": "^0.13.3",
+    "stacktrace-js": "^2.0.2",
+    "url-search-params-polyfill": "^7.0.0",
+    "webpack": "^4.44.2",
+    "webpack-dev-server": "^3.11.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start-sw": "http-server -p 3000 ./build",
+    "test": "echo \"no tests configured\"",
+    "build": "react-scripts build",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss}": [
+      "prettier --write"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 120
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "plugin:prettier/recommended"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts?(x)"
+        ],
+        "rules": {
+          "react-hooks/exhaustive-deps": "off"
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
