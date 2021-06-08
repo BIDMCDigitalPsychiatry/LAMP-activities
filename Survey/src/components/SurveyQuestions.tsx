@@ -35,11 +35,14 @@ import {
   InputBase,
   Checkbox,
   CheckboxProps,
+  IconButton,
 } from "@material-ui/core"
 import classnames from "classnames"
 import { useSnackbar } from "notistack"
 import i18n from "../i18n"
 import { useTranslation } from "react-i18next"
+import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
+
 const GreenCheckbox = withStyles({
   root: {
     color: "#2F9D7E",
@@ -1080,8 +1083,11 @@ function Section({
 
   return (
     <Box>
-      <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>
+      <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>        
         <Toolbar className={classes.toolbardashboard}>
+          <IconButton onClick={() => onResponse(null)}>
+            <ArrowBackIcon />
+          </IconButton>
           <Typography variant="h5">{t(type.replace(/_/g, " "))}</Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
@@ -1165,6 +1171,10 @@ export default function SurveyQuestions({...props}) {
     return true
   }
   const postSubmit = (response) => {
+    if(response === null) {
+      onResponse(null)
+      return
+    }
     response.duration = new Date().getTime() - startTime
     if (!content?.validate) {
       onResponse(response, content?.prefillTimestamp)
@@ -1176,11 +1186,12 @@ export default function SurveyQuestions({...props}) {
       // enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
       //   variant: "error",
       // }) 
+      onResponse(null, content?.prefillTimestamp)
     }
   }
-  const onResponse = (response, prefillTimestamp) => {
-     parent.postMessage(
-      JSON.stringify({
+  const onResponse = (response, prefillTimestamp?: any) => {
+    parent.postMessage(
+      response === null ? null : JSON.stringify({
         response,
         prefillTimestamp
       }),
@@ -1189,23 +1200,30 @@ export default function SurveyQuestions({...props}) {
   }
   
   useEffect(() => {  
-    const activity = localStorage.getItem("lamp-activity-settings")
-      ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
-      : {}
-    const configuration = localStorage.getItem("lamp-language")
-      ? localStorage.getItem("lamp-language")
-      : "en-US"   
+    const activity = props.data.activity ?? (props.data ?? {});
+    const configuration = props.data.configuration;
+    setContent(activity);
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
-    setContent(activity)
-    i18n.changeLanguage(!!configuration ? configuration : "en-US")    
+
+    // const activity = localStorage.getItem("lamp-activity-settings")
+    //   ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
+    //   : {}
+    // const configuration = localStorage.getItem("lamp-language")
+    //   ? localStorage.getItem("lamp-language")
+    //   : "en-US"   
+    // responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
+    // setContent(activity)
+    // i18n.changeLanguage(!!configuration ? configuration : "en-US")    
   }, [])
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root}>      
       {(content !== null) ?
         (((content || {}).sections || []).map((x, idx) => (
           <Section
-            onResponse={(response) => (responses.current[idx] = response)}
+            onResponse={(response) => (response === null) ? postSubmit(null) :
+              (responses.current[idx] = response)}
             value={x}
             prefillData={content?.toolBarBack ? content?.prefillData[idx] : {}}
             prefillTimestamp={content?.prefillTimestamp}

@@ -10,10 +10,19 @@ import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
 import SurveyQuestions from './components/SurveyQuestions'
 import './index.css';
-   
-ReactDOM.render(
-  <AppContainer>
-    <SurveyQuestions />
-  </AppContainer>,  
-  document.getElementById('root') as HTMLElement
-);
+import "material-icons"
+
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+    messageEvent, (e) => {    
+		ReactDOM.render(
+      <AppContainer>
+        <SurveyQuestions  data={e.data}/>
+      </AppContainer>, 		  
+		  document.getElementById("root")
+		);
+    },
+    false
+)
