@@ -70,17 +70,13 @@ function HomeView(props) {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-      const settings = localStorage.getItem("lamp-activity-settings")
-        ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
-        : {};
-      const configuration = localStorage.getItem("lamp-language")
-        ? localStorage.getItem("lamp-language")
-        : "en-US";
-      updateReport(null);
-      setSettings(settings);
-      i18n.changeLanguage(!!configuration ? configuration : "en-US");
-      setTime(new Date().getTime());
-    }, []);
+        const settings = props.data.activity?.settings ?? (props.data.settings ?? {});
+        const configuration = props.data.configuration;
+        setSettings(settings);
+        updateReport(null)
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        setTime(new Date().getTime());
+    }, [])
 
     useEffect(() => {
         if(!!settings) setActive(0)

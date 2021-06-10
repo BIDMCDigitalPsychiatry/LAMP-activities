@@ -6,11 +6,26 @@ import './i18n'
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
-ReactDOM.render(
-  <AppContainer>
-    <Provider store={store}>
-      <Patient />
-    </Provider>
-  </AppContainer>,
-  document.getElementById("root")
-);
+// You MUST load the configuration immediately upon script start.
+// Any delays will cause the script to entirely miss the config event.
+// Therefore we first capture the event and ONLY THEN render React.
+// 
+// FIXME: The delay in this code is likely caused by i18n or react-redux.
+//        Once that is fixed, this code should be rewritten correctly.
+//
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+    messageEvent, (e) => {    
+		ReactDOM.render(
+		  <AppContainer>
+		    <Provider store={store}>
+		      <Patient data={e.data} />
+		    </Provider>
+		  </AppContainer>,
+		  document.getElementById("root")
+		);
+    },
+    false
+)
