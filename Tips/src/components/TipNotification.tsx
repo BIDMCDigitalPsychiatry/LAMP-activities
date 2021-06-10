@@ -133,7 +133,7 @@ export default function TipNotification({ ...props }) {
   }
 
   const completeMarkingTips = () => {
-    props.onComplete(new Date().getTime())
+    props.onComplete(status)
   }
 
   return (

@@ -166,14 +166,25 @@ export default function LearnTips({ ...props }) {
     setActivityData(propsData.activity ?? {});
   }, []);
 
-  const completeMarkingTips = () => {
+  const completeMarkingTips = (status: string) => {
     // eslint-disable-next-line no-restricted-globals
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        static_data: {
+          sentiment: status,
+        },
+        temporal_slices: [],
+      }),
+      "*"
+    )
     parent.close();
   };
 
   const backToParentTips = () => {
-    // eslint-disable-next-line no-restricted-globals
-    parent.postMessage(null, "*");
+    // eslint-disable-next-line no-restricted-globals 
+    /*eslint no-restricted-globals: ["error", "event"]*/
+    parent.postMessage(JSON.stringify({ completed: true }), "*")
   };
 
   return (
@@ -257,9 +268,9 @@ export default function LearnTips({ ...props }) {
           details={details}
           icon={!!activityData ? activityData.icon : null}
           images={images}
-          onComplete={() => {
+          onComplete={(status: string) => {
             setOpenDialog(false);
-            completeMarkingTips();
+            completeMarkingTips(status);
           }}
         />
       </ResponsiveDialog>
