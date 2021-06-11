@@ -101,6 +101,10 @@ body{background: rgba(53,159,254,1);}
 	position: absolute;
 	right: 0;
 }
+.back-link{
+	position: absolute;
+	left: 0;
+}
 @-webkit-keyframes App-logo-spin {
 	0% {
 		-webkit-transform:rotate(0deg);
@@ -425,5 +429,8 @@ ol,ul {
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
+    margin: 16px 18px 0 10px;
+}
+svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
     margin: 16px 18px 0 10px;
 }

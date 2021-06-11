@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -52,12 +52,18 @@ class Box extends React.Component<{}, AppState> {
     window.location.reload(false);
   };
 
+  clickBack = () => {
+    parent.postMessage(null, "*");
+  }
   // Game render function
   render() {
     return (
       <div>
         {this.state && this.state.loaded && (
           <div>
+             <nav className="back-link">
+              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+            </nav>
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>

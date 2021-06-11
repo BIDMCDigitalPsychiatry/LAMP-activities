@@ -9,7 +9,7 @@
 import * as React from "react";
 import {Animated} from "react-animated-css";
 
-import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRandomNumbers } from "../../functions";
 
@@ -474,11 +474,17 @@ class PopTheBubbles extends React.Component<{}, AppState> {
     return infoSection;
   };
 
+  clickBack = () => {
+    parent.postMessage(null, "*");
+  }
   // Game render function
   render() {
     const infoSection = this.getLevelCases();
     return (
       <div id="pop-the-bubble-body">
+        <nav className="back-link">
+          <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+        </nav>
         <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>

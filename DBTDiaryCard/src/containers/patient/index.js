@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeView(props) {
     const classes = useStyles()
-    const [active, setActive] = useState(-1)
+    const [active, setActive] = useState(0)
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
@@ -89,12 +89,14 @@ function HomeView(props) {
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
     }, [active])
-
+    
     if (active === 0) {
-        return (
-
-            <div className={classes.root}>
+        return ( 
+             <div className={classes.root}>                          
                 <div className={classes.headerContainer}>
+                    <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
+                            <ArrowBack />
+                    </IconButton>
                     <Typography className={classes.headerTitle}>{t("LIFE_WORTH_LIVING_GOAL")}</Typography>
                 </div>
                 <div className={classes.contentBox}>
