@@ -1,5 +1,5 @@
 {
-  "name": "MedicationTracker",
+  "name": "Goals",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -18,6 +18,7 @@
     "d3-ease": "^1.0.6",
     "date-fns": "^2.22.1",
     "dotenv": "^8.2.0",
+    "eslint": "^5.6.0",
     "html-loader": "^1.1.0",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "html-webpack-plugin": "^4.0.0-beta.4",
@@ -49,7 +50,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "@svgr/webpack": "^3.1.0",
+    "@svgr/webpack": "^5.5.0",
     "@types/classnames": "^2.2.3",
     "@types/lodash": "^4.14.109",
     "@types/node": "^10.17.14",

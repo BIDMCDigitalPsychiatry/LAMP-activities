@@ -124,16 +124,16 @@ export default function MedicationTracker({ ...props }) {
       <Dialog fullWidth={true} open={open} onClose={closeDialog}>
         <Container>
           <DialogTitle> {t("Add Medication")} </DialogTitle>
-          <DialogContent> </DialogContent>
+          <DialogContent />
           <TextField fullWidth={true} autoFocus margin="normal" variant="outlined" label={t("Medication Name")} />
-          <div></div>
+          <div />
           <TextField autoFocus margin="normal" variant="outlined" label={t("Dose")} />
           <Typography>{t("Set reminder?")} </Typography>
-          <div></div>
+          <div />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker label={t("Start Date")} value={selectedDate} onChange={handleDateChange} animateYearScrolling />
          
-          <div></div>
+          <div />
           <DatePicker
             label={t("End Date")}
             value={selectedDateEnd}
