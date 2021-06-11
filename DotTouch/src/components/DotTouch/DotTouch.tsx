@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import { Dot } from './Dot';
 import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions';
 import UndoIcon from '@material-ui/icons/Undo';
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Timer } from '../common/Timer';
 import './DotTouch.css';
 
@@ -305,6 +305,10 @@ class DotTouch extends React.Component<{}, DotState> {
       });  
      }
    }
+   
+  clickBack = () => {
+    parent.postMessage(null, "*");
+  }
 
    // Render the game board
    render() {     
@@ -317,6 +321,10 @@ class DotTouch extends React.Component<{}, DotState> {
      
      return (
        <div className="dot-touch-board">
+         <nav className="back-link">
+           <ArrowBackIcon color="primary" onClick={this.clickBack}/>
+           {/* <ArrowBackIcon icon={faRedo}  onClick={this.undoAction}/> */}
+         </nav>         
          <nav className="home-link">
            <UndoIcon color="primary" onClick={this.undoAction}/>
            {/* <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/> */}
