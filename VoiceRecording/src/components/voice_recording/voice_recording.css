@@ -50,15 +50,33 @@ h1 {
 .errorMsg{
   color: #ff0000;
   text-align: center;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
-/* Hide Title from Audio Recorder */
-/*
-._1ceqH ._1lB9c{
-  display: none;;
+.mT25{
+  margin-top: 25px;
 }
-*/
+
+.tACenter{
+  text-align: center;
+}
+
+/* Voice Recording Disable Button  */
+.recorder_library_box .mic_icon_disabled {
+  width: 60px;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  transition: .5s ease all;
+  background: #808080;
+  border-radius: 50%;
+  bottom: 65px;
+  right: 20%;
+  color: #fff;
+  font-size: 25px;
+}
+
 
 @media only screen and (min-width: 768px) {
   .heading {

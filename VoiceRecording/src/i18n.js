@@ -8,7 +8,12 @@ const resources = {
       UPLOAD: "Upload",
       CLEAR: "Clear",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
-      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later."
+      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
+      INFO_MAX_RECORD_TIME_REACHED: "Maximum recording time is 4 minutes",
+      ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
+      UPLOAD_BTN: "Upload",
+      CLEAR_BTN: "Clear",
+      CLICK_TO_CLEAR_MSG: "Click upload or clear to record again"
     },
   },
   "es-ES": {
@@ -17,7 +22,12 @@ const resources = {
       UPLOAD: "Upload",
       CLEAR: "Clear",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
-      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later."
+      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
+      INFO_MAX_RECORD_TIME_REACHED: "Maximum recording time is 4 minutes",
+      ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
+      UPLOAD_BTN: "Upload",
+      CLEAR_BTN: "Clear",
+      CLICK_TO_CLEAR_MSG: "Click upload or clear to record again"
     },
   },
   "hi-IN": {
@@ -26,7 +36,12 @@ const resources = {
       UPLOAD: "Upload",
       CLEAR: "Clear",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
-      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later."
+      AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
+      INFO_MAX_RECORD_TIME_REACHED: "Maximum recording time is 4 minutes",
+      ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
+      UPLOAD_BTN: "Upload",
+      CLEAR_BTN: "Clear",
+      CLICK_TO_CLEAR_MSG: "Click upload or clear to record again"
     },
   },
 };

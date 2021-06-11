@@ -1,17 +1,17 @@
 /**
  * @file   VoiceRecording.tsx
- * @brief  Starting component which is the initial point of bubbles game
+ * @brief  Starting component which is the initial of VoiceRecording
  * @date   May , 2021
  * @author ZCO Engineer
  * @copyright (c) 2021, ZCO
  */
 
 import * as React from "react";
-import { Recorder } from "react-voice-recorder";
+import Recorder from "./Recorder";  
+
 import "react-voice-recorder/dist/index.css";
 import "./voice_recording.css";
 import i18n from "./../../i18n";
-import * as AWS from "aws-sdk";
 
 interface AudioDuration {
   h: number | null;
@@ -32,6 +32,8 @@ interface AppState {
   loader: Boolean;
   errorData: Boolean;
   audioAllowed: Boolean;
+  clickUpload: Boolean;
+  clickStop: Boolean;
 }
 
 class VoiceRecording extends React.Component<{}, AppState> {
@@ -51,7 +53,9 @@ class VoiceRecording extends React.Component<{}, AppState> {
       },
       disableUploadBtn: true,
       errorData: false,
-      audioAllowed: false
+      audioAllowed: false,
+      clickUpload: false,
+      clickStop: false
     };
   }
 
@@ -59,49 +63,36 @@ class VoiceRecording extends React.Component<{}, AppState> {
     this.setState({ audioDetails: data, disableUploadBtn: false });
   };
 
-  handleAudioUpload = async (data) => {
-    this.setState({loader: true, errorData: false})
+
+  fileToBase64 = async (file) => {    
+    return new Promise((resolve, reject) => {
+      const reader: any = new FileReader()
+      reader.readAsDataURL(file)
+      return reader.onload = () => {
+        resolve(reader.result.replace("data:", "").replace(/^.+,/, ""))
+      }
+    })
+  }
+
+  handleAudioUpload = async (data, duration ) => {
+    this.setState({loader: true})
     let currentDateTime: any = new Date().getTime();    
     let file = new File([data], currentDateTime+".mp3");    
-    const newFileName = file;        
-    AWS.config.update({
-      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_S3_SECRECT_ACCESS_KEY
-    });
-    let s3: any = new AWS.S3({
-      endpoint: new AWS.Endpoint(process.env.REACT_APP_S3_URL as string),
-      s3ForcePathStyle: true,
-      apiVersion: process.env.REACT_APP_S3_API_VERSION,
-      signatureVersion: process.env.REACT_APP_S3_SIGNATURE_VERSION,
-      region: process.env.REACT_APP_S3_REGION,
-    });
+    const newFileName = file;
+    let audioBase64Url = await this.fileToBase64(newFileName);
+    this.storeRecordedData(audioBase64Url, duration);
+    this.handleReset();
+    this.setState({loader: false})
+  }
 
-    const url = await s3.getSignedUrlPromise("putObject", {
-      Bucket: process.env.REACT_APP_S3_BUCKET_NAME, 
-      Key: newFileName.name,  
-      Expires: 3600,
-    });
-    
-    fetch(url, {
-      method: "PUT",
-      body: newFileName,
-    }).then((data) => {
-      // Call API to store the recorded AWS S3 URL on DB
-      this.storeRecordedData(process.env.REACT_APP_S3_URL+"/"+process.env.REACT_APP_S3_BUCKET_NAME+"/"+newFileName.name);
-      this.setState({ disableUploadBtn: true, loader: false });
-    }).catch((err) => {
-      this.setState({loader: false, errorData: true})
-    });
-  };  
-  
-  storeRecordedData = async (data) => {
+  storeRecordedData = async (data, duration) => {
     if (data) {
       // eslint-disable-next-line no-restricted-globals
       parent.postMessage(
         JSON.stringify({
           static_data: {
-            url: data,
-            duration: this.state.audioDetails.duration,
+            url: "data:audio/mpeg;base64,"+data,
+            duration: duration ? duration : this.state.audioDetails.duration,
           },
           temporal_slices: [],
           timestamp: new Date().getTime(),
@@ -111,7 +102,7 @@ class VoiceRecording extends React.Component<{}, AppState> {
     }
   };
 
-  handleReset() {
+  handleReset = async () => {
     const reset = {
       url: null,
       blob: null,
@@ -122,7 +113,7 @@ class VoiceRecording extends React.Component<{}, AppState> {
         s: null,
       },
     };
-    this.setState({ audioDetails: reset, disableUploadBtn: true });
+    await this.setState({ audioDetails: reset, disableUploadBtn: true });
   }
   
   // Game render function
@@ -133,17 +124,19 @@ class VoiceRecording extends React.Component<{}, AppState> {
         { this.state.errorData ? <div className="errorMsg">{i18n.t("AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING")}</div> :"" }
         { this.state.loader ? <div className="overlay"></div> :"" }
         <Recorder
-          record={false}
+          //record={false}
           title={i18n.t("VOICE_RECORDING")}
           audioURL={this.state.audioDetails.url}
           hideHeader={true}
           showUIAudio
           handleAudioStop={(data) => this.handleAudioStop(data)}
-          handleAudioUpload={(data) => this.handleAudioUpload(data)}
+          handleAudioUpload={(data, duration) => this.handleAudioUpload(data, duration)}
           handleReset={() => this.handleReset()}
           uploadButtonDisabled={this.state.disableUploadBtn}
+          mimeTypeToUseWhenRecording={null}
+          clickUpload={this.state.clickUpload}
+          clickStop={this.state.clickStop}
         />
-        
       </div>
     );
   }
