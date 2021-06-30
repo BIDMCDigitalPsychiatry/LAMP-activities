@@ -38,10 +38,8 @@ import {
   IconButton,
 } from "@material-ui/core"
 import classnames from "classnames"
-import { useSnackbar } from "notistack"
 import i18n from "../i18n"
 import { useTranslation } from "react-i18next"
-import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const GreenCheckbox = withStyles({
   root: {
@@ -308,6 +306,7 @@ const useStyles = makeStyles((theme) => ({
       maxHeight: "55%",
       position: "absolute",
       overflow: "auto",
+      width: "100%",
     },
   },
   radioLabel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", alignItems: "center !important", textAlign: "left" },
@@ -317,7 +316,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
     paddingLeft: 10,
     [theme.breakpoints.down("xs")]: {
-      height: "calc(100vh - 380px)",
       overflow: "auto",
     },
   },
@@ -1086,7 +1084,7 @@ function Section({
       <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>        
         <Toolbar className={classes.toolbardashboard}>
           <IconButton onClick={() => onResponse(null)}>
-            <ArrowBackIcon />
+            <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">{t(type.replace(/_/g, " "))}</Typography>
         </Toolbar>

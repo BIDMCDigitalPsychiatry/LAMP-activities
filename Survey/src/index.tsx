@@ -8,9 +8,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
+import "material-icons"
 import SurveyQuestions from './components/SurveyQuestions'
 import './index.css';
-import "material-icons"
 
 const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
