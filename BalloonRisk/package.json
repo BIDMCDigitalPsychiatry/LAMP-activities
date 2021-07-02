@@ -1,54 +1,44 @@
 {
-  "name": "ballon-risk",
+  "name": "jewels",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.35",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "@types/react-router-dom": "^5.1.4",
-    "i18next": "^19.8.4",
-    "react": "^16.13.1",
+    "@material-ui/icons": "^4.11.2",
+    "glob": "^7.1.7",
+    "i18next": "^20.3.1",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.17",
     "react-compound-timer": "^1.2.0",
-    "react-dom": "^16.13.1",
-    "react-i18next": "^11.8.2",
-    "react-router-dom": "^5.1.2",
+    "react-dom": "^16.8.6",
+    "react-i18next": "^11.7.3",
     "react-scripts-ts": "^3.1.0",
-    "typescript": "^3.7.5",
-    "uglifyjs-webpack-plugin": "^2.2.0"
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "npm run build:react && npm run build:bundle && npx gulp",
     "build:react": "react-scripts-ts build",
     "build:bundle": "webpack --config webpack.config.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.6",
+    "gulp": "^3.2.0",
     "gulp-inline-source": "^4.0.0",
     "gulp-replace": "^1.0.0",
-    "react-hot-loader": "^4.12.21",
-    "react-scripts": "^3.4.1",
-    "webpack-cli": "^3.3.12"
-  }
+    "react-hot-loader": "^4.12.21"
+  },
+  "homepage": "./",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
