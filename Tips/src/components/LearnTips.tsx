@@ -177,8 +177,7 @@ export default function LearnTips({ ...props }) {
         temporal_slices: [],
       }),
       "*"
-    )
-    parent.close();
+    )    
   };
 
   const backToParentTips = () => {

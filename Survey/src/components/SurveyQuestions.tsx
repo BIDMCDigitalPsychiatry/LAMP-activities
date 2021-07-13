@@ -297,7 +297,7 @@ const useStyles = makeStyles((theme) => ({
   listSelected: {
     background: "#E7F8F2 !important",
   },
-  surveyQuestionNav: { textAlign: "center", position: "absolute", width: "100%", bottom: 40 },
+  surveyQuestionNav: { textAlign: "center", position: "absolute", width: "100%", bottom: 70 },
   surveyQuestionAlign: {
     textAlign: "center",
     [theme.breakpoints.down("xs")]: {
@@ -953,7 +953,6 @@ function Questions({
             options={x.options?.map((y) => ({ ...y, label: y.value }))}
             value={responses.current[idx]}
             onResponse={(response) => {
-              console.log(responses, responses.current)
               const lastEndTime =
                 responses.current
                   .filter((item) => item.value != null)

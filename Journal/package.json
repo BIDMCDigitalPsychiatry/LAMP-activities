@@ -15,6 +15,7 @@
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.6",
     "dotenv": "^8.2.0",
+    "graceful-fs": "^4.2.6",
     "html-loader": "^1.1.0",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "html-webpack-plugin": "^4.0.0-beta.4",
@@ -43,7 +44,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "@svgr/webpack": "^2.4.1",
+    "@svgr/webpack": "^3.1.0",
     "@types/classnames": "^2.2.3",
     "@types/lodash": "^4.14.109",
     "@types/node": "^10.17.14",
@@ -56,7 +57,7 @@
     "gulp-inline-source": "^4.0.0",
     "gulp-replace": "^1.0.0",
     "react-hot-loader": "^4.12.21",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.3",
     "typescript": "^3.7.5",
     "webpack-cli": "^3.3.12"
   },

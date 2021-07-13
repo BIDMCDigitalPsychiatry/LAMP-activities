@@ -319,10 +319,10 @@ class PopTheBubbles extends React.Component<{}, AppState> {
             </div>
           ) : (
             <div className="pop-the-bubble-board">
-              <div className="mt-30">
+              <div className="mt-30 result-head">
                 <h1>{i18n.t("LEVEL_NUM_COMPLETED", {levelNumber: (this.state.gameLevel - 1)})}</h1>
-                <div className="pl-30 pr-30 game-rule text-center">
-                  <div className=" pr-30 game-rule text-center">
+                <div className="pl-15 game-rule text-center">
+                  <div className="pl-15 game-rule text-center">
                     <h1>
                       {i18n.t("YOU_GOT_PERCENT", {percentage: Math.round((this.state.correctGoCount / this.state.totalGoCount) * 100)})}
                       %
@@ -388,7 +388,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue"
+                      class="size-l bubble-blue bubble-result"
                       onClick={this.handleClick}
                       bubbleDuration={this.state.bubble_duration}
                     />
@@ -399,7 +399,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue"
+                      class="size-l bubble-blue bubble-result"
                       onClick={this.noClick}
                       bubbleDuration={this.state.bubble_duration}
                     />

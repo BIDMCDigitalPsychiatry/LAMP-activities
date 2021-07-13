@@ -14,6 +14,7 @@
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.6",
     "dotenv": "^8.2.0",
+    "graceful-fs": "^4.2.6",
     "html-loader": "^1.1.0",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "html-webpack-plugin": "^4.0.0-beta.4",
@@ -27,7 +28,8 @@
     "react-router-dom": "^5.1.2",
     "rx": "^4.1.0",
     "styled-components": "^5.0.1",
-    "uglifyjs-webpack-plugin": "^2.2.0"
+    "uglifyjs-webpack-plugin": "^1.1.2",
+    "webpack": "^4.19.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -52,7 +54,7 @@
     "gulp-inline-source": "^4.0.0",
     "gulp-replace": "^1.0.0",
     "react-hot-loader": "^4.12.21",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.3",
     "react-scripts-ts": "^4.0.8",
     "typescript": "^3.7.5",
     "webpack-cli": "^3.3.12"

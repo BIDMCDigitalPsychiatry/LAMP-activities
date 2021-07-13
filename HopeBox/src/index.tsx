@@ -10,7 +10,8 @@ import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
 import HopeBox from './components/HopeBox'
 import './index.css';
-   
+import "material-icons"
+
 ReactDOM.render(
   <AppContainer>
     <HopeBox />
