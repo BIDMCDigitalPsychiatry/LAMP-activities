@@ -36,9 +36,13 @@
    clickUpload: Boolean;
    clickStop: Boolean;
  }
+
+ interface AppProps {
+   language: string;
+ }
  
- class VoiceRecording extends React.Component<{}, AppState> {
-   constructor(props: {}) {
+ class VoiceRecording extends React.Component<AppProps, AppState> {
+   constructor(props: any) {
      super(props);
      this.state = {
        loader: false,
@@ -58,8 +62,9 @@
        clickUpload: false,
        clickStop: false
      };
+    i18n.changeLanguage(!!props.language ? props.language : "en-US");
    }
- 
+
    handleAudioStop = (data) => {
      this.setState({ audioDetails: data, disableUploadBtn: false });
    };
@@ -133,7 +138,6 @@
          { this.state.errorData ? <div className="errorMsg">{i18n.t("AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING")}</div> :"" }
          { this.state.loader ? <div className="overlay"></div> :"" }
          <Recorder
-           //record={false}
            title={i18n.t("VOICE_RECORDING")}
            audioURL={this.state.audioDetails.url}
            hideHeader={true}
@@ -145,6 +149,7 @@
            mimeTypeToUseWhenRecording={null}
            clickUpload={this.state.clickUpload}
            clickStop={this.state.clickStop}
+           language={i18n.language}
          />
        </div>
      );

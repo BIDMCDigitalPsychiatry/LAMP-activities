@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import i18n from "./../../i18n";
 
 const audioType = "audio/*";
+const maximumRecordTime = 240;
 
 declare let MediaRecorder: any;
 
@@ -36,6 +37,7 @@ interface AppProps {
   uploadButtonDisabled: any;
   clickUpload: Boolean;
   clickStop: Boolean;
+  language: string;
 }
 
 class Recorder extends Component<AppProps, AppState> {
@@ -45,6 +47,7 @@ class Recorder extends Component<AppProps, AppState> {
 
   constructor(props) {
     super(props);
+    i18n.changeLanguage(!props.language ? "en-US" : props.language);
     this.state = {
       time: {},
       seconds: 0,
@@ -72,7 +75,6 @@ class Recorder extends Component<AppProps, AppState> {
 
   handleAudioStart(e) {
     e.preventDefault();
-    //this.startTimer();
     this.resumeTimer();
     this.mediaRecorder.resume();
     this.setState({ pauseRecord: false });
@@ -93,7 +95,7 @@ class Recorder extends Component<AppProps, AppState> {
   countDown() {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds + 1;
-    if (seconds > Number(process.env.REACT_APP_MAXIMUM_RECORDING_TIME_IN_SECONDS)) { // Time limit  to stop the recording
+    if (seconds > Number(maximumRecordTime)) { // Time limit  to stop the recording
       this.reachedRecordLimit();
     } else {
       this.setState({
@@ -120,8 +122,7 @@ class Recorder extends Component<AppProps, AppState> {
     return obj;
   }
 
-  async componentDidMount() {    
-    //navigator.getUserMedia = navigator.getUserMedia;
+  async componentDidMount() {
     if (navigator.mediaDevices) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       if(this.props.mimeTypeToUseWhenRecording) {
@@ -190,7 +191,6 @@ class Recorder extends Component<AppProps, AppState> {
     // save the video to memory
     this.saveAudio();
   }
-
   
   reachedRecordLimit() {
     // stop the recorder
@@ -201,7 +201,6 @@ class Recorder extends Component<AppProps, AppState> {
     this.saveAudio();
     clearInterval(this.timer);
   }
-
 
   handleReset(e) {
     if (this.state.recording) {

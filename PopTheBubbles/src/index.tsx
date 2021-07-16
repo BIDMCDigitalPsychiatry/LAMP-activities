@@ -13,9 +13,17 @@ import { AppContainer } from "react-hot-loader";
 import PopTheBubbles from './components/pop_the_bubbles/PopTheBubbles';
 import './index.css';
 
-ReactDOM.render(
-    <AppContainer>
-      <PopTheBubbles/>
-    </AppContainer>,
-  document.getElementById('root') as HTMLElement
-);
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+    messageEvent, (e:any) => {
+		ReactDOM.render(
+      <AppContainer>
+        <PopTheBubbles activity={e.data.activity} configuration={e.data.configuration} />
+      </AppContainer>,
+    document.getElementById('root') as HTMLElement
+    );
+  },
+  false
+)

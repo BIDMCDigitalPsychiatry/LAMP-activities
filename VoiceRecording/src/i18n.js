@@ -32,7 +32,7 @@ const resources = {
   },
   "hi-IN": {
     translation: {
-      VOICE_RECORDING: "Voice Recording",
+      VOICE_RECORDING: "वॉईस रिकॉर्डिंग",
       UPLOAD: "Upload",
       CLEAR: "Clear",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
@@ -52,9 +52,10 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-    lng: "en-US",
     keySeparator: false,
     resources,
+    /* debugger For Development environment */
+    //debug: true,
   });
 
 export default i18n;

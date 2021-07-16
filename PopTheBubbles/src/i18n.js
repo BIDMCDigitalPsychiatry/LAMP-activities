@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   "en-US": {
     translation: {
+      COMPLETED: "Completed",
       CONGRATULATIONS: "Congratulations",
       GO: "GO",
       LEVEL_NUMBER: "Level {{ gameLevel }}",
@@ -25,6 +26,7 @@ const resources = {
   },
   "es-ES": {
     translation: {
+      COMPLETED: "Terminada",
       CONGRATULATIONS: "Felicidades",
       GO: "Vamos",
       LEVEL_NUMBER: "Nivel {{ gameLevel }}",
@@ -41,11 +43,12 @@ const resources = {
       TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP:"No reviente dos burbujas del mismo color seguidas",
       TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM:"solo estallan burbujas amarillas y azules",
       TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM:"solo estallan burbujas roasas, amarillas y azules",
-      YOU_GOT_PERCENT: "Tienes el {{ percentage }}",
+      YOU_GOT_PERCENT: "Tienes el {{ percentage }}"      
     },
   },
   "hi-IN": {
     translation: {
+      COMPLETED: "पूरा किया हुआ",
       CONGRATULATIONS: "बधाई हो",
       GO: "जाओ",
       LEVEL_NUMBER: "स्तर {{ gameLevel }}",
@@ -55,14 +58,14 @@ const resources = {
       NUMBER_OF_FALSE_HITS: "{{ falseHitsCount }} गलत हिट की संख्या (बुलबुले के छोड़कर अलावा कहीं भी स्क्रीन पर हिट करें)",
       NUMBER_OF_INCORRECTLY_ANSWERED_GO_TRIALS: "{{ missedClicks }} मिस्ड्स क्लिक्स की संख्या (पॉपअप नही) परीक्षण पर जाएं और {{ percentage }}",
       NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS: "{{ wrongNoGoCount }} गलत उत्तर की संख्या (पॉपअप) परीक्षण पर नही जाए और {{ percentage }}",
-      POP_THE_BUBBLES: "बुलबुलो_दिखाएँ!",
+      POP_THE_BUBBLES: "बुलबुलो दिखाएँ!",
       TAP_TO_CONTINUE: "जारी रखने के लिए दबाएं",
       TAP_TO_POP_LEVEL_1_BUBBLES_BOTTOM:"सही गुब्बारे पॉपिंग होने पर आप अंक प्राप्त करेंगे.  ",
       TAP_TO_POP_LEVEL_1_BUBBLES_TOP:"सभी पिंक को पॉप करने के लिए दबाएँ, केवल नीले और पीले रंग के बुलबुले l",
       TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP:"एक ही पंक्ति में समान रंग के दो बुलबुलों को पॉप नही करें",
       TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM:"केवल पीला और नीले रंग के बुलबुलों को पॉप करें l",
       TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM:"केवल गुलाबी, पीला और नीला बुलबुले पॉप करें l",
-      YOU_GOT_PERCENT: "आपको मिला {{ percentage }}",
+      YOU_GOT_PERCENT: "आपको मिला {{ percentage }}"      
     },
   },
 };

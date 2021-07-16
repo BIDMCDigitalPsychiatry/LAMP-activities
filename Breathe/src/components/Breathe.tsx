@@ -25,7 +25,6 @@ import {
 } from "@material-ui/core"
 import Lotus from "./Lotus"
 import { useTranslation } from "react-i18next"
-import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
 import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 const BorderLinearProgress = withStyles((theme: Theme) =>
@@ -304,7 +303,7 @@ export default function Breathe({ ...props }) {
             color="default"
             aria-label="Menu"
           >
-            <ArrowBackIcon />
+            <Icon>arrow_back</Icon>            
           </IconButton>
           <Typography variant="h5">{t("Breathe")}</Typography>
         </Toolbar>
