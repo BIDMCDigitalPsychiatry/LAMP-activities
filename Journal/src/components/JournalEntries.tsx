@@ -16,11 +16,11 @@ import {
   Fab,
   Backdrop,
   CircularProgress,
+  Icon
 } from "@material-ui/core"
 import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import i18n from "../i18n"
-import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
 import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 import CloseIcon from '@material-ui/icons/Close';
@@ -151,7 +151,6 @@ export default function JournalEntries({ ...props }) {
 
   const saveJournal = (completed?: boolean) => {
     setLoading(true)
-    console.log(completed)
     !!completed ? 
     parent.postMessage(
       JSON.stringify({
@@ -183,7 +182,7 @@ export default function JournalEntries({ ...props }) {
       <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
         <Toolbar className={classes.toolbardashboard}>
           <IconButton onClick={() => setOpen(true)} color="default" aria-label="Menu">
-            <ArrowBackIcon />
+            <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">{t("New journal entry")}</Typography>
         </Toolbar>

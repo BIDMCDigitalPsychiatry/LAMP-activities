@@ -64,13 +64,13 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeView(props) {
     const classes = useStyles()
-    const [active, setActive] = useState(0)
+    const [active, setActive] = useState(-1)
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-        const settings = props.data.activity?.settings ?? (props.data.settings ?? {});
+        const settings = props.data.activity.settings;
         const configuration = props.data.configuration;
         setSettings(settings);
         updateReport(null)

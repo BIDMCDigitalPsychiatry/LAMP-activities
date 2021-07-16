@@ -22,8 +22,6 @@ import {
 } from "@material-ui/core"
 
 import ImageUploader from "react-images-upload"
-import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import  CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -172,7 +170,7 @@ export default function HopeBox({ ...props }) {
       <AppBar position="static" className={classes.hopeHEader}>
         <Toolbar className={classes.toolbardashboard}>
           <IconButton color="default" onClick={onComplete} aria-label="Menu">
-            <ArrowBackIcon />
+            <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">Hope Box</Typography>
         </Toolbar>
@@ -218,7 +216,7 @@ export default function HopeBox({ ...props }) {
         <Box display="flex" justifyContent="flex-end">
           <Box>
             <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpenPreview(false)}>
-              <CloseIcon />
+              <Icon>close</Icon>>
             </IconButton>
           </Box>
         </Box>

@@ -15,18 +15,12 @@ class BalloonHeader extends React.Component
   reloadPage=() =>{
     window.location.reload(false);
   }
-  clickBack = () => {
-    parent.postMessage(null, "*");
-  }
 
   // Game render function
   render() {
     return (
         <div className="row">
           <div className="col">
-            <a className="icn-menu menu-left" onClick={this.clickBack}>
-              <ArrowBackIcon />
-            </a>
             <h4 style={ {marginRight: "-25px" }}>{process.env.REACT_APP_GAME_TILE}</h4>
             <a className="icn-menu menu-right cursorPointer" onClick={ this.reloadPage }>
             <div className="refresh"/>

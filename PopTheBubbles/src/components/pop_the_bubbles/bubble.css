@@ -71,6 +71,10 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	bottom: 0;
 	position: absolute;
 }
+.result-head {
+	position: relative !important;
+	padding-top: 30px;
+}
 .mt-10{
 	margin-top: 10px !important;
 }
@@ -284,7 +288,7 @@ td{
 .mt-30{width: 320px;}
 }
 
-.pl-30{padding-left: 30px; padding-right: 30px;}
+.pl-15{padding-left: 15px; padding-right: 15px;}
 .text-center{text-align: center;}
 .game-rule p{font-size: 13px; color: #305f8a; margin-top: 25px;}
 h1.cowndown{font-size: 80px !important; font-weight: bold; position: fixed; top: 40%; width: 100%; text-align: center; left: 0;}
@@ -303,3 +307,4 @@ bottom: auto !important;
 width: 100%;
 position: relative !important;
 }
+.bubble-result{position: relative !important; margin-top: 15px;}

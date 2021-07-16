@@ -62,7 +62,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       typeof process.env.REACT_APP_BOX_TIMOUT_PERIOD === "undefined"
         ? 120
         : Number(process.env.REACT_APP_BOX_TIMOUT_PERIOD);
-    console.log(this.props.reverse);
     this.state = {
       activeCell: 0,
       animate: false,

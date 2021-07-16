@@ -18,9 +18,14 @@ import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
 
+interface AppProps {
+  configuration: any;
+  activity: any;
+}
 
 interface AppState {
   levelCompleted: boolean;
+  eventRecieved: boolean;
   gameLevel: number;
   gameOver: boolean;
   level: number;
@@ -53,17 +58,10 @@ interface AppState {
   wrongNoGoClicks: number;
 }
 
-class PopTheBubbles extends React.Component<{}, AppState> {
+class PopTheBubbles extends React.Component<AppProps, AppState> {
   private bubbleCount: number;
-  constructor(props: {}) {
+  constructor(props: AppProps) {
     super(props);
-
-    const eventMethodObj: any = window.addEventListener;
-    const eventMethod = eventMethodObj ? "addEventListener" : "attachEvent";
-    const eventer = window[eventMethod];
-    const messageEvent =
-      eventMethod === "attachEvent" ? "onmessage" : "message";
-
     const xValues = this.getCoords(
       window.innerWidth - (window.innerWidth * 20) / 100,
       1
@@ -71,8 +69,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
     const yValues = this.getCoords(
       window.innerHeight - (window.innerHeight * 25) / 100,
       2
-    );
-      
+    );      
     this.state = {
       allRoutes: [],
       bubble_count: [60, 80, 80],
@@ -81,6 +78,7 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       completed: false,
       correctGoCount: 0,
       correctNoGo: 0,
+      eventRecieved: false,
       falseHitsCount: 0,
       gameLevel: 1,
       gameOver: false,
@@ -106,34 +104,30 @@ class PopTheBubbles extends React.Component<{}, AppState> {
       yCoords: yValues,
       yPoints: this.getCoordPoints(yValues),
     };
-
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const configuration = e.data.configuration;
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? undefined);
-        this.setState({
-          bubble_count: settings
-            ? settings.bubble_count
-            : this.state.bubble_count,
-          bubble_duration: settings
-            ? settings.bubble_duration
-            : this.state.bubble_duration,
-          bubble_speed: settings
-            ? settings.bubble_speed
-            : this.state.bubble_speed,
-          intertrial_duration: settings
-            ? settings.intertrial_duration
-            : this.state.intertrial_duration,
-        });
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-      },
-      false
-    );
     this.bubbleCount = this.state.bubble_count[0];
   }
 
   componentDidUpdate = (previousProps: any, prevState: any) => {
+    if (!!this.props.configuration && !this.state.eventRecieved) {
+      const configuration = this.props.configuration;
+      const settings = this.props.activity?.settings ?? undefined;
+      this.setState({
+        bubble_count: settings
+          ? settings.bubble_count
+          : this.state.bubble_count,
+        bubble_duration: settings
+          ? settings.bubble_duration
+          : this.state.bubble_duration,
+        bubble_speed: settings
+          ? settings.bubble_speed
+          : this.state.bubble_speed,
+        eventRecieved:true,
+        intertrial_duration: settings
+          ? settings.intertrial_duration
+          : this.state.intertrial_duration       
+      });    
+      i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+    }
     if (this.state.isGameStarted) {
       if (!this.state.completed) {
         if (this.state.levelStartTime === 0) {
@@ -319,10 +313,10 @@ class PopTheBubbles extends React.Component<{}, AppState> {
             </div>
           ) : (
             <div className="pop-the-bubble-board">
-              <div className="mt-30">
+              <div className="mt-30 result-head">
                 <h1>{i18n.t("LEVEL_NUM_COMPLETED", {levelNumber: (this.state.gameLevel - 1)})}</h1>
-                <div className="pl-30 pr-30 game-rule text-center">
-                  <div className=" pr-30 game-rule text-center">
+                <div className="pl-15 game-rule text-center">
+                  <div className="pl-15 game-rule text-center">
                     <h1>
                       {i18n.t("YOU_GOT_PERCENT", {percentage: Math.round((this.state.correctGoCount / this.state.totalGoCount) * 100)})}
                       %
@@ -383,23 +377,23 @@ class PopTheBubbles extends React.Component<{}, AppState> {
                 <div>
                   {this.state.gameLevel <= 3 ? (
                     <Bubble
-                      text="Tap to continue"
+                      text={i18n.t("TAP_TO_CONTINUE")}
                       bubbleToTap={false}
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue"
+                      class="size-l bubble-blue bubble-result"
                       onClick={this.handleClick}
                       bubbleDuration={this.state.bubble_duration}
                     />
                   ) : (
                     <Bubble
-                      text="Completed"
+                      text={i18n.t("Completed")}
                       bubbleToTap={false}
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue"
+                      class="size-l bubble-blue bubble-result"
                       onClick={this.noClick}
                       bubbleDuration={this.state.bubble_duration}
                     />

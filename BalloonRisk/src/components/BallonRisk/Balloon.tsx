@@ -12,6 +12,7 @@ import BallonStandSVG from "./BallonStandSVG";
 import BallonImageSVG from "./BallonImageSVG";
 import TimerComponent from "./TimerComponent";
 import i18n from "./../../i18n";
+import  ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 interface AppState {
   balloon_width: any;
@@ -417,6 +418,10 @@ class Balloons extends React.Component<{}, AppState> {
   reloadPage = () => {
     window.location.reload(false);
   };
+  
+  clickBack = () => {
+    parent.postMessage(null, "*");
+  }
 
   // Game render function
   render() {
@@ -425,6 +430,9 @@ class Balloons extends React.Component<{}, AppState> {
       <div>
         <div className="row">
           <div className="col">
+            <a className="icn-menu menu-left cursorPointer" onClick={this.clickBack}>
+              <ArrowBackIcon />
+            </a>
             <h4 style={{ marginRight: "-25px" }}>{i18n.t("BALLOON_RISK")}</h4>
             <a
               className="icn-menu menu-right cursorPointer"

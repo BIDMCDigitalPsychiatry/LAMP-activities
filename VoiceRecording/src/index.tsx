@@ -13,9 +13,21 @@ import { AppContainer } from "react-hot-loader";
 import VoiceRecording from './components/voice_recording/VoiceRecording';
 import './index.css';
 
-ReactDOM.render(
-    <AppContainer>
-      <VoiceRecording/> 
-    </AppContainer>,
-  document.getElementById('root') as HTMLElement
+const eventMethod: any = window.addEventListener !== undefined ? "addEventListener" : "attachEvent";
+const eventer: any = window[eventMethod];
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+
+eventer(
+  messageEvent,
+  (e: any) => {
+    if(e.data){
+      ReactDOM.render(
+        <AppContainer>
+          <VoiceRecording language={e.data ? e.data.configuration.language : null} />
+        </AppContainer>,
+        document.getElementById("root")
+      );
+    }
+  },
+  false
 );

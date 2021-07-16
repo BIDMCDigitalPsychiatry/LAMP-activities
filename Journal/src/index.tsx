@@ -9,8 +9,9 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
 import JournalEntries from './components/JournalEntries'
-import './index.css';
-   
+import './index.css'
+import "material-icons"
+
 ReactDOM.render(
   <AppContainer>
     <JournalEntries />

@@ -28,9 +28,7 @@ class Box extends React.Component<{}, AppState> {
       reverse: false,
     };
     this.state = state;
-    const eventMethod = window.addEventListener
-      ? "addEventListener"
-      : "attachEvent";
+    const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";
     const eventer = window[eventMethod];
     const messageEvent =
       eventMethod === "attachEvent" ? "onmessage" : "message";
