@@ -127,7 +127,7 @@ class Jewels extends React.Component<{}, AppState> {
     const diamondType = this.getDiamond(noOfDimonds);
     const maxPlots =
       typeof process.env.REACT_APP_MAX_PLOTS === "undefined"
-        ? 80
+        ? 79
         : Number(process.env.REACT_APP_MAX_PLOTS);
 
     const diamondCountVal = this.state ? this.state.diamondCount : 15;
