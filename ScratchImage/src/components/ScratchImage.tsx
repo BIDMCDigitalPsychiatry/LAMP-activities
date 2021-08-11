@@ -223,30 +223,32 @@ export default function ScratchImage({ ...props }) {
   }
 
   useEffect(() => {
-    // Checking canvas status
-    if (canvas != null && cover !== null && brush !== null) {
-      canvas.width = window.innerWidth
-      canvas.height = document.getElementById("canvasDiv").clientHeight
-      context = canvas.getContext("2d")
-      canvas.addEventListener("mousedown", touchStart)
-      canvas.addEventListener("touchstart", touchStart)
-      canvas.addEventListener("mousemove", touchMove)
-      canvas.addEventListener("touchmove", touchMove)
-      canvas.addEventListener("mouseup", touchEnd)
-      canvas.addEventListener("touchend", touchEnd)
-      const img = new Image()
-      img.src = cover.src
-      img.onload = () => {
-        context.drawImage(cover, 0, 0, canvas.width, canvas.height)
-        context.textAlign = "center"
-        context.font = "bold 30px inter"
-        context.fillText(t("Swipe around the"), canvas.width / 2, canvas.height / 2 - 35)
-        context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
-        context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
-        setImage(background())
-        setLoading(false)
+    setTimeout(() => {
+      // Checking canvas status
+      if (canvas != null && cover !== null && brush !== null) {
+        canvas.width = window.innerWidth
+        canvas.height = document.getElementById("canvasDiv").clientHeight
+        context = canvas.getContext("2d")
+        canvas.addEventListener("mousedown", touchStart)
+        canvas.addEventListener("touchstart", touchStart)
+        canvas.addEventListener("mousemove", touchMove)
+        canvas.addEventListener("touchmove", touchMove)
+        canvas.addEventListener("mouseup", touchEnd)
+        canvas.addEventListener("touchend", touchEnd)
+        const img = new Image()
+        img.src = cover.src
+        img.onload = () => {
+          context.drawImage(cover, 0, 0, canvas.width, canvas.height)
+          context.textAlign = "center"
+          context.font = "bold 30px inter"
+          context.fillText(t("Swipe around the"), canvas.width / 2, canvas.height / 2 - 35)
+          context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
+          context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
+          setImage(background())
+          setLoading(false)
+        }
       }
-    }
+    }, 50); 
   }, [canvas])
 
   const touchStart = (event: any) => {

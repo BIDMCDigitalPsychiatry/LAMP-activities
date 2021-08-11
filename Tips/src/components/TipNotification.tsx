@@ -135,7 +135,7 @@ export default function TipNotification({ ...props }) {
   const completeMarkingTips = () => {
     props.onComplete(status)
   }
-
+  
   return (
     <Container maxWidth={false} className={classes.mainContainer}>
       <Box className={classes.header}>
@@ -151,10 +151,8 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown plugins={[gfm, emoji]} >
-                {props.details}
-              </ReactMarkdown>
-            : ""} 
+              <ReactMarkdown source={props.details} escapeHtml={false}/>
+            : ""}
             </Typography>
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
