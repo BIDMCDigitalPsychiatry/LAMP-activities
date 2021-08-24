@@ -136,10 +136,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         ).length === 0
       ) {
         // When wrong diamond is tapped, update the negative point
-        const negPoints =
-          typeof process.env.REACT_APP_NEG_POINTS === "undefined"
-            ? 2
-            : Number(process.env.REACT_APP_NEG_POINTS);
+        const negPoints = 2
         this.setState({
           displayNegativePoints: true,
           negativePoints: this.state.negativePoints - negPoints,
@@ -241,14 +238,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
     const table = [];
     let k = 0;
     let p = 0;
-    const rows =
-      typeof process.env.REACT_APP_ROWS === "undefined"
-        ? 10
-        : Number(process.env.REACT_APP_ROWS);
-    const cols =
-      typeof process.env.REACT_APP_COLS === "undefined"
-        ? 8
-        : Number(process.env.REACT_APP_COLS);
+    const rows = 10
+    const cols = 8
     // let diamondStyle = this.props.currentDiamond[0]
     // Outer loop to create parent
     for (let i = 0; i < rows; i++) {
