@@ -125,11 +125,7 @@ class Jewels extends React.Component<{}, AppState> {
   reset = (loadedVal: boolean) => {
     const noOfDimonds = this.state ? this.state.shapeCount : 2;
     const diamondType = this.getDiamond(noOfDimonds);
-    const maxPlots =
-      typeof process.env.REACT_APP_MAX_PLOTS === "undefined"
-        ? 79
-        : Number(process.env.REACT_APP_MAX_PLOTS);
-
+    const maxPlots = 79
     const diamondCountVal = this.state ? this.state.diamondCount : 15;
     const shapesVals: Array<string> = [];
     let numbers: Array<any> = [];
