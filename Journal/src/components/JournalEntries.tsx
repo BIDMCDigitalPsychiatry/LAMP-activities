@@ -68,8 +68,10 @@ const useStyles = makeStyles((theme) => ({
   },
   textArea: {
     borderRadius: "10px",
+    marginBottom: "10px",
     "& fieldset": { borderWidth: 0, outline: 0 },
     "& textarea": { lineHeight: "24px" },
+    "& div": { paddingBottom: "30px" },
   },
   btnpeach: {
     background: "#FFAC98",
@@ -123,6 +125,7 @@ export default function JournalEntries({ ...props }) {
   const [loading, setLoading] = useState(false)
   const [time, setTime] = useState(new Date().getTime())
   const { t } = useTranslation()
+  const CHARACTER_LIMIT = 800
 
   const handleClickStatus = (statusVal: string) => {
     setStatus(statusVal)
@@ -208,6 +211,14 @@ export default function JournalEntries({ ...props }) {
                   value={journalValue}
                   onChange={(event) => setJounalValue(event.target.value)}
                   classes={{ root: classes.textArea }}
+                  helperText={
+                    journalValue
+                      ? `${journalValue.length}/${CHARACTER_LIMIT} max characters`
+                      : `${CHARACTER_LIMIT} max characters`
+                  }
+                  inputProps={{
+                    maxLength: CHARACTER_LIMIT,
+                  }}
                 />
                 <Box className={classes.howFeel}>{t("How do you feel today?")}</Box>
                 <Grid className={classes.btnNav}>

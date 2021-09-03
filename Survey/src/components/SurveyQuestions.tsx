@@ -241,7 +241,9 @@ const useStyles = makeStyles((theme) => ({
   },
   textArea: {
     borderRadius: "10px",
+    marginBottom: "10px",
     "& fieldset": { borderWidth: 0 },
+    '& div': { paddingBottom: '30px' },
   },
   sliderResponse: {
     marginTop: "60px",
@@ -587,7 +589,11 @@ function TextSection({ onChange, charLimit, value, ...props }) {
             onChange(e.target.value)
           }}
           defaultValue={text}
-          helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
+          helperText={
+            text
+              ? `${text.length}/${charLimit} max characters`
+              : `${charLimit} max characters`
+          }
           inputProps={{
             maxLength: charLimit,
           }}
@@ -848,7 +854,7 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
   ]
   const classes = useStyles()
   // FIXME: CheckboxResponse, SwitchResponse
-  const CHARACTER_LIMIT = 300
+  const CHARACTER_LIMIT = 800
   let component = <Box />
   const likertOpts = [
     { label: t("Nearly All the Time"), value: 3 },
