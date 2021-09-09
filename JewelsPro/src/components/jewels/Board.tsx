@@ -274,12 +274,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
   sendGameResult = (pointVal: number) => {
     const scoreVal = (this.state.stepNumber / (this.state.tapCount + 1)) * 100;
     const totalBonusCollected =
-      this.state.startTimer - Math.abs(this.state.negativePoints);
+    this.state.stepNumber === this.props.totalDiamonds ? this.state.startTimer - Math.abs(this.state.negativePoints) : 0;
     const totalJewelsCollected = this.state.stepNumber;
     const totalAttempts = this.state.tapCount + 1;
     const durationVal =
       new Date().getTime() - new Date(this.state.startTime).getTime();
-
     parent.postMessage(
       JSON.stringify({
         duration: durationVal,

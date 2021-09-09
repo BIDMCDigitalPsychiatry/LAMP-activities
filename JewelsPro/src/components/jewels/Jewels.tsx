@@ -43,7 +43,9 @@ interface AppState {
   diamondColor: string;
   diamondNumbers: Array<number>;
   diamondSpots: Array<number>;
+  // events: any;
   gameTime: number;
+  level:number,
   loaded: boolean;
   orderNumbers: Array<number>;
   pauseTime: number;
@@ -68,7 +70,9 @@ class Jewels extends React.Component<{}, AppState> {
       diamondCount: 0,
       diamondNumbers: [],
       diamondSpots: [],
+      // events: null,
       gameTime: this.state ? this.state.gameTime : 90,
+      level: 1,
       loaded: false,
       orderNumbers: [],
       pauseTime: 0,
@@ -79,7 +83,7 @@ class Jewels extends React.Component<{}, AppState> {
     this.state = state;
     eventer(
       messageEvent,
-      (e: any) => {        
+      (e: any) => {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         const mode = settings ? settings.mode : 1
@@ -103,13 +107,31 @@ class Jewels extends React.Component<{}, AppState> {
         }
         const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en-US") : "en-US"
         i18n.changeLanguage(langugae);
+        const events = e.data.activity?.events ?? [];
+        const total = events.reduce((sum:number, bonus:any) => {
+            return sum + bonus.static_data.total_bonus_collected;
+        }, 0);
+        const level =  Math.floor(total / settings.bonus_point_count);
+        let diamondCount = settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15
+        let shapeCount =  settings ? (settings.shape_count ? settings.shape_count : 
+          settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1;
+        
+        if(level > 1) {
+          let levelCount = Math.floor((level - 1) / settings.x_changes_in_level_count) ;
+          diamondCount =  diamondCount + (settings.x_diamond_count * levelCount) > 25 ? 25 : diamondCount + (settings.x_diamond_count * levelCount);            
+          
+          if(settings.variant === "trails_b") {
+            levelCount = Math.floor((level -1) / settings.y_changes_in_level_count);
+            shapeCount = shapeCount + (settings.y_shape_count * levelCount) > 4 ? 4 : shapeCount + (settings.y_shape_count * levelCount);           
+          }
+        }
         this.setState(
           {
-            diamondCount:  settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15,
+            diamondCount,
             gameTime: gameTimeVal,
-            loaded: false,           
-            shapeCount:  settings ? (settings.shape_count ? settings.shape_count : 
-               settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1,
+            level, 
+            loaded: false,
+            shapeCount,
           },
           () => {
             this.reset(true);
@@ -168,6 +190,7 @@ class Jewels extends React.Component<{}, AppState> {
       diamondNumbers: numbers,
       diamondSpots: randomArray,
       gameTime: this.state ? this.state.gameTime : 90,
+      level: this.state.level, 
       loaded: loadedVal,
       orderNumbers: order,
       pauseTime: 0,
