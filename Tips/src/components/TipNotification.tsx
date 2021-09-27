@@ -135,6 +135,10 @@ export default function TipNotification({ ...props }) {
   const completeMarkingTips = () => {
     props.onComplete(status)
   }
+
+  function LinkRenderer(data:any) {
+    return <a href={data.href} target="_blank">{data.children}</a>
+  }
   
   return (
     <Container maxWidth={false} className={classes.mainContainer}>
@@ -151,7 +155,8 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown source={props.details} escapeHtml={false}/>
+              <ReactMarkdown source={props.details} escapeHtml={false}   renderers={{link: LinkRenderer}}
+              />
             : ""}
             </Typography>
             <Box mt={4} mb={2}>
