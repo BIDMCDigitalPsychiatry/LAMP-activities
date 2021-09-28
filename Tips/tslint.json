@@ -18,7 +18,8 @@
     "no-unused-variable": false,
     "one-variable-per-declaration" : false,
     "jsx-boolean-value": [true, "never"],
-    "jsx-self-close": false
+    "jsx-self-close": false,
+    "no-shadowed-variable": true
   },
   "jsRules": {
     "object-literal-sort-keys": false 
