@@ -126,7 +126,6 @@ export default function JournalEntries({ ...props }) {
   const [time, setTime] = useState(new Date().getTime())
   const { t } = useTranslation()
   const CHARACTER_LIMIT = 800
-
   const handleClickStatus = (statusVal: string) => {
     setStatus(statusVal)
   }
