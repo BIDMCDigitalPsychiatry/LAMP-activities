@@ -18,10 +18,13 @@ export interface BoardProps {
   currentDiamond: any;
   diamondColor: string;
   diamondNumbers: Array<number>;
+  handleClose:any;
   gameTime: number;
   orderNumbers: Array<number>;
   shapes: Array<string>;
+  level: number;
   language: string;
+  updateLevel: any;
 }
 
 interface DiamondState {
@@ -35,7 +38,6 @@ interface DiamondState {
   lastClickTime: any;
   negativePoints: number;
   route: any;
-  startTime: any;
   startTimer: number;
   stepNumber: number;
   tapCount: number;
@@ -57,7 +59,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       lastClickTime: 0,
       negativePoints: 0,
       route: [],
-      startTime: null,
       startTimer: 0,
       stepNumber: 0,
       tapCount: 0,
@@ -93,7 +94,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         // state updation for diamond 1 click
         this.setState(
           {
-            startTime: new Date(),
+            // startTime: new Date(),
             startTimer: timerVal,
           },
           () => {
@@ -156,7 +157,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       this.setState(
         {
           endTime: new Date(),
-          timeout: true,
         },
         () => {
           this.sendGameResult(1);
@@ -200,7 +200,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         duration:
         statusVal && i === 1 && this.state.stepNumber === 0 ? 0 : lastclickTime,
         item: i,
-        level: 1,
+        level: this.props.level,
         status: statusVal,
         value: null          
       };
@@ -272,28 +272,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
 
   // Call the API to pass game result
   sendGameResult = (pointVal: number) => {
-    const scoreVal = (this.state.stepNumber / (this.state.tapCount + 1)) * 100;
     const totalBonusCollected =
     this.state.stepNumber === this.props.totalDiamonds ? this.state.startTimer - Math.abs(this.state.negativePoints) : 0;
     const totalJewelsCollected = this.state.stepNumber;
     const totalAttempts = this.state.tapCount + 1;
-    const durationVal =
-      new Date().getTime() - new Date(this.state.startTime).getTime();
-    parent.postMessage(
-      JSON.stringify({
-        duration: durationVal,
-        static_data: {
-          point: pointVal,
-          score: scoreVal,
-          total_attempts: totalAttempts,
-          total_bonus_collected: totalBonusCollected,
-          total_jewels_collected: totalJewelsCollected,
-        },
-        temporal_slices: JSON.parse(this.state.route),
-        timestamp: new Date().getTime(),
-      }),
-      "*"
-    );
+    this.props.updateLevel(totalBonusCollected, this.state.route, totalJewelsCollected, totalAttempts, pointVal)
   };
   // Render the game board
   render() {

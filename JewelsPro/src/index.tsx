@@ -5,6 +5,8 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
+ import 'bootstrap/dist/css/bootstrap.min.css';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";

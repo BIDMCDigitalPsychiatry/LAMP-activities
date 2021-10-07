@@ -9,6 +9,8 @@
 import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRandomNumbers } from "../../functions";
+import { InfoModal } from "./InfoModal";
+
 import i18n from "./../../i18n";
 import "./jewels.css";
 
@@ -16,16 +18,6 @@ import * as React from "react";
 import { isUndefined } from "util";
 import Board from "./Board";
 
-const diamondTypes = [
-  "diamond-01",
-  "diamond-02",
-  "diamond-03",
-  "diamond-04",
-  "diamond-05",
-  "diamond-06",
-  "diamond-07",
-  "diamond-08",
-];
 const colors = [
   "pink",
   "green",
@@ -38,6 +30,7 @@ const colors = [
 ];
 
 interface AppState {
+  bonusPoints:number;
   current: any;
   diamondCount: number;
   diamondColor: string;
@@ -49,98 +42,141 @@ interface AppState {
   loaded: boolean;
   orderNumbers: Array<number>;
   pauseTime: number;
+  routes:any,
+  settings: any;
   shapeCount: number;
   shapes: Array<string>;
+  showModal: number;
+  totalAttempts: number;
+  totalJewelsCollected:number;
   winnerLine?: Array<number>;
 }
 
 class Jewels extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
-    const eventMethod = window.addEventListener
-      ? "addEventListener"
-      : "attachEvent";
-    const eventer = window[eventMethod];
-    const messageEvent =
-      eventMethod === "attachEvent" ? "onmessage" : "message";
+    this.messageEvent()
+  }
+
+  messageEvent = () => {
+    const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
+    const eventer = window[eventMethod]
+    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
     // Listen to message from child window
-    const state = {
-      current: [],
-      diamondColor: "",
-      diamondCount: 0,
-      diamondNumbers: [],
-      diamondSpots: [],
-      // events: null,
-      gameTime: this.state ? this.state.gameTime : 90,
-      level: 1,
-      loaded: false,
-      orderNumbers: [],
-      pauseTime: 0,
-      shapeCount: 2,
-      shapes: [],
-      winnerLine: undefined,
-    };
-    this.state = state;
     eventer(
       messageEvent,
       (e: any) => {
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
+        if(!!e.data) {
+        const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
-        const mode = settings ? settings.mode : 1
-        let gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
-        switch (mode) {
-          case 1:
-            gameTimeVal = settings ? (settings.beginner_seconds ? settings.beginner_seconds : 90) : 90;
-            break;
-          case 2:
-            gameTimeVal = settings.intermediate_seconds;
-            break;
-          case 3:
-            gameTimeVal = settings.advanced_seconds;
-            break;
-          case 4:
-            gameTimeVal = settings.expert_seconds;
-            break;
-          default:
-            gameTimeVal = settings.beginner_seconds;
-            break;
-        }
-        const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en-US") : "en-US"
-        i18n.changeLanguage(langugae);
-        const events = e.data.activity?.events ?? [];
-        const total = events.reduce((sum:number, bonus:any) => {
-            return sum + bonus.static_data.total_bonus_collected;
-        }, 0);
-        const level =  Math.floor(total / settings.bonus_point_count);
-        let diamondCount = settings ? (settings.diamond_count ? settings.diamond_count : 15 ) : 15
-        let shapeCount =  settings ? (settings.shape_count ? settings.shape_count : 
-          settings.variant && settings.variant === "trails_b" ? 2 : 1 ) : 1;
-        
-        if(level > 1) {
-          let levelCount = Math.floor((level - 1) / settings.x_changes_in_level_count) ;
-          diamondCount =  diamondCount + (settings.x_diamond_count * levelCount) > 25 ? 25 : diamondCount + (settings.x_diamond_count * levelCount);            
-          
-          if(settings.variant === "trails_b") {
-            levelCount = Math.floor((level -1) / settings.y_changes_in_level_count);
-            shapeCount = shapeCount + (settings.y_shape_count * levelCount) > 4 ? 4 : shapeCount + (settings.y_shape_count * levelCount);           
+          const mode = settingsData ? settingsData.mode : 1
+          let gameTimeVal = settingsData ? (settingsData.beginner_seconds ? settingsData.beginner_seconds : 90) : 90;
+          switch (mode) {
+            case 1:
+              gameTimeVal = settingsData ? (settingsData.beginner_seconds ? settingsData.beginner_seconds : 90) : 90;
+              break;
+            case 2:
+              gameTimeVal = settingsData.intermediate_seconds;
+              break;
+            case 3:
+              gameTimeVal = settingsData.advanced_seconds;
+              break;
+            case 4:
+              gameTimeVal = settingsData.expert_seconds;
+              break;
+            default:
+              gameTimeVal = settingsData.beginner_seconds;
+              break;
           }
-        }
-        this.setState(
-          {
-            diamondCount,
+          const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en-US") : "en-US"
+          i18n.changeLanguage(langugae);
+          const diamondCountVal = settingsData ? (settingsData.diamond_count ? settingsData.diamond_count : 15 ) : 15
+          const shapeCountVal =  settingsData ? (settingsData.shape_count ? settingsData.shape_count : 
+            settingsData.variant && settingsData.variant === "trails_b" ? 2 : 1 ) : 1;
+          const state = {
+            bonusPoints:0,
+            current: [],
+            diamondColor: "",
+            diamondCount: diamondCountVal,
+            diamondNumbers: [],
+            diamondSpots: [],
             gameTime: gameTimeVal,
-            level, 
+            level: 1,
             loaded: false,
-            shapeCount,
-          },
-          () => {
-            this.reset(true);
-          }
-        );
+            orderNumbers: [],
+            pauseTime: 0,
+            routes: [],
+            settings: settingsData,
+            shapeCount: shapeCountVal,
+            shapes: [],
+            showModal: 0,
+            totalAttempts: 0,
+            totalJewelsCollected:0,
+            winnerLine: undefined,
+          };
+          this.state=state
+          this.reset(true)          
+        }
       },
       false
     );
-    this.reset(true);
+  }
+  componentDidMount = () => {
+    this.messageEvent()
+  }
+
+  updateLevel = (bonus: number, routesValus: any, totalJewelsCollected: number, totalAttempts:number, pointVal: number) => {
+    const level =  Math.floor((this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count);
+    const routeData:any = []
+    if (this.state.routes.length > 0) {
+      const r = JSON.parse(this.state.routes);
+      Object.keys(r).forEach((key) => {
+        routeData.push(r[key]);
+      });
+    }
+    const r1 = JSON.parse(routesValus)
+    Object.keys(r1).forEach((key) => {
+      routeData.push(r1[key]);
+    });   
+ 
+    if(level > 1) {
+        let levelCount = Math.floor((level - 1) / this.state.settings.x_changes_in_level_count) ;
+        const diamondCount =  this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount) > 25 ? 25 : this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount);            
+        let shapeCount = this.state.shapeCount
+        if(this.state.settings.variant === "trails_b") {
+          levelCount = Math.floor((level -1) / this.state.settings.y_changes_in_level_count);
+          shapeCount = this.state.shapeCount + (this.state.settings.y_shape_count * levelCount) > 4 ? 4 : this.state.shapeCount + (this.state.settings.y_shape_count * levelCount);           
+        }
+        this.setState(
+          {
+            bonusPoints: this.state.bonusPoints + bonus,
+            diamondCount,
+            level: this.state.level === level ? this.state.level : this.state.level + 1,
+            loaded: false,
+            routes:JSON.stringify(routeData),
+            shapeCount,
+            totalAttempts: this.state.totalAttempts + totalAttempts,
+            totalJewelsCollected: this.state.totalJewelsCollected + totalJewelsCollected
+          },
+          () => {
+            pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+          }
+        );
+        } else {
+          this.setState(
+            {
+              bonusPoints: this.state.bonusPoints + bonus,
+              level : this.state.level === level ? this.state.level : this.state.level + 1,
+              loaded: false, 
+              routes:JSON.stringify(routeData), 
+              totalAttempts: this.state.totalAttempts + totalAttempts,
+              totalJewelsCollected: this.state.totalJewelsCollected + totalJewelsCollected          
+            },
+            () => {
+              pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+            }
+          );
+       }
   }
   
   // Reset game board
@@ -184,18 +220,24 @@ class Jewels extends React.Component<{}, AppState> {
    
     const randomArray = getRandomNumbers(diamondCountVal, 1, maxPlots);
     const state = {
+      bonusPoints: this.state? this.state.bonusPoints : 0,
       current: diamondType,
       diamondColor: this.getRandomColor(),
       diamondCount: diamondCountVal,
       diamondNumbers: numbers,
       diamondSpots: randomArray,
       gameTime: this.state ? this.state.gameTime : 90,
-      level: this.state.level, 
+      level:  this.state ? this.state.level : 1, 
       loaded: loadedVal,
       orderNumbers: order,
       pauseTime: 0,
+      routes: this.state? this.state.routes : {},
+      settings:  this.state ? this.state.settings : {},
       shapeCount: noOfDimonds,
-      shapes: shapesVals,
+      shapes: shapesVals, 
+      showModal: 0,
+      totalAttempts: this.state? this.state.totalAttempts : 0,
+      totalJewelsCollected:this.state? this.state.totalJewelsCollected : 0,
       winnerLine: undefined,
     };
 
@@ -214,7 +256,16 @@ class Jewels extends React.Component<{}, AppState> {
   // Get random diamond shape
   getDiamond = (noOfDimonds: number) => {
     const diamonds = [];
-    const types = diamondTypes;
+    const types = [
+      "diamond-01",
+      "diamond-02",
+      "diamond-03",
+      "diamond-04",
+      "diamond-05",
+      "diamond-06",
+      "diamond-07",
+      "diamond-08",
+    ];;
     let rand;
     for (let i = 0; i < noOfDimonds; i++) {
       rand = Math.round(Math.random() * (types.length - 1));
@@ -231,17 +282,50 @@ class Jewels extends React.Component<{}, AppState> {
   };
   // To refresh the game
   clickHome = () => {
-    window.location.reload(false);
+    this.state.level > 0 && this.state.routes.length > 0 ? this.setState(({showModal: 1})) : window.location.reload();
   };
+
   clickBack = () => {
-    parent.postMessage(null, "*");
+    this.state.level > 0 && this.state.routes.length > 0 ? this.setState(({showModal: 2})) : parent.postMessage(null, "*");
+  }
+
+  handleClose = (status:boolean, pointVal: number) => {
+    if(status) {
+      const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
+      parent.postMessage(
+        JSON.stringify({
+          static_data: {
+            point: pointVal,
+            score: scoreVal,
+            total_attempts: this.state.totalAttempts,
+            total_bonus_collected: this.state.bonusPoints,
+            total_jewels_collected: this.state.totalJewelsCollected,
+          },
+          temporal_slices: JSON.parse(this.state.routes),
+          timestamp: new Date().getTime(),
+        }),
+        "*"
+      );
+    } else {
+      this.state.showModal === 1 ?  window.location.reload() : parent.postMessage(null, "*")
+    }
+    this.setState({showModal: 0})
   }
 
   render() {
+    const modal = this.state && this.state.showModal > 0 ? (
+      <InfoModal
+        show={this.state.showModal > 0}
+        modalClose={this.handleClose}
+        msg={i18n.t("DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING")}
+        language={i18n.language}
+      />) : null
+
     return (
       <div>
         {this.state && this.state.loaded && (
           <div>
+            {modal}
             <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
             </nav>
@@ -259,7 +343,10 @@ class Jewels extends React.Component<{}, AppState> {
                 diamondNumbers={this.state.diamondNumbers}
                 shapes={this.state.shapes}
                 orderNumbers={this.state.orderNumbers}
+                level={this.state.level}
                 language={i18n.language}
+                updateLevel={this.updateLevel}
+                handleClose={this.handleClose}
               />
             </div>
           </div>

@@ -16,13 +16,13 @@ const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 eventer(
-    messageEvent, (e) => {    
+  messageEvent, (e) => {    
 		ReactDOM.render(
       <AppContainer>
         <SurveyQuestions  data={e.data}/>
       </AppContainer>, 		  
 		  document.getElementById("root")
 		);
-    },
-    false
-)
+  },
+  false
+ )

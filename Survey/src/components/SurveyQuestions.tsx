@@ -40,6 +40,9 @@ import {
 import classnames from "classnames"
 import i18n from "../i18n"
 import { useTranslation } from "react-i18next"
+import ReactMarkdown from "react-markdown"
+import emoji from "remark-emoji"
+import gfm from "remark-gfm"
 
 const GreenCheckbox = withStyles({
   root: {
@@ -99,6 +102,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
+    "& p": {
+      margin : "0",
+    }
   },
   sliderActionsContainer: {
     textAlign: "center",
@@ -227,23 +233,22 @@ const useStyles = makeStyles((theme) => ({
     margin: "-10px 0 50px 0",
   },
   radioGroup: {
-    marginLeft: -15,
+    // marginLeft: -15,
     [theme.breakpoints.up("md")]: {
       marginTop: 0,
     },
   },
   textAreaControl: {
     width: "100%",
-    marginTop: 35,
+    marginTop: 25,
     background: "#f5f5f5",
     borderRadius: 10,
+    marginBottom: 45,
     "& p": { position: "absolute", bottom: 15, right: 0 },
   },
   textArea: {
     borderRadius: "10px",
-    marginBottom: "10px",
     "& fieldset": { borderWidth: 0 },
-    '& div': { paddingBottom: '30px' },
   },
   sliderResponse: {
     marginTop: "60px",
@@ -295,13 +300,26 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "left",
     },
   },
-  textfieldwrapper: { marginLeft: -12, marginRight: -12 },
+  textfieldwrapper: { marginLeft: 0, marginRight: 0 },
   listSelected: {
     background: "#E7F8F2 !important",
   },
-  surveyQuestionNav: { textAlign: "center", position: "absolute", width: "100%", bottom: 70 },
+  surveyQuestionNav: { textAlign: "center", position: "fixed", width: "100%", bottom: 70 },
   surveyQuestionAlign: {
     textAlign: "center",
+    "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
+    "& code": {
+      padding: ".2rem .5rem",
+      margin: "0 .2rem",
+      fontSize: "90%",
+      whiteSpace: "noWrap",
+      background: "#F1F1F1",
+      border: "1px solid #E1E1E1",
+      borderRadius: "4px",     
+    },
+    "& ol":{
+      display: "inline-block",
+    },
     [theme.breakpoints.down("xs")]: {
       textAlign: "left",
       padding: "0 40px",
@@ -315,8 +333,7 @@ const useStyles = makeStyles((theme) => ({
 
   chatDrawerCustom: { minWidth: 411 },
   questionScroll: {
-    marginTop: 30,
-    paddingLeft: 10,
+    marginTop: 30,    
     [theme.breakpoints.down("xs")]: {
       overflow: "auto",
     },
@@ -353,9 +370,15 @@ function RateAnswer({ checked, onChange, value }) {
 
   return (
     <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
-      {checked && <Typography className={classes.checkText}>{value}</Typography>}
+      {checked && <Typography className={classes.checkText}>
+        <ReactMarkdown source={value} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
+      </Typography>}
     </div>
   )
+}
+
+function LinkRenderer(data:any) {
+  return <a href={data.href} target="_blank">{data.children}</a>
 }
 
 function RadioOption({ onChange, options, value, ...props }) {
@@ -401,10 +424,10 @@ function RadioOption({ onChange, options, value, ...props }) {
                   variant="body2"
                   style={{ color: selectedValue === `${x.value}` ? "black" : "rgba(0, 0, 0, 0.7)" }}
                 >
-                  {t(x.label)}
+                  <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />
                 </Typography>
                 <Typography component="span" variant="caption" className={classes.lightGray}>
-                  {!!x.description && ` ${x.description}`}
+                  <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false} plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />                  
                 </Typography>
               </Box>
             }
@@ -589,11 +612,7 @@ function TextSection({ onChange, charLimit, value, ...props }) {
             onChange(e.target.value)
           }}
           defaultValue={text}
-          helperText={
-            text
-              ? `${text.length}/${charLimit} max characters`
-              : `${charLimit} max characters`
-          }
+          helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
           inputProps={{
             maxLength: charLimit,
           }}
@@ -656,7 +675,9 @@ function RadioRating({ onChange, options, value, ...props }) {
               }}
               value={option.value}
             />
-            <Typography variant="caption">{option.description}</Typography>
+            <Typography variant="caption">
+              <ReactMarkdown source={option.description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
+            </Typography>
           </Box>
         ))}
       </Grid>
@@ -718,11 +739,11 @@ function Rating({ onChange, options, value, ...props }) {
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={
-          parseInt(options[0].value, 10) < 0 && parseInt(options[1].value, 10) < 0
-            ? Math.abs(parseInt(options[0].value, 10)) + parseInt(options[1].value, 10)
-            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value, 10) > 0
-            ? Math.abs(parseInt(options[0].value, 10)) - parseInt(options[1].value, 10)
-            : parseInt(options[1].value, 10) - parseInt(options[0].value, 10)
+          parseInt(options[0].value, 10) < 0 && parseInt(options[1]?.value, 10 ?? 0) < 0
+            ? Math.abs(parseInt(options[0].value, 10)) + parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 0, 10) > 0
+            ? Math.abs(parseInt(options[0].value, 10)) - parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[1]?.value ?? 0, 10) - parseInt(options[0].value, 10)
         }
         marks={options}
         min={parseInt(options[0].value, 10)}
@@ -742,26 +763,27 @@ function Rating({ onChange, options, value, ...props }) {
       <Grid container className={classes.sliderValueLabel} direction="row" justify="space-between" alignItems="center">
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-            {!!options[0].description && options[0].description.trim().length === 0
+          <ReactMarkdown source={!!options[0].description && options[0].description.trim().length === 0
               ? options[0].value
-              : options[0].description}
+              : options[0].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />            
           </Typography>
         </Grid>
         <Grid item>
           {options.length > 2 && (
             <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-              {!!options[Math.ceil(options.length / 2) - 1].description &&
+              <ReactMarkdown source={!!options[Math.ceil(options.length / 2) - 1].description &&
               options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
                 ? options[Math.ceil(options.length / 2) - 1].value
-                : options[Math.ceil(options.length / 2) - 1].description}
+                : options[Math.ceil(options.length / 2) - 1].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />              
             </Typography>
           )}
         </Grid>
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-            {!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
+          <ReactMarkdown source={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
               ? options[options.length - 1].value
-              : options[options.length - 1].description}
+              : options[options.length - 1].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
+            
           </Typography>
         </Grid>
       </Grid>
@@ -769,7 +791,9 @@ function Rating({ onChange, options, value, ...props }) {
         <Typography variant="caption" display="block" gutterBottom>
           {t("Your response:")}
         </Typography>
-        <Typography variant="h4">{t(valueText)}</Typography>
+        <Typography variant="h4">
+          <ReactMarkdown source={t(valueText)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />          
+        </Typography>
       </Box>
     </Box>
   )
@@ -825,9 +849,11 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                 variant="body2"
                 style={{ color: selection.includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
               >
-                {t(x.label)}
+                <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
               </Typography>
-              <Box className={classes.lightGray}>{!!x.description && ` ${x.description}`}</Box>
+              <Box className={classes.lightGray}>
+                <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
+              </Box>
             </Box>
           }
           labelPlacement="end"
@@ -900,11 +926,15 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
   return (
     <Grid>
       <Box className={classes.questionhead}>
-        <Typography variant="h5">{t(`${text}`)}</Typography>
-        <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>
-          {type === "slider"
+        <Typography variant="caption">
+          <ReactMarkdown source={text} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
+        </Typography>
+        </Box>
+      <Box className={classes.questionhead}>
+        <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>                 
+          <ReactMarkdown source={type === "slider"
             ? t(
-                `(${options[0].value} being ${
+                `${options[0].value} being ${
                   !!options[0].description && options[0].description.trim().length > 0
                     ? options[0].description
                     : options[0].value
@@ -913,9 +943,9 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
                   !!options[options.length - 1].description && options[options.length - 1].description.trim().length > 0
                     ? options[options.length - 1].description
                     : options[options.length - 1].value
-                })`
+                }`
               )
-            : !!desc && t(` (${desc})`)}
+            : !!desc && t(`${desc}`) } escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />           
         </Typography>
       </Box>
       <Box className={classes.questionScroll}>{component}</Box>
@@ -1091,7 +1121,9 @@ function Section({
           <IconButton onClick={() => onResponse(null)}>
             <Icon>arrow_back</Icon>
           </IconButton>
-          <Typography variant="h5">{t(type.replace(/_/g, " "))}</Typography>
+          <Typography variant="h5">
+            <ReactMarkdown source={t(type.replace(/_/g, " "))} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />   
+          </Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>

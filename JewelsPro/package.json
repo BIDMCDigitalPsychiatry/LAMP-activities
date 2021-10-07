@@ -55,6 +55,7 @@
     "gulp-replace": "^1.0.0",
     "react-hot-loader": "^4.12.21",
     "react-scripts": "^4.0.3",
+    "regenerator-runtime": "^0.13.9",
     "typescript": "^3.7.5",
     "webpack-cli": "^3.3.12"
   },

@@ -154,6 +154,7 @@ export default function LearnTips({ ...props }) {
 
   useEffect(() => {
     const propsData = props.data;
+    console.log(propsData)
     const settingsData = propsData.activity?.settings ?? propsData.settings ?? {};
     const configuration = propsData.configuration;
     const langugae = configuration

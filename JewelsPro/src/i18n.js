@@ -7,6 +7,7 @@ const resources = {
       CONGRATS: "Congrats",
       JEWELS: "Jewels",
       TIMEOUT: "Timeout",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?"
     },
   },
   "es-ES": {
@@ -14,6 +15,7 @@ const resources = {
       CONGRATS: "Felicidades",
       JEWELS: "Joyas",
       TIMEOUT: "el tiempo muerto",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "¿Quieres guardar los resultados de tu juego antes de continuar?"
     },
   },
   "hi-IN": {
@@ -21,6 +23,7 @@ const resources = {
       CONGRATS: "बधाई हो",
       JEWELS: "गहने",
       TIMEOUT: "समय समाप्त",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?"
     },
   },
 };
