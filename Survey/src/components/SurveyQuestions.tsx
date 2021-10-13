@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
 import emoji from "remark-emoji"
 import gfm from "remark-gfm"
+import { useSnackbar } from "notistack"
 
 const GreenCheckbox = withStyles({
   root: {
@@ -1185,43 +1186,37 @@ export default function SurveyQuestions({...props}) {
   const responses = useRef(null)
   const [content, setContent] = useState(null)
   const [startTime, setStartTime] = useState(new Date().getTime())
-  // const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const validator = (response) => {
+    let status = true
     for (const section of response) {
-      if (section === undefined) {
-        if (!!content?.partialValidationOnly) {
-          continue
+      if(!!response) {
+        status = false
+      } else {
+        for (const question of section) {
+          if (!question.value) {         
+            status = false
+          }        
         }
-        else {
-          return false
-        }
-      }
-      for (const question of section) {
-        if (question === undefined) {
-          return false
-        }
-      }
+      }     
     }
-    return true
+    return status
   }
   const postSubmit = (response) => {
     if(response === null) {
       onResponse(null)
       return
     }
-    response.duration = new Date().getTime() - startTime
-    if (!content?.validate) {
-      onResponse(response, content?.prefillTimestamp)
-    }
-    else if (content?.validate && validator(response)) {
-      onResponse(response, content?.prefillTimestamp)
-    }
-    else if (content?.validate && !validator(response)) {
-      // enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
-      //   variant: "error",
-      // }) 
-      onResponse(null, content?.prefillTimestamp)
+    if(validator(response)) {
+      response.duration = new Date().getTime() - startTime
+      if (!content?.validate) {
+        onResponse(response, content?.prefillTimestamp)
+      }      
+    } else {
+      enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
+        variant: "error",
+      }) 
     }
   }
   const onResponse = (response, prefillTimestamp?: any) => {
@@ -1239,17 +1234,7 @@ export default function SurveyQuestions({...props}) {
     const configuration = props.data.configuration;
     setContent(activity);
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-    responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
-
-    // const activity = localStorage.getItem("lamp-activity-settings")
-    //   ? JSON.parse(localStorage.getItem("lamp-activity-settings"))
-    //   : {}
-    // const configuration = localStorage.getItem("lamp-language")
-    //   ? localStorage.getItem("lamp-language")
-    //   : "en-US"   
-    // responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}
-    // setContent(activity)
-    // i18n.changeLanguage(!!configuration ? configuration : "en-US")    
+    responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}     
   }, [])
 
   return (
