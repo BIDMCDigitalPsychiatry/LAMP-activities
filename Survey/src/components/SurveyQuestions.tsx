@@ -1191,15 +1191,15 @@ export default function SurveyQuestions({...props}) {
   const validator = (response) => {
     let status = true
     for (const section of response) {
-      if(!!response) {
-        status = false
-      } else {
+      if(!!response && !!section) {       
         for (const question of section) {
-          if (!question.value) {         
+          if (question.value === null) {   
             status = false
           }        
         }
-      }     
+      } else {
+        status = false
+      }
     }
     return status
   }
@@ -1210,9 +1210,7 @@ export default function SurveyQuestions({...props}) {
     }
     if(validator(response)) {
       response.duration = new Date().getTime() - startTime
-      if (!content?.validate) {
-        onResponse(response, content?.prefillTimestamp)
-      }      
+      onResponse(response, content?.prefillTimestamp)           
     } else {
       enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
         variant: "error",
