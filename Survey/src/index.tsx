@@ -11,6 +11,7 @@ import { AppContainer } from "react-hot-loader"
 import "material-icons"
 import SurveyQuestions from './components/SurveyQuestions'
 import './index.css';
+import { SnackbarProvider } from "notistack"
 
 const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
@@ -18,9 +19,12 @@ const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 eventer(
   messageEvent, (e) => {    
 		ReactDOM.render(
-      <AppContainer>
-        <SurveyQuestions  data={e.data}/>
-      </AppContainer>, 		  
+      <SnackbarProvider>
+        <AppContainer>
+          <SurveyQuestions  data={e.data}/>
+        </AppContainer>
+      </SnackbarProvider>
+          , 		  
 		  document.getElementById("root")
 		);
   },
