@@ -298,7 +298,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 25,
     marginTop: 50,
     [theme.breakpoints.up("md")]: {
-      justifyContent: "left",
+      justifyContent: "center",
+    },
+    [theme.breakpoints.down("xs")]: {
+      overflow: "hidden !important",
     },
   },
   textfieldwrapper: { marginLeft: 0, marginRight: 0 },
@@ -441,16 +444,23 @@ function RadioOption({ onChange, options, value, ...props }) {
   )
 }
 
-function TimeSelection({ onChange, value, ...props }) {
+function TimeSelection({ onChange, options, value, ...props }) {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null)
   const [anchorE3, setAnchorE3] = React.useState<null | HTMLElement>(null)
-  const [hourSelectedIndex, setHourSelectedIndex] = React.useState("01")
-  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState("00")
-  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState("am")
+  const currentValue = !!value ? value?.split(":") : ""
+  console.log(value, currentValue)
+  const [hourSelectedIndex, setHourSelectedIndex] = React.useState(!!value ? currentValue[0] : "01")
+  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].split(" ")[0] : "00")
+  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? (currentValue[1].split(" ")[1] ?? " ") : "am")
   const { t } = useTranslation()
 
+  useEffect(() => {
+    console.log(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
+    onChange(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
+  }, [])
+  
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -477,6 +487,8 @@ function TimeSelection({ onChange, value, ...props }) {
         setAnchorE3(null)
         break
     }
+    console.log(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
+    onChange(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
   }
   const handleHoursClose = () => {
     setAnchorEl(null)
@@ -489,33 +501,35 @@ function TimeSelection({ onChange, value, ...props }) {
   }
   const ampm = []
 
-  const hourvalues = range(1, 13)
+  const hourvalues = options[0].value === "standard"? range(0, 13): range(0, 24)
   const minutevalues = range(0, 4, 15)
-
-  ampm.push(
-    <MenuItem
-      key="am"
-      selected={"am" === ampmSelectedIndex}
-      onClick={(event) => handleMenuItemClick(event, "am", 2)}
-      classes={{ selected: classes.listSelected }}
-    >
-      {t("am")}
-    </MenuItem>
-  )
-  ampm.push(
-    <MenuItem
-      key="pm"
-      selected={"pm" === ampmSelectedIndex}
-      onClick={(event) => handleMenuItemClick(event, "pm", 2)}
-      classes={{ selected: classes.listSelected }}
-    >
-      {t("pm")}
-    </MenuItem>
-  )
+  if(options[0].value === "standard") {
+    ampm.push(
+      <MenuItem
+        key="am"
+        selected={"am" === ampmSelectedIndex}
+        onClick={(event) => handleMenuItemClick(event, "am", 2)}
+        classes={{ selected: classes.listSelected }}
+      >
+        {t("am")}
+      </MenuItem>
+    )
+    ampm.push(
+      <MenuItem
+        key="pm"
+        selected={"pm" === ampmSelectedIndex}
+        onClick={(event) => handleMenuItemClick(event, "pm", 2)}
+        classes={{ selected: classes.listSelected }}
+      >
+        {t("pm")}
+      </MenuItem>
+    )
+  }
+  
 
   return (
     <Box textAlign="center">
-      <Grid container justify="center" alignItems="center" spacing={2} className={classes.timeWrapper}>
+      <Grid container justify="center" alignItems="center" className={classes.timeWrapper}>
         <Grid item>
           <List component="nav" className={classes.timeHours}>
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickHours}>
@@ -569,7 +583,7 @@ function TimeSelection({ onChange, value, ...props }) {
             ))}
           </Menu>
         </Grid>
-        <Grid item>
+        {options[0].value === "standard" && (<Grid item>
           <List component="nav" className={classes.timeHours} aria-label="Device settings">
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
               <ListItemText secondary={ampmSelectedIndex} />
@@ -585,7 +599,7 @@ function TimeSelection({ onChange, value, ...props }) {
           >
             {ampm}
           </Menu>
-        </Grid>
+        </Grid>)}
       </Grid>
     </Box>
   )
@@ -915,7 +929,8 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
       )
       break
     case "time":
-      component = <TimeSelection onChange={onChange} value={!!value ? value.value : undefined} />
+      console.log(options)
+      component = <TimeSelection onChange={onChange} options={options} value={!!value ? value.value : undefined} />
       break
     case "multiselect":
       component = (
@@ -1050,6 +1065,7 @@ function Section({
   const [slideElements, setSlideElements] = useState(null)
   const [elementIn, setElementIn] = useState(false)
   const { t } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
 
   // Force creation of result data whether survey was interacted with or not.
   useEffect(() => {
@@ -1101,7 +1117,16 @@ function Section({
   }
 
   const handleNext = () => {
-    slideElementChange(1)
+    console.log(responses.current[index])
+    if(responses.current[index].value !== null && typeof responses.current[index].value !== "undefined" &&
+      (typeof responses.current[index].value !== "string" || (typeof responses.current[index].value === "string" &&
+       responses.current[index].value?.trim().length !== 0))) {
+      slideElementChange(1)
+    } else {
+      enqueueSnackbar(t("Please enter your response."), {
+        variant: "error",
+      }) 
+    }
   }
   const tabDirection = (currentTab) => {
     return supportsSidebar ? "up" : "left"
@@ -1191,15 +1216,21 @@ export default function SurveyQuestions({...props}) {
   const validator = (response) => {
     let status = true
     for (const section of response) {
-      if(!!response) {
-        status = false
-      } else {
+      if(!!response && !!section) {       
         for (const question of section) {
-          if (!question.value) {         
+          if(question.value !== null && typeof question.value !== "undefined" &&
+            (typeof question.value !== "string" || (typeof question.value === "string" &&
+            question.value?.trim().length !== 0))) {
+              status = true              
+          } else {
             status = false
-          }        
-        }
-      }     
+            break
+          }
+        } 
+      }else {
+        status = false
+        break
+      }
     }
     return status
   }
@@ -1210,9 +1241,7 @@ export default function SurveyQuestions({...props}) {
     }
     if(validator(response)) {
       response.duration = new Date().getTime() - startTime
-      if (!content?.validate) {
-        onResponse(response, content?.prefillTimestamp)
-      }      
+      onResponse(response, content?.prefillTimestamp)           
     } else {
       enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
         variant: "error",
@@ -1231,6 +1260,7 @@ export default function SurveyQuestions({...props}) {
   
   useEffect(() => {  
     const activity = props.data.activity ?? (props.data ?? {});
+    console.log(activity)
     const configuration = props.data.configuration;
     setContent(activity);
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");

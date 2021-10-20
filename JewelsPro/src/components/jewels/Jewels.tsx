@@ -185,6 +185,7 @@ class Jewels extends React.Component<{}, AppState> {
     const diamondType = this.getDiamond(noOfDimonds);
     const maxPlots = 79
     const diamondCountVal = this.state ? this.state.diamondCount : 15;
+    console.log(diamondCountVal)
     const shapesVals: Array<string> = [];
     let numbers: Array<any> = [];
     const numArr: Array<any> = [];
