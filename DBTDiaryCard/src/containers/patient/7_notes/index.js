@@ -100,7 +100,7 @@ export default function NotesView(props) {
                 <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
-                            <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{ disableunderline: 'true' }} multiline rows={8} />
+                            <CssTextField value={notes} onChange={(event) => setNotes(event.target.value)} inputProps={{ disableunderline: 'true', maxlength: 300 }} multiline rows={8} />
                             <Typography className={classes.description}>{`${notes.length} / ` + t("MAX_300_CHARACTERS")}</Typography>
                         </div>
 

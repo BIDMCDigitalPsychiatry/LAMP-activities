@@ -99,7 +99,8 @@ export default function SkillNoView(props) {
                 <Grid item lg={4} sm={10} xs={12}>
                     <div className={classes.inputContainer}>
                         <div className={classes.contentContainer}>
-                            <CssTextField value={reason} onChange={(event) => setReason(event.target.value)} inputProps={{ disableunderline: 'true' }} multiline rows={8} />
+                            <CssTextField value={reason} onChange={(event) => setReason(event.target.value)}
+                             inputProps={{ disableunderline: 'true', maxlength : 300 }} multiline rows={8} />
                             <Typography className={classes.description}>{`${reason.length} / ` + t("MAX_300_CHARACTERS")}</Typography>
                         </div>
                     </div>

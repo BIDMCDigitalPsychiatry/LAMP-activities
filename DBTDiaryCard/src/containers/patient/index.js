@@ -48,7 +48,10 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         fontWeight: 'bold',
-        fontSize: 40, textAlign: 'center', color: '#38C396', marginLeft: 45, marginRight: 45
+        fontSize: 40, textAlign: 'center', color: '#38C396', marginLeft: 45, marginRight: 45,
+        [theme.breakpoints.down("sm")]: {
+          fontSize: 25,
+        },
     },
     buttonContainer: {
         width: 200, height: 50, borderRadius: 25,
