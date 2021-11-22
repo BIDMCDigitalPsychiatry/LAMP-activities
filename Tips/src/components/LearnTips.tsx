@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#FFF9E5",
     borderRadius: "10px",
     padding: "20px 20px 20px 20px",
-    textAlign: "justify",
+    textAlign: "left",
     margin: "20px auto 0px",
     "& h6": { fontSize: 16, fontWeight: 600, color: "rgba(0, 0, 0, 0.75)" },
   },

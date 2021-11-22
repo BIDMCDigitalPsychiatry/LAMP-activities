@@ -251,6 +251,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     "& fieldset": { borderWidth: 0 },
   },
+  required : {
+    "& sup" : { color: "red"}
+  },
   sliderResponse: {
     marginTop: "60px",
     "& h4": {
@@ -450,16 +453,22 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null)
   const [anchorE3, setAnchorE3] = React.useState<null | HTMLElement>(null)
   const currentValue = !!value ? value?.split(":") : ""
-  console.log(value, currentValue)
   const [hourSelectedIndex, setHourSelectedIndex] = React.useState(!!value ? currentValue[0] : "01")
-  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].split(" ")[0] : "00")
-  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? (currentValue[1].split(" ")[1] ?? " ") : "am")
+  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].substr(0,2) : "00")
+  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? (currentValue[1].substr(2,3) ?? "") : "AM")
   const { t } = useTranslation()
 
   useEffect(() => {
-    console.log(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
-    onChange(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
+    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
+      (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
+      (options[0].value === "standard" ? ampmSelectedIndex : ""))
   }, [])
+
+  useEffect(() => {
+    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
+      (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
+       (options[0].value === "standard" ? ampmSelectedIndex : ""))
+   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
   
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -487,8 +496,9 @@ function TimeSelection({ onChange, options, value, ...props }) {
         setAnchorE3(null)
         break
     }
-    console.log(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
-    onChange(hourSelectedIndex + ":" + minuteSelectedIndex + " " + (options[0].value === "standard" ? ampmSelectedIndex : ""))
+    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
+       ":" + (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) + 
+       (options[0].value === "standard" ? ampmSelectedIndex : ""))
   }
   const handleHoursClose = () => {
     setAnchorEl(null)
@@ -501,32 +511,31 @@ function TimeSelection({ onChange, options, value, ...props }) {
   }
   const ampm = []
 
-  const hourvalues = options[0].value === "standard"? range(0, 13): range(0, 24)
-  const minutevalues = range(0, 4, 15)
+  const hourvalues = options[0].value === "standard"? range(0, 12): range(0, 24)
+  const minutevalues = ["00", "15", "30", "45"]
   if(options[0].value === "standard") {
     ampm.push(
       <MenuItem
-        key="am"
-        selected={"am" === ampmSelectedIndex}
-        onClick={(event) => handleMenuItemClick(event, "am", 2)}
+        key="AM"
+        selected={"AM" === ampmSelectedIndex}
+        onClick={(event) => handleMenuItemClick(event, "AM", 2)}
         classes={{ selected: classes.listSelected }}
       >
-        {t("am")}
+        {t("AM")}
       </MenuItem>
     )
     ampm.push(
       <MenuItem
-        key="pm"
-        selected={"pm" === ampmSelectedIndex}
-        onClick={(event) => handleMenuItemClick(event, "pm", 2)}
+        key="PM"
+        selected={"PM" === ampmSelectedIndex}
+        onClick={(event) => handleMenuItemClick(event, "PM", 2)}
         classes={{ selected: classes.listSelected }}
       >
-        {t("pm")}
+        {t("PM")}
       </MenuItem>
     )
   }
   
-
   return (
     <Box textAlign="center">
       <Grid container justify="center" alignItems="center" className={classes.timeWrapper}>
@@ -546,12 +555,12 @@ function TimeSelection({ onChange, options, value, ...props }) {
           >
             {hourvalues.map((option, index) => (
               <MenuItem
-                key={option}
+                key={option.length === 1 ? "0" + option : option}
                 selected={option === hourSelectedIndex}
                 onClick={(event) => handleMenuItemClick(event, option, 0)}
                 classes={{ selected: classes.listSelected }}
               >
-                {option}
+                {option.length === 1 ? "0" + option : option }
               </MenuItem>
             ))}
           </Menu>
@@ -573,12 +582,12 @@ function TimeSelection({ onChange, options, value, ...props }) {
           >
             {minutevalues.map((option, index) => (
               <MenuItem
-                key={option}
+                key={option.length === 1 ? "0" + option : option}
                 selected={option === minuteSelectedIndex}
                 onClick={(event) => handleMenuItemClick(event, option, 1)}
                 classes={{ selected: classes.listSelected }}
               >
-                {option}
+                {option.length === 1 ? "0" + option : option }
               </MenuItem>
             ))}
           </Menu>
@@ -878,7 +887,7 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
   )
 }
 
-function Question({ onResponse, text, desc, type, options, value, startTime, ...props }) {
+function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
   const { t } = useTranslation()
 
   const onChange = (value) => {
@@ -929,7 +938,6 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
       )
       break
     case "time":
-      console.log(options)
       component = <TimeSelection onChange={onChange} options={options} value={!!value ? value.value : undefined} />
       break
     case "multiselect":
@@ -942,8 +950,8 @@ function Question({ onResponse, text, desc, type, options, value, startTime, ...
   return (
     <Grid>
       <Box className={classes.questionhead}>
-        <Typography variant="caption">
-          <ReactMarkdown source={text} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
+        <Typography variant="caption" className={classes.required}>
+          <ReactMarkdown source={t(text + (!!required ? "<sup>*</sup>" : ""))} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
         </Typography>
         </Box>
       <Box className={classes.questionhead}>
@@ -1001,6 +1009,7 @@ function Questions({
           <Question
             text={x.text}
             type={x.type}
+            required={x.required}
             desc={x.description ?? null}
             options={x.options?.map((y) => ({ ...y, label: y.value }))}
             value={responses.current[idx]}
@@ -1117,10 +1126,9 @@ function Section({
   }
 
   const handleNext = () => {
-    console.log(responses.current[index])
-    if(responses.current[index].value !== null && typeof responses.current[index].value !== "undefined" &&
+    if(!value.settings[index].required || (value.settings[index].required && (responses.current[index].value !== null && typeof responses.current[index].value !== "undefined" &&
       (typeof responses.current[index].value !== "string" || (typeof responses.current[index].value === "string" &&
-       responses.current[index].value?.trim().length !== 0))) {
+       responses.current[index].value?.trim().length !== 0))))) {
       slideElementChange(1)
     } else {
       enqueueSnackbar(t("Please enter your response."), {
@@ -1215,17 +1223,20 @@ export default function SurveyQuestions({...props}) {
 
   const validator = (response) => {
     let status = true
+    const questions = content.sections[0].settings
     for (const section of response) {
-      if(!!response && !!section) {       
+      if(!!response && !!section) {      
+        let i = 0 
         for (const question of section) {
-          if(question.value !== null && typeof question.value !== "undefined" &&
+          if(!questions[i].required || (!!questions[i].required && (question.value !== null && typeof question.value !== "undefined" &&
             (typeof question.value !== "string" || (typeof question.value === "string" &&
-            question.value?.trim().length !== 0))) {
+            question.value?.trim().length !== 0))))) {
               status = true              
           } else {
             status = false
             break
           }
+          i++;
         } 
       }else {
         status = false
@@ -1243,7 +1254,7 @@ export default function SurveyQuestions({...props}) {
       response.duration = new Date().getTime() - startTime
       onResponse(response, content?.prefillTimestamp)           
     } else {
-      enqueueSnackbar(t("Some responses are missing. Please complete all questions before submitting."), {
+      enqueueSnackbar(t("Some responses are missing. Please complete all required questions before submitting."), {
         variant: "error",
       }) 
     }
@@ -1260,7 +1271,6 @@ export default function SurveyQuestions({...props}) {
   
   useEffect(() => {  
     const activity = props.data.activity ?? (props.data ?? {});
-    console.log(activity)
     const configuration = props.data.configuration;
     setContent(activity);
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
