@@ -9,7 +9,7 @@ import i18n from "./../../i18n";
 const audioType = "audio/*";
 const maximumRecordTime = 240;
 
-declare let MediaRecorder: any;
+declare let MediaRecorder;
 
 interface AppState {
   time: any;
@@ -28,7 +28,7 @@ interface AppState {
 interface AppProps {
   mimeTypeToUseWhenRecording: any;
   handleReset(): void;
-  handleAudioStop( Object): void;
+  handleAudioStop(arg:any): void;
   showUIAudio: Boolean;
   title: string;
   audioURL: string | null;

@@ -13,7 +13,7 @@ import { AppContainer } from "react-hot-loader";
 import PopTheBubbles from './components/pop_the_bubbles/PopTheBubbles';
 import './index.css';
 
-const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventMethod = typeof window.addEventListener !== "undefined" ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 eventer(

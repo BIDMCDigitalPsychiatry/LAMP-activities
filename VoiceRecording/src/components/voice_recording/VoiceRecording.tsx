@@ -109,6 +109,7 @@
    };
  
    handleReset = async () => {
+     console.log("sdf test")
      const reset = {
        url: null,
        blob: null,

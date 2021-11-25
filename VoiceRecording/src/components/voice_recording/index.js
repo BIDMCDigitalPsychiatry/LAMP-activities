@@ -15813,7 +15813,7 @@ var MicRecorder = function () {
     classCallCheck(this, MicRecorder);
 
     this.config = {
-      // 128 or 160 kbit/s – mid-range bitrate quality
+      // 128 or 160 kbit/s â€“ mid-range bitrate quality
       bitRate: 128,
 
       // There is a known issue with some macOS machines, where the recording
