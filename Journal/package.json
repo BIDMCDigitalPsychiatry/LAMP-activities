@@ -22,6 +22,7 @@
     "html-webpack-plugin": "^4.0.0-beta.4",
     "i18next": "^19.8.3",
     "i18next-http-backend": "^1.2.2",
+    "jest": "^23.6.0",
     "lodash": "^4.17.20",
     "material-icons": "^0.7.6",
     "prop-types": "^15.7.2",
@@ -33,7 +34,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts-ts": "^4.0.8",
     "rx": "^4.1.0",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "webpack": "^4.19.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
