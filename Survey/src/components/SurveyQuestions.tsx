@@ -283,6 +283,7 @@ const useStyles = makeStyles((theme) => ({
   centerBar: { height: 4, background: "#BCEFDD" },
   customTrack: { width: 4, height: 4, borderRadius: "50%", background: "#65DEB4" },
   customThumb: { width: 24, height: 24, marginTop: -10, marginLeft: -10 },
+  noInitialVal: {left: "-100% !important"},
   menuPaper: {
     background: "#F5F5F5",
     boxShadow: "none",
@@ -732,7 +733,7 @@ function Rating({ onChange, options, value, ...props }) {
       // ? options[0].description
       // : options[0].value
   )
-  const [sliderValue, setSliderValue] = useState(!!value ? value : parseInt(options[0].value, 10))
+  const [sliderValue, setSliderValue] = useState(!!value ? value : null)
 
   useEffect(() => {
     onChange(sliderValue)
@@ -778,7 +779,7 @@ function Rating({ onChange, options, value, ...props }) {
           root: classes.slider,
           rail: classes.centerBar,
           mark: classes.customTrack,
-          thumb: classes.customThumb,
+          thumb: classes.customThumb + (!!sliderValue ?  "" : " " + classes.noInitialVal),
           valueLabel: classes.countlabel,
         }}
         onChange={(evt, val) => {
