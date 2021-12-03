@@ -712,8 +712,8 @@ function RadioRating({ onChange, options, value, ...props }) {
 function Rating({ onChange, options, value, ...props }) {
   const classes = useStyles()
   const getText = (val) => {
-    let sliderValue =
-      !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
+    let sliderValue = null
+     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
     options.map((mark) => {
       if (mark.value === val) {
         sliderValue = !!mark.description && mark.description.trim().length > 0 ? mark.description : mark.value
@@ -727,9 +727,10 @@ function Rating({ onChange, options, value, ...props }) {
   const [valueText, setValueText] = useState(
     !!value
       ? getText(value)
-      : !!options[0].description && options[0].description.trim().length > 0
-      ? options[0].description
-      : options[0].value
+      : null
+      // : !!options[0].description && options[0].description.trim().length > 0
+      // ? options[0].description
+      // : options[0].value
   )
   const [sliderValue, setSliderValue] = useState(!!value ? value : parseInt(options[0].value, 10))
 
@@ -741,8 +742,8 @@ function Rating({ onChange, options, value, ...props }) {
     return `${options[value]}`
   }
   const getSliderValue = (val) => {
-    let sliderValue =
-      !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
+    let sliderValue = null
+      // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
     const slValue = val
     options.map((mark) => {
       if (parseInt(mark.value, 10) === slValue) {
