@@ -779,7 +779,7 @@ function Rating({ onChange, options, value, ...props }) {
           root: classes.slider,
           rail: classes.centerBar,
           mark: classes.customTrack,
-          thumb: classes.customThumb + (!!sliderValue ? " " + classes.noInitialVal : ""),
+          thumb: classes.customThumb + (!!sliderValue ?  "" : " " + classes.noInitialVal),
           valueLabel: classes.countlabel,
         }}
         onChange={(evt, val) => {
