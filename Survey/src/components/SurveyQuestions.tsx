@@ -27,7 +27,7 @@ import {
   ListItem,
   List,
   Fab,
-  Tooltip,
+  Table,
   Icon,
   FormGroup,
   Backdrop,
@@ -36,6 +36,8 @@ import {
   Checkbox,
   CheckboxProps,
   IconButton,
+  TableRow,
+  TableCell,
 } from "@material-ui/core"
 import classnames from "classnames"
 import i18n from "../i18n"
@@ -72,6 +74,9 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
 )(LinearProgress)
 
 const useStyles = makeStyles((theme) => ({
+  textCenter: {
+     textAlign : "center" 
+  },
   root: {
     width: "100%",
   },
@@ -126,6 +131,10 @@ const useStyles = makeStyles((theme) => ({
     border: "#C6C6C6 solid 2px",
     backgroundColor: "#fff",
     backgroundImage: "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
+    [theme.breakpoints.down("sm")]: {
+      width: 20,
+      height: 20,
+    },
     "$root.Mui-focusVisible &": {
       outline: "2px auto rgba(19,124,189,.6)",
       outlineOffset: 2,
@@ -180,6 +189,14 @@ const useStyles = makeStyles((theme) => ({
       boxShadow:
         "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
     },
+  },
+  matrix : {
+    "& td" :{
+      padding : "0px !important"
+    },
+    // "& span.MuiFormControlLabel-label ": { marginTop: "18px !important",
+    // "& p" : {marginTop : "0px !important"}
+  // },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -283,7 +300,7 @@ const useStyles = makeStyles((theme) => ({
   centerBar: { height: 4, background: "#BCEFDD" },
   customTrack: { width: 4, height: 4, borderRadius: "50%", background: "#65DEB4" },
   customThumb: { width: 24, height: 24, marginTop: -10, marginLeft: -10 },
-  noInitialVal: {left: "-100% !important"},
+  noInitialVal: {left: "-600% !important"},
   menuPaper: {
     background: "#F5F5F5",
     boxShadow: "none",
@@ -837,6 +854,111 @@ function Rating({ onChange, options, value, ...props }) {
 const csvParse = (x) => (Array.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
 const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
 
+function Matrix({ onChange, options, value, ...props }) {
+  const [selectedValue, setSelectedValue] = useState(value || [])
+  const classes = useStyles()
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    onChange(selectedValue)
+  }, [selectedValue])
+
+  return (
+    <Table className={classes.matrix}>
+      <TableRow>
+        <TableCell>{null}</TableCell>
+        {(options?.options || []).map((x) => (
+          <TableCell className={classes.textCenter}> 
+            <ReactMarkdown source={!!x.description && ` ${x.description}` + `(${x.value})`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+          </TableCell>
+        ))}
+      </TableRow>
+      {(options?.questions || []).map((question, index) => (
+        <TableRow>
+          <TableCell>
+            <ReactMarkdown source={question} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+          </TableCell>
+          { !options.multiple ?  (
+            (options?.options || []).map((x, k) => (
+              <TableCell className={classes.textCenter}>
+                <FormControlLabel
+                  key={`${x.value}`}
+                  value={`${x.value}`}
+                  style={{ alignItems: "center" }}
+                  control={                  
+                      <Radio
+                        className={classes.radioroot}
+                        disableRipple
+                        checked={(selectedValue[index]?.value || []).includes(x.value)}
+                        color="default"
+                        size="medium"
+                        checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
+                        icon={<span className={classes.icon} />}
+                        onClick={() => {                          
+                          setSelectedValue({...selectedValue, [index]: {question, value : [x.value]}})
+                        }}
+                      />
+                  }
+                  label={
+                    <Box className={classes.radioLabelText}>
+                      <Typography
+                        variant="body2"
+                        style={{ color: (selectedValue[index]?.value || []).includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
+                      >
+                        <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
+                      </Typography>
+                      <Box className={classes.lightGray}>
+                        <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
+                      </Box>
+                    </Box>
+                  }
+                  labelPlacement="end"
+                />                
+              </TableCell>
+            ))
+          ) :((options?.options || []).map((x, j) => (
+                <TableCell className={classes.textCenter}>
+                  <FormControlLabel
+                  key={x.value}
+                  value={`${x.value}`}
+                  style={{ alignItems: "center" }}
+                  control={
+                      <GreenCheckbox
+                        checked={(selectedValue[index]?.value || []).includes(x.value)}
+                        onClick={() => {
+                          let values = selectedValue[index]?.value ?? []
+                          values.push(x.value)
+                          values = (values || []).filter((elem, i, self)  => {
+                            return i === self.indexOf(elem);
+                          })
+                          setSelectedValue({...selectedValue, [index]: {question, value : values}})
+                        }}                     
+                      />
+                  }
+                  label={
+                    <Box className={classes.radioLabelText}>
+                      <Typography
+                        variant="body2"
+                        style={{ color: (selectedValue[index]?.value || []).includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
+                      >
+                        <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
+                      </Typography>
+                      <Box className={classes.lightGray}>
+                        <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
+                      </Box>
+                    </Box>                                
+                  }
+                  labelPlacement="end"
+                  />             
+                </TableCell>
+              ))
+          )}        
+        </TableRow> 
+      ))}
+    </Table>
+  )
+}
+
 function MultiSelectResponse({ onChange, options, value, ...props }) {
   const [selectedValue, setSelectedValue] = useState(value || "")
   const selection = csvParse(selectedValue)
@@ -850,7 +972,7 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
         root: classes.fieldGroup,
       }}
     >
-      {options.map((x) => (
+      {options.map((x) => ( 
         <FormControlLabel
           className={classes.mrgBtm}
           key={x.label}
@@ -889,6 +1011,7 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
   )
 }
 
+
 function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
   const { t } = useTranslation()
 
@@ -914,6 +1037,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     { label: t("Several Times"), value: 1 },
     { label: t("Not at all"), value: 0 },
   ]
+  console.log(type)
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
@@ -945,6 +1069,11 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     case "multiselect":
       component = (
         <MultiSelectResponse options={options} onChange={onChange} value={!!value ? value.value : undefined} />
+      )
+      break
+    case "matrix":
+      component = (
+        <Matrix options={options} onChange={onChange} value={!!value ? value.value : {}} />
       )
       break
   }
@@ -1013,7 +1142,7 @@ function Questions({
             type={x.type}
             required={x.required}
             desc={x.description ?? null}
-            options={x.options?.map((y) => ({ ...y, label: y.value }))}
+            options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
             value={responses.current[idx]}
             onResponse={(response) => {
               const lastEndTime =
@@ -1230,6 +1359,7 @@ export default function SurveyQuestions({...props}) {
       if(!!response && !!section) {      
         let i = 0 
         for (const question of section) {
+          console.log(question)
           if(!questions[i].required || (!!questions[i].required && (question.value !== null && typeof question.value !== "undefined" &&
             (typeof question.value !== "string" || (typeof question.value === "string" &&
             question.value?.trim().length !== 0))))) {
@@ -1271,12 +1401,12 @@ export default function SurveyQuestions({...props}) {
     )
   }
   
-  useEffect(() => {  
+  useEffect(() => { 
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setContent(activity);
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-    responses.current = !!activity.prefillData ? Object.assign({}, activity.prefillData) : {}     
+    responses.current = {} // !!activity?.prefillData ? Object.assign({}, activity?.prefillData) : {}     
   }, [])
 
   return (
