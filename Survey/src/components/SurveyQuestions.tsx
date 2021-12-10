@@ -869,7 +869,7 @@ function Matrix({ onChange, options, value, ...props }) {
         <TableCell>{null}</TableCell>
         {(options?.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={!!x.description && ` ${x.description}` + `(${x.value})`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            <ReactMarkdown source={!!x.description ? ` ${x.description}` + `(${x.value})` : `${x.value}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
       </TableRow>
@@ -925,12 +925,16 @@ function Matrix({ onChange, options, value, ...props }) {
                   control={
                       <GreenCheckbox
                         checked={(selectedValue[index]?.value || []).includes(x.value)}
-                        onClick={() => {
+                        onClick={() => {                          
                           let values = selectedValue[index]?.value ?? []
-                          values.push(x.value)
-                          values = (values || []).filter((elem, i, self)  => {
-                            return i === self.indexOf(elem);
-                          })
+                          if(!(selectedValue[index]?.value || []).includes(x.value)) {
+                            values.push(x.value)
+                            values = (values || []).filter((elem, i, self)  => {
+                              return i === self.indexOf(elem);
+                            })
+                          } else {
+                            values = values.splice(index, 1)
+                          }
                           setSelectedValue({...selectedValue, [index]: {question, value : values}})
                         }}                     
                       />
@@ -1037,7 +1041,6 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     { label: t("Several Times"), value: 1 },
     { label: t("Not at all"), value: 0 },
   ]
-  console.log(type)
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
@@ -1359,7 +1362,6 @@ export default function SurveyQuestions({...props}) {
       if(!!response && !!section) {      
         let i = 0 
         for (const question of section) {
-          console.log(question)
           if(!questions[i].required || (!!questions[i].required && (question.value !== null && typeof question.value !== "undefined" &&
             (typeof question.value !== "string" || (typeof question.value === "string" &&
             question.value?.trim().length !== 0))))) {
