@@ -862,13 +862,13 @@ function Rating({ onChange, options, value, ...props }) {
 const csvParse = (x) => (Array.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
 const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
 
-function Matrix({ onChange, options, value, ...props }) {
+function Matrix({ onChange, options, value, required, ...props }) {
   const [selectedValue, setSelectedValue] = useState(value || [])
   const classes = useStyles()
   const { t } = useTranslation()
 
   useEffect(() => {
-    onChange(selectedValue)
+    onChange(!!required && (Array.isArray(selectedValue) || (Object.keys(selectedValue).length !== options?.questions?.length)) ? null : selectedValue)
   }, [selectedValue])
 
   return (
@@ -1063,7 +1063,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
       break
     case "matrix":
       component = (
-        <Matrix options={options} onChange={onChange} value={!!value ? value.value : {}} />
+        <Matrix options={options} onChange={onChange} value={!!value ? value.value : {}} required={required} />
       )
       break
   }
