@@ -124,6 +124,12 @@ const useStyles = makeStyles((theme) => ({
   radioroot: {
     padding: "20px",
   },
+  mradioroot: {
+    padding: "20px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px 5px",
+    },
+  },
   icon: {
     borderRadius: "50%",
     width: 32,
@@ -190,12 +196,14 @@ const useStyles = makeStyles((theme) => ({
         "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
     },
   },
+  formLabelMatrix : { alignItems: "center", margin : "0 auto" },
   matrix : {
     "& td" :{
       padding : "0px !important"
     },
+    
     // "& span.MuiFormControlLabel-label ": { marginTop: "18px !important",
-    // "& p" : {marginTop : "0px !important"}
+    "& p" : {marginTop : "0px !important", marginBottom : "3px !important"}
   // },
   },
   backdrop: {
@@ -869,7 +877,8 @@ function Matrix({ onChange, options, value, ...props }) {
         <TableCell>{null}</TableCell>
         {(options?.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={!!x.description ? ` ${x.description}` + `(${x.value})` : `${x.value}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            <ReactMarkdown source={x.description.length > 0 ? ` ${x.description}` : ""} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            <ReactMarkdown source={x.description.length > 0 && x.value.length > 0 ? `(${x.value})` : x.value} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
       </TableRow>
@@ -884,10 +893,10 @@ function Matrix({ onChange, options, value, ...props }) {
                 <FormControlLabel
                   key={`${x.value}`}
                   value={`${x.value}`}
-                  style={{ alignItems: "center" }}
+                  className={classes.formLabelMatrix}
                   control={                  
                       <Radio
-                        className={classes.radioroot}
+                        className={classes.mradioroot}
                         disableRipple
                         checked={(selectedValue[index]?.value || []).includes(x.value)}
                         color="default"
@@ -898,21 +907,8 @@ function Matrix({ onChange, options, value, ...props }) {
                           setSelectedValue({...selectedValue, [index]: {question, value : [x.value]}})
                         }}
                       />
-                  }
-                  label={
-                    <Box className={classes.radioLabelText}>
-                      <Typography
-                        variant="body2"
-                        style={{ color: (selectedValue[index]?.value || []).includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
-                      >
-                        <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
-                      </Typography>
-                      <Box className={classes.lightGray}>
-                        <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
-                      </Box>
-                    </Box>
-                  }
-                  labelPlacement="end"
+                  } 
+                  label={null}                
                 />                
               </TableCell>
             ))
@@ -920,12 +916,13 @@ function Matrix({ onChange, options, value, ...props }) {
                 <TableCell className={classes.textCenter}>
                   <FormControlLabel
                   key={x.value}
-                  value={`${x.value}`}
-                  style={{ alignItems: "center" }}
+                  value={`${index}-${x.value}`}
+                  className={classes.formLabelMatrix}
                   control={
                       <GreenCheckbox
+                        className={classes.mradioroot}
                         checked={(selectedValue[index]?.value || []).includes(x.value)}
-                        onClick={() => {                          
+                        onClick={() => {
                           let values = selectedValue[index]?.value ?? []
                           if(!(selectedValue[index]?.value || []).includes(x.value)) {
                             values.push(x.value)
@@ -933,26 +930,16 @@ function Matrix({ onChange, options, value, ...props }) {
                               return i === self.indexOf(elem);
                             })
                           } else {
-                            values = values.splice(index, 1)
+                            const key = values.indexOf(x.value);
+                            if (key !== -1) {
+                              values.splice(key, 1);
+                            }
                           }
                           setSelectedValue({...selectedValue, [index]: {question, value : values}})
                         }}                     
                       />
                   }
-                  label={
-                    <Box className={classes.radioLabelText}>
-                      <Typography
-                        variant="body2"
-                        style={{ color: (selectedValue[index]?.value || []).includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
-                      >
-                        <ReactMarkdown source={t(x.label)} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
-                      </Typography>
-                      <Box className={classes.lightGray}>
-                        <ReactMarkdown source={!!x.description && ` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
-                      </Box>
-                    </Box>                                
-                  }
-                  labelPlacement="end"
+                  label={null}
                   />             
                 </TableCell>
               ))
