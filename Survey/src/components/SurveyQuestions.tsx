@@ -877,8 +877,8 @@ function Matrix({ onChange, options, value, ...props }) {
         <TableCell>{null}</TableCell>
         {(options?.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={x.description.length > 0 ? ` ${x.description}` : ""} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
-            <ReactMarkdown source={x.description.length > 0 && x.value.length > 0 ? `(${x.value})` : x.value} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
+            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${x.value})` : x.value} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
       </TableRow>
