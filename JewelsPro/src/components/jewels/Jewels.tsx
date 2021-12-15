@@ -47,6 +47,7 @@ interface AppState {
   shapeCount: number;
   shapes: Array<string>;
   showModal: number;
+  time: number;
   totalAttempts: number;
   totalJewelsCollected:number;
   winnerLine?: Array<number>;
@@ -110,6 +111,7 @@ class Jewels extends React.Component<{}, AppState> {
             shapeCount: shapeCountVal,
             shapes: [],
             showModal: 0,
+            time: new Date().getTime(),
             totalAttempts: 0,
             totalJewelsCollected:0,
             winnerLine: undefined,
@@ -237,6 +239,7 @@ class Jewels extends React.Component<{}, AppState> {
       shapeCount: noOfDimonds,
       shapes: shapesVals, 
       showModal: 0,
+      time: this.state.time,
       totalAttempts: this.state? this.state.totalAttempts : 0,
       totalJewelsCollected:this.state? this.state.totalJewelsCollected : 0,
       winnerLine: undefined,
@@ -304,6 +307,7 @@ class Jewels extends React.Component<{}, AppState> {
           },
           temporal_slices: JSON.parse(this.state.routes),
           timestamp: new Date().getTime(),
+          duration: new Date().getTime() - this.state.time
         }),
         "*"
       );

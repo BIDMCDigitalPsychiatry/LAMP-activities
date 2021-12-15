@@ -17,6 +17,7 @@ import { isUndefined } from "util";
 
 interface AppState {
   loaded: boolean;
+  time: number;
 }
 
 class CatsNDogs extends React.Component<{}, AppState> {
@@ -33,7 +34,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
       (e: any) => {
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ loaded: false }, () => {
+        this.setState({ loaded: false, time: new Date().getTime() }, () => {
           this.reset(true);
         });
       },
@@ -77,7 +78,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
             </nav>
             <div className="heading">{i18n.t("CATS_AND_DOGS")}</div>
             <div className="game-board">
-              <Board language={i18n.language} />
+              <Board language={i18n.language} time={this.state.time} />
             </div>
           </div>
         )}

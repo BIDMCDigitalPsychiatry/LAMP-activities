@@ -35,6 +35,7 @@
    audioAllowed: Boolean;
    clickUpload: Boolean;
    clickStop: Boolean;
+   time: number;
  }
 
  interface AppProps {
@@ -60,7 +61,8 @@
        errorData: false,
        audioAllowed: false,
        clickUpload: false,
-       clickStop: false
+       clickStop: false,
+       time: new Date().getTime()
      };
     i18n.changeLanguage(!!props.language ? props.language : "en-US");
    }
@@ -102,6 +104,7 @@
            },
            temporal_slices: [],
            timestamp: new Date().getTime(),
+           duration : new Date().getTime() - this.state.time
          }),
          "*"
        );

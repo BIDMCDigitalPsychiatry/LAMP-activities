@@ -56,6 +56,7 @@ interface AppState {
   levelVal: number;
   allRoutes: any;
   wrongNoGoClicks: number;
+  time:number;
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -94,6 +95,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       score: 0,
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
+      time: new Date().getTime(),
       timeDifference: 0,
       totalGoCount: 0,
       totalNoGoCount: 0,
@@ -252,6 +254,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
             static_data: {},
             temporal_slices: temporalSlices,
             timestamp: new Date().getTime(),
+            duration: new Date().getTime() - this.state.time
           }),
           "*"
         );

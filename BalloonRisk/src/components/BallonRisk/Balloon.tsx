@@ -40,6 +40,7 @@ interface AppState {
   reset_data: boolean;
   participant_id: number;
   break_point_array: any;
+  time:number;
 }
 
 class Balloons extends React.Component<{}, AppState> {
@@ -50,6 +51,7 @@ class Balloons extends React.Component<{}, AppState> {
     const eventer = window[eventMethod];
     const messageEvent =
       eventMethod === "attachEvent" ? "onmessage" : "message";
+    
     this.state = {
       balloon_burst: false,
       balloon_count: 15,
@@ -72,6 +74,7 @@ class Balloons extends React.Component<{}, AppState> {
       start: false,
       stop: false,
       stop_timer: false,
+      time: new Date().getTime(),
       total_points: 0,
       reset_data: false,
       participant_id: 0,
@@ -330,6 +333,7 @@ class Balloons extends React.Component<{}, AppState> {
         },
         temporal_slices: this.state.route,
         timestamp: new Date().getTime(),
+        duration: new Date().getTime() - this.state.time,
       }),
       "*"
     );
