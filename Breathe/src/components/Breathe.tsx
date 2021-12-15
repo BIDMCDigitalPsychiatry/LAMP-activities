@@ -284,7 +284,11 @@ export default function Breathe({ ...props }) {
           sentiment: status,
         },
         temporal_slices: [],
-      }) : null,
+      }) : JSON.stringify({
+        timestamp: time,
+        duration: new Date().getTime() - time,       
+        temporal_slices: [],
+      }),
       "*"
     )
   }
