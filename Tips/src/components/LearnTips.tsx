@@ -185,7 +185,11 @@ export default function LearnTips({ ...props }) {
   const backToParentTips = () => {
     // eslint-disable-next-line no-restricted-globals 
     /*eslint no-restricted-globals: ["error", "event"]*/
-    parent.postMessage(JSON.stringify({ completed: true }), "*")
+    parent.postMessage(JSON.stringify({
+      timestamp: new Date().getTime(),
+      duration: new Date().getTime() - time,      
+      temporal_slices: [],
+    }), "*")
   };
 
   return (
