@@ -285,6 +285,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
      parent.postMessage(
       JSON.stringify({
+        duration: new Date().getTime() - this.props.time,
         static_data: {
           StartTime: this.state.startTime,
           correct_answers: this.state.stateSuccessTaps,
@@ -295,7 +296,6 @@ class Board extends React.Component<BoardProps, BoardState> {
         },
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - this.props.time
       }),
       "*"
     );

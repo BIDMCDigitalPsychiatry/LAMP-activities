@@ -46,6 +46,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
   reset = (loadedVal: boolean) => {
     const state = {
       loaded: loadedVal,
+      time: this.state.time
     };
 
     if (isUndefined(this.state)) {

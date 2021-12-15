@@ -251,10 +251,10 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       setTimeout(() => {
         parent.postMessage(
           JSON.stringify({
+            duration: new Date().getTime() - this.state.time,
             static_data: {},
             temporal_slices: temporalSlices,
             timestamp: new Date().getTime(),
-            duration: new Date().getTime() - this.state.time
           }),
           "*"
         );
