@@ -20,6 +20,7 @@ import "./box.css";
 
 export interface BoardProps {
   language: string;
+  time: number;
 }
 
 interface BoardState {
@@ -294,6 +295,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         },
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
+        duration: new Date().getTime() - this.props.time
       }),
       "*"
     );

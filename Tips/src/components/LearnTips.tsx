@@ -149,12 +149,12 @@ export default function LearnTips({ ...props }) {
   const [details, setDetails] = useState(null);
   const [images, setImages] = useState(null);
   const [settings, setSettings] = useState([]);
+  const [time, setTime] = useState(new Date().getTime())
   const [activityData, setActivityData] = useState<any>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     const propsData = props.data;
-    console.log(propsData)
     const settingsData = propsData.activity?.settings ?? propsData.settings ?? {};
     const configuration = propsData.configuration;
     const langugae = configuration
@@ -172,6 +172,7 @@ export default function LearnTips({ ...props }) {
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
+        duration: new Date().getTime() - time,
         static_data: {
           sentiment: status,
         },

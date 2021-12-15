@@ -18,6 +18,7 @@ import i18n from "./../../i18n";
 interface AppState {
   loaded: boolean;
   reverse: boolean;
+  time:number;
 }
 
 class Box extends React.Component<{}, AppState> {
@@ -26,6 +27,7 @@ class Box extends React.Component<{}, AppState> {
     const state = {
       loaded: false,
       reverse: false,
+      time: new Date().getTime()
     };
     this.state = state;
     const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";
@@ -67,7 +69,7 @@ class Box extends React.Component<{}, AppState> {
             </nav>
             <div className="heading">{i18n.t("BOX_GAME")}</div>
             <div className="game-board">
-              <Board reverse={this.state.reverse} language={i18n.language} />
+              <Board reverse={this.state.reverse} language={i18n.language} time={this.state.time} />
             </div>
           </div>
         )}

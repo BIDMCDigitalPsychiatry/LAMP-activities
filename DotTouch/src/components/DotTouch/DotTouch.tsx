@@ -30,6 +30,7 @@ interface DotState {
  stateChange:boolean;
  stateRoutes:any;
  tapCount:number;
+ time:number;
  timeout:boolean;   
  totalTaps:number;
 }
@@ -60,6 +61,7 @@ class DotTouch extends React.Component<{}, DotState> {
          stateChange:true,
          stateRoutes:[],
          tapCount:0,
+         time: new Date().getTime(),
          timeout : false,
          totalTaps:0
        };      
@@ -242,7 +244,8 @@ class DotTouch extends React.Component<{}, DotState> {
            "StartTime": this.state.startTime,
            "StatusType":statusType,    
            "TotalAttempts":this.state.totalTaps,   
-           "UserID":"200"
+           "UserID":"200",
+           "Duration" : new Date().getTime() - this.state.time
        }),
        headers: {
          'Access-Control-Allow-Origin': '*'
