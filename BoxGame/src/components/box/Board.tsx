@@ -319,6 +319,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     parent.postMessage(
       JSON.stringify({
+        duration: new Date().getTime() - this.props.time,
         static_data: {
           EndTime: new Date(),
           StartTime: this.state.startTime,
@@ -330,7 +331,6 @@ class Board extends React.Component<BoardProps, BoardState> {
         },
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - this.props.time
       }),
       "*"
     );
