@@ -189,6 +189,7 @@ export default function LearnTips({ ...props }) {
       timestamp: new Date().getTime(),
       duration: new Date().getTime() - time,      
       temporal_slices: [],
+      completed: true
     }), "*")
   };
 
