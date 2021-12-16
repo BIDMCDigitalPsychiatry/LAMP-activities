@@ -41,6 +41,7 @@ interface AppState {
   participant_id: number;
   break_point_array: any;
   time:number;
+  no_back:boolean;
 }
 
 class Balloons extends React.Component<{}, AppState> {
@@ -79,6 +80,7 @@ class Balloons extends React.Component<{}, AppState> {
       reset_data: false,
       participant_id: 0,
       break_point_array: [],
+      no_back:false
     };
 
     eventer(
@@ -96,6 +98,7 @@ class Balloons extends React.Component<{}, AppState> {
           breakpoint_std: settings
             ? settings.breakpoint_std
             : this.state.breakpoint_std,
+          no_back: e.data.noBack
         });
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
       },
@@ -434,9 +437,9 @@ class Balloons extends React.Component<{}, AppState> {
       <div>
         <div className="row">
           <div className="col">
-            <a className="icn-menu menu-left cursorPointer" onClick={this.clickBack}>
+            {!this.state.no_back && <a className="icn-menu menu-left cursorPointer" onClick={this.clickBack}>
               <ArrowBackIcon />
-            </a>
+            </a>}
             <h4 style={{ marginRight: "-25px" }}>{i18n.t("BALLOON_RISK")}</h4>
             <a
               className="icn-menu menu-right cursorPointer"

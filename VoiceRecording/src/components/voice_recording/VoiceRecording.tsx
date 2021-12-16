@@ -40,6 +40,7 @@
 
  interface AppProps {
    language: string;
+   noBack:boolean;
  }
  
  class VoiceRecording extends React.Component<AppProps, AppState> {
@@ -135,7 +136,9 @@
      return (
        <div id="voice-recording-body"> 
          <div className="heading">
-           <div style={{ float: "left"}}><FontAwesomeIcon className="cursorPointer" icon={faArrowLeft} onClick={this.clickBack} /></div>
+           {!this.props.noBack &&
+            <div style={{ float: "left"}}><FontAwesomeIcon className="cursorPointer" icon={faArrowLeft} onClick={this.clickBack} /></div>
+           }
            <div>{i18n.t("VOICE_RECORDING")}</div>
          </div> 
          { this.state.errorData ? <div className="errorMsg">{i18n.t("AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING")}</div> :"" }

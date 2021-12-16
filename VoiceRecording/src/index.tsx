@@ -23,7 +23,7 @@ eventer(
     if(e.data){
       ReactDOM.render(
         <AppContainer>
-          <VoiceRecording language={e.data ? e.data.configuration.language : null} />
+          <VoiceRecording noBack={e.data.noBack} language={e.data ? e.data.configuration.language : null} />
         </AppContainer>,
         document.getElementById("root")
       );

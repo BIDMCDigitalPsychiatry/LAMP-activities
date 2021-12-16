@@ -19,6 +19,7 @@ interface AppState {
   loaded: boolean;
   reverse: boolean;
   time:number;
+  noBack: boolean;
 }
 
 class Box extends React.Component<{}, AppState> {
@@ -27,7 +28,8 @@ class Box extends React.Component<{}, AppState> {
     const state = {
       loaded: false,
       reverse: false,
-      time: new Date().getTime()
+      time: new Date().getTime(),
+      noBack:false
     };
     this.state = state;
     const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";
@@ -41,7 +43,7 @@ class Box extends React.Component<{}, AppState> {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ reverse: settings ? (settings.reverse_tapping ? settings.reverse_tapping : false) : false, loaded: true });
+        this.setState({ reverse: settings ? (settings.reverse_tapping ? settings.reverse_tapping : false) : false, noBack: e.data.noBack, loaded: true });
       },
       false
     );
@@ -61,9 +63,9 @@ class Box extends React.Component<{}, AppState> {
       <div>
         {this.state && this.state.loaded && (
           <div>
-             <nav className="back-link">
+             {!this.state.noBack && <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>
+            </nav>}
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>

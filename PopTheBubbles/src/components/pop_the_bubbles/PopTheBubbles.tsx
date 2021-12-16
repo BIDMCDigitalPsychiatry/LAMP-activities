@@ -21,6 +21,7 @@ import "./bubble.css";
 interface AppProps {
   configuration: any;
   activity: any;
+  noBack:any;
 }
 
 interface AppState {
@@ -57,6 +58,7 @@ interface AppState {
   allRoutes: any;
   wrongNoGoClicks: number;
   time:number;
+  noBack: boolean;
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -91,6 +93,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       levelStartTime: 0,
       levelVal: 0,
       missedClicks: 0,
+      noBack: false,
       route: [],
       score: 0,
       stateSuccessTaps: 0,
@@ -126,7 +129,8 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         eventRecieved:true,
         intertrial_duration: settings
           ? settings.intertrial_duration
-          : this.state.intertrial_duration       
+          : this.state.intertrial_duration,
+        noBack: this.props.noBack    
       });    
       i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     }

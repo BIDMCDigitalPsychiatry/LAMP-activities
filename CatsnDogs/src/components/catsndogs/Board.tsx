@@ -259,7 +259,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         duration: lastclickTime,
         item: boxNo,
         level: this.state.gameState,
-        status: statusVal,
+        type: statusVal,
         value: null,
       };
       boxes.push(route);

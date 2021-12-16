@@ -40,6 +40,7 @@ interface AppState {
   gameTime: number;
   level:number,
   loaded: boolean;
+  noBack:boolean;
   orderNumbers: Array<number>;
   pauseTime: number;
   routes:any,
@@ -104,6 +105,7 @@ class Jewels extends React.Component<{}, AppState> {
             gameTime: gameTimeVal,
             level: 1,
             loaded: false,
+            noBack: e.data.noBack,
             orderNumbers: [],
             pauseTime: 0,
             routes: [],
@@ -231,6 +233,7 @@ class Jewels extends React.Component<{}, AppState> {
       gameTime: this.state ? this.state.gameTime : 90,
       level:  this.state ? this.state.level : 1, 
       loaded: loadedVal,
+      noBack: this.state.noBack,
       orderNumbers: order,
       pauseTime: 0,
       routes: this.state? this.state.routes : {},
@@ -330,9 +333,9 @@ class Jewels extends React.Component<{}, AppState> {
         {this.state && this.state.loaded && (
           <div>
             {modal}
-            <nav className="back-link">
+            {!this.state.noBack && <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>
+            </nav>}
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>

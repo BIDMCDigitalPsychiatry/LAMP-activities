@@ -124,6 +124,7 @@ export default function JournalEntries({ ...props }) {
   const [status, setStatus] = useState("good")
   const [loading, setLoading] = useState(false)
   const [time, setTime] = useState(new Date().getTime())
+  const [noBack, setNoBack] = useState(false)
   const { t } = useTranslation()
   const CHARACTER_LIMIT = 800
   const handleClickStatus = (statusVal: string) => {
@@ -145,6 +146,7 @@ export default function JournalEntries({ ...props }) {
             : "en-US"
           : "en-US"
         i18n.changeLanguage(langugae)
+        setNoBack(e.data.noBack)
         setTime(new Date().getTime())
       },
       false
@@ -183,9 +185,9 @@ export default function JournalEntries({ ...props }) {
       </Backdrop>
       <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={() => setOpen(true)} color="default" aria-label="Menu">
+          {!noBack && <IconButton onClick={() => setOpen(true)} color="default" aria-label="Menu">
             <Icon>arrow_back</Icon>
-          </IconButton>
+          </IconButton>}
           <Typography variant="h5">{t("New journal entry")}</Typography>
         </Toolbar>
       </AppBar>

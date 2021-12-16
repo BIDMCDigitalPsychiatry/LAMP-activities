@@ -112,6 +112,10 @@ export default function ScratchImage({ ...props }) {
   const [canvasComponent, setCanvasComponent] = useState(null) 
   const [settings, setSettings] = useState(null)
   const [complete, setComplete] = useState(false)
+  const [imageTime, setImageTime] = useState(0)
+  const [imageIndex, setImageIndex] = useState(0)
+  const [routes, setRoutes] =  useState<any>([])
+  const [noBack, setNoBack] = useState(false)
   const classes = useStyles()
   let area = 0
   let val = 0
@@ -145,13 +149,23 @@ export default function ScratchImage({ ...props }) {
   }
 
   useEffect(() => {
-    if (done) {       
-       const data = {
-        timestamp: new Date().getTime(),
-        duration: new Date().getTime() - time,
-        static_data: {},
+    if (done) {      
+      const troutes = []
+      const route = {
+        duration: new Date().getTime() -imageTime,
+        item: imageIndex,
+        level: null,
+        type: null,
+        value: null,
+      };
+      if(routes.length > 0) {
+        const r = JSON.parse(routes)
+        Object.keys(r).forEach((key) => {
+          troutes.push(r[key]);
+        });
       }
-      parent.postMessage(JSON.stringify(data), "*")
+      troutes.push(route)
+      setRoutes(JSON.stringify(troutes))
       setBrushComponent(null)
       setCanvasComponent(null)
       setCoverComponent(null)     
@@ -178,7 +192,8 @@ export default function ScratchImage({ ...props }) {
             : "en-US"
           : "en-US"
         i18n.changeLanguage(langugae)
-        setSettings(settingsData)             
+        setSettings(settingsData)   
+        setNoBack(e.data.noBack)          
       },
       false
     )
@@ -245,6 +260,8 @@ export default function ScratchImage({ ...props }) {
           context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
           context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
           setImage(background())
+          setImageIndex(imageIndex + 1)
+          setImageTime(new Date().getTime())
           setLoading(false)
         }
       }
@@ -262,7 +279,12 @@ export default function ScratchImage({ ...props }) {
 
   useEffect(() => {
     if(complete) {
-      parent.postMessage(JSON.stringify({ completed: true }), "*")      
+      parent.postMessage(JSON.stringify({        
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - time,
+        temporal_slices: routes.length > 0 ? JSON.parse(routes) : [],
+        static_data: {},
+       }), "*")      
     }
   }, [complete])
 
@@ -275,9 +297,9 @@ export default function ScratchImage({ ...props }) {
       {coverComponent}
       <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={() => setComplete(true)} color="default" aria-label="Menu">
+          {!noBack && <IconButton onClick={() => setComplete(true)} color="default" aria-label="Menu">
             <ArrowBackIcon />
-          </IconButton>
+          </IconButton>}
           <Typography variant="h5">{t("Scratch card")}</Typography>
         </Toolbar>
       </AppBar>
