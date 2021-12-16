@@ -1182,6 +1182,7 @@ function Section({
   onComplete,
   closeDialog,
   toolBarBack,
+  noBack,
   ...props
 }) {
   const base = value.settings.map((x) => ({ item: x.text, value: null, duration: 0 }))
@@ -1273,9 +1274,9 @@ function Section({
     <Box>
       <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>        
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={() => onResponse(null)}>
+          {!noBack && <IconButton onClick={() => onResponse(null)}>
             <Icon>arrow_back</Icon>
-          </IconButton>
+          </IconButton>}
           <Typography variant="h5">
             <ReactMarkdown source={t(type.replace(/_/g, " "))} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />   
           </Typography>
@@ -1409,6 +1410,7 @@ export default function SurveyQuestions({...props}) {
             prefillData={content?.toolBarBack ? content?.prefillData[idx] : {}}
             prefillTimestamp={content?.prefillTimestamp}
             type={content?.type}
+            noBack={props.data.noBack}
             onComplete={() =>
               postSubmit(
                 Array.from({

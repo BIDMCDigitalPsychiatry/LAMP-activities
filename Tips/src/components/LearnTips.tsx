@@ -152,6 +152,9 @@ export default function LearnTips({ ...props }) {
   const [time, setTime] = useState(new Date().getTime())
   const [activityData, setActivityData] = useState<any>(null);
   const { t } = useTranslation();
+  const [routes, setRoutes] = useState<any>([])
+  const [tipTime, setTipTime] = useState(0)
+  const [tipIndex, setTipIndex] = useState(0)
 
   useEffect(() => {
     const propsData = props.data;
@@ -169,17 +172,22 @@ export default function LearnTips({ ...props }) {
 
   const completeMarkingTips = (status: string) => {
     // eslint-disable-next-line no-restricted-globals
-    parent.postMessage(
-      JSON.stringify({
-        timestamp: new Date().getTime(),
-        duration: new Date().getTime() - time,
-        static_data: {
-          sentiment: status,
-        },
-        temporal_slices: [],
-      }),
-      "*"
-    )    
+    const troutes = []
+    const route = {
+      duration: new Date().getTime() -tipTime,
+      item: tipIndex,
+      level: null,
+      type: null,
+      value: status,
+    };
+    if (routes.length > 0) {
+      const r = JSON.parse(routes)
+      Object.keys(r).forEach((key) => {
+        troutes.push(r[key]);
+      });
+    }
+    troutes.push(route)
+    setRoutes(JSON.stringify(troutes))
   };
 
   const backToParentTips = () => {
@@ -188,9 +196,8 @@ export default function LearnTips({ ...props }) {
     parent.postMessage(JSON.stringify({
       timestamp: new Date().getTime(),
       duration: new Date().getTime() - time,      
-      temporal_slices: [],
-      completed: true
-    }), "*")
+      temporal_slices: routes.length > 0 ? JSON.parse(routes) : [],
+   }), "*")
   };
 
   return (
@@ -198,7 +205,7 @@ export default function LearnTips({ ...props }) {
       <Box pb={4}>
         <Grid container spacing={4}>
           <Grid item xs  className={classes.rightArrow}>
-          <IconButton aria-label="Back" onClick={() => backToParentTips()}>
+            <IconButton aria-label="Back" onClick={() => backToParentTips()}>
               <Icon>arrow_back</Icon>
             </IconButton>
           </Grid>
@@ -221,6 +228,8 @@ export default function LearnTips({ ...props }) {
                     <Box
                       className={classes.tipStyle}
                       onClick={() => {
+                        setTipIndex(index + 1)
+                        setTipTime(new Date().getTime())
                         setOpenDialog(true);
                         setTitle(detail.title);
                         setDetails(detail.text);

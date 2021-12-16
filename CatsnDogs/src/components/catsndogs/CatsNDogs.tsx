@@ -18,6 +18,7 @@ import { isUndefined } from "util";
 interface AppState {
   loaded: boolean;
   time: number;
+  noBack: false;
 }
 
 class CatsNDogs extends React.Component<{}, AppState> {
@@ -34,7 +35,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
       (e: any) => {
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ loaded: false, time: new Date().getTime() }, () => {
+        this.setState({ loaded: false, noBack: e.data.noBack, time: new Date().getTime() }, () => {
           this.reset(true);
         });
       },
@@ -46,7 +47,8 @@ class CatsNDogs extends React.Component<{}, AppState> {
   reset = (loadedVal: boolean) => {
     const state = {
       loaded: loadedVal,
-      time: this.state.time
+      time: this.state.time,
+      noBack: this.state.noBack
     };
 
     if (isUndefined(this.state)) {
@@ -71,9 +73,9 @@ class CatsNDogs extends React.Component<{}, AppState> {
       <div>
         {this.state && this.state.loaded && (
           <div>
-            <nav className="back-link">
+            {!this.state.noBack && <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>
+            </nav>}
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>
