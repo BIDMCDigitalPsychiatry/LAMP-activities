@@ -27,9 +27,9 @@ class Box extends React.Component<{}, AppState> {
     super(props);
     const state = {
       loaded: false,
+      noBack:false,
       reverse: false,
       time: new Date().getTime(),
-      noBack:false
     };
     this.state = state;
     const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";

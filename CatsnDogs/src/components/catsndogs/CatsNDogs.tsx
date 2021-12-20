@@ -35,6 +35,7 @@ class CatsNDogs extends React.Component<{}, AppState> {
       (e: any) => {
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        console.log(e.data)
         this.setState({ loaded: false, noBack: e.data.noBack, time: new Date().getTime() }, () => {
           this.reset(true);
         });
@@ -47,8 +48,8 @@ class CatsNDogs extends React.Component<{}, AppState> {
   reset = (loadedVal: boolean) => {
     const state = {
       loaded: loadedVal,
-      time: this.state.time,
-      noBack: this.state.noBack
+      noBack: this.state.noBack,
+      time: this.state.time
     };
 
     if (isUndefined(this.state)) {

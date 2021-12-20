@@ -333,9 +333,9 @@ class Jewels extends React.Component<{}, AppState> {
         {this.state && this.state.loaded && (
           <div>
             {modal}
-            {!this.state.noBack && <nav className="back-link">
+            <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>}
+            </nav>
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>
