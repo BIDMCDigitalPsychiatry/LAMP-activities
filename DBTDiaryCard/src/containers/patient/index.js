@@ -97,9 +97,9 @@ function HomeView(props) {
         return ( 
              <div className={classes.root}>                          
                 <div className={classes.headerContainer}>
-                    <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
+                    {!props.data.noBack && <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
                             <ArrowBack />
-                    </IconButton>
+                    </IconButton>}
                     <Typography className={classes.headerTitle}>{t("LIFE_WORTH_LIVING_GOAL")}</Typography>
                 </div>
                 <div className={classes.contentBox}>

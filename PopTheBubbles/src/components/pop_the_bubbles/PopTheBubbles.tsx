@@ -483,9 +483,9 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     const infoSection = this.getLevelCases();
     return (
       <div id="pop-the-bubble-body">
-        <nav className="back-link">
+        {!this.state.noBack && <nav className="back-link">
           <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-        </nav>
+        </nav>}
         <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
