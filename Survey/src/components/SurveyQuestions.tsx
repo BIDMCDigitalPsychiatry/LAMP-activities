@@ -129,6 +129,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       padding: "10px 5px",
     },
+    "& span.MuiIconButton-label span": {
+      width: 24,
+      height: 24
+    }
   },
   icon: {
     borderRadius: "50%",
@@ -874,7 +878,7 @@ function Matrix({ onChange, options, value, required, ...props }) {
   return (
     <Table className={classes.matrix}>
       <TableRow>
-        <TableCell>{null}</TableCell>
+        <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
         {(options?.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
             {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
@@ -884,7 +888,7 @@ function Matrix({ onChange, options, value, required, ...props }) {
       </TableRow>
       {(options?.questions || []).map((question, index) => (
         <TableRow>
-          <TableCell>
+          <TableCell style={{minWidth:"30%"}}>
             <ReactMarkdown source={question} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           { !options.multiple ?  (
