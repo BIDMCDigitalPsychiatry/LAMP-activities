@@ -53,7 +53,7 @@ const GreenCheckbox = withStyles({
     "&$checked": {
       color: "#2F9D7E",
     },
-    "& svg": { fontSize: "32px !important" },
+    "& svg": { fontSize: "28px !important" },
   },
 })((props: CheckboxProps) => <Checkbox color="default" {...props} />)
 
@@ -297,7 +297,7 @@ const useStyles = makeStyles((theme) => ({
     "& span": {
       marginTop: 15,
       fontSize: 12,
-      color: "rgba(0, 0, 0, 0.5)",
+      // color: "rgba(0, 0, 0, 0.5)",
       lineHeight: "16px !important",
     },
   },
