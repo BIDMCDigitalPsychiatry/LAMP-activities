@@ -155,9 +155,11 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown source={props.details} escapeHtml={false}   renderers={{link: LinkRenderer}}
-              />
-            : ""}
+              <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
+                {props.details}
+              </ReactMarkdown>
+            : ""} 
+            
             </Typography>
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
