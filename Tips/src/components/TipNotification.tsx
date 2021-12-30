@@ -156,8 +156,9 @@ export default function TipNotification({ ...props }) {
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
               <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
-                {props.details}
+                 {props.details}
               </ReactMarkdown>
+              
             : ""} 
             
             </Typography>
