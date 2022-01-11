@@ -11,7 +11,6 @@ import {
   Toolbar,
   Icon,
 } from "@material-ui/core";
-import ResponsiveDialog from "./ResponsiveDialog";
 import TipNotification from "./TipNotification";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
@@ -170,7 +169,7 @@ export default function LearnTips({ ...props }) {
     setActivityData(propsData.activity ?? {});
   }, []);
 
-  const completeMarkingTips = (status: string) => {
+  const completeMarkingTips = (status: string | null) => {
     // eslint-disable-next-line no-restricted-globals
     const troutes = []
     const route = {
@@ -254,30 +253,7 @@ export default function LearnTips({ ...props }) {
               ))
             : ""}
         </Grid>
-      </Box>
-      <ResponsiveDialog
-        transient={false}
-        animate
-        fullScreen
-        open={openDialog}
-        onClose={() => {
-          setOpenDialog(false);
-        }}
-      >
-        <AppBar
-          position="static"
-          style={{ background: "#FFF9E5", boxShadow: "none" }}
-        >
-          <Toolbar className={classes.toolbardashboard}>
-            <IconButton
-              onClick={() => setOpenDialog(false)}
-              color="default"
-              aria-label="Menu"
-            >
-              <Icon>arrow_back</Icon>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+      </Box>      
         <TipNotification
           title={title}
           details={details}
@@ -287,8 +263,12 @@ export default function LearnTips({ ...props }) {
             setOpenDialog(false);
             completeMarkingTips(status);
           }}
+          open={openDialog}
+          onClose={() => {
+            completeMarkingTips(null);
+            setOpenDialog(false);
+          }}
         />
-      </ResponsiveDialog>
     </Container>
   );
 }
