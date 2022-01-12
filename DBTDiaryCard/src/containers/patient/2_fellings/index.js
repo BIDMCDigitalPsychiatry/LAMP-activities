@@ -99,7 +99,7 @@ export default function FellingView({ settings, ...props }) {
         title={t("EMOTIONS")}
         description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={2}
-        totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
+        totalStep={!props.report || (props.report && props.report.skillToday) ? 9 : 7}
         question={t("WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY")}
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">

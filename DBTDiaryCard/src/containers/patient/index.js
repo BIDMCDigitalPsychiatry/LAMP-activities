@@ -16,6 +16,8 @@ import SkillHelpView from './6_skillhelp'
 import { useTranslation } from "react-i18next"
 
 import actions from '../home/action'
+import QuitTherapy from './8_quit'
+import UrgeSuicide from "./9_suicide"
 
 const { updateReport, createReport } = actions
 
@@ -86,7 +88,7 @@ function HomeView(props) {
     }, [settings])
 
     useEffect(() => {
-        if (active === 8) {
+        if (active === 10) {
             let finalReport = createReport(props.report)
             finalReport.duration = new Date().getTime() - time           
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
@@ -129,7 +131,11 @@ function HomeView(props) {
     } else if (active === 6) {
         return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)} />)
     } else if (active === 7) {
-        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(props.report && props.report.skillToday ? 6 : 42)} />)
+        return (<QuitTherapy {...props} onContinue={() => setActive(8)} onBack={() => setActive(!props.report || (props.report && props.report.skillToday) ? 6 : 42)} />)
+    }else if (active === 8) {
+        return (<UrgeSuicide {...props} onContinue={() => setActive(9)} onBack={() => setActive(7)} />)
+    }else if(active === 9) {
+        return (<NoteView {...props} onContinue={() => setActive(10)} onBack={() => setActive(8)} />)
     } else {
         return null
     }
