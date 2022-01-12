@@ -92,7 +92,7 @@ export default function SkillNoView(props) {
             <HeaderView
                 title={t("SKILLS")}
                 currentStep={4}
-                totalStep={5}
+                totalStep={7}
                 question={t("WHY_DIDNT_YOU_USE_ANY_SKILLS")}
             />
             <Grid container direction="row" justify="center" alignItems="flex-start">

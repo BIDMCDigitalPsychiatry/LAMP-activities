@@ -70,7 +70,7 @@ export default function SkillHelpView(props) {
             <HeaderView
                 title={t("SKILLS")}
                 currentStep={6}
-                totalStep={7}
+                totalStep={9}
                 question={t("DID_THE_SKILLS_HELP")}
             />
             <Grid container direction="row" justify="center" alignItems="flex-start">

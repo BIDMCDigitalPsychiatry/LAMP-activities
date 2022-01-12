@@ -103,9 +103,13 @@ const actions = {
                 skillToday: report ? report.skillToday : 0, // <-- report.skillToday
                 skillHelped: report ? report.skillHelped : 0,
                 reason: report ? report.reason : '',
+                urgeToQuitTheray: report? report.quitTheray : "",
+                urgeForSuicide: report? report.urgeSuicide: ""
             },
             temporal_slices: temporal_slices
         }
+        console.log(report, finalReport)
+
         return finalReport
     }
 }

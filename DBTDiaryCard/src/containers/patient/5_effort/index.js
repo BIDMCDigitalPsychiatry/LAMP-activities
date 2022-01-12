@@ -77,7 +77,7 @@ export default function SkillEffortView(props) {
         title={t("SKILLS")}
         description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={5}
-        totalStep={7}
+        totalStep={9}
         question={t("HOW_MUCH_EFFORT_DID_YOU_PUT_INTO_THE_SKILLS")}
       />
       <div className={classes.contentContainer}>
