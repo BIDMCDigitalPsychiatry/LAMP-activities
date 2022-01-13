@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
 import { Grid } from '@material-ui/core'
 import RateAnswer from '../../../components/RateAnswer'
 import HeaderView from '../../../components/HeaderView'
-import actions from '../../home/action'
-import { connect } from 'react-redux'
 import { useTranslation } from "react-i18next"
-// import { useSnackbar } from "notistack"
-
-const { updateReport } = actions
 
 const useStyles = makeStyles((theme) => ({
   root: {

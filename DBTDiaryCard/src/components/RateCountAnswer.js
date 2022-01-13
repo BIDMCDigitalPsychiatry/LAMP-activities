@@ -66,7 +66,7 @@ export default function RateCountAnswer({ title, unit, customunit, separator, ur
 
     useEffect(() => {
         if(urgeValue >= 0) handleChange(urgeValue)
-    },[])
+    },[urgeValue])
 
     return (
         <div className={classes.container}>

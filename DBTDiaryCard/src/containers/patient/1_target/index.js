@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
 import { Grid } from '@material-ui/core'
 import RateCountAnswer from '../../../components/RateCountAnswer'
 import HeaderView from '../../../components/HeaderView'
-import { connect } from 'react-redux'
-import actions from '../../home/action'
 import { useTranslation } from "react-i18next"
-// import { useSnackbar } from "notistack"
-
-const { updateReport } = actions
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,13 +44,11 @@ const useStyles = makeStyles((theme) => ({
 export default function TargetView({ settings, ...props }) {
   const classes = useStyles()
   const [targets, setTargets] = React.useState(props.report && props.report.target ? props.report.target : { effective: {}, ineffective: {} })
-  const [targetEffective, setTargetEffective] = React.useState(settings?.targetEffective ?? [])
-  const [targetIneffective, setTargetIneffective] = React.useState(settings?.targetIneffective ?? [])
   const { t } = useTranslation()
   // const { enqueueSnackbar } = useSnackbar()
 
   const updateUrge = (type, target, key, value) => {
-    if (type == 'effective') {
+    if (type === 'effective') {
       let newEffective = targets.effective
       newEffective[key] = {
         act: newEffective[key]?.act ?? '0',
@@ -77,7 +69,7 @@ export default function TargetView({ settings, ...props }) {
 
 
   const updateAct = (type, target, key, value) => {
-    if (type == 'effective') {
+    if (type === 'effective') {
       let newEffective = targets.effective
       let object = newEffective[key]
       if (!object) {
@@ -112,9 +104,9 @@ export default function TargetView({ settings, ...props }) {
       updateReport('target', targets)
     }
     if (onContinue && (
-      targetIneffective.length === 0 || ( targetIneffective.length > 0 && Object.keys(targets.ineffective).length === targetIneffective.length)) &&
+      (settings?.targetIneffective ?? []).length === 0 || ( (settings?.targetIneffective ?? []).length > 0 && Object.keys(targets.ineffective).length === (settings?.targetIneffective ?? []).length)) &&
       (
-        targetEffective.length === 0 || ( targetEffective.length > 0 && Object.keys(targets.effective).length === targetEffective.length))) {
+        (settings?.targetEffective ?? []).length === 0 || ( (settings?.targetEffective ?? []).length > 0 && Object.keys(targets.effective).length === (settings?.targetEffective ?? []).length))) {
       onContinue()
     } else {
       // enqueueSnackbar(t("Rating required for each item."), {
@@ -138,7 +130,7 @@ export default function TargetView({ settings, ...props }) {
           <div className={classes.headerContainer}>
             <Typography className={classes.headerTitle}>{t("EFFECTIVE")}</Typography>
           </div>
-          {targetEffective.map((item, index) => {
+          {(settings?.targetEffective ?? []).map((item, index) => {
             const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
               (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
             const urgeValue = !!targets.effective && targets.effective["effective" + index]?.urge >= 0 ? targets.effective["effective" + index].urge : -1
@@ -149,7 +141,7 @@ export default function TargetView({ settings, ...props }) {
                 key={"effective" + index}
                 unit={item.measure}
                 customunit={item.customUnit}
-                separator={index < (targetEffective.length - 1)}
+                separator={index < ((settings?.targetEffective ?? []).length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
                 selectedActed={(value) => updateAct('effective', item.target, "effective" + index, value)}
@@ -160,7 +152,7 @@ export default function TargetView({ settings, ...props }) {
           <div className={classes.headerContainer}>
             <Typography className={classes.headerTitle}>{t("INEFFECTIVE")}</Typography>
           </div>
-          {targetIneffective.map((item, index) => {
+          {(settings?.targetIneffective ?? []).map((item, index) => {
             const actValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].act) ?
               (targets.ineffective["ineffective" + index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective" + index].act) : ''
             const urgeValue = !!targets.ineffective && targets.ineffective["ineffective" + index]?.urge >= 0 ? targets.ineffective["ineffective" + index].urge : -1
@@ -172,7 +164,7 @@ export default function TargetView({ settings, ...props }) {
                 key={"ineffective" + index}
                 unit={item.measure}
                 customunit={item.customUnit}
-                separator={index < (targetIneffective.length - 1)}
+                separator={index < ((settings?.targetIneffective ?? []).length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
                 selectedActed={(value) => updateAct('ineffective', item.target, "ineffective" + index, value)}
