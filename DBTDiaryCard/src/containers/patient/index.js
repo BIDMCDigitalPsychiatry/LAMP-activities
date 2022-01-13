@@ -93,7 +93,7 @@ function HomeView(props) {
             finalReport.duration = new Date().getTime() - time           
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
-    }, [active])
+    }, [active, time, props.report])
     
     if (active === 0) {
         return ( 
