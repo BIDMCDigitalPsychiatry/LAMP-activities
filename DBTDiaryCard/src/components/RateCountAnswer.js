@@ -19,19 +19,6 @@ const CssTextField = withStyles({
     }
 })(InputBase)
 
-const CssCustomTextField = withStyles({
-    root: {
-        'label + &': {
-        },
-        marginRight: 3
-    },
-    input: {
-        fontSize: 16, fontWeight: '600', color: 'rgba(0, 0, 0, 0.75)',
-        width: 80, borderBottom: '3px solid #92E7CA', padding: 0, borderRadius: 0,
-        textAlign: 'left', fontFamily: 'Inter'
-    }
-})(InputBase)
-
 const useStyles = makeStyles((theme) => ({
     rateContainer: {
         display: 'flex',
