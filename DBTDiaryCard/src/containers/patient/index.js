@@ -81,7 +81,7 @@ function HomeView(props) {
         updateReport(null)
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
         setTime(new Date().getTime());
-    }, [props.data])
+    }, [props.data, i18n])
 
     useEffect(() => {
         if(!!settings) setActive(0)
