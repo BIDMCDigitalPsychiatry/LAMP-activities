@@ -70,7 +70,7 @@ export default function SkillsView(props) {
             <HeaderView
                 title={t("SKILLS")}
                 currentStep={3}
-                totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
+                totalStep={!props.report || (props.report && props.report.skillToday) ? 9 : 7}
                 question={t("DID_YOU_USE_ANY_OF_THE_SKILLS_TODAY")}
             />
             <Grid container direction="row" justify="center" alignItems="flex-start">

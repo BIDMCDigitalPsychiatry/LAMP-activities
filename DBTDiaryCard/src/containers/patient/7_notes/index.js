@@ -92,8 +92,8 @@ export default function NotesView(props) {
             <HeaderView
                 title={t("ADDITIONAL_NOTES")}
                 description={t("SHORT_ANSWER_SENETENCES")}
-                currentStep={props.report && props.report.skillToday ? 7 : 5}
-                totalStep={props.report && props.report.skillToday ? 7 : 5}
+                currentStep={props.report && props.report.skillToday ? 9 : 7}
+                totalStep={props.report && props.report.skillToday ? 9 : 7}
                 question={t("OPTIONAL_ARE_THERE_ANY_OTHER_DETAILS_YOU_WANT_TO_SHARE_ABOUT_YOUR_DAY")}
             />
             <Grid container direction="row" justify="center" alignItems="flex-start">

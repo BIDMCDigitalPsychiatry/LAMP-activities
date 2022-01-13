@@ -122,7 +122,7 @@ export default function TargetView({ settings, ...props }) {
         title={t("TARGET_BEHAVIORS")}
         description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={1}
-        totalStep={!props.report || (props.report && props.report.skillToday) ? 7 : 5}
+        totalStep={!props.report || (props.report && props.report.skillToday) ? 9 : 7}
         question={t("WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY")}
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">

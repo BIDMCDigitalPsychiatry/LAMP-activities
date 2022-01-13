@@ -114,7 +114,7 @@ export default function SkillYesView(props) {
                 title={t("SKILLS")}
                 description={t("SELECT_ALL_THAT_APPLY")}
                 currentStep={4}
-                totalStep={7}
+                totalStep={9}
                 question={t("WHICH_SKILLS_DID_YOU_USE")}
             />
             <Grid container direction="row" justify="center" alignItems="flex-start">
