@@ -1,5 +1,6 @@
 import appReducer from '../containers/home/reducer'
 
-export default {
+const red = {
     appReducer
 };
+export default red
