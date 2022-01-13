@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
@@ -46,13 +46,20 @@ const useStyles = makeStyles((theme) => ({
 export default function RateCountAnswer({ title, unit, customunit, separator, urgeValue, selectedUrge, selectedActed, actedValue }) {
     const classes = useStyles()
     const { t } = useTranslation()
-    const [value, setValue] = useState(urgeValue)
+    const hasFetchedData = useRef(false);
+
+    const handleChange = (value) => {
+        selectedUrge && selectedUrge(value);
+    }
 
     useEffect(() => {
-        if(value >= 0) {
-            selectedUrge && selectedUrge(value);
+        if (!hasFetchedData.current) {
+        if(urgeValue >= 0) selectedUrge && selectedUrge(urgeValue)
+        hasFetchedData.current = true;
+
         }
-    },[value, selectedUrge])
+
+    },[urgeValue, selectedUrge])
 
     return (
         <div className={classes.container}>
@@ -64,33 +71,33 @@ export default function RateCountAnswer({ title, unit, customunit, separator, ur
                     <Typography className={classes.typeTitle} >{t("URGE")}</Typography>
                     <Grid direction='row' container>
                         <RateAnswer
-                            checked={value === 0}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 0}
+                            onChange={handleChange}
                             value={0}
                         />
                         <RateAnswer
-                            checked={value === 1}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 1}
+                            onChange={handleChange}
                             value={1}
                         />
                         <RateAnswer
-                            checked={value === 2}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 2}
+                            onChange={handleChange}
                             value={2}
                         />
                         <RateAnswer
-                            checked={value === 3}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 3}
+                            onChange={handleChange}
                             value={3}
                         />
                         <RateAnswer
-                            checked={value === 4}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 4}
+                            onChange={handleChange}
                             value={4}
                         />
                         <RateAnswer
-                            checked={value === 5}
-                            onChange={(val) => setValue(val)}
+                            checked={urgeValue === 5}
+                            onChange={handleChange}
                             value={5}
                         />
                     </Grid>
