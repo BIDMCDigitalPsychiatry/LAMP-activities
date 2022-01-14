@@ -14,6 +14,9 @@ const resources = {
       INEFFECTIVE: "Ineffective",
       NEXT: "Next",
       BACK: "Back",
+      URGES: "Urges",
+      URGE_TO_QUIT_THERAPY: "Urge to quit therapy",
+      URGE_TO_DIE_BY_SUICIDE: "Urge to die by suicide",
       EMOTIONS: "Emotions",
       WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY:
         "Which emotions did you experience today?",
@@ -136,6 +139,9 @@ const resources = {
       NEXT: "आगे",
       BACK: "Back",
       EMOTIONS: "भावनाएँ",
+      URGES: "आग्रह",
+      URGE_TO_QUIT_THERAPY: "चिकित्सा छोड़ने का आग्रह",
+      URGE_TO_DIE_BY_SUICIDE: "आत्महत्या से मरने का आग्रह",
       WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY:
         "Which emotions did you experience today?",
       SKILLS: "Skills",
@@ -260,6 +266,8 @@ const resources = {
       WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY:
         "¿Qué emociones experimentaste hoy?",
       SKILLS: "Skills",
+      URGE_TO_QUIT_THERAPY: "ganas de dejar la terapia",
+      URGE_TO_DIE_BY_SUICIDE: "ganas de morir por suicidio",
       DID_YOU_USE_ANY_OF_THE_SKILLS_TODAY:
         "¿Usaste alguna de las habilidades hoy?",
       WHY_DIDNT_YOU_USE_ANY_SKILLS: "¿Por qué no usaste ninguna habilidad?",

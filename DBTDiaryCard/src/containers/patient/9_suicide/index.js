@@ -83,11 +83,11 @@ export default function UrgeSuicide({ ...props }) {
   return (
     <div className={classes.root}>
       <HeaderView
-        title={t("EMOTIONS")}
+        title={t("URGES")}
         description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={!props.report || (props.report && props.report.skillToday) ? 8: 6}
         totalStep={!props.report || (props.report && props.report.skillToday) ? 9 :7}
-        question={t("Urge to die by suicide")}
+        question={t("URGE_TO_DIE_BY_SUICIDE")}
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">
       <div className={classes.rateContainer}>
@@ -98,8 +98,7 @@ export default function UrgeSuicide({ ...props }) {
                   onChange={(rate) => setResult(rate)}
                   value={i}
               />
-               )))
-                
+               )))                
              }
            </div>
           <div className={classes.buttonsContainer}>
