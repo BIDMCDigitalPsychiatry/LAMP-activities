@@ -83,11 +83,11 @@ export default function QuitTherapy({ ...props }) {
   return (
     <div className={classes.root}>
       <HeaderView
-        title={t("EMOTIONS")}
+        title={t("URGES")}
         description={t("ANSWER_RADIO_RATING_FORMATS")}
         currentStep={!props.report || (props.report && props.report.skillToday) ? 7: 5}
         totalStep={!props.report || (props.report && props.report.skillToday) ? 9 : 7}
-        question={t("Urge to quit therapy")}
+        question={t("URGE_TO_QUIT_THERAPY")}
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">
       <div className={classes.rateContainer}>
