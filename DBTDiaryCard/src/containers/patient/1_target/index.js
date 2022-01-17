@@ -138,7 +138,6 @@ export default function TargetView({ settings, ...props }) {
             <Typography className={classes.headerTitle}>{t("EFFECTIVE")}</Typography>
           </div>
           {(settings?.targetEffective ?? []).map((item, index) => {
-            console.log(targets.effective)
             const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
               (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
             const urgeValue = !!targets.effective && targets.effective["effective" + index]?.urge >= 0 ? targets.effective["effective" + index].urge : -1
