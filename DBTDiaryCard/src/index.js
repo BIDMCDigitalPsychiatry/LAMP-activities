@@ -13,19 +13,71 @@ import { store } from './redux/store';
 // FIXME: The delay in this code is likely caused by i18n or react-redux.
 //        Once that is fixed, this code should be rewritten correctly.
 //
+const data = {
+    "activity": {
+        "#type": "Activity",
+        "#parent": "study1",
+        "id": "activity25",
+        "spec": "lamp.dbt_diary_card",
+        "name": "DBT Diary Card",
+        "settings": {
+            "livingGoal": "The world keeps spinning!",
+            "targetEffective": [
+                {
+                    "target": "Playing with Dog",
+                    "measure": "Times"
+                },
+                {
+                    "target": "Baking",
+                    "measure": "Yes"
+                },
+                {
+                    "target": "Running",
+                    "measure": "Custom"
+                }
+            ],
+            "targetIneffective": [
+                {
+                    "target": "Checking the news",
+                    "measure": "Times"
+                },
+                {
+                    "target": "Worrying",
+                    "measure": "Times"
+                }
+            ],
+            "emotions": [
+                {
+                    "emotion": "Worry"
+                },
+                {
+                    "emotion": "Anxiety"
+                },
+                {
+                    "emotion": "Gratitude"
+                }
+            ]
+        },
+        "schedule": []
+    },
+    "configuration": {
+        "language": "en-US"
+    },
+    "noBack": false
+}
 const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-eventer(
-    messageEvent, (e) => {    
+// eventer(
+//     messageEvent, (e) => {    
 		ReactDOM.render(
 		  <AppContainer>
 		    <Provider store={store}>
-		      <Patient data={e.data} />
+		      <Patient data={data} />
 		    </Provider>
 		  </AppContainer>,
 		  document.getElementById("root")
 		);
-    },
-    false
-)
+//     },
+//     false
+// )
