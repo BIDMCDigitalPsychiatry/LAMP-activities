@@ -105,7 +105,8 @@ export default function TargetView({ settings, ...props }) {
       updateReport('target', targets)
     }
     let status = true
-    Object.keys(targets.effective).map((key) => {
+    const keys = Object.keys(targets.effective)
+    keys.map((key) => {
       if(targets.effective[key]["act"].trim().length === 0) status = false
     })
     if (onContinue && !!status && (
