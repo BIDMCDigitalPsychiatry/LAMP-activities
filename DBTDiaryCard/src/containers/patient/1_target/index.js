@@ -106,10 +106,18 @@ export default function TargetView({ settings, ...props }) {
     }
     let status = true
     const keys = Object.keys(targets.effective)
-    keys.map((key) => {
-      if(targets.effective[key]["act"].trim().length === 0) status = false
-      return
-    })
+    for (const i in targets.effective) {
+      if(targets.effective[i]["act"].trim().length === 0) {
+        status = false
+        break
+      }
+    }
+    for (const i in targets.ineffective) {
+      if(targets.ineffective[i]["act"].trim().length === 0) {
+        status = false
+        break
+      }
+    }
     if (onContinue && !!status && (
       (settings?.targetIneffective ?? []).length === 0 || ( 
         (settings?.targetIneffective ?? []).length > 0 && Object.keys(targets.ineffective).length === (settings?.targetIneffective ?? []).length)) &&
