@@ -108,6 +108,7 @@ export default function TargetView({ settings, ...props }) {
     const keys = Object.keys(targets.effective)
     keys.map((key) => {
       if(targets.effective[key]["act"].trim().length === 0) status = false
+      return
     })
     if (onContinue && !!status && (
       (settings?.targetIneffective ?? []).length === 0 || ( 
