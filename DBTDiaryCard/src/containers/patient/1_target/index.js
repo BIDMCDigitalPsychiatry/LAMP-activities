@@ -6,6 +6,7 @@ import { Grid } from '@material-ui/core'
 import RateCountAnswer from '../../../components/RateCountAnswer'
 import HeaderView from '../../../components/HeaderView'
 import { useTranslation } from "react-i18next"
+// import { useSnackbar } from "notistack"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,7 @@ export default function TargetView({ settings, ...props }) {
     if (type === 'effective') {
       let newEffective = targets.effective
       newEffective[key] = {
-        act: newEffective[key]?.act ?? '0',
+        act: newEffective[key]?.act ?? '',
         urge: value,
         target
       }
@@ -59,7 +60,7 @@ export default function TargetView({ settings, ...props }) {
     } else {
       let newIneffective = targets.ineffective
       newIneffective[key] = {
-          act:  newIneffective[key]?.act ?? '0',
+          act:  newIneffective[key]?.act ?? '',
           urge: value,
           target
         }
@@ -74,7 +75,7 @@ export default function TargetView({ settings, ...props }) {
       let object = newEffective[key]
       if (!object) {
         object = {
-          act: '0',
+          act: null,
           urge: 0,
           target
         }
@@ -87,7 +88,7 @@ export default function TargetView({ settings, ...props }) {
       let object = newIneffective[key]
       if (!object) {
         object = {
-          act: '0',
+          act: null,
           urge: 0,
           target
         }
@@ -103,13 +104,19 @@ export default function TargetView({ settings, ...props }) {
     if (updateReport) {
       updateReport('target', targets)
     }
-    if (onContinue && (
-      (settings?.targetIneffective ?? []).length === 0 || ( (settings?.targetIneffective ?? []).length > 0 && Object.keys(targets.ineffective).length === (settings?.targetIneffective ?? []).length)) &&
+    let status = true
+    Object.keys(targets.effective).map((key) => {
+      if(targets.effective[key]["act"].trim().length === 0) status = false
+    })
+    if (onContinue && !!status && (
+      (settings?.targetIneffective ?? []).length === 0 || ( 
+        (settings?.targetIneffective ?? []).length > 0 && Object.keys(targets.ineffective).length === (settings?.targetIneffective ?? []).length)) &&
       (
-        (settings?.targetEffective ?? []).length === 0 || ( (settings?.targetEffective ?? []).length > 0 && Object.keys(targets.effective).length === (settings?.targetEffective ?? []).length))) {
+        (settings?.targetEffective ?? []).length === 0 || ( 
+          (settings?.targetEffective ?? []).length > 0 && Object.keys(targets.effective).length === (settings?.targetEffective ?? []).length))) {
       onContinue()
     } else {
-      // enqueueSnackbar(t("Rating required for each item."), {
+      // enqueueSnackbar(t("Rating and acted values are required for each item."), {
       //   variant: "error",
       // })
     }
@@ -131,6 +138,7 @@ export default function TargetView({ settings, ...props }) {
             <Typography className={classes.headerTitle}>{t("EFFECTIVE")}</Typography>
           </div>
           {(settings?.targetEffective ?? []).map((item, index) => {
+            console.log(targets.effective)
             const actValue = (targets.effective && targets.effective["effective" + index] && targets.effective["effective" + index].act) ?
               (targets.effective["effective" + index].act.trim().length === 0 ? 0 : targets.effective["effective" + index].act) : ''
             const urgeValue = !!targets.effective && targets.effective["effective" + index]?.urge >= 0 ? targets.effective["effective" + index].urge : -1
@@ -144,7 +152,9 @@ export default function TargetView({ settings, ...props }) {
                 separator={index < ((settings?.targetEffective ?? []).length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
-                selectedActed={(value) => updateAct('effective', item.target, "effective" + index, value)}
+                selectedActed={(value) => {
+                  updateAct('effective', item.target, "effective" + index, value)
+                }}
                 selectedUrge={(value) => updateUrge('effective', item.target, "effective" + index, value)}
               />
             )
