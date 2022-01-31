@@ -1414,7 +1414,7 @@ export default function SurveyQuestions({...props}) {
             prefillData={content?.toolBarBack ? content?.prefillData[idx] : {}}
             prefillTimestamp={content?.prefillTimestamp}
             type={content?.type}
-            noBack={true}
+            noBack={props.data.noBack}
             onComplete={() =>
               postSubmit(
                 Array.from({
