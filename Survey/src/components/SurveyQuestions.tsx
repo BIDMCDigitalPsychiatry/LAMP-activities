@@ -489,7 +489,6 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const { t } = useTranslation()
 
   useEffect(() => {
-    console.log(options)
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
       (options.timePattern === "standard" ? ampmSelectedIndex : ""))
@@ -725,7 +724,6 @@ function RadioRating({ onChange, options, value, ...props }) {
             <RateAnswer
               checked={val === option.value}
               onChange={() => {
-                console.log(option)
                 setValue(option.value)
                 onChange(option.value)
               }}
@@ -1013,7 +1011,6 @@ function Question({ onResponse, text, desc, required, type, options, value, star
   const { t } = useTranslation()
 
   const onChange = (value) => {
-    console.log(value)
     onResponse({ item: text, value })
   }
   const binaryOpts = [
@@ -1152,7 +1149,6 @@ function Questions({
               const currentItem = responses.current.filter((item) => item.item === x.text).pop()
 
               responses.current[idx] = response
-              console.log(response)
               if (x.type !== "multiselect") {
                 setActiveStep((prev) => prev + 1)
               }
