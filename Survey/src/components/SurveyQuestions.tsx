@@ -408,7 +408,7 @@ function RateAnswer({ checked, onChange, value }) {
   return (
     <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
       {checked && <Typography className={classes.checkText}>
-        <ReactMarkdown source={value} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
+        <ReactMarkdown source={value.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
       </Typography>}
     </div>
   )
@@ -489,15 +489,16 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const { t } = useTranslation()
 
   useEffect(() => {
+    console.log(options)
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
-      (options[0].value === "standard" ? ampmSelectedIndex : ""))
+      (options.timePattern === "standard" ? ampmSelectedIndex : ""))
   }, [])
 
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
-       (options[0].value === "standard" ? ampmSelectedIndex : ""))
+       (options.timePattern === "standard" ? ampmSelectedIndex : ""))
    }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
   
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
@@ -528,7 +529,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
     }
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
        ":" + (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) + 
-       (options[0].value === "standard" ? ampmSelectedIndex : ""))
+       (options.timePattern === "standard" ? ampmSelectedIndex : ""))
   }
   const handleHoursClose = () => {
     setAnchorEl(null)
@@ -541,9 +542,9 @@ function TimeSelection({ onChange, options, value, ...props }) {
   }
   const ampm = []
 
-  const hourvalues = options[0].value === "standard"? range(0, 12): range(0, 24)
+  const hourvalues = options.timePattern === "standard"? range(0, 12): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
-  if(options[0].value === "standard") {
+  if(options.timePattern === "standard") {
     ampm.push(
       <MenuItem
         key="AM"
@@ -622,7 +623,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
             ))}
           </Menu>
         </Grid>
-        {options[0].value === "standard" && (<Grid item>
+        {options.value === "standard" && (<Grid item>
           <List component="nav" className={classes.timeHours} aria-label="Device settings">
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
               <ListItemText secondary={ampmSelectedIndex} />
@@ -724,6 +725,7 @@ function RadioRating({ onChange, options, value, ...props }) {
             <RateAnswer
               checked={val === option.value}
               onChange={() => {
+                console.log(option)
                 setValue(option.value)
                 onChange(option.value)
               }}
@@ -1011,6 +1013,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
   const { t } = useTranslation()
 
   const onChange = (value) => {
+    console.log(value)
     onResponse({ item: text, value })
   }
   const binaryOpts = [
@@ -1149,6 +1152,7 @@ function Questions({
               const currentItem = responses.current.filter((item) => item.item === x.text).pop()
 
               responses.current[idx] = response
+              console.log(response)
               if (x.type !== "multiselect") {
                 setActiveStep((prev) => prev + 1)
               }
@@ -1414,7 +1418,7 @@ export default function SurveyQuestions({...props}) {
             prefillData={content?.toolBarBack ? content?.prefillData[idx] : {}}
             prefillTimestamp={content?.prefillTimestamp}
             type={content?.type}
-            noBack={props.data.noBack}
+            noBack={true}
             onComplete={() =>
               postSubmit(
                 Array.from({
