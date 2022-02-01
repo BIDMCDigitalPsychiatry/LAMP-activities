@@ -278,7 +278,7 @@ export default function ScratchImage({ ...props }) {
   }
 
   useEffect(() => {
-    if(complete && routes.length > 0 ) {
+    if(complete) {
       parent.postMessage(routes.length > 0 ? JSON.stringify({        
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - time,
