@@ -622,7 +622,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
             ))}
           </Menu>
         </Grid>
-        {options.value === "standard" && (<Grid item>
+        {options.timePattern === "standard" && (<Grid item>
           <List component="nav" className={classes.timeHours} aria-label="Device settings">
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
               <ListItemText secondary={ampmSelectedIndex} />
@@ -1399,7 +1399,7 @@ export default function SurveyQuestions({...props}) {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setContent(activity);
-    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+    i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
     responses.current = {} // !!activity?.prefillData ? Object.assign({}, activity?.prefillData) : {}     
   }, [])
 
@@ -1414,7 +1414,7 @@ export default function SurveyQuestions({...props}) {
             prefillData={content?.toolBarBack ? content?.prefillData[idx] : {}}
             prefillTimestamp={content?.prefillTimestamp}
             type={content?.type}
-            noBack={props.data.noBack}
+            noBack= {props.data.noBack}
             onComplete={() =>
               postSubmit(
                 Array.from({
