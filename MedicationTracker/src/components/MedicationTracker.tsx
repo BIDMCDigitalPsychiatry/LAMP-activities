@@ -47,12 +47,21 @@ export default function MedicationTracker({ ...props }) {
   const [dosageValue, setDosageValue] = useState(null)
   const [dosageTime, setDosageTime] = useState(new Date())
   const [medications, setMedications] = useState({})
-  const [feeds, setFeeds] = useState({})
+  const [index, setIndex] = useState(0)
+  const [newTime, setNewTime] = useState(null)
+  const [startTime, setStartTime] = useState(new Date().getTime())
+  const [routes, setRoutes] = useState<any>([])
   const nameInput = useRef(null)
   const doseNameInput = useRef(null)
   const doseValueInput = useRef(null)
   const { t } = useTranslation()
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  
+  useEffect(() => { 
+    const activity = props.data?.activity ?? (props?.data ?? {});
+    const configuration = props.data?.configuration;
+    i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
+  }, [])
 
   const getDateString = (date: Date) => {
     const monthname = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -123,8 +132,8 @@ export default function MedicationTracker({ ...props }) {
         dosageList,
       }
       all.push(medicationDetails)
-      setMedications(all)     
-      props.onComplete()      
+      setMedications(all)   
+      setNewTime(new Date().getTime())  
     }
   }
 
@@ -150,27 +159,7 @@ export default function MedicationTracker({ ...props }) {
     }
   }
 
-  useEffect(() => {
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // Listen to message from child window
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const configuration = e.data?.configuration ?? null
-        const langugae = !!configuration
-          ? configuration.hasOwnProperty("language")
-            ? configuration.language
-            : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)        
-        const medications =  e.data?.activity?.medications ?? null
-        setMedications(medications)
-      },
-      false
-    )     
-  }, [])
+  
 
   const medicationList = [
     { title: "Aridol (Mannitol Inhalation Powder)" },
@@ -199,11 +188,41 @@ export default function MedicationTracker({ ...props }) {
   const closeAddDosageDialog = () => {
     setOpenAddDosage(false)
   }
+
+  const setSlices = (type) => {
+    const route = {
+      duration: new Date().getTime() -newTime,
+      item: index,
+      level: type,
+      type: null,
+      value: null,
+    };
+    const troutes = []
+    if(routes.length > 0) {
+      const r = JSON.parse(routes)
+      Object.keys(r).forEach((key) => {
+        troutes.push(r[key]);
+      });
+    }
+    troutes.push(route)
+    setRoutes(JSON.stringify(troutes))
+    setIndex(index+1)
+  }
+  
+  const postData = () => {
+    parent.postMessage(routes.length > 0 ? JSON.stringify({        
+      timestamp: new Date().getTime(),
+      duration: new Date().getTime() - startTime,
+      temporal_slices: JSON.parse(routes),
+      static_data: {},
+     }) : null, "*")  
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={() => setOpen(true)} color="default" aria-label="Menu">
+          <IconButton onClick={() => postData()} color="default" aria-label="Menu">
             <ArrowBackIcon />
           </IconButton>
           <Typography variant="h5">{t("Add medication")}</Typography>

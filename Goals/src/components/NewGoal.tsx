@@ -142,6 +142,8 @@ export default function NewGoal({ ...props }) {
 
   const saveNewGoal = async () => {
     if (validateNewGoal()) {
+      props.onSave(props.goalType.toLowerCase())
+      
       const all = []
       const goalDetails = {
         goalName,

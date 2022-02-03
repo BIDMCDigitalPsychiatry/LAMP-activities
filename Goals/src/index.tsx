@@ -11,10 +11,22 @@ import { AppContainer } from "react-hot-loader"
 import Goals from './components/Goals'
 import './index.css';
 import "material-icons"
+import { SnackbarProvider } from "notistack"
 
-ReactDOM.render(
-  <AppContainer>
-    <Goals />
-  </AppContainer>,  
-  document.getElementById('root') as HTMLElement
-);
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+  messageEvent, (e) => {    
+		ReactDOM.render(
+      <SnackbarProvider>
+        <AppContainer>
+        <Goals data={e.data} />          
+        </AppContainer>
+      </SnackbarProvider>
+    , 		  
+		  document.getElementById("root")
+		);
+  },
+  false
+ )

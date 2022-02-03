@@ -1,5 +1,5 @@
 // Core Imports
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Container,
   Typography,
@@ -15,7 +15,7 @@ import {
   Theme,
   createStyles,
 } from "@material-ui/core"
-
+import i18n from "../i18n"
 import Exercise from "./Exercise"
 import Reading from "./Reading"
 import Sleeping from "./Sleeping"
@@ -152,20 +152,60 @@ export default function Goals({ ...props }) {
   const [classType, setClassType] = useState("")
   const [goalType, setGoalType] = useState("")
   const { t } = useTranslation()
+  const [index, setIndex] = useState(0)
+  const [goalTime, setGoalTime] = useState(null)
+  const [startTime, setStartTime] = useState(new Date().getTime())
+  const [routes, setRoutes] = useState<any>([])
+
+  useEffect(() => { 
+    // const activity = props.data.activity ?? (props.data ?? {});
+    const configuration = props.data?.configuration;
+    i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
+  }, [])
 
   const handleClickOpen = (type: string) => {
     setGoalType(type)
     setDialogueType(type)
     const classT = type === "Scratch card" ? classnames(classes.header, classes.scratch) : classes.header
     setClassType(classT)
+    setGoalTime(new Date().getTime())
     setOpen(true)
+  }
+
+  const setSlices = (type) => {
+    const route = {
+      duration: new Date().getTime() -goalTime,
+      item: index,
+      level: type,
+      type: null,
+      value: null,
+    };
+    const troutes = []
+    if(routes.length > 0) {
+      const r = JSON.parse(routes)
+      Object.keys(r).forEach((key) => {
+        troutes.push(r[key]);
+      });
+    }
+    troutes.push(route)
+    setRoutes(JSON.stringify(troutes))
+    setIndex(index+1)
+  }
+
+  const postData = () => {
+    parent.postMessage(routes.length > 0 ? JSON.stringify({        
+      timestamp: new Date().getTime(),
+      duration: new Date().getTime() - startTime,
+      temporal_slices: JSON.parse(routes),
+      static_data: {},
+     }) : null, "*")  
   }
 
   return (
     <div>
       <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={props.onComplete} color="default" aria-label="Menu">
+          <IconButton onClick={() => postData()} color="default" aria-label="Menu">
             <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">{t("Create goal")}</Typography>
@@ -354,6 +394,7 @@ export default function Goals({ ...props }) {
         >
           <NewGoals
             // participant={participant}
+            onSave={setSlices}
             goalType={goalType}
             onComplete={() => {
               setOpen(false)
