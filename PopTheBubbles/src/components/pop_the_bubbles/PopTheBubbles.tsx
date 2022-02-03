@@ -313,7 +313,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                   y={y}
                   class="bubble-text"
                   onClick={this.handleClick}
-                  onHide={() => console.log("jksa")}
+                  onHide={() => void(0)}
                   bubbleDuration={this.state.bubble_duration}
                 />
                 </Animated>
@@ -392,7 +392,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       y={y}
                       class="size-l bubble-blue bubble-result"
                       onClick={this.handleClick}
-                      onHide={() => console.log("jksa")}
+                      onHide={() => void(0)}
                       bubbleDuration={this.state.bubble_duration}
                     />
                   ) : (
@@ -404,7 +404,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       y={y}
                       class="size-l bubble-blue bubble-result"
                       onClick={this.noClick}
-                      onHide={() => console.log("jksa")}
+                      onHide={() => void(0)}
                       bubbleDuration={this.state.bubble_duration}
                     />
                   )}
@@ -442,7 +442,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                   y={y}
                   class="size-l bubble-blue"
                   onClick={this.handleClick}
-                  onHide={() => console.log("jksa")}
+                  onHide={() => void(0)}
                   bubbleDuration={this.state.bubble_duration}
                 />
               </div>

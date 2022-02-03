@@ -1034,7 +1034,12 @@ class Board extends React.Component<BoardProps, BoardState> {
     });
 
     if (!this.state.clickedBubbleIndexes.includes(index)) {
-      let route = {};
+      this.handleHide(index, lastClass, success, durationVal)
+    }
+  };
+
+  handleHide = (index: number, lastClass:string, success: boolean, durationVal: number) => {
+    let route = {};
       route = {
         duration: durationVal,
         item: index,
@@ -1046,28 +1051,6 @@ class Board extends React.Component<BoardProps, BoardState> {
           index
         ),
       };
-      console.log(route)
-      this.setState((prevState) => ({
-        clickedBubbleIndexes: [...prevState.clickedBubbleIndexes, index],
-        route: [...prevState.route, route],
-      }));
-    }
-  };
-
-  handleHide = (index: number, lastClass:string, durationVal: number) => {
-    let route = {};
-      route = {
-        duration: durationVal,
-        item: index,
-        level: this.props.level,
-        type: false,
-        value: this.bubbleSpecifics(
-          lastClass.replace("bubble-", ""),
-          false,
-          index
-        ),
-      };
-      console.log(route)
       this.setState((prevState) => ({
         clickedBubbleIndexes: [...prevState.clickedBubbleIndexes, index],
         route: [...prevState.route, route],
