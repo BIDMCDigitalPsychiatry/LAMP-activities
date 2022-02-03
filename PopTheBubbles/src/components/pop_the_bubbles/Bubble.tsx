@@ -15,12 +15,14 @@ interface BubbleProps {
   text?: string;
   x: number;
   y: number;
-  onClick(e: any, index: number, lastClass: string, tapped: boolean): void;
+  onClick(e: any, index: number, lastClass: string, tapped: boolean, duration: number): void;
+  onHide(index: number, lastClass: string, duration: number) : void;
   bubbleDuration: number;
 }
 interface BubbleState {
   tapped: boolean;
   visible: boolean;
+  visibleTime: number;
 }
 
 export class Bubble extends React.Component<BubbleProps, BubbleState> {
@@ -29,6 +31,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
     this.state = {
       tapped: false,
       visible: !this.props.text ? false : true,
+      visibleTime:0
     };
   }
 
@@ -42,8 +45,12 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
         this.setState({
           tapped: false,
           visible: true,
+          visibleTime : new Date().getTime()
         });
         setTimeout(() => {
+          if(!this.state.tapped) {
+            this.props.onHide(this.props.index, this.props.class, new Date().getTime() - this.state.visibleTime)   
+          }
           this.setState({
             tapped: false,
             visible: false,
@@ -67,7 +74,8 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
       e,
       this.props.index,
       this.props.class,
-      this.props.bubbleToTap
+      this.props.bubbleToTap,
+      new Date().getTime() - this.state.visibleTime
     );
   };
   
