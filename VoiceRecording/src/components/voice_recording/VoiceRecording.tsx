@@ -36,10 +36,11 @@
    clickUpload: Boolean;
    clickStop: Boolean;
    time: number;
+   settings: any;
  }
 
  interface AppProps {
-   language: string;
+   data: any;
    noBack:boolean;
  }
  
@@ -63,9 +64,10 @@
        audioAllowed: false,
        clickUpload: false,
        clickStop: false,
+       settings: props.data.activity?.settings,
        time: new Date().getTime()
      };
-    i18n.changeLanguage(!!props.language ? props.language : "en-US");
+    i18n.changeLanguage(!!props.data.configuration.language ? props.data.configuration.language : "en-US");
    }
 
    handleAudioStop = (data) => {
@@ -156,6 +158,7 @@
            clickUpload={this.state.clickUpload}
            clickStop={this.state.clickStop}
            language={i18n.language}
+           settings={this.state.settings}
          />
        </div>
      );

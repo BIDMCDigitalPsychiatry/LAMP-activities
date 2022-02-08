@@ -38,6 +38,7 @@ interface AppProps {
   clickUpload: Boolean;
   clickStop: Boolean;
   language: string;
+  settings: any;
 }
 
 class Recorder extends Component<AppProps, AppState> {
@@ -315,10 +316,10 @@ class Recorder extends Component<AppProps, AppState> {
                     </span>
                   </div>
                   {!recording && !this.state.clickStop ? (
-                    <p className="help tACenter">{i18n.t("PRESS_MICROPHONE_TO_RECORD")}</p>
+                    <p className="help tACenter">{this.props.settings.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")}</p>
                   ) : 
                   (this.state.clickStop ? (
-                    <p className="help tACenter">{i18n.t("CLICK_TO_CLEAR_MSG")}</p>
+                    <p className="help tACenter">{this.props.settings.rerecord_label ?? i18n.t("CLICK_TO_CLEAR_MSG")}</p>
                   ) :
                   null)}
                 </div>
