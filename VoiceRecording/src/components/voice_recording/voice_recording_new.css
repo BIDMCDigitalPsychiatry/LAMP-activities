@@ -10,7 +10,8 @@
 }
 .audio_section{
     margin: auto;
-    width: 50%;
+    width: 100%;
+    text-align: center;
 }
 
 .recorder_library_box .recorder_box {
