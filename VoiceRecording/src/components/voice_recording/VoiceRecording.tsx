@@ -67,7 +67,7 @@
        settings: props.data.activity?.settings,
        time: new Date().getTime()
      };
-    i18n.changeLanguage(!!props.data.configuration.language ? props.data.configuration.language : "en-US");
+   // i18n.changeLanguage(!!props.data.configuration.language ? props.data.configuration.language : "en-US");
    }
 
    handleAudioStop = (data) => {

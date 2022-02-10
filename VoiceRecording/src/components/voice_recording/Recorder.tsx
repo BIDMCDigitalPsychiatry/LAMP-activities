@@ -5,6 +5,9 @@ import microphone from './images/microphone.png';
 import './voice_recording_new.css';
 import Alert from '@material-ui/lab/Alert';
 import i18n from "./../../i18n";
+import ReactMarkdown from "react-markdown"
+import emoji from "remark-emoji"
+import gfm from "remark-gfm"
 
 const audioType = "audio/*";
 const maximumRecordTime = 240;
@@ -79,6 +82,11 @@ class Recorder extends Component<AppProps, AppState> {
     this.resumeTimer();
     this.mediaRecorder.resume();
     this.setState({ pauseRecord: false });
+  }
+
+  
+  LinkRenderer(data:any) {
+    return <a href={data.href} target="_blank">{data.children}</a>
   }
 
   startTimer = () => {
@@ -316,10 +324,14 @@ class Recorder extends Component<AppProps, AppState> {
                     </span>
                   </div>
                   {!recording && !this.state.clickStop ? (
-                    <p className="help tACenter">{this.props.settings.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")}</p>
+                    <p className="help tACenter">
+                      <ReactMarkdown source={this.props?.settings?.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: this.LinkRenderer}} /> 
+                    </p>
                   ) : 
                   (this.state.clickStop ? (
-                    <p className="help tACenter">{this.props.settings.rerecord_label ?? i18n.t("CLICK_TO_CLEAR_MSG")}</p>
+                    <p className="help tACenter">
+                      <ReactMarkdown source={this.props?.settings?.rerecord_label ?? i18n.t("CLICK_TO_CLEAR_MSG")} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: this.LinkRenderer}} /> 
+                    </p>
                   ) :
                   null)}
                 </div>
