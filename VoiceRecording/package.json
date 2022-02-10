@@ -29,9 +29,12 @@
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.12.0",
     "react-i18next": "^11.7.3",
+    "react-markdown": "^5.0.3",
     "react-router-dom": "^5.1.2",
     "react-scripts-ts": "^4.0.8",
     "react-voice-recorder": "^2.1.0",
+    "remark-emoji": "^2.2.0",
+    "remark-gfm": "^1.0.0",
     "rx": "^4.1.0",
     "styled-components": "^5.0.1",
     "webpack": "^4.46.0"
