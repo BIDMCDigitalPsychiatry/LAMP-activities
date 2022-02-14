@@ -241,7 +241,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "160px",
     boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.05)",
     lineHeight: "38px",
-    fontFamily: "inter",
+    fontWeight: 600,
     textTransform: "capitalize",
     fontSize: "16px",
     cursor: "pointer",
