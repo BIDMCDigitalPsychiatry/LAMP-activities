@@ -60,7 +60,7 @@ h1 {
 .tACenter{
   text-align: center;
   max-height: 110px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* Voice Recording Disable Button  */
