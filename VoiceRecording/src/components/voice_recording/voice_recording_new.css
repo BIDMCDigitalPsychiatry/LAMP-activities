@@ -8,6 +8,11 @@
     margin: 0;
     font-family: "Lato", sans-serif
 }
+.audio_section{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
 
 .recorder_library_box .recorder_box {
     width: 100%;
