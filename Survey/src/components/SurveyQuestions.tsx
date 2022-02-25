@@ -1508,26 +1508,22 @@ export default function SurveyQuestions({...props}) {
   const validator = (response) => {
     let status = true
     const questions = content.sections[0].settings
+    let i = 0
     for (const section of response) {
-      if(!!response && !!section) {      
-        let i = 0 
-        for (const question of section) {
-          if(!questions[i].required || (!!questions[i].required && (question.value !== null && typeof question.value !== "undefined" &&
-            (typeof question.value !== "string" || (typeof question.value === "string" &&
-            question.value?.trim().length !== 0))))) {
-              status = true              
-          } else {
-            status = false
-            break
-          }
-          i++;
-        } 
-      }else {
+
+    for (const question of questions) {
+      if(!question.required || (!!question.required && (!!section && !!section[i] && section[i]?.value !== null && 
+        typeof section[i]?.value !== "undefined" && (typeof section[i]?.value !== "string" ||
+         (typeof section[i]?.value === "string" && section[i]?.value?.trim().length !== 0))))) {
+        status = true              
+      } else {
         status = false
         break
       }
+      i++
     }
-    return status
+  }
+   return status
   }
   const postSubmit = (response) => {
     if(response === null) {
@@ -1554,88 +1550,6 @@ export default function SurveyQuestions({...props}) {
   }
   
   useEffect(() => { 
-// const data = {
-//   "activity": {
-//       "name": "Survey Bool Mat Text short time2 matrix",
-//       "description": null,
-//       "sections": [
-//           {
-//               "id": "3875ene9gmqrxxfh4961",
-//               "category": [
-//                   "assess"
-//               ],
-//               "spec": "lamp.survey",
-//               "photo": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8cGF0aCBkPSJNMjU2LDBDMTE1LjM5LDAsMCwxMTUuMzksMCwyNTZzMTE1LjM5LDI1NiwyNTYsMjU2czI1Ni0xMTUuMzksMjU2LTI1NlMzOTYuNjEsMCwyNTYsMHoiLz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==",
-//               "streak": {
-//                   "streak": true,
-//                   "streakTitle": "",
-//                   "streakDesc": ""
-//               },
-//               "schedule": [],
-//               "settings": [
-//                   {
-//                       "text": "Q1",
-//                       "type": "boolean",
-//                       "required": true,
-//                       "description": "Q1 desc"
-//                   },
-//                   {
-//                       "text": "Q2",
-//                       "type": "matrix",
-//                       "required": true,
-//                       "description": "Q2 desc"
-//                   },
-//                   {
-//                       "text": "Q3",
-//                       "type": "text",
-//                       "required": true,
-//                       "description": "Q3 desc"
-//                   },
-//                   {
-//                       "text": "Q4",
-//                       "type": "short",
-//                       "required": false,
-//                       "description": "Q4 desc"
-//                   },
-//                   {
-//                       "text": "Q5",
-//                       "type": "time",
-//                       "required": true,
-//                       "description": "Q5 desc",
-//                       "options": {
-//                           "timePattern": "standard"
-//                       }
-//                   },
-//                   {
-//                       "text": "Q6",
-//                       "type": "time",
-//                       "required": true,
-//                       "description": "Q6 desc",
-//                       "options": {
-//                           "timePattern": "military"
-//                       }
-//                   },
-//                   {
-//                       "text": "Q7",
-//                       "type": "matrix",
-//                       "required": true,
-//                       "description": "Q7 desc"
-//                   }
-//               ]
-//           }
-//       ],
-//       "partialValidationOnly": false,
-//       "validate": true,
-//       "toolBarBack": false,
-//       "type": "Survey Bool Mat Text short time2 matrix",
-//       "spec": "lamp.survey",
-//       "id": "3875ene9gmqrxxfh4961"
-//   },
-//   "configuration": {
-//       "language": "en-US"
-//   },
-//   "noBack": false
-// }
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setContent(activity);
