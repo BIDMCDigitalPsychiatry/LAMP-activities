@@ -928,14 +928,14 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
             <Radio
               className={classes.mradioroot}
               disableRipple
-              checked={(selectedValue[idx+qindex]?.value || []).includes(op.value)}
+              checked={csvParse(selectedValue[idx+qindex]?.value || []).includes(op.value)}
               color="default"
               size="medium"
               checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
               icon={<span className={classes.icon} />}
               onClick={() => {
-                setSelectedValue({...selectedValue, [idx+qindex]:  {value:[op.value]}})
-                const response = { item: question.text, value: [op.value] }
+                setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([op.value])}})
+                const response = { item: question.text, value: csvStringify([op.value]) }
                 const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
                 onResponse(data)
               }}
@@ -954,10 +954,12 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         control={
             <GreenCheckbox
               className={classes.mradioroot}
-              checked={(selectedValue[idx+qindex]?.value || []).includes(op.value)}
+              checked={
+                csvParse(selectedValue[idx+qindex]?.value || []).includes(op.value)}
               onClick={() => {
-                let values = selectedValue[idx+qindex]?.value ?? []
-                if(!(selectedValue[idx+qindex]?.value || []).includes(op.value)) {
+                let values =  csvParse(selectedValue[idx+qindex]?.value || [])
+   
+                if(!csvParse(selectedValue[idx+qindex]?.value || []).includes(op.value)) {
                   values.push(op.value)
                   values = (values || []).filter((elem, i, self)  => {
                     return i === self.indexOf(elem);
@@ -968,8 +970,8 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                     values.splice(key, 1);
                   }
                 }
-                setSelectedValue({...selectedValue, [idx+qindex]:  {value:values}})
-                const response = { item: question.text, value: values }
+                setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text,value:csvStringify(values)}})
+                const response = { item: question.text, value: csvStringify(values) }
                 const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
               }}                     
