@@ -901,17 +901,16 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <Box className={classes.questionScroll}>
 
     <Table className={classes.matrix}>
+    {Array.isArray(x.options) && x.options.length > 0 && (
       <TableRow>
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
-        {Array.isArray(x.options) && x.options.length > 0 ? (x.options || []).map((x) => (
+         {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
             {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
             <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${x.value?.toString()})` : x.value?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
-        )) : (
-          <TableCell className={classes.textCenter}>{null}</TableCell>
-        )}
-      </TableRow>
+        ))}
+      </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow>
           <TableCell style={{minWidth:"30%"}}>
