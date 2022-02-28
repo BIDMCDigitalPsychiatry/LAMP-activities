@@ -61,14 +61,13 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .mt-30{
 	margin-top: 30px;
 	margin: auto;	
-	
-	height: 525px;		
+	height: 90%;
 	width: 590px;
 	
 	left: 0;
 	right: 0;
-	top: 0;
-	bottom: 0;
+	top: 8%;
+	bottom: 2%;
 	position: absolute;
 }
 .result-head {
@@ -280,7 +279,7 @@ td{
 
 	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 24px !important;}
 	.next-button{bottom: 7%;}
-	.mt-30{height: 650px;}
+	.mt-30{height: 90%;}
 }
 
 @media only screen and (max-width: 767px) {
