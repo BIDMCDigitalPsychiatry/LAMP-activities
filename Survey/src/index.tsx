@@ -21,7 +21,7 @@ eventer(
 		ReactDOM.render(
       <SnackbarProvider>
         <AppContainer>
-          <SurveyQuestions  data={e.data}/>
+          <SurveyQuestions data={e.data}/> 
         </AppContainer>
       </SnackbarProvider>
           , 		  
