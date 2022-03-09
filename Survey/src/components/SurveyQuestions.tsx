@@ -1581,7 +1581,7 @@ export default function SurveyQuestions({...props}) {
       {(activity !== null && settings !== null) ?
         <Section
           onResponse={(response) => 
-            (response === null) ? postSubmit(null) :
+            (response === null) ? onResponse(null) :
             setResponses(response)
           }
           value={activity}
