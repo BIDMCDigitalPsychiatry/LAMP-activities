@@ -94,7 +94,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
           transition: "opacity 100ms ease, transform 100ms ease",
         }}
         onClick={() => {
-          setTimeout(() => this.onPop(this), 10);
+          this.onPop(this)
         }}
       >
         {this.props.text ? this.props.text : null}
