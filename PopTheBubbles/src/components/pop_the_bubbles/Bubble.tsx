@@ -58,10 +58,10 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
     if (!this.props.text) {
       this.setState({ tapped: true });
       setTimeout(() => {
-        this.setState({
+          this.setState({
           visible: false,
         });
-      }, 300);
+      }, 10);
     }
     this.props.onClick(
       e,
@@ -94,7 +94,7 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
           transition: "opacity 100ms ease, transform 100ms ease",
         }}
         onClick={() => {
-          setTimeout(() => this.onPop(this), 100);
+          setTimeout(() => this.onPop(this), 10);
         }}
       >
         {this.props.text ? this.props.text : null}

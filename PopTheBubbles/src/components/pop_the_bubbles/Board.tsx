@@ -321,7 +321,6 @@ class Board extends React.Component<BoardProps, BoardState> {
           },
           []
         );
-
         const newPinkIndx = stylesArray.reduce(
           (r: any, n: string, i: number) => {
             if (n === "bubble-pink") {
