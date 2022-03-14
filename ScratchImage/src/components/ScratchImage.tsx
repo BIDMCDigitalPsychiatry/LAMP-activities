@@ -280,7 +280,7 @@ export default function ScratchImage({ ...props }) {
   useEffect(() => {
     if(complete) {
       parent.postMessage(routes.length > 0 ? JSON.stringify({        
-        timestamp: new Date().getTime(),
+        timestamp: time,
         duration: new Date().getTime() - time,
         temporal_slices: JSON.parse(routes),
         static_data: {},
