@@ -208,15 +208,13 @@ const useStyles = makeStyles((theme) => ({
   },
   matrix : {   
     "& td" :{
-      padding : "0px !important",
+      paddingLeft : "0px !important",
+      paddingRight : "0px !important"
     },
     "& tr" : {
-      height:"100px",
       padding:"25px 0"
     },
-    // "& span.MuiFormControlLabel-label ": { marginTop: "18px !important",
     "& p" : {marginTop : "0px !important", marginBottom : "3px !important"}
-  // },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -500,13 +498,15 @@ function TimeSelection({ onChange, options, value, ...props }) {
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
-      (options.timePattern === "standard" ? ampmSelectedIndex : ""))
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
+      (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
   }, [])
 
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
-       (options.timePattern === "standard" ? ampmSelectedIndex : ""))
+       ((!!options?.timePattern && options?.timePattern === "standard") ||
+       (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
    }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
   
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
@@ -537,7 +537,8 @@ function TimeSelection({ onChange, options, value, ...props }) {
     }
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
        ":" + (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) + 
-       (options.timePattern === "standard" ? ampmSelectedIndex : ""))
+       ((!!options?.timePattern && options?.timePattern === "standard") ||
+       (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
   }
   const handleHoursClose = () => {
     setAnchorEl(null)
@@ -550,9 +551,11 @@ function TimeSelection({ onChange, options, value, ...props }) {
   }
   const ampm = []
 
-  const hourvalues = options.timePattern === "standard"? range(0, 12): range(0, 24)
+  const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
+  (!!options[0]?.value && options[0]?.value === "standard")? range(0, 12): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
-  if(options.timePattern === "standard") {
+  if((!!options?.timePattern && options?.timePattern === "standard") ||
+  (!!options[0]?.value && options[0]?.value === "standard")) {
     ampm.push(
       <MenuItem
         key="AM"
@@ -631,7 +634,8 @@ function TimeSelection({ onChange, options, value, ...props }) {
             ))}
           </Menu>
         </Grid>
-        {options.timePattern === "standard" && (<Grid item>
+        {((!!options?.timePattern && options?.timePattern === "standard") ||
+       (!!options[0]?.value && options[0]?.value === "standard")) && (<Grid item>
           <List component="nav" className={classes.timeHours} aria-label="Device settings">
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
               <ListItemText secondary={ampmSelectedIndex} />
@@ -722,11 +726,10 @@ function ShortTextSection({ onChange, value, ...props }) {
 }
 
 
-function RadioRating({ onChange, options, value, ...props }) {
+function RadioRating({ onChange, options, value, mtValue, ...props }) {
   const [val, setValue] = useState(value)
-
   return (
-    <Box textAlign="center" mt={5}>
+    <Box textAlign="center" mt={mtValue}>
       <Grid direction="row" container justify="center" alignItems="center">
         {options.map((option) => (
           <Box mr={1}>
@@ -881,6 +884,11 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
   const { t } = useTranslation()
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
   const [selectedValue, setSelectedValue] = useState(responses?.current ?? null)
+  const getSorted = (options) => {
+    return options.sort((a, b) =>
+    parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
+  )
+  }
 
   return (
     <Grid>
@@ -900,7 +908,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <Box className={classes.questionScroll}>
 
     <Table className={classes.matrix}>
-    {Array.isArray(x.options) && x.options.length > 0 && (
+    {Array.isArray(x.options) && x.options.length > 0 && (x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
       <TableRow>
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
@@ -915,8 +923,8 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
           <TableCell style={{minWidth:"30%"}}>
             <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
-          {Array.isArray(x.options) && (x.options || []).length > 0 ?(
- x.type !== "multiselect" ?  (
+          {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
+  x.type === "list"  ||x.type === "boolean"  ?  (
   (x.options || []).map((op, k) => (
     <TableCell className={classes.textCenter}>
       <FormControlLabel
@@ -944,7 +952,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       />                
     </TableCell>
   ))
-) :((x.options || []).map((op, j) => (
+) :x.type === "multiselect" ? ((x.options || []).map((op, j) => (
       <TableCell className={classes.textCenter}>
         <FormControlLabel
         key={op.value}
@@ -981,11 +989,30 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       </TableCell>
     ))
 )
-          )
-          :( 
+          : x.type === "slider" ? (
+            <TableCell className={classes.textCenter}>
+            <Rating options={getSorted(x.options)} onChange={(val) => {
+              setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
+              const response = { item: question.text, value: csvStringify([val]) }
+              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+              onResponse(data)
+            }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null} />
+            </TableCell>
+            ) : x.type === "rating" ? (
+              <TableCell className={classes.textCenter}>
+            <RadioRating mtValue={0} options={x.options} onChange={(val) => {
+              setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
+              const response = { item: question.text, value: csvStringify([val]) }
+              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+              onResponse(data)
+            }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null}  />
+            </TableCell>
+            ): null ) :
+          ( 
             <TableCell className={classes.textCenter}>
               {
-                x?.type === "short" ?
+                
+                  x?.type === "short" ?
                 (
                   <ShortTextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
@@ -1115,7 +1142,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
       component = <Rating options={options} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "rating":
-      component = <RadioRating options={options} onChange={onChange} value={!!value ? value.value : undefined} />
+      component = <RadioRating options={options} mtValue={5} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "likert":
     case "boolean":
@@ -1508,6 +1535,7 @@ export default function SurveyQuestions({...props}) {
         temporal_slices: response,
         duration : new Date().getTime() - startTime,
         static_data: {},
+        timestamp: startTime
       }
       onResponse(result)           
     } else {

@@ -1,38 +1,109 @@
-// Core Imports
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
-  Container,
+  Icon,
   Typography,
-  Grid,
-  Card,
-  Box,
+  makeStyles,
+  createStyles,
+  Theme,
   IconButton,
-  ButtonBase,
+  CardContent,
+  Grid,
+  Box,
+  Fab,
+  Container,
   AppBar,
   Toolbar,
-  Icon,
-  makeStyles,
-  Theme,
-  createStyles,
 } from "@material-ui/core"
 
-import Exercise from "./Exercise"
-import Reading from "./Reading"
-import Sleeping from "./Sleeping"
-import Nutrition from "./Nutrition"
-import Medication from "./Medication"
-import Emotions from "./Emotions"
-import BreatheIcon from "./Breathe"
-import Savings from "./Savings"
-import Weight from "./Weight"
-import Custom from "./Custom"
-import ResponsiveDialog from "./ResponsiveDialog"
-import NewGoals from "./NewGoal"
-import classnames from "classnames"
+import i18n from "../i18n"
 import { useTranslation } from "react-i18next"
+import ReactMarkdown from "react-markdown"
+import gfm from "remark-gfm"
+import emoji from "remark-emoji"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    header: {
+      background: "#FBF1EF",
+      padding: 20,
+      [theme.breakpoints.up("sm")]: {
+        textAlign: "center",
+      },
+      "& h2": {
+        fontSize: 25,
+        fontWeight: 600,
+        color: "rgba(0, 0, 0, 0.75)",
+      },
+    },
+    activityDesc: {
+      "& p" : {
+        fontSize: "17px !important",
+        fontWeight: 600,
+        textAlign: "center"
+      },
+      "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
+      "& code": {
+        padding: ".2rem .5rem",
+        margin: "0 .2rem",
+        fontSize: "90%",
+        whiteSpace: "noWrap",
+        background: "#F1F1F1",
+        border: "1px solid #E1E1E1",
+        borderRadius: "4px",
+      },
+    },
+    tipscontentarea: {
+      padding: "40px 20px 20px",
+      "& h3": {
+        fontWeight: "bold",
+        fontSize: "16px",
+        marginBottom: "15px",
+      },
+      "& h2": {
+        fontSize: "35px",
+        fontWeight: 600,
+        textAlign: "center"
+      },
+      "& p": {
+        fontSize: "16px",
+        lineheight: "24px",
+        marginBottom: 20,
+        color: "rgba(0, 0, 0, 0.75)",
+      },
+      "& img": {
+        maxWidth: "100%",
+        marginBottom: 15,
+      },
+      "& h6": { fontSize: 14, fontWeight: 700, fontStyle: "italic" },
+      "& a": { fontSize: 14, fontStyle: "italic" },
+    },
+    btnpeach: {
+      background: "#FFAC98",
+      padding: "15px 25px 15px 25px",
+      borderRadius: "40px",
+      minWidth: "200px",
+      boxShadow: " 0px 10px 15px rgba(255, 172, 152, 0.25)",
+      lineHeight: "22px",
+      display: "inline-block",
+      textTransform: "capitalize",
+      fontSize: "16px",
+      color: "rgba(0, 0, 0, 0.75)",
+      fontWeight: "bold",
+      cursor: "pointer",
+      "& span": { cursor: "pointer" },
+      "&:hover": {
+        background: "#FFAC98",
+        boxShadow:
+          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+        textDecoration: "none",
+      },
+    },
+    headerIcon: {
+      textAlign: "center",
+      marginBottom: 15,
+      "& img": { maxWidth: "100%", width:"100px" },
+    },
+    mainContainer: { padding: 0 },
     toolbardashboard: {
       minHeight: 65,
       padding: "0 10px",
@@ -42,325 +113,99 @@ const useStyles = makeStyles((theme: Theme) =>
         fontWeight: "600",
         fontSize: 18,
         width: "calc(100% - 96px)",
-      },
-    },
-    cardlabel: {
-      fontSize: 14,
-
-      padding: "0 18px",
-      bottom: 8,
-      position: "absolute",
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        bottom: 30,
-      },
-    },
-    header: {
-      background: "#FFEFEC",
-      padding: "25px 20px 10px",
-      textAlign: "center",
-
-      "& h2": {
-        fontSize: 25,
-        fontWeight: 600,
-        color: "rgba(0, 0, 0, 0.75)",
-        textAlign: "left",
-      },
-      "& h6": {
-        fontSize: "14px",
-        fontWeight: "normal",
-        textAlign: "left",
-      },
-    },
-    scratch: {
-      "& h2": {
-        textAlign: "center !important",
-      },
-      "& h6": {
-        textAlign: "center !important",
-      },
-    },
-
-    topicon: {
-      minWidth: 120,
-    },
-    dialogueContent: {
-      padding: 20,
-      "& h4": { fontSize: 16, fontWeight: "bold", marginBottom: 15 },
-    },
-    dialogtitle: { padding: 0 },
-    manage: {
-      background: "#FFEFEC",
-      padding: "10px 0",
-      minHeight: 105,
-      textAlign: "center",
-      boxShadow: "none",
-      borderRadius: 10,
-      position: "relative",
-      width: "100%",
-      "& svg": {
-        [theme.breakpoints.up("lg")]: {
-          width: 150,
-          height: 150,
-          marginTop: 20,
+        [theme.breakpoints.up("sm")]: {
+          textAlign: "left",
         },
-        [theme.breakpoints.down("md")]: {
-          width: 130,
-          height: 130,
-          marginTop: 20,
-        },
-        [theme.breakpoints.down("xs")]: {
-          width: 60,
-          height: 60,
-          marginTop: 0,
-        },
-      },
-
-      [theme.breakpoints.up("sm")]: {
-        minHeight: 230,
-      },
-      [theme.breakpoints.up("lg")]: {
-        minHeight: 240,
-      },
-    },
-    thumbMain: { maxWidth: 255 },
-    thumbContainer: {
-      maxWidth: 1055,
-      width: "80%",
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-        paddingBottom: 80,
-      },
-    },
-    fullwidthBtn: { width: "100%" },
-    goalHeading: {
-      textAlign: "center",
-      "& h5": { fontSize: 18, fontWeight: 600, margin: "25px 0 15px", color: "rgba(0, 0, 0, 0.75)" },
-      "& h6": {
-        fontSize: 14,
-        color: "rgba(0, 0, 0, 0.4)",
-        marginBottom: 15,
       },
     },
   })
 )
-
+  
 export default function Goals({ ...props }) {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-  const [dialogueType, setDialogueType] = React.useState("")
-  const [classType, setClassType] = useState("")
-  const [goalType, setGoalType] = useState("")
+  const [activity, setActivity] = useState<any>(null)
+  const [startTime, setStartTime] = useState(new Date().getTime())
   const { t } = useTranslation()
 
-  const handleClickOpen = (type: string) => {
-    setGoalType(type)
-    setDialogueType(type)
-    const classT = type === "Scratch card" ? classnames(classes.header, classes.scratch) : classes.header
-    setClassType(classT)
-    setOpen(true)
+  useEffect(() => {
+    const configuration = props.data?.configuration ?? null
+    const langugae = !!configuration
+      ? configuration.hasOwnProperty("language")
+        ? configuration.language
+        : "en-US"
+      : "en-US"
+    i18n.changeLanguage(langugae)
+    setStartTime(new Date().getTime())
+    setActivity(props.data.activity)
+  }, [])
+
+  const completeMarking = () => {
+    parent.postMessage(
+      JSON.stringify({
+        duration: new Date().getTime() - startTime, 
+        static_data: {},       
+        temporal_slices: [],
+        timestamp:startTime
+      }),
+      "*"
+    )
   }
 
+  function LinkRenderer(data:any) {
+    return <a href={data.href} target="_blank">{data.children}</a>
+  }
+  
   return (
-    <div>
-      <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
-        <Toolbar className={classes.toolbardashboard}>
-          <IconButton onClick={props.onComplete} color="default" aria-label="Menu">
-            <Icon>arrow_back</Icon>
-          </IconButton>
-          <Typography variant="h5">{t("Create goal")}</Typography>
-        </Toolbar>
-      </AppBar>
-      <Box className={classes.goalHeading}>
-        <Typography variant="h5">{t("What type of goal?")}</Typography>
-        <Typography variant="subtitle1">{t("Choose a category")}</Typography>
-      </Box>
-      <Container className={classes.thumbContainer}>
-        <Grid container spacing={2}>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Exercise")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Exercise />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Exercise")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Weight")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Weight />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Weight")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Nutrition")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Nutrition />
-                </Box>
-                <Typography className={classes.cardlabel} />
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={4} sm={4} md={3} lg={3} onClick={() => handleClickOpen("Sleep")} className={classes.thumbMain}>
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Sleeping />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Sleep")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Meditation")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <BreatheIcon />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Meditation")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Reading")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Reading />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Reading")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Finances")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Savings />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Finances")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={4} sm={4} md={3} lg={3} onClick={() => handleClickOpen("Mood")} className={classes.thumbMain}>
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box mt={1}>
-                  <Emotions />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Mood")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
+    <React.Fragment>
 
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Medication")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Medication />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Medication")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={4}
-            md={3}
-            lg={3}
-            onClick={() => handleClickOpen("Custom")}
-            className={classes.thumbMain}
-          >
-            <ButtonBase focusRipple className={classes.fullwidthBtn}>
-              <Card className={classes.manage}>
-                <Box>
-                  <Custom />
-                </Box>
-                <Typography className={classes.cardlabel}>{t("Custom")}</Typography>
-              </Card>
-            </ButtonBase>
-          </Grid>
-        </Grid>
-        <ResponsiveDialog
-          transient={false}
-          animate
-          fullScreen
-          open={open}
-          onClose={() => {
-            setOpen(false)
+    {!!activity && (
+      <Box>
+    <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
+      <Toolbar className={classes.toolbardashboard}>
+        <IconButton
+          onClick={() => {
+            parent.postMessage(null, "*")
           }}
+          color="default"
+          aria-label="Menu"
         >
-          <NewGoals
-            // participant={participant}
-            goalType={goalType}
-            onComplete={() => {
-              setOpen(false)
-            }}
-          />
-        </ResponsiveDialog>
-      </Container>
-    </div>
+          <Icon>arrow_back</Icon>
+        </IconButton>
+        <Typography variant="h5">{!!activity ? t(activity?.name ?? "") : ""}</Typography>
+
+      </Toolbar>
+    </AppBar>
+
+
+    <Container maxWidth={false} className={classes.mainContainer}>
+      <Box className={classes.header}>
+        <Box width={1} className={classes.headerIcon}>
+          {!!activity?.photo ? <img src={!!activity?.photo ? activity?.photo : undefined} alt={activity?.name} /> : ""}
+        </Box>
+      </Box>
+      <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid item lg={4} sm={10} xs={12}>
+          <CardContent className={classes.tipscontentarea}>
+            <Typography variant="h2">{(activity?.settings?.value ?? "") + " " + (activity.settings?.unit ?? "")}</Typography>
+            <Typography variant="h5" color="textSecondary" className={classes.activityDesc} >
+              <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
+                 {activity?.description ?? ""}
+              </ReactMarkdown>
+            
+            </Typography>
+            <Box textAlign="center">
+              <Fab variant="extended" color="primary" className={classes.btnpeach} onClick={() => completeMarking()} > {/*  */}
+                {t("Mark complete")}
+              </Fab>
+            </Box>
+            
+          </CardContent>
+        </Grid>
+      </Grid>
+          </Container>
+          </Box>
+          )}
+ </React.Fragment>
+         
   )
 }
