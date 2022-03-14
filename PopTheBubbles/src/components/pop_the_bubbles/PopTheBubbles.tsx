@@ -72,11 +72,11 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     const yValues = this.getCoords(
       window.innerHeight - (window.innerHeight * 25) / 100,
       2
-    );      
+    );     
     this.state = {
       allRoutes: [],
       bubble_count: [60, 80, 80],
-      bubble_duration: 1.0, // 0,
+      bubble_duration: 1.5, // 0,
       bubble_speed: [30, 40, 50],
       completed: false,
       correctGoCount: 0,
@@ -163,7 +163,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
   // To refresh the game
   clickHome = () => {
-    window.location.reload(false);
+    window.location.reload();
   };
 
   noClick = () => {
@@ -304,7 +304,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
               <Animated animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
                 <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
                 </Animated>
-                <Animated animationIn="bounceInUp" animationInDuration={1500} className="bubble-blue size-l" animationOut="fadeOut" isVisible={true}>
+                <Animated animationIn="bounceInUp" animationInDuration={1500} className="bubble-blue-large size-l" animationOut="fadeOut" isVisible={true}>
                 <Bubble
                   text={i18n.t("TAP_TO_CONTINUE")}
                   bubbleToTap={false}
@@ -389,7 +389,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue bubble-result"
+                      class="size-l bubble-blue-large bubble-result"
                       onClick={this.handleClick}
                       bubbleDuration={this.state.bubble_duration}
                     />
@@ -400,7 +400,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       x={x}
                       index={0}
                       y={y}
-                      class="size-l bubble-blue bubble-result"
+                      class="size-l bubble-blue-large bubble-result"
                       onClick={this.noClick}
                       bubbleDuration={this.state.bubble_duration}
                     />
@@ -437,7 +437,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                   x={x}
                   index={0}
                   y={y}
-                  class="size-l bubble-blue"
+                  class="size-l bubble-blue-large"
                   onClick={this.handleClick}
                   bubbleDuration={this.state.bubble_duration}
                 />

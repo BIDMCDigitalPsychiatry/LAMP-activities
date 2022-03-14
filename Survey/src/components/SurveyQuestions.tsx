@@ -1535,7 +1535,7 @@ export default function SurveyQuestions({...props}) {
         temporal_slices: response,
         duration : new Date().getTime() - startTime,
         static_data: {},
-        timestamp: new Date().getTime()
+        timestamp: startTime
       }
       onResponse(result)           
     } else {
