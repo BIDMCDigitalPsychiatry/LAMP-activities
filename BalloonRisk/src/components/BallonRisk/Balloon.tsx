@@ -423,7 +423,7 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   reloadPage = () => {
-    window.location.reload(false);
+    window.location.reload();
   };
   
   clickBack = () => {
@@ -463,12 +463,7 @@ class Balloons extends React.Component<{}, AppState> {
             </p>
           </div>
         </div>
-        <button className="display_none opaty_00" disabled={true}>
-          start
-        </button>
-        <button className="display_none opaty_00" disabled={true}>
-          stop
-        </button>
+        
         <div className="points">
           <div className="row">
             <div className="col-8">{i18n.t("CURRENT_POINTS")}</div>
@@ -485,6 +480,7 @@ class Balloons extends React.Component<{}, AppState> {
             <div className="col-4 p-value">{this.state.total_points}</div>
           </div>
         </div>
+        <div className="baloon-container">
         <BallonImageSVG
           balloon_width={this.state.balloon_width}
           balloon_burst={this.state.balloon_burst}
@@ -539,6 +535,7 @@ class Balloons extends React.Component<{}, AppState> {
           }`}
           onClick={this.pumpBalloon}
         />
+        </div>
       </div>
     );
   }

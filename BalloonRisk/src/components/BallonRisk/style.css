@@ -116,7 +116,7 @@ body {
 }
 
 .b-container {
-    height: 350px;
+    height: 300px;
     text-align: center;
     position: relative;
     display: flex;
@@ -180,7 +180,7 @@ h4{
 
 .timer{
     display: block;
-    margin:10px;
+    margin-bottom:10px;
  
  }
  
@@ -249,4 +249,15 @@ h4{
 }
 .cursorPointer{
     cursor: pointer;
+}
+/* @media (max-width:415px) {
+.b-container{
+    max-height: 250px;
+}
+} */
+.baloon-container{
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    width: 100%;
 }
