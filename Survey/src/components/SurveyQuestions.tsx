@@ -993,7 +993,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
             <TableCell className={classes.textCenter}>
             <Rating options={getSorted(x.options)} onChange={(val) => {
               setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
-              const response = { item: question.text, value: csvStringify([val]) }
+              const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
               const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null} />
@@ -1002,7 +1002,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               <TableCell className={classes.textCenter}>
             <RadioRating mtValue={0} options={x.options} onChange={(val) => {
               setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
-              const response = { item: question.text, value: csvStringify([val]) }
+              const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
               const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null}  />
