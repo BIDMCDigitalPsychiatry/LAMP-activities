@@ -376,7 +376,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                     </div>
 
                     <div className="textLabel">
-                      {this.state.timeDifference} total time taken to complete
+                      {((this.state.timeDifference/1000)/60).toFixed(2)} minutes taken to complete
                       level
                     </div>
                   </div>
