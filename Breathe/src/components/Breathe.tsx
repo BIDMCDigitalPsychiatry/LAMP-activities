@@ -181,7 +181,7 @@ export default function Breathe({ ...props }) {
   const [started, setStarted] = useState(false)
   const [progressValue, setProgressValue] = useState(0)
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(2)
   const [status, setStatus] = useState("Yes")
   const [progress, setProgress] = React.useState(100)
   const [progressLabel, setProgressLabel] = React.useState(4)
@@ -315,7 +315,7 @@ export default function Breathe({ ...props }) {
       </AppBar>
       <Container>
         <Slide in={tab === 0} direction={tabDirection(0)} mountOnEnter unmountOnExit>
-          <Box my={4}>
+          <Box>
             <Box textAlign="center">
               {supportsSidebar && (
                 <Box pt={4}>
@@ -426,7 +426,7 @@ export default function Breathe({ ...props }) {
           </Grid>
         </Slide>
         <Slide in={tab === 2} direction={tabDirection(2)} mountOnEnter unmountOnExit>
-          <Box my={4}>
+          <Box>
             <Box textAlign="center" className={classes.breatheReview}>
               <Lotus />
               <Typography variant="h4">{t("Nicely done!")}</Typography>
