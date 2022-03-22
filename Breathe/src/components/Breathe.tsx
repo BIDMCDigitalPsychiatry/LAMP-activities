@@ -181,7 +181,7 @@ export default function Breathe({ ...props }) {
   const [started, setStarted] = useState(false)
   const [progressValue, setProgressValue] = useState(0)
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const [tab, setTab] = useState(2)
+  const [tab, setTab] = useState(0)
   const [status, setStatus] = useState("Yes")
   const [progress, setProgress] = React.useState(100)
   const [progressLabel, setProgressLabel] = React.useState(4)
