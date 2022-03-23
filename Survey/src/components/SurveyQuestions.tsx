@@ -1033,6 +1033,14 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                 onResponse(data)
                   }} charLimit={CHARACTER_LIMIT} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                 ):
+                x.type === "time"?(
+                  <Box className={classes.timeMatrix}>
+                <TimeSelection onChange={(val) => {
+                  const response = { item: question.text, value: val }
+              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+              onResponse(data)
+                }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
+                </Box>):
                 null
               }
             </TableCell>
