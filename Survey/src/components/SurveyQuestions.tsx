@@ -318,7 +318,7 @@ const useStyles = makeStyles((theme) => ({
   centerBar: { height: 4, background: "#BCEFDD" },
   customTrack: { width: 4, height: 4, borderRadius: "50%", background: "#65DEB4" },
   customThumb: { width: 24, height: 24, marginTop: -10, marginLeft: -10 },
-  noInitialVal: {left: "-600% !important"},
+  noInitialVal: {display:"none"},
   menuPaper: {
     background: "#F5F5F5",
     boxShadow: "none",
@@ -908,7 +908,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <Box className={classes.questionScroll}>
 
     <Table className={classes.matrix}>
-    {Array.isArray(x.options) && x.options.length > 0 && (x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
+    {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert"  || x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
       <TableRow>
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
@@ -920,11 +920,11 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow>
-          <TableCell style={{minWidth:"30%"}}>
+          <TableCell style={{minWidth:"30%", maxWidth:"150px"}}>
             <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
-  x.type === "list"  ||x.type === "boolean"  ?  (
+  x.type === "list"  ||x.type === "boolean" || x.type === "likert"  ?  (
   (x.options || []).map((op, k) => (
     <TableCell className={classes.textCenter}>
       <FormControlLabel
@@ -1007,7 +1007,14 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null}  />
             </TableCell>
-            ): null ) :
+            ):x.type === "time"?(
+              <Box className={classes.timeMatrix}>
+            <TimeSelection onChange={(val) => {
+              const response = { item: question.text, value: val }
+          const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+          onResponse(data)
+            }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
+            </Box>) : null ) :
           ( 
             <TableCell className={classes.textCenter}>
               {
@@ -1033,7 +1040,8 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
               onResponse(data)
                 }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
-                </Box>):null
+                </Box>):
+                null
               }
             </TableCell>
           )
@@ -1551,7 +1559,7 @@ export default function SurveyQuestions({...props}) {
     )
   }
   
-  useEffect(() => { 
+  useEffect(() => {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
