@@ -318,7 +318,7 @@ const useStyles = makeStyles((theme) => ({
   centerBar: { height: 4, background: "#BCEFDD" },
   customTrack: { width: 4, height: 4, borderRadius: "50%", background: "#65DEB4" },
   customThumb: { width: 24, height: 24, marginTop: -10, marginLeft: -10 },
-  noInitialVal: {left: "-1600% !important"},
+  noInitialVal: {display:"none"},
   menuPaper: {
     background: "#F5F5F5",
     boxShadow: "none",
@@ -1551,7 +1551,7 @@ export default function SurveyQuestions({...props}) {
     )
   }
   
-  useEffect(() => { 
+  useEffect(() => {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
