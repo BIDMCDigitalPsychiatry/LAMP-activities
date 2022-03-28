@@ -1,8 +1,8 @@
  // Get random numbers
 export function getRandomNumbers (dcount:number, min:number, max:number) {
     const randomArray:Array<number> =  []  ;
-    for(let i = min; i <= dcount; i++) {      
-      randomArray[i-1] = randomNumber(max, 0, randomArray)       
+    for(let i = min; i < dcount; i++) {      
+      randomArray[i] = randomNumber(max, 0, randomArray)       
     }       
     return randomArray;
   }
