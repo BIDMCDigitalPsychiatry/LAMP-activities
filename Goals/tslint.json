@@ -15,7 +15,6 @@
     "ordered-imports": false,
     "no-console": false,
     "jsx-no-lambda": false,
-    "jsx-boolean-value": false,
-    "no-shadowed-variable": false
+    "jsx-boolean-value": false
   }
 }

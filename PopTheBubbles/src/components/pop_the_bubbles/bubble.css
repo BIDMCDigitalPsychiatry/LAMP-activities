@@ -61,14 +61,13 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .mt-30{
 	margin-top: 30px;
 	margin: auto;	
-	
-	height: 525px;		
+	height: 90%;
 	width: 590px;
 	
 	left: 0;
 	right: 0;
-	top: 0;
-	bottom: 0;
+	top: 8%;
+	bottom: 2%;
 	position: absolute;
 }
 .result-head {
@@ -97,7 +96,7 @@ body {
 	background: -o-radial-gradient(circle closest-side,#e2b9d8,rgb(243, 120, 195));
 }
 
-.bubble-blue {
+.bubble-blue-large {
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
@@ -109,6 +108,20 @@ body {
 	background: radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
 	background: -o-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
 	left: 0 !important; top: 0; right: 0; bottom: 0 !important; margin: 0; position: absolute !important; margin: auto;
+}
+
+
+.bubble-blue {
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	background-color: #2F2727;
+	background-repeat: no-repeat;
+	background: -webkit-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
+	background: -moz-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
+	background: -ms-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
+	background: radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
+	background: -o-radial-gradient(circle closest-side,#cecfe6,rgb(90, 176, 226));
 }
 
 .bubble-red {
@@ -280,7 +293,7 @@ td{
 
 	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 24px !important;}
 	.next-button{bottom: 7%;}
-	.mt-30{height: 650px;}
+	.mt-30{height: 90%;}
 }
 
 @media only screen and (max-width: 767px) {

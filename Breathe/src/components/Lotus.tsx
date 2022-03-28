@@ -1,16 +1,20 @@
 import React from 'react'
 import {
     makeStyles,
-    Box
+    Box,
+    useMediaQuery,
+    useTheme,
   } from "@material-ui/core"
 const useStyles = makeStyles((theme) => ({
     flower: { width: "100%" },
 }))
 const Lotus = () => {
     const classes = useStyles()
+    const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
+
   return (
     <Box className={classes.flower}>
-      <svg width="375" height="384" viewBox="0 0 375 384" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <svg width={!!supportsSidebar ? "375" :"330"} height={!!supportsSidebar ? "384" : "338"} viewBox="0 0 375 384" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect x="-4" width="384" height="384" fill="url(#pattern0)"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
