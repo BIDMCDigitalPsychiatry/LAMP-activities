@@ -205,10 +205,10 @@ export default function Breathe({ ...props }) {
   }
 
   const videoLoaded = () => {
+    setIsLoading(false)
     setStarted(!started)
     setTime(new Date().getTime())
     setProgressUpdate()
-    setIsLoading(false)
   }
 
   const setProgressUpdate = () => {
