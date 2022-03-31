@@ -374,7 +374,7 @@ export default function Breathe({ ...props }) {
                   videoLoaded()
                 }}
                 loop
-                preload="none"
+                preload={"metadata"}
               />
               {started && (
                 <Box className={classes.inhale_exhale}>
