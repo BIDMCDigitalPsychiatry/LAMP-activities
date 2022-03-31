@@ -66,13 +66,13 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     const xValues = this.getCoords(
-      window.innerWidth - ((window.innerWidth * 20) / 100),
+      window.innerWidth - (window.innerWidth * 20) / 100,
       1
     );
     const yValues = this.getCoords(
       window.innerHeight - (window.innerHeight * 25) / 100,
       2
-    );    
+    );     
     this.state = {
       allRoutes: [],
       bubble_count: [60, 80, 80],
@@ -313,7 +313,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                   y={y}
                   class="bubble-text"
                   onClick={this.handleClick}
-                  onHide={() => void(0)}
                   bubbleDuration={this.state.bubble_duration}
                 />
                 </Animated>
@@ -391,7 +390,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       y={y}
                       class="size-l bubble-blue-large bubble-result"
                       onClick={this.handleClick}
-                      onHide={() => void(0)}
                       bubbleDuration={this.state.bubble_duration}
                     />
                   ) : (
@@ -403,7 +401,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                       y={y}
                       class="size-l bubble-blue-large bubble-result"
                       onClick={this.noClick}
-                      onHide={() => void(0)}
                       bubbleDuration={this.state.bubble_duration}
                     />
                   )}
@@ -441,7 +438,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                   y={y}
                   class="size-l bubble-blue-large"
                   onClick={this.handleClick}
-                  onHide={() => void(0)}
                   bubbleDuration={this.state.bubble_duration}
                 />
               </div>

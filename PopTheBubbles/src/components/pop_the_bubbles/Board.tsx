@@ -1006,8 +1006,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     e: any,
     index: any,
     lastClass: string,
-    toBeTapped: boolean,
-    durationVal : number
+    toBeTapped: boolean
   ) => {
     const pointsToReduce =
       typeof this.state.bubbleStyles[index] !== "undefined" &&
@@ -1033,15 +1032,9 @@ class Board extends React.Component<BoardProps, BoardState> {
     });
 
     if (!this.state.clickedBubbleIndexes.includes(index)) {
-      this.handleHide(index, lastClass, success, durationVal)
-    }
-  };
-
-  handleHide = (index: number, lastClass:string, success: boolean, durationVal: number) => {
-    let route = {};
+      let route = {};
       route = {
-        duration: durationVal,
-        item: index,
+        item: this.state.route.length + 1,
         level: this.props.level,
         type: success,
         value: this.bubbleSpecifics(
@@ -1054,7 +1047,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         clickedBubbleIndexes: [...prevState.clickedBubbleIndexes, index],
         route: [...prevState.route, route],
       }));
-  }
+    }
+  };
     
   // Render the game board
   render() {
@@ -1094,7 +1088,6 @@ class Board extends React.Component<BoardProps, BoardState> {
             class={this.state.bubbleStyles[i]}
             bubbleToTap={bubbleToTap}
             onClick={this.handleClick}
-            onHide={this.handleHide}
             bubbleDuration={this.props.bubbleDuration}
           />
         );
