@@ -206,7 +206,58 @@ console.log(resultImages)
     }
   };
   handleResultClick = (e:any) => {
-    console.log(e.target.getAttribute("data-key"))
+    console.log(e.target.parentNode.id)
+    if (
+      this.state.enableTap &&
+      (this.state.orderNumber + 1 < this.state.randomPoints.length)
+    ) {
+      let success = false;
+      console.log(this.state.randomPoints)
+      const order = this.state.randomPoints.indexOf(
+        parseInt(e.target.closest("div").id, 10)
+      );
+      console.log(order, this.state.orderNumber)
+      success =
+        (order === this.state.orderNumber + 1)
+          ? true
+          : false;
+        console.log(success)
+      // const item =
+      //   e.target.className === "box-white" ?  e.target.children[0] :e.target ;
+      // if (typeof item !== "undefined") {
+      //   item.className = success
+      //     ? "box-white green-box-square"
+      //     : "box-white red-box-square";
+
+        this.setState({
+          enableTap:
+              this.state.orderNumber + 1 < this.state.randomPoints.length
+              ? true
+              : false,
+          nextButton:            
+              this.state.orderNumber + 2 >= this.state.randomPoints.length
+              ? true
+              : false,
+          orderNumber: 
+            this.state.orderNumber + 1,
+          stateSuccessTaps: success
+            ? this.state.stateSuccessTaps + 1
+            : this.state.stateSuccessTaps,
+          stateWrongTaps: !success
+            ? this.state.stateWrongTaps + 1
+            : this.state.stateWrongTaps,
+          successTaps: success
+            ? this.state.successTaps + 1
+            : this.state.successTaps,
+          wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
+        });
+        // Update states for game result
+        this.updateWithTaps(
+          parseInt(e.target.closest("div").id, 10),
+          success
+        );
+      // }
+    }
   }
   // Each box click is handled here
   handleClick = (e: any) => {
@@ -474,9 +525,9 @@ console.log(resultImages)
       const children = [];
       // Inner loop to create children
       for (let j = 0; j < this.props.cols; j++) {
-        const section = <div className={"box-white"} >{this.state.allImages[p-1]}</div>
+        const section = <div className={"box-white"} id={p.toString()} key={p} data-key={p} onClick={this.handleResultClick} >{this.state.allImages[p-1]}</div>
         children.push(
-          <td key={p} data-key={p} onClick={this.handleClick}>
+          <td key={"00" + p}>
            {section}
           </td>
         );
