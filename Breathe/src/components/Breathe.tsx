@@ -205,10 +205,10 @@ export default function Breathe({ ...props }) {
   }
 
   const videoLoaded = () => {
-    setIsLoading(false)
     setStarted(!started)
     setTime(new Date().getTime())
     setProgressUpdate()
+    setIsLoading(false)
   }
 
   const setProgressUpdate = () => {
@@ -366,7 +366,6 @@ export default function Breathe({ ...props }) {
                 </Box>
               </Box>
             )}
-            {/* //   {isLoading && ( */}
             <Grid item className={classes.videoNav}>
               <video
                 src="./videos/Lotus.mp4"
@@ -375,8 +374,7 @@ export default function Breathe({ ...props }) {
                   videoLoaded()
                 }}
                 loop
-                preload={"metadata"}
-                //   onLoadEnd={() =>setIsLoading(false)}
+                preload="none"
               />
               {started && (
                 <Box className={classes.inhale_exhale}>
