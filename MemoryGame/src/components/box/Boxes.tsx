@@ -72,8 +72,8 @@ class Box extends React.Component<{}, AppState> {
             <div className="heading">{i18n.t("BOX_GAME")}</div>
             <div className="game-board">
               <Board 
-              animationInterval={this.state.settings?.animation_interval ?? 1}
-              animationPersistance={this.state.settings?.animation_persistance ?? 2}
+              animationInterval={this.state.settings?.animation_interval ?? 1000}
+              animationPersistance={this.state.settings?.animation_persistance ?? 2000}
               cols={this.state.settings?.cols ?? 3}
               encodingTrials={this.state.settings?.encoding_trials ?? 3}
               language={i18n.language}

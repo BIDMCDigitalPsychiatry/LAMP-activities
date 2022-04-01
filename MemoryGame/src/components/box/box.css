@@ -91,6 +91,16 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	max-height: 350px;
 	height: 350px !important;
 }
+box-result-table{
+	width: 100% !important;
+    /* position: fixed;
+    top: 18%;
+    left: 5%;
+	right: 5%; */
+	max-width: 350px;
+	max-height: 350px;
+	height: 350px !important;
+}
 .next-button{
 	bottom: 12%;
     position: absolute;
@@ -236,10 +246,53 @@ td{
 		margin: 0 20px;
 	}
 		.box-info{font-size: 16px !important;}
+		.memory-outer{min-width: 700px;}
 
 }
 @media only screen and (max-width: 768px) {
 	.box-game{display: inline-flex; justify-content: center; flex-direction: column;}
 	.box-table {margin-bottom: 20px;}
 }
-
+.memory-outer{
+	background-color: #FFF;
+	padding: 15px 30px;
+	border-radius: 5px;
+	text-align: left;
+	margin-bottom: 50px;
+}
+.react-datepicker__time-list-item{
+	display: flex;
+	align-items: center;
+}
+.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px;}
+.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 10px;} 
+.react-datepicker__input-container input{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+}
+.react-datepicker__input-container input:focus-visible, .question-nav select{
+	outline: 0;
+}
+.question-nav select{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+	min-width: 185px;
+}
+.react-datepicker--time-only .react-datepicker__triangle{
+	left: -40px !important;
+}
+.inactive{opacity: 0.5;}
+button.primary{
+	background-color: #359ffe;
+	color: #fff;
+	font-size: 16px;
+	padding: 10px 25px;
+	border: 0;
+	font-weight: 600;
+	border-radius: 5px;
+	cursor: pointer;
+}
+button.primary:hover{background-color: #197ed8}
+.text-right{text-align: right;}

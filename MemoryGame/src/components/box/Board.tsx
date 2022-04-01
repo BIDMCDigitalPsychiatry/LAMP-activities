@@ -8,10 +8,14 @@
 import * as React from "react";
 import getImages from "./RandomImage"
 
+import { renderToString } from 'react-dom/server'
+
 import { getRandomNumbers } from "../../functions";
 import i18n from "./../../i18n";
 
 import { Timer } from "../common/Timer";
+// import Questions from "./Questions"
+
 import "./box.css";
 
 interface BoardState {
@@ -21,6 +25,7 @@ interface BoardState {
   boxClass: Array<string>;
   boxCount: number;
   boxes: any;
+  clickedImageIndex: number;
   enableTap: boolean;
   endTime: any;
   imageIndex: number,
@@ -69,7 +74,6 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   constructor(props: BoardProps) {
     super(props);
-    console.log("sfdsf")
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
     // Initailise state values
     const timerValue =
@@ -78,9 +82,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         : Number(process.env.REACT_APP_BOX_TIMOUT_PERIOD);
 
         const selected = getImages(this.props.seqLength, [])
-console.log(selected)
     const resultImages = selected.images.concat(getImages((this.props.cols * this.props.rows) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
-console.log(resultImages)
     this.state = {
       activeCell: 0,
       allImages: resultImages,
@@ -88,6 +90,7 @@ console.log(resultImages)
       boxClass: ["box-square"],
       boxCount: 1,
       boxes: null,
+      clickedImageIndex: -1,
       enableTap: false,
       endTime: null,
       failureCount: 0,
@@ -208,19 +211,25 @@ console.log(resultImages)
     }
   };
   handleResultClick = (e:any) => {
-    const index = e.target.closest("div").getAttribute("data-key")
-    const success =  this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex]
-    console.log(index, this.state.resultClickIndex, 
-       this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex],  this.state.allImages, this.state.images)
     
-       if (
-        this.state.enableTap &&
-        (this.state.resultClickIndex + 1 < this.state.randomPoints.length)
-      ) {
-
-          
-  
-          this.setState({
+    if (this.state.enableTap) {  
+      const index = e.target.closest("div").getAttribute("data-key")
+      const success =  this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex]
+      const targets = e.target.closest("table").querySelectorAll("div")
+      for(const i of targets){
+        i.className = (i.getAttribute("data-key") !== index) ?
+           "box-white inactive"
+        : "box-white"
+       }
+       if(!!success ) {
+        const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
+        const ele = document.querySelector("[data-key='"+imageIndex+"']")
+        if (ele) {
+          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
+        }
+       }
+       this.setState({
+            clickedImageIndex: index,
             enableTap:
               this.state.resultClickIndex + 1  < this.state.randomPoints.length
                 ? true
@@ -230,7 +239,7 @@ console.log(resultImages)
                 ? true
                 : false,
             resultClickIndex:this.state.resultClickIndex + 1,
-      stateSuccessTaps: success
+          stateSuccessTaps: success
             ? this.state.stateSuccessTaps + 1
             : this.state.stateSuccessTaps,
           stateWrongTaps: !success
@@ -397,7 +406,7 @@ console.log(resultImages)
   showBoxes = (rP: Array<number>, i: number) => {
     this.setState({
       activeCell: rP[i],
-      animate: false,
+      // animate: false,
       successTaps: 0,
       wrongTaps: 0,
     });
@@ -406,7 +415,7 @@ console.log(resultImages)
         animate: true,
         imageIndex: i,
       });
-      this.timerBox = setTimeout(() => this.showBoxes(rP, i + 1), 1500);
+      this.timerBox = setTimeout(() => this.showBoxes(rP, i + 1), this.props.animationInterval);
     } else {
       this.setState({
         enableTap: true,
@@ -417,25 +426,24 @@ console.log(resultImages)
           gameSequence: false,
           showGo: false,
         });
-      }, 1500);
+      }, this.props.animationPersistance);
     }
   };
 
   // To set up game board
   createTable = () => {
     const table = [];
-    let p = 1;
-    let k = 0;
+    let p =1;
     // Outer loop to create parent
     for (let i = 0; i < this.props.rows; i++) {
       const children = [];
       // Inner loop to create children
       for (let j = 0; j < this.props.cols; j++) {
-        const section = this.state.animate === true && p === this.state.activeCell
+        const section =  p === this.state.activeCell
             ? <div className={"box-white"}>{this.state.images[this.state.imageIndex]}</div>
-            : <div className={"box-white"} data-key={p} />;
-        k = p === this.state.activeCell ? k + 1 : k;
-
+            : <div className={"box-white"} data-key={p}>{this.state.randomPoints.includes(p) && 
+              this.state.randomPoints.indexOf(p) <= this.state.imageIndex && this.state.gameSequence === true ? 
+              this.state.images[this.state.randomPoints.indexOf(p)] : null} </div>;
         children.push(
           <td key={p}>
            {section}
@@ -443,7 +451,6 @@ console.log(resultImages)
         );
         p++;
       }
-
       // Create the parent and add the children
       table.push(<tr key={i}>{children}</tr>);
     }
@@ -460,7 +467,7 @@ console.log(resultImages)
       for (let j = 0; j < this.props.cols; j++) {
         const section = <div className={"box-white"} key={p-1} data-key={p-1} onClick={this.handleResultClick} >{this.state.allImages[p-1]}</div>
         children.push(
-          <td key={"00" + p}>
+          <td key={p-1}>
            {section}
           </td>
         );
@@ -510,7 +517,7 @@ console.log(resultImages)
           : null;
     } else {  
       board = (
-        <table className="box-table" style={this.getTableStyles()}>
+        <table className="box-table" id="options-table" style={this.getTableStyles()}>
           <tbody>{this.createTable()}</tbody>
         </table>
       );
@@ -580,6 +587,7 @@ console.log(resultImages)
           <div style={{float:"left"}}> {board}</div>
           {boardResult}
           {/* {alert} */}
+          {/* <Questions /> */}
         </div>
         {nextButton}
 
