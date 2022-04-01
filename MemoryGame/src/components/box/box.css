@@ -55,10 +55,14 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	left: 0;
 }
 .box-white{
-	height: 160px;	
-	width:160px;
+	height: 130px;	
+	width:130px;
 	background-color: white;
 	border: medium #a8a5a5;
+}
+.box-white svg, .box-white img{
+	width: 130px !important;
+	height: 130px !important;
 }
 .box-green{
 	height: 100%;	
@@ -108,7 +112,7 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .mt-30{
 	margin-top: 30px;
 }
-.box-game{width: 350px; height: 350px; position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto;}
+.box-game{ top: 0; right: 0; bottom: 0; left: 0; margin: auto;}
 body {
 	font:18px Helvetica,Arial,sans-serif;
 	margin:30px
@@ -222,15 +226,20 @@ td{
 
 }
 
-@media only screen and (min-width: 768px) {
-	.box-table{position: relative; margin: 0 auto; left: auto; right: auto;}
-	.box-game{width: 400px; height: 400px;}
+@media only screen and (min-width: 769px) {
+	.box-table{position: relative;}
+	.box-game{display: flex; justify-content: center;}
 	.box-table {
-		
-		max-width: 400px;
-		max-height: 4000px;
-		height: 400px !important;}
+		/* max-width: 400px;
+		max-height: 400px;
+		height: 400px !important; */
+		margin: 0 20px;
+	}
 		.box-info{font-size: 16px !important;}
 
+}
+@media only screen and (max-width: 768px) {
+	.box-game{display: inline-flex; justify-content: center; flex-direction: column;}
+	.box-table {margin-bottom: 20px;}
 }
 

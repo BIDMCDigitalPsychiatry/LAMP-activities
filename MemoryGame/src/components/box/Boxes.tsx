@@ -47,7 +47,6 @@ class Box extends React.Component<{}, AppState> {
       },
       false
     );
-    console.log("sdf")
   }
 
   // To refresh the game
