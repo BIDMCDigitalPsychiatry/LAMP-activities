@@ -16,6 +16,7 @@ import Board from "./Board";
 import i18n from "./../../i18n";
 
 interface AppState {
+  autoCorrect: boolean;
   loaded: boolean;
   settings: any;
   time:number;
@@ -26,6 +27,7 @@ class Box extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     const state = {
+      autoCorrect:false,
       loaded: true,
       noBack:false,
       settings: {},
@@ -43,7 +45,7 @@ class Box extends React.Component<{}, AppState> {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ settings, noBack: e.data.noBack, loaded: true });
+        this.setState({ autoCorrect: e.data.autoCorrect, settings, noBack: e.data.noBack, loaded: true });
       },
       false
     );
@@ -72,15 +74,17 @@ class Box extends React.Component<{}, AppState> {
             <div className="heading">{i18n.t("BOX_GAME")}</div>
             <div className="game-board">
               <Board 
-              animationInterval={this.state.settings?.animation_interval ?? 1000}
-              animationPersistance={this.state.settings?.animation_persistance ?? 2000}
-              cols={this.state.settings?.cols ?? 3}
-              encodingTrials={this.state.settings?.encoding_trials ?? 3}
-              language={i18n.language}
-              retensionInterval={this.state.settings?.retension_interval ?? 1}
-              rows={this.state.settings?.rows ?? 3}
-              seqLength={this.state.settings?.sequence_length ?? 3}
-              time={this.state.time} />
+                animationInterval={this.state.settings?.animation_interval ?? 1000}
+                animationPersistance={this.state.settings?.animation_persistance ?? 2000}
+                cols={this.state.settings?.cols ?? 3}
+                encodingTrials={this.state.settings?.encoding_trials ?? 3}
+                language={i18n.language}
+                retensionInterval={this.state.settings?.retension_interval ?? 1000}
+                rows={this.state.settings?.rows ?? 3}
+                seqLength={this.state.settings?.sequence_length ?? 3}
+                time={this.state.time} 
+                autoCorrect={this.state.autoCorrect ?? false}
+              />
             </div>
           </div>
         )}

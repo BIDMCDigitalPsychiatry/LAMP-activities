@@ -57,6 +57,7 @@ interface BoardState {
 interface BoardProps {
   animationInterval: number;
   animationPersistance: number;
+  autoCorrect: boolean;
   cols:number;
   encodingTrials: number;
   retensionInterval: number;
@@ -210,8 +211,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       });
     }
   };
-  handleResultClick = (e:any) => {
-    
+  handleResultClick = (e:any) => {    
     if (this.state.enableTap) {  
       const index = e.target.closest("div").getAttribute("data-key")
       const success =  this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex]
@@ -221,11 +221,20 @@ class Board extends React.Component<BoardProps, BoardState> {
            "box-white inactive"
         : "box-white"
        }
-       if(!!success ) {
+       if(!success && !!this.props.autoCorrect ) {
+         const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
+         const items = e.target.closest("table").querySelectorAll("div")
+         for(const item of items){
+          item.className = (parseInt(item.getAttribute("data-key"), 10) !== correctIndex) ?
+             "box-white inactive"
+          : "box-white"
+         }
+       }
+       if(!!success || !!this.props.autoCorrect) {
         const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
         const ele = document.querySelector("[data-key='"+imageIndex+"']")
         if (ele) {
-          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
+          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])        
         }
        }
        this.setState({
@@ -330,12 +339,9 @@ class Board extends React.Component<BoardProps, BoardState> {
       JSON.stringify({
         duration: new Date().getTime() - this.props.time,
         static_data: {
-          EndTime: new Date(),
-          StartTime: this.state.startTime,
           correct_answers: this.state.stateSuccessTaps,
           point: points,
           score: gameScore,
-          type: 1,
           wrong_answers: this.state.stateWrongTaps,
         },
         temporal_slices: JSON.parse(this.state.boxes),
@@ -418,11 +424,11 @@ class Board extends React.Component<BoardProps, BoardState> {
       this.timerBox = setTimeout(() => this.showBoxes(rP, i + 1), this.props.animationInterval);
     } else {
       this.setState({
-        enableTap: true,
         showGo: true,
       });
       this.timerBox = setTimeout(() => {
         this.setState({
+          enableTap: true,
           gameSequence: false,
           showGo: false,
         });
