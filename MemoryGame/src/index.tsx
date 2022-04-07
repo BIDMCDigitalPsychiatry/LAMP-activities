@@ -11,6 +11,8 @@ import { AppContainer } from "react-hot-loader";
 import Boxes from './components/box/Boxes';
 import './index.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 ReactDOM.render(
     <AppContainer>
       <Boxes/>

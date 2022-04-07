@@ -13,8 +13,7 @@ import { renderToString } from 'react-dom/server'
 import { getRandomNumbers } from "../../functions";
 import i18n from "./../../i18n";
 
-import { Timer } from "../common/Timer";
-// import Questions from "./Questions"
+import Questions from "./Questions"
 
 import "./box.css";
 
@@ -26,6 +25,7 @@ interface BoardState {
   boxCount: number;
   boxes: any;
   clickedImageIndex: number;
+  completed: boolean;
   enableTap: boolean;
   endTime: any;
   imageIndex: number,
@@ -40,7 +40,9 @@ interface BoardState {
   startTime: any;
   startTimer: number;
   timeout: boolean;
+  trail:number;
   showGo: boolean;
+  showQuestions: boolean;
   showWait: boolean;
   successStages: number;
   successTaps: number;
@@ -92,6 +94,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxCount: 1,
       boxes: null,
       clickedImageIndex: -1,
+      completed: false,
       enableTap: false,
       endTime: null,
       failureCount: 0,
@@ -107,6 +110,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       resultClickIndex:0,
       sendResponse: false,
       showGo: false,
+      showQuestions: false,
       showWait: true,
       startTime: null,
       startTimer: timerValue,
@@ -116,6 +120,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       successStages: 0,
       successTaps: 0,
       timeout: false,
+      trail:0,
       wrongStages: 0,
       wrongTaps: 0,
     };
@@ -127,51 +132,68 @@ class Board extends React.Component<BoardProps, BoardState> {
 
    // Reset game state for each state
   resetState = () => {
-    // getRandomImages()
-    if (this.state.gameState > 0) {
-      this.updateStateWithTaps();
-    }
-    // if falied any state 2times - game will exit
-    if (this.state.failureCount === 1 && this.state.wrongTaps > 0) {
-      this.checkStatus();
-      // To show wait message
-      this.setState({
-        gameOver: true,
-        gameSequence: false,
-        showGo: false,
-        showWait: false,
-      });
-    } else {
-      const statePassed =
-        (this.props.seqLength >= 2 &&
-          this.props.seqLength === this.state.successTaps) ||
-        this.props.seqLength === 1
-          ? true
-          : false;
-      const gameStateVal = statePassed
-        ? this.state.gameState + 1
-        : this.state.gameState;
-      const wrongStagesVal = statePassed
-        ? this.state.wrongStages
-        : this.state.wrongStages + 1;
-      const successStagesVal = statePassed
-        ? this.state.successStages + 1
-        : this.state.successStages;
-      if (gameStateVal !== 6) {
-        this.resetBoxClass();
+    console.log("reset")
+    const selected = getImages(this.props.seqLength, [])
+    const resultImages = selected.images.concat(getImages((this.props.cols * this.props.rows) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
+    this.setState({
+      allImages: resultImages,
+      images: selected?.images,
+      trail: this.state.trail + 1
+    }, () => {
+      console.log(this.state.trail)
+      if(!!this.props.autoCorrect && this.state.trail > 3) {
+        this.setState({
+          showQuestions:true
+        })
       }
-      this.setState({
-        gameState: gameStateVal,
-        nextButton: false,
-        orderNumber: -1,
-        randomPoints: [],
-        successStages: successStagesVal,
-        wrongStages: wrongStagesVal,
-      });
+    })
+  // }
+
+
+  //   // getRandomImages()
+  //   if (!!this.props.autoCorrect && this.state.trail > 3 || !!this.state.completed ) {
+  //     this.updateStateWithTaps();
+  //   }
+  //   // if falied any state 2times - game will exit
+  //   if (this.state.failureCount === 1 && this.state.wrongTaps > 0) {
+  //     this.checkStatus();
+  //     // To show wait message
+  //     this.setState({
+  //       gameOver: true,
+  //       gameSequence: false,
+  //       showGo: false,
+  //       showWait: false,
+  //     });
+  //   } else {
+  //     const statePassed =
+  //       (this.props.seqLength >= 2 &&
+  //         this.props.seqLength === this.state.successTaps) ||
+  //       this.props.seqLength === 1
+  //         ? true
+  //         : false;
+  //     const gameStateVal = statePassed
+  //       ? this.state.gameState + 1
+  //       : this.state.gameState;
+  //     const wrongStagesVal = statePassed
+  //       ? this.state.wrongStages
+  //       : this.state.wrongStages + 1;
+  //     const successStagesVal = statePassed
+  //       ? this.state.successStages + 1
+  //       : this.state.successStages;
+  //     if (gameStateVal !== 6) {
+  //       this.resetBoxClass();
+  //     }
+  //     this.setState({
+  //       gameState: gameStateVal,
+  //       nextButton: false,
+  //       orderNumber: -1,
+  //       randomPoints: [],
+  //       successStages: successStagesVal,
+  //       wrongStages: wrongStagesVal,
+  //     });
 
       // To show wait message
       this.resetWaitBox = setTimeout(() => {
-        if (gameStateVal !== 6) {
           this.setState({
             gameSequence: true,
             orderNumber: -1,
@@ -180,8 +202,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             startTime:
               this.state.gameState === 1 ? new Date() : this.state.startTime,
           });
-        }
-        this.setState({});
+       
       }, 500);
 
       // Set game state after infor message
@@ -190,8 +211,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.setGameState();
       }, 2000);
     }
-  };
-  // Rest box styles after each load
+  // };
+  // // Rest box styles after each load
   resetBoxClass = () => {
     Array.from(document.getElementsByClassName("box-white")).forEach((elem) => {
       elem.className = "box-white";
@@ -260,6 +281,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
     })
     this.updateWithTaps(index, success);
+
   }
   }
  
@@ -319,6 +341,16 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState({
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
+    }, () => {
+      if(this.state.resultClickIndex + 1  < this.state.randomPoints.length){
+        if(!!this.props.autoCorrect && this.state.trail <= 3) {
+          this.resetState()
+        } else {
+          setTimeout(() => {
+            this.sendGameResult()
+          }, 2000)
+        }        
+      }
     });
   };
 
@@ -433,8 +465,42 @@ class Board extends React.Component<BoardProps, BoardState> {
           showGo: false,
         });
       }, this.props.animationPersistance);
+      if(this.props.autoCorrect) {
+        setTimeout(() => {
+          this.updateAutoCorrection()
+        }, 5000);
+        
+      }
     }
   };
+
+  updateAutoCorrection = () => {
+    const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
+    const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
+    const ele = document.querySelector("[data-key='"+imageIndex+"']")
+    if (ele) {
+      const items = Array.from(document.querySelectorAll("#images-table div"))
+      for(const item of items){
+        if(item) {
+        item.className = (item?.getAttribute("data-key") !== correctIndex.toString()) ?
+            "box-white inactive"
+          : "box-white"
+        }
+      }
+      ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
+    }
+    this.setState({
+      resultClickIndex:this.state.resultClickIndex + 1,
+    }, () => {
+      setTimeout(() => {
+        if(this.state.resultClickIndex < this.state.randomPoints.length) {
+          this.updateAutoCorrection()
+        } else {
+          this.resetState()
+        }
+      }, 5000)
+    })
+ }
 
   // To set up game board
   createTable = () => {
@@ -496,10 +562,6 @@ class Board extends React.Component<BoardProps, BoardState> {
   render() {
     let board;
     let boardResult;
-    let nextButton = null;
-    let timer = null;
-    // let alert = null;
-    let level = null;
     let infoText = null;
     let alertText = null;
     if (
@@ -528,76 +590,49 @@ class Board extends React.Component<BoardProps, BoardState> {
         </table>
       );
       boardResult = (
-        <table className="box-table" style={this.getTableStyles()}>
+        <table className="box-table" id="images-table" style={this.getTableStyles()}>
           <tbody>{this.createResultTable()}</tbody>
         </table>
       );
-      // Next button rendering controlled here
-      nextButton = this.state.nextButton ? (
-        <div className="next-button">
-          <button onClick={this.resetState}>{i18n.t("NEXT")}</button>
-        </div>
-      ) : null;
-      // Timer to be shown or not
-      timer =
-        !this.state.timeout &&
-        !this.state.gameOver &&
-        this.state.gameState > 0 ? (
-          <Timer
-            passTimerUpdate={this.passTimerUpdate}
-            startTimeInSeconds={this.state.startTimer}
-            startTimer={this.state.gameState}
-          />
-        ) : null;
-      // Wait and go message handled here
-      // alert = this.state.showWait ? (
-      //   <div className="box-alert">
-      //     <span>{i18n.t("PLEASE_WAIT_AND_WATCH")}</span>
-      //   </div>
-      // ) : this.state.showGo ? (
-      //   <div className="box-alert">
-      //     <span>{i18n.t("GO")}</span>
-      //   </div>
-      // ) : null;
-      // Info message to show
       infoText =
         this.state.gameSequence && this.state.gameState > 0 ? (
           <span>{i18n.t("PLEASE_REMEMBER_THE_SEQUENCE")}</span>
         ) : null;
-      // Game state
-      level =
-        this.state.gameState > 0 ? (
-          <span>{i18n.t("LEVEL")} {this.state.gameState}</span>
-        ) : null;
-      // Show the alert on bottom of game board
+     
       alertText = this.state.gameSequence ? (
         <div className="box-info">
-          {i18n.t("REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM")}
+          {i18n.t("LEARN_THE_SEQUENCE")}
         </div>
-      ) : this.state.gameState > 0 ? (
+      ) : this.state.gameState > 0 ? (this.state.resultClickIndex === 0 ? (
         <div className="box-info">
-          { i18n.t("NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED")}
+          { i18n.t("TAP_THE_1st_PICTURE")}
         </div>
-      ) : null;
+      ) : this.state.resultClickIndex === 1 ? (
+        <div className="box-info">
+          { i18n.t("TAP_THE_2nd_PICTURE")}
+        </div>
+      ) : this.state.resultClickIndex === 2 ? (
+        <div className="box-info">
+          { i18n.t("TAP_THE_3rd_PICTURE")}
+        </div>
+      ) : null) : null; 
     }
 
     return (
       <div>
         <div className="timer-div">
-          {timer}
-          {level}
+          {!!this.props.autoCorrect && "Trial " + (this.state.trail)}
           <br />
           {infoText}
         </div>
-        <div className="mt-30 box-game">
+        {!!this.state.showQuestions ? (
+          <Questions />
+        )
+        :(<div className="mt-30 box-game">
           <div style={{float:"left"}}> {board}</div>
           {boardResult}
-          {/* {alert} */}
-          {/* <Questions /> */}
-        </div>
-        {nextButton}
-
-        {alertText}
+          {alertText}
+        </div>)}
       </div>
     );
   }
