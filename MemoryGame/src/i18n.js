@@ -8,16 +8,13 @@ const resources = {
       CONGRATS: "Congrats",
       GAME_OVER: "Game Over",
       GO: "Go",
+      LEARN_THE_SEQUENCE:
+      "Learn the sequence",
       LEVEL: "Level",
       NEXT: "Next",
-      NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the order they were highlighted.",
-      NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the reverse order they were highlighted.",
-      PLEASE_REMEMBER_THE_SEQUENCE: "Please remember the sequence",
-      PLEASE_WAIT_AND_WATCH: "Please wait and watch",
-      REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
-        "Remember the highlighted boxes in the order you see them.",
+      TAP_THE_1st_PICTURE: "Place the 1st picture",
+      TAP_THE_2nd_PICTURE: "Place the 2nd picture",
+      TAP_THE_3rd_PICTURE: "Place the 3rd picture",
       TIME_OUT: "Time Out",
     },
   },
@@ -27,6 +24,8 @@ const resources = {
       CONGRATS: "Felicidades",
       GAME_OVER: "Juego Terminado",
       GO: "Vamos",
+      LEARN_THE_SEQUENCE:
+      "Learn the sequence",
       LEVEL: "Nivel",
       NEXT: "siguiente",
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
@@ -46,6 +45,8 @@ const resources = {
       CONGRATS: "बधाई हो ",
       GAME_OVER: "खेल खत्म",
       GO: "जाए",
+      LEARN_THE_SEQUENCE:
+      "Learn the sequence",
       LEVEL: "स्तर",
       NEXT: "आगे",
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
