@@ -13,7 +13,6 @@ import * as React from "react";
 
 import Board from "./Board";
 
-import { InfoModal } from "../common/InfoModal";
 
 
 import i18n from "./../../i18n";
@@ -22,7 +21,6 @@ interface AppState {
   autoCorrect: boolean;
   loaded: boolean;
   settings: any;
-  showModalInfo: boolean;
   time:number;
   noBack: boolean;
 }
@@ -35,7 +33,6 @@ class Box extends React.Component<{}, AppState> {
       loaded: true,
       noBack:false,
       settings: {},
-      showModalInfo:true,
       time: new Date().getTime(),
     };
     this.state = state;
@@ -66,12 +63,6 @@ class Box extends React.Component<{}, AppState> {
   }
 
   
-  // Modal close is handled here
-  handleClose = (status: boolean) => {
-    this.setState({
-      showModalInfo: status     
-    });
-  };
 
 
   // Game render function
@@ -88,13 +79,7 @@ class Box extends React.Component<{}, AppState> {
             </nav>
             <div className="heading">{i18n.t("BOX_GAME")}</div>
             <div className="game-board">
-            <InfoModal
-              show={this.state.showModalInfo}
-              modalClose={this.handleClose}
-              msg={i18n.t("You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.")}
-              language={i18n.language}
-            />
-            {!this.state.showModalInfo && 
+           
               <Board 
                 animationInterval={this.state.settings?.animation_interval ?? 1000}
                 animationPersistance={this.state.settings?.animation_persistance ?? 2000}
@@ -106,7 +91,7 @@ class Box extends React.Component<{}, AppState> {
                 seqLength={this.state.settings?.sequence_length ?? 3}
                 time={this.state.time} 
                 autoCorrect={this.state.autoCorrect ?? true}
-              />}
+              />
             </div>
           </div>
         )}
