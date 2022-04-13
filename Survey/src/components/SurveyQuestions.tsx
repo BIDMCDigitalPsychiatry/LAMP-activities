@@ -499,14 +499,14 @@ function TimeSelection({ onChange, options, value, ...props }) {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
       ((!!options?.timePattern && options?.timePattern === "standard") ||
-      (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
+      (Array.isArray(options) && !!options[0] &&  !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
   }, [])
 
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
        ((!!options?.timePattern && options?.timePattern === "standard") ||
-       (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
+       (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
    }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
   
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
@@ -538,7 +538,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
        ":" + (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) + 
        ((!!options?.timePattern && options?.timePattern === "standard") ||
-       (!!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
+       (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
   }
   const handleHoursClose = () => {
     setAnchorEl(null)
@@ -552,10 +552,10 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const ampm = []
 
   const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-  (!!options[0]?.value && options[0]?.value === "standard")? range(0, 12): range(0, 24)
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(0, 12): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
   if((!!options?.timePattern && options?.timePattern === "standard") ||
-  (!!options[0]?.value && options[0]?.value === "standard")) {
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
     ampm.push(
       <MenuItem
         key="AM"
@@ -635,7 +635,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
           </Menu>
         </Grid>
         {((!!options?.timePattern && options?.timePattern === "standard") ||
-       (!!options[0]?.value && options[0]?.value === "standard")) && (<Grid item>
+        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) && (<Grid item>
           <List component="nav" className={classes.timeHours} aria-label="Device settings">
             <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
               <ListItemText secondary={ampmSelectedIndex} />
