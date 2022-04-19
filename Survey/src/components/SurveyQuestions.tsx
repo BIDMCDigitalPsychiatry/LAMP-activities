@@ -1277,6 +1277,8 @@ const updateResponses = (x, response, responses, idx, startTime, setActiveStep, 
       (x.type !== "text" ? new Date().getTime() - startTime : new Date().getTime() - lastEndTime) +
         (currentItem?.duration ?? 0)
     response.endTime = new Date().getTime()
+    response.type = null
+    response.level = null
     return (
       Array.from({
         ...responses.current,
@@ -1539,6 +1541,9 @@ export default function SurveyQuestions({...props}) {
 
   const postSubmit = (response) => {
     if(validator(response)) {
+      response.map((r) => {
+        delete r.endTime
+      })
       const result = {
         temporal_slices: response,
         duration : new Date().getTime() - startTime,
