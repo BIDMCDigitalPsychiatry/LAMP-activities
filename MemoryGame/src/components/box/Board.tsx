@@ -80,6 +80,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   constructor(props: BoardProps) {
     super(props);
+    console.log(props)
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
     // Initailise state values
     const timerValue =
@@ -135,11 +136,12 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState({
       showModalInfo: status     
     }, () => {
-      console.log("sdfs")
       this.resetGoBox = setTimeout(() => {
-        this.setState({ lastClickTime: new Date().getTime(), showWait: false }, () =>{
-          this.setGameState();
-        });
+        if(this.state) {
+          this.setState({ lastClickTime: new Date().getTime(), showWait: false }, () =>{
+            this.setGameState();
+          });
+        }
       }, 2000);
     });
   };
@@ -148,6 +150,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   componentDidMount = () => {
     console.log(this.props.autoCorrect)
     if(!this.props.autoCorrect){
+      console.log("sdf")
       this.setState({
         showQuestions: true
       }, () => {
