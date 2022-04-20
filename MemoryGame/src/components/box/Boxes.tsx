@@ -13,8 +13,6 @@ import * as React from "react";
 
 import Board from "./Board";
 
-
-
 import i18n from "./../../i18n";
 
 interface AppState {
@@ -30,7 +28,7 @@ class Box extends React.Component<{}, AppState> {
     super(props);
     const state = {
       autoCorrect:false,
-      loaded: true,
+      loaded: false,
       noBack:false,
       settings: {},
       time: new Date().getTime(),
@@ -62,9 +60,6 @@ class Box extends React.Component<{}, AppState> {
     parent.postMessage(null, "*");
   }
 
-  
-
-
   // Game render function
   render() {
     return (
@@ -79,8 +74,7 @@ class Box extends React.Component<{}, AppState> {
             </nav>
             <div className="heading">{i18n.t("BOX_GAME")}</div>
             <div className="game-board">
-           
-              <Board 
+             {!!this.state.loaded && <Board 
                 animationInterval={this.state.settings?.animation_interval ?? 1000}
                 animationPersistance={this.state.settings?.animation_persistance ?? 2000}
                 cols={this.state.settings?.cols ?? 3}
@@ -90,8 +84,8 @@ class Box extends React.Component<{}, AppState> {
                 rows={this.state.settings?.rows ?? 3}
                 seqLength={this.state.settings?.sequence_length ?? 3}
                 time={this.state.time} 
-                autoCorrect={this.state.autoCorrect ?? true}
-              />
+                autoCorrect={this.state.autoCorrect ?? false}
+              />}
             </div>
           </div>
         )}
