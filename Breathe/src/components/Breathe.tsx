@@ -205,10 +205,10 @@ export default function Breathe({ ...props }) {
   }
 
   const videoLoaded = () => {
+    setIsLoading(false)
     setStarted(!started)
     setTime(new Date().getTime())
     setProgressUpdate()
-    setIsLoading(false)
   }
 
   const setProgressUpdate = () => {
@@ -374,7 +374,7 @@ export default function Breathe({ ...props }) {
                   videoLoaded()
                 }}
                 loop
-                preload="none"
+                preload={"metadata"}
               />
               {started && (
                 <Box className={classes.inhale_exhale}>

@@ -56,9 +56,13 @@ const useStyles = makeStyles((theme) => ({
   background: {
     background: "#e0e0e0",
     minHeight: "calc(100vh - 65px)",
+    display: "grid",
+    alignItems: "center",
+    "& canvas": {top: "65px"},
   },
   svgouter: {
     "& svg": { width: "100%", maxHeight: "calc(100vh - 70px)" },
+    
     background: "#FFF",
   },
   scratchCompleteMsg: {
