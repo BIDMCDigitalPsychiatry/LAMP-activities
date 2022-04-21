@@ -47,10 +47,38 @@ export default class Questions extends React.Component<Props, State> {
       data: null,
     }
   }
+
+  passTimerUpdate = (timerValue: number) => {
+    if (timerValue === 0) {
+      this.setState(
+        {
+          endTime: new Date(),
+          timeout: true,
+        },
+        () => {
+          this.updateStateWithTaps();
+          this.sendGameResult();
+        }
+      );
+    }
+    this.setState({
+      startTimer: timerValue,
+    });
+  };
   
   render() {
     return (
-      <div>
+      <div className="marginTop10">timer =
+      {!this.state.timeout &&
+      !this.state.gameOver &&
+      this.state.gameState > 0 ? (
+        <Timer
+          passTimerUpdate={this.passTimerUpdate}
+          startTimeInSeconds={this.state.startTimer}
+          startTimer={this.state.gameState}
+        />
+      ) : null}
+
         <div className='memory-outer'>
           <div className='question-nav'>
             <p>About what time is it?</p>

@@ -45,6 +45,7 @@ class Box extends React.Component<{}, AppState> {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        console.log(settings)
         this.setState({ autoCorrect: e.data.autoCorrect, settings, noBack: e.data.noBack, loaded: true });
       },
       false

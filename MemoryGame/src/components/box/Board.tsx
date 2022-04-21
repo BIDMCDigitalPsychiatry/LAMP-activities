@@ -146,7 +146,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, () => {
             this.resetState();
           });       
-      }, 10000);
+      }, 60000);
       })
     } else {
       this.resetState();

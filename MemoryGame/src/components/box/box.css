@@ -256,21 +256,28 @@ td{
 }
 .memory-outer{
 	background-color: #FFF;
-	padding: 15px 30px;
+	padding: 15px 30px 15px 30px;
 	border-radius: 5px;
 	text-align: left;
-	margin-bottom: 50px;
+	width: 100%;
+	max-width: 650px;
+	margin: 0 auto ;
+}
+.marginTop10{
+	margin-top: 12px;
 }
 .react-datepicker__time-list-item{
 	display: flex;
 	align-items: center;
 }
-.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px;}
-.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 10px;} 
+.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
+.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
 .react-datepicker__input-container input{
 	border: #ccc solid 1px;
     padding: 10px;
     border-radius: 3px;
+	font-size: 14px;
+	min-width: 202px;
 }
 .react-datepicker__input-container input:focus-visible, .question-nav select{
 	outline: 0;
@@ -279,7 +286,8 @@ td{
 	border: #ccc solid 1px;
     padding: 10px;
     border-radius: 3px;
-	min-width: 185px;
+	min-width: 202px;
+	font-size: 14px;
 }
 .react-datepicker--time-only .react-datepicker__triangle{
 	left: -40px !important;
@@ -297,3 +305,13 @@ button.primary{
 }
 button.primary:hover{background-color: #197ed8}
 .text-right{text-align: right;}
+@media only screen and (max-width: 415px){
+	.question-nav select, .react-datepicker__input-container input{
+		padding: 8px;
+	}
+	.question-nav{
+		display: block;
+		padding: 10px 15px;
+		margin-bottom: 10px;
+	}
+}
