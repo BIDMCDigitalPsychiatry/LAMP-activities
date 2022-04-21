@@ -1076,9 +1076,23 @@ class Board extends React.Component<BoardProps, BoardState> {
       let bubbleToTap = false;
       // Set bubble rendering interval in 300ms
       let p = this.props.bubbleSpeed;
+      const screenWidth = window.innerWidth - (window.innerWidth * 20) / 100
+      const screenHeight = window.innerHeight - (window.innerHeight * 25) / 100
+  
+
       for (let i = 0; i < this.props.bubbleCount; i++) {
         bubbleToTap =
           toBeSelected.indexOf(this.state.bubbleStyles[i]) > -1 ? true : false;
+          
+          if(Math.abs(this.props.xCoords[this.props.xPoints[i]] - this.props.xCoords[this.props.xPoints[i-1]]) < 80) {
+            this.props.xCoords[this.props.xPoints[i]] = (this.props.xCoords[this.props.xPoints[i]]  + 80 < screenWidth) ? 
+          this.props.xCoords[this.props.xPoints[i]] + 80 : this.props.xCoords[this.props.xPoints[i]] - 80
+          
+          }
+            if(Math.abs(this.props.yCoords[this.props.yPoints[i]] - this.props.yCoords[this.props.yPoints[i-1]]) < 80){
+              this.props.yCoords[this.props.yPoints[i]] = (this.props.yCoords[this.props.yPoints[i]]  + 80 < screenHeight) ? 
+           this.props.yCoords[this.props.yPoints[i]] + 80 : this.props.yCoords[this.props.yPoints[i]] - 80
+            }
         bubbles.push(
           <Bubble
             delayed={p}
