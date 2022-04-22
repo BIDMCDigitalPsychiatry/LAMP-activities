@@ -72,7 +72,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     const yValues = this.getCoords(
       window.innerHeight - (window.innerHeight * 25) / 100,
       2
-    );     
+    );   
     this.state = {
       allRoutes: [],
       bubble_count: [60, 80, 80],
@@ -150,7 +150,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     let i = 0;
     const coords = [];
     const diff = size / 100;
-    for (i = 0; i < size; i = Math.round(i + diff)) {
+    for (i = 0; i < size ; i = Math.round(i + diff)) {
       coords.push(i);
     }
     return coords;
