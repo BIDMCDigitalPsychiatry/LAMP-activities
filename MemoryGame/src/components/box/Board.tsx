@@ -192,7 +192,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       trail:this.state.trail + 1,
       wrongTaps: 0,
     }, () => {
-      console.log(this.state.showModalInfo, this.state.trail)
       if(this.state.trail > 1) {
         const items = Array.from(document.querySelectorAll("#options-table div"))
         for(const item of items){
@@ -211,7 +210,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             }, () => {
               this.resetState()
             })
-          }, 10000)
+          }, 60000)
         })
       }
 
@@ -341,11 +340,19 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Call the API to pass game result
   sendGameResult = () => {
+    let points = 0
+    const gameScore = (this.state.stateSuccessTaps/this.props.seqLength) * 100
+    if (gameScore === 100) {
+      points = points + 2;
+    } else {
+      points = points + 1;
+    }
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.props.time,
         static_data: Object.assign(this.state.staticData ?? {},{
           correct_answers: this.state.stateSuccessTaps,
+          point: points,
           wrong_answers: this.state.stateWrongTaps,
         }),
         temporal_slices: JSON.parse(this.state.boxes),
@@ -371,15 +378,9 @@ class Board extends React.Component<BoardProps, BoardState> {
     // State values for game state
     
     this.setState({
-      // animate: showWaitVal ? false : true,
-      // boxCount: this.props.seqLength,
-      // boxes: null,
       enableTap: false,
-      // endTime: this.state.endTime,
-      // nextButton: false,
       orderNumber: -1,
       randomPoints: rP,
-    //  showWait: false,
       successTaps: 0,
       wrongTaps: 0,
     });
@@ -391,7 +392,6 @@ class Board extends React.Component<BoardProps, BoardState> {
   showBoxes = (rP: Array<number>, i: number) => {
     this.setState({
       activeCell: rP[i],
-      // animate: false,
       successTaps: 0,
       wrongTaps: 0,
     });
@@ -409,6 +409,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.setState({
           enableTap: true,
           gameSequence: false,
+          lastClickTime: new Date().getTime(),
           showGo: false,
         });
       }, this.props.animationPersistance);
@@ -564,7 +565,7 @@ class Board extends React.Component<BoardProps, BoardState> {
            onSubmit={(data: any) => {
             const stateDetails =   Object.assign({},data)
             stateDetails.start_time = data.start_time?.getHours() + ":"+ data.start_time?.getMinutes() 
-            this.setState({staticData: stateDetails, showModalInfo: true})
+            this.setState({staticData: stateDetails, showModalInfo: true, showQuestions: false})
           }} />
         )
         :

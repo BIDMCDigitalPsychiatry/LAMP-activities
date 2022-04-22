@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   "en-US": {
     translation: {
-      BOX_GAME: "Box Game",
+      MEMORY_GAME: "Box Game",
       CONGRATS: "Congrats",
       GAME_OVER: "Game Over",
       GO: "Go",
@@ -16,48 +16,41 @@ const resources = {
       TAP_THE_2nd_PICTURE: "Place the 2nd picture",
       TAP_THE_3rd_PICTURE: "Place the 3rd picture",
       TIME_OUT: "Time Out",
+      TRIAL: "Trial"
     },
   },
   "es-ES": {
     translation: {
-      BOX_GAME: "Juego de caja",
+      MEMORY_GAME: "JUEGO DE MEMORIA",
       CONGRATS: "Felicidades",
-      GAME_OVER: "Juego Terminado",
-      GO: "Vamos",
+      GAME_OVER: "Game Over",
+      GO: "Go",
       LEARN_THE_SEQUENCE:
-      "Learn the sequence",
-      LEVEL: "Nivel",
-      NEXT: "siguiente",
-      NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Ahora toque las cajas en el orden en que fueron resaltadas.",
-      NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the reverse order they were highlighted.",
-      PLEASE_REMEMBER_THE_SEQUENCE: "Por favor recuerda la secuencia",
-      PLEASE_WAIT_AND_WATCH: "Por favor espera y mira",
-      REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
-        "Recuerde las cajas resaltados en el orden en que los ve.",
+      "Aprende la secuencia",
+      LEVEL: "Level",
+      NEXT: "Next",
+      TAP_THE_1st_PICTURE: "Coloca la 1ra foto",
+      TAP_THE_2nd_PICTURE: "Coloca la 2da foto",
+      TAP_THE_3rd_PICTURE: "Coloca la 3ra foto",
       TIME_OUT: "Se acabó el tiempo",
+      TRIAL: "Ensayo"
     },
   },
   "hi-IN": {
     translation: {
-      BOX_GAME: "खेल बॉक्स",
+      MEMORY_GAME: "स्मृति खेल",
       CONGRATS: "बधाई हो ",
-      GAME_OVER: "खेल खत्म",
-      GO: "जाए",
+      GAME_OVER: "Game Over",
+      GO: "Go",
       LEARN_THE_SEQUENCE:
-      "Learn the sequence",
-      LEVEL: "स्तर",
-      NEXT: "आगे",
-      NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "अब बॉक्सों को उसी क्रम में दबाए जिस क्रम में वे हाइलाइट किए गए थे |",
-      NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the reverse order they were highlighted.",
-      PLEASE_REMEMBER_THE_SEQUENCE: "कृपया क्रम/परिणाम को याद रखें",
-      PLEASE_WAIT_AND_WATCH: "कृपया प्रतीक्षा करें और देखें",
-      REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
-        "आपने हाइलाइट किए गए बॉक्सों को जिस क्रम में देखा है उन्हें याद रखे l",
-      TIME_OUT: "समय समाप्त",
+      "क्रम जाने",
+      LEVEL: "Level",
+      NEXT: "Next",
+      TAP_THE_1st_PICTURE: "पहली तस्वीर लगाए",
+      TAP_THE_2nd_PICTURE: "दूसरा चित्र लगाए",
+      TAP_THE_3rd_PICTURE: "तीसरा चित्र लगाए",
+      TIME_OUT: "समय समाप्",
+      TRIAL: "परीक्षण"
     },
   },
 };

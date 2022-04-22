@@ -43,6 +43,7 @@ class Box extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
+        console.log(e.data)
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
         console.log(settings)
@@ -73,19 +74,19 @@ class Box extends React.Component<{}, AppState> {
             <nav className="home-link">
               <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
             </nav>
-            <div className="heading">{i18n.t("BOX_GAME")}</div>
+            <div className="heading">{i18n.t("MEMORY_GAME")}</div>
             <div className="game-board">
              {!!this.state.loaded && <Board 
-                animationInterval={this.state.settings?.animation_interval ?? 1000}
-                animationPersistance={this.state.settings?.animation_persistance ?? 2000}
+                animationInterval={this.state.settings?.animation_interval * 1000 ?? 1000}
+                animationPersistance={this.state.settings?.animation_persistance * 1000 ?? 2000}
                 cols={this.state.settings?.cols ?? 3}
                 encodingTrials={this.state.settings?.encoding_trials ?? 3}
                 language={i18n.language}
-                retensionInterval={this.state.settings?.retension_interval ?? 1000}
+                retensionInterval={this.state.settings?.retension_interval * 1000 ?? 1000}
                 rows={this.state.settings?.rows ?? 3}
                 seqLength={this.state.settings?.sequence_length ?? 3}
                 time={this.state.time} 
-                autoCorrect={this.state.autoCorrect ?? false}
+                autoCorrect={!!this.state.autoCorrect ? false : true}
               />}
             </div>
           </div>

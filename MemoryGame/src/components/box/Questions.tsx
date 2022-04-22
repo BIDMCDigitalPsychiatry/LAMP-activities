@@ -9,6 +9,8 @@
  */
 import * as React from 'react';
 import DatePicker from "react-datepicker";
+import { Timer } from '../common/Timer';
+
 import "./box.css";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,6 +35,8 @@ interface Props {
 
 interface State {
   data: any
+  timeout: boolean
+  startTimer: number
 }
 export default class Questions extends React.Component<Props, State> {
   private months = ["January","February","March","April","May","June","July",
@@ -45,6 +49,8 @@ export default class Questions extends React.Component<Props, State> {
     super(props);
     this.state = {
       data: null,
+      startTimer: 60,
+      timeout: false
     }
   }
 
@@ -52,12 +58,7 @@ export default class Questions extends React.Component<Props, State> {
     if (timerValue === 0) {
       this.setState(
         {
-          endTime: new Date(),
           timeout: true,
-        },
-        () => {
-          this.updateStateWithTaps();
-          this.sendGameResult();
         }
       );
     }
@@ -65,17 +66,16 @@ export default class Questions extends React.Component<Props, State> {
       startTimer: timerValue,
     });
   };
-  
+
   render() {
     return (
-      <div className="marginTop10">timer =
-      {!this.state.timeout &&
-      !this.state.gameOver &&
-      this.state.gameState > 0 ? (
+      <div className="marginTop10">
+      {!this.state.timeout 
+      ? (
         <Timer
           passTimerUpdate={this.passTimerUpdate}
           startTimeInSeconds={this.state.startTimer}
-          startTimer={this.state.gameState}
+          startTimer={60}
         />
       ) : null}
 
