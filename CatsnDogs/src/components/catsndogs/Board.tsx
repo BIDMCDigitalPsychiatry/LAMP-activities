@@ -287,11 +287,9 @@ class Board extends React.Component<BoardProps, BoardState> {
       JSON.stringify({
         duration: new Date().getTime() - this.props.time,
         static_data: {
-          StartTime: this.state.startTime,
           correct_answers: this.state.stateSuccessTaps,
           point: points,
-          score: gameScore,
-          type: 1,
+          total_questions: 45,
           wrong_answers: this.state.stateWrongTaps,
         },
         temporal_slices: JSON.parse(this.state.boxes),
