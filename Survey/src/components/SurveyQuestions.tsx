@@ -326,6 +326,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 300,
     minWidth: 57,
     borderRadius: 0,
+    bottom: "20px",
     "& ul": { padding: 0 },
     "& li": {
       fontSize: 25,
@@ -552,7 +553,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const ampm = []
 
   const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(0, 12): range(0, 24)
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1, 13): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
   if((!!options?.timePattern && options?.timePattern === "standard") ||
   (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
