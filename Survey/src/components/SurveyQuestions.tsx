@@ -175,31 +175,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#2F9D7E",
     },
   },
-  btngreen: {
-    background: "#92E7CA",
-    borderRadius: "40px",
-    fontWeight: 600,
-    minWidth: "160px",
-    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
-    lineHeight: "38px",
-    margin: "5% 5px 0 5px",
-    textTransform: "capitalize",
-    fontSize: "16px",
-    color: "rgba(0, 0, 0, 0.75)",
-    cursor: "pointer !important",
-    [theme.breakpoints.up("md")]: {
-      marginTop: 30,
-    },
-    [theme.breakpoints.down("sm")]: {
-      minWidth: "40%",
-    },
-    "& span": { cursor: "pointer" },
-    "&:hover": {
-      background: "#92E7CA",
-      boxShadow:
-        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-    },
-  },
   formLabelMatrix : { alignItems: "center", margin : "0 auto" },
   timeMatrix:{
     "& div":{
@@ -242,12 +217,38 @@ const useStyles = makeStyles((theme) => ({
       width: "82%",
     },
   },
+  btngreen: {
+    background: "#92E7CA",
+    borderRadius: "40px",
+    fontWeight: 600,
+    minWidth: "160px",
+    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
+    lineHeight: "38px",
+    margin: "5% 5px 0 5px",
+    textTransform: "capitalize",
+    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.75)",
+    cursor: "pointer !important",
+    [theme.breakpoints.up("md")]: {
+      marginTop: 30,
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "40%",
+    },
+    "& span": { cursor: "pointer" },
+    "&:hover": {
+      background: "#92E7CA",
+      boxShadow:
+        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+    },
+  },
+  
   btnBack: {
     borderRadius: "40px",
     minWidth: "160px",
+    fontWeight: 600,
     boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.05)",
     lineHeight: "38px",
-    fontFamily: "inter",
     textTransform: "capitalize",
     fontSize: "16px",
     cursor: "pointer",
@@ -323,10 +324,9 @@ const useStyles = makeStyles((theme) => ({
     background: "#F5F5F5",
     boxShadow: "none",
     marginTop: 54,
-    maxHeight: 300,
+    maxHeight: 200,
     minWidth: 57,
     borderRadius: 0,
-    bottom: "20px",
     "& ul": { padding: 0 },
     "& li": {
       fontSize: 25,
@@ -339,6 +339,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     [theme.breakpoints.up("md")]: {
       justifyContent: "center",
+      minHeight: 250
     },
     [theme.breakpoints.down("xs")]: {
       overflow: "hidden !important",
