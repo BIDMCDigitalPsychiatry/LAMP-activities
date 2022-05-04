@@ -248,6 +248,9 @@ td{
 	}
 		.box-info{font-size: 16px !important;}
 		.memory-outer{min-width: 700px;}
+		.secondbox{
+			min-width: 434px;
+		}
 
 }
 @media only screen and (max-width: 768px) {
@@ -292,7 +295,13 @@ td{
 .react-datepicker--time-only .react-datepicker__triangle{
 	left: -40px !important;
 }
-.inactive{opacity: 0.5;}
+.backdrop {
+	z-index: 9999;
+	color: "#fff";
+  }
+.inactive{background-color: #fff;}
+.error-box {border: 2px solid red;}
+.inactive svg{opacity: 0.2;}
 button.primary{
 	background-color: #359ffe;
 	color: #fff;

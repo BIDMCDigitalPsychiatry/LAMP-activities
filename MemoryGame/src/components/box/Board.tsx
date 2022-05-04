@@ -10,6 +10,8 @@ import getImages from "./RandomImage"
 
 import { renderToString } from 'react-dom/server'
 
+import { Backdrop,  CircularProgress} from "@material-ui/core";
+
 import { getRandomNumbers } from "../../functions";
 import i18n from "./../../i18n";
 
@@ -29,23 +31,23 @@ interface BoardState {
   boxes: any;
   clickedImageIndex: number;
   completed: boolean;
+  enableLocationTap: boolean;
   enableTap: boolean;
   endTime: any;
   imageIndex: number,
   failureCount: number;
   gameSequence: boolean;
+  locationIndex: number;
   gameState: number;
   lastClickTime: any;
-  nextButton: boolean;
   orderNumber: number;
   randomPoints: Array<number>;
   trail:number;
-  showGo: boolean;
   showQuestions: boolean;
-  showWait: boolean;
   staticData: any;
   successStages: number;
   successTaps: number;
+  successTapImage: boolean;
   stateSuccessTaps: number;
   stateWrongTaps: number;
   states: any;
@@ -53,17 +55,16 @@ interface BoardState {
   wrongTaps: number;
   showModalInfo: boolean;
   sendResponse: boolean;
-  images: any
+  images: any,
+  loading: boolean;
 }
 
 interface BoardProps {
   animationInterval: number;
   animationPersistance: number;
   autoCorrect: boolean;
-  cols:number;
   encodingTrials: number;
-  retensionInterval: number;
-  rows: number;
+  foils: number;
   seqLength: number;
   time: number;
   language: string;
@@ -78,12 +79,9 @@ class Board extends React.Component<BoardProps, BoardState> {
   constructor(props: BoardProps) {
     super(props);
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
-    // Initailise state values
-    const selected = getImages(this.props.seqLength, [])
-    const resultImages = selected.images.concat(getImages((this.props.cols * this.props.rows) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
     this.state = {
       activeCell: -1,
-      allImages: resultImages,
+      allImages: [],
       animate: false,
       autoCorrect: this.props.autoCorrect,
       boxClass: ["box-square"],
@@ -91,28 +89,29 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes: null,
       clickedImageIndex: -1,
       completed: false,
+      enableLocationTap: false,
       enableTap: false,
       endTime: null,
       failureCount: 0,
       gameSequence: false,
       gameState: 0,
       imageIndex:0,
-      images: selected?.images,
+      images: [],
       lastClickTime: null,
-      nextButton: false,
+      loading:false,
+      locationIndex: 0,
       orderNumber: -1,
       randomPoints: [],
       resultClickIndex:0,
       sendResponse: false,
-      showGo: false,
       showModalInfo: false,
       showQuestions: false,
-      showWait: true,
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
       staticData: null,
       successStages: 0,
+      successTapImage: false,
       successTaps: 0,
       trail:0,
       wrongTaps: 0,
@@ -122,46 +121,59 @@ class Board extends React.Component<BoardProps, BoardState> {
   // Modal close is handled here
   handleClose = (status: boolean) => {
     this.setState({
-      showModalInfo: status     
+      lastClickTime: new Date().getTime() ,
+      loading:false,
+      showModalInfo: status,   
     }, () => {
       this.resetGoBox = setTimeout(() => {
-        if(this.state) {
-          this.setState({ lastClickTime: new Date().getTime(), showWait: false }, () =>{
-            this.setGameState();
-          });
-        }
+        this.setState({lastClickTime: new Date().getTime()}, () =>{
+          this.setGameState();
+        });
       }, 2000);
     });
   };
 
   // On load function - set state of the gamne
   componentDidMount = () => {
-    if(!this.props.autoCorrect){
+   
+    if(!this.props.autoCorrect || this.props.encodingTrials === 0){
       this.setState({
-        showQuestions: true
+         showQuestions: true
       }, () => {
-        setTimeout(() => {
+       setTimeout(() => {
           this.setState({
-            showQuestions: false
+            gameSequence : false,
+            loading:true,
+            showQuestions: false,
           }, () => {
             this.resetState();
           });       
       }, 60000);
       })
     } else {
-      this.resetState();
+      this.setState({
+        loading: true,
+      }, () => {
+        this.resetState();
+      })
     }
   };
 
    // Reset game state for each state
   resetState = () => {
+
+    clearInterval(this.timer!);
+    clearInterval(this.timerBox!);
+    clearInterval(this.resetGoBox!);
+    clearInterval(this.resetWaitBox!);
     const selected = getImages(this.props.seqLength, [])
-    const resultImages = selected.images.concat(getImages((this.props.cols * this.props.rows) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
-    this.setState({
-     activeCell: -1,
+    const resultImages = selected.images.concat(getImages((this.props.foils === 1 ? 9 : 12) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
+     this.setState({
+      activeCell: -1,
       allImages: resultImages,
       animate: false,
-      autoCorrect: !!this.props.autoCorrect && this.state.trail < 3 ? true: false,
+      autoCorrect: (!!this.props.autoCorrect && this.props.encodingTrials > 0 && 
+        ((this.state?.trail  ?? 0) < this.props.encodingTrials)) ? true : false,
       boxClass: ["box-square"],
       boxCount: 1,
       boxes: null,
@@ -175,21 +187,19 @@ class Board extends React.Component<BoardProps, BoardState> {
       imageIndex:0,
       images: selected?.images,
       lastClickTime: null,
-      nextButton: false,
+      loading: (this.state?.trail ?? 0) > 0 ? true : false,
       orderNumber: -1,
       randomPoints: [],
       resultClickIndex:0,
       sendResponse: false,
-      showGo: false,
-      showModalInfo: this.state.trail === 3 ? false : true,
+      showModalInfo:  this.props.encodingTrials > 0 && (this.state?.trail ?? 0) === 0 ? true : false,
       showQuestions: false,
-      showWait: true,
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
       successStages: 0,
       successTaps: 0,
-      trail:this.state.trail + 1,
+      trail: (this.state?.trail ?? 0) + 1,
       wrongTaps: 0,
     }, () => {
       if(this.state.trail > 1) {
@@ -199,8 +209,11 @@ class Board extends React.Component<BoardProps, BoardState> {
           item.innerHTML = ""
         }        
       }
+      setTimeout(() => {
+        this.handleClose(false)
+      },1500)
       }
-      if(this.state.trail === 4 && !this.state.showQuestions) {
+      if(this.state.trail === this.props.encodingTrials + 1 && !this.state.showQuestions) {
         this.setState({
           showQuestions:true
         }, () => {
@@ -216,14 +229,12 @@ class Board extends React.Component<BoardProps, BoardState> {
 
       this.resetBoxClass();
       // To show wait message
-       this.resetWaitBox = setTimeout(() => {         
+       this.resetWaitBox = setTimeout(() => {   
            this.setState({
              gameSequence: true,
              orderNumber: -1,
              randomPoints: [],
-             showWait: true            
            })   
-           // this.handleClose(false)  
        }, 1000);
     })
            
@@ -233,9 +244,58 @@ class Board extends React.Component<BoardProps, BoardState> {
   // // Rest box styles after each load
   resetBoxClass = () => {
     Array.from(document.getElementsByClassName("box-white")).forEach((elem) => {
-      elem.className = "box-white";
+      elem.className = "box-white inactive";
     });
   }
+
+  handleLocationClick = (e:any) => {
+    if(!!this.state.enableLocationTap) {
+      let success = false
+      const index = e.target.closest("div").getAttribute("data-key")
+      const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
+      if((!!this.state.successTapImage && parseInt(index, 10) === imageIndex) || !!this.state.autoCorrect) {
+        success = true
+        const ele = document.querySelector("[data-key='"+imageIndex+"']")
+        if (ele) {
+          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])        
+        }       
+      } else if(!success) {
+        const ele = document.querySelector("[data-key='"+index+"']")
+
+        if (ele) {
+
+          ele.className = "box-white error-box"  
+          setTimeout(() => {
+            ele.className = "box-white"  
+          }, 2000)      
+        }       
+      }
+          this.setState({
+            clickedImageIndex: index,                
+            enableLocationTap: false,
+            enableTap:
+              this.state.resultClickIndex + 1  < this.state.randomPoints.length
+                ? true
+                : false,
+            resultClickIndex:this.state.resultClickIndex + 1,
+
+            stateSuccessTaps: success
+              ? this.state.stateSuccessTaps + 1
+              : this.state.stateSuccessTaps,
+            stateWrongTaps: !success
+              ? this.state.stateWrongTaps + 1
+              : this.state.stateWrongTaps,
+            successTaps: success
+              ? this.state.successTaps + 1
+              : this.state.successTaps,
+            wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
+
+          })
+          this.updateWithTaps(index, success);
+      
+     
+  }
+}
 
   handleResultClick = (e:any) => {    
     if (this.state.enableTap) {  
@@ -247,6 +307,18 @@ class Board extends React.Component<BoardProps, BoardState> {
            "box-white inactive"
         : "box-white"
        }
+        this.setState({
+          enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex,successTapImage: success
+         })
+          
+         setTimeout(() => {
+          for(const i of targets){
+            i.className = (i.getAttribute("data-key") === index) ?
+               "box-white inactive"
+            : "box-white"
+           }
+         }, 2000)
+       
        if(!success && !!this.state.autoCorrect ) {
          const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
          const items = e.target.closest("table").querySelectorAll("div")
@@ -255,40 +327,19 @@ class Board extends React.Component<BoardProps, BoardState> {
              "box-white inactive"
           : "box-white"
          }
+       } else if(!success){
+        for(const i of targets){
+          i.className = (i.getAttribute("data-key") === index) ?
+             "box-white error-box"
+          : "box-white"
+         }
+         setTimeout(() => {
+          for(const i of targets){
+            i.className = "box-white"
+           }
+         }, 1500)
        }
-       if(!!success || !!this.state.autoCorrect) {
-        const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
-        const ele = document.querySelector("[data-key='"+imageIndex+"']")
-        if (ele) {
-          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])        
-        }
-       }
-       if(!this.state.autoCorrect || this.state.trail > 3) {
-       this.setState({
-            clickedImageIndex: index,
-            enableTap:
-              this.state.resultClickIndex + 1  < this.state.randomPoints.length
-                ? true
-                : false,
-            nextButton:            
-               this.state.resultClickIndex + 1 >= this.state.randomPoints.length
-                ? true
-                : false,
-            resultClickIndex:this.state.resultClickIndex + 1,
-          stateSuccessTaps: success
-            ? this.state.stateSuccessTaps + 1
-            : this.state.stateSuccessTaps,
-          stateWrongTaps: !success
-            ? this.state.stateWrongTaps + 1
-            : this.state.stateWrongTaps,
-          successTaps: success
-            ? this.state.successTaps + 1
-            : this.state.successTaps,
-          wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
-    })
-    this.updateWithTaps(index, success);
-  }
-  }
+   }
   }
  
   // To track echa tap on box
@@ -310,7 +361,8 @@ class Board extends React.Component<BoardProps, BoardState> {
   updateWithTaps = (boxNo: number, statusVal: boolean) => {
     const boxes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
-    if (this.state.boxes !== null) {
+
+    if (typeof this.state.boxes !== "undefined" && this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
       Object.keys(r).forEach((key) => {
         boxes.push(r[key]);
@@ -354,6 +406,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           correct_answers: this.state.stateSuccessTaps,
           point: points,
           wrong_answers: this.state.stateWrongTaps,
+          total_questions: this.props.seqLength
         }),
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
@@ -374,7 +427,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Set game state values
   setGameState = () => {
-    const rP = getRandomNumbers(this.props.seqLength, 1, this.props.cols * this.props.rows);
+    const rP = getRandomNumbers(this.props.seqLength, 1, 9);
     // State values for game state
     
     this.setState({
@@ -402,24 +455,20 @@ class Board extends React.Component<BoardProps, BoardState> {
       });
       this.timerBox = setTimeout(() => this.showBoxes(rP, i + 1), this.props.animationInterval);
     } else {
-      this.setState({
-        showGo: true,
-      });
       this.timerBox = setTimeout(() => {
         this.setState({
           enableTap: true,
           gameSequence: false,
           lastClickTime: new Date().getTime(),
-          showGo: false,
         });
       }, this.props.animationPersistance);
       if(!!this.state.autoCorrect) {
         setTimeout(() => {
           this.updateAutoCorrection()
-        }, 5000);
-        
+        }, 5000);        
       }
     }
+  
   };
 
   updateAutoCorrection = () => {
@@ -435,23 +484,32 @@ class Board extends React.Component<BoardProps, BoardState> {
           : "box-white"
         }
       }
-      ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
-    }
-    this.setState({
-      resultClickIndex:this.state.resultClickIndex + 1,
-    }, () => {
-      if(this.state.resultClickIndex === this.state.randomPoints.length) {
+      setTimeout(() => {
+      this.setState({
+        enableLocationTap: true, enableTap: false
+      }, () => {
         setTimeout(() => {
-          this.resetState()
-        }, 2000)
-      } else {
-        setTimeout(() => {
-          if(this.state.resultClickIndex < this.state.randomPoints.length) {
-            this.updateAutoCorrection()
-          } 
-        }, 5000)
-      }
-    })
+          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
+          this.setState({
+            enableLocationTap: false, enableTap: true,
+              resultClickIndex:this.state.resultClickIndex + 1,
+            }, () => {
+              if(this.state.resultClickIndex === this.state.randomPoints.length) {
+                setTimeout(() => {
+                  this.resetState()
+                }, 1000)
+              } else {
+                setTimeout(() => {
+                  if(this.state.resultClickIndex < this.state.randomPoints.length) {
+                    this.updateAutoCorrection()
+                  } 
+                }, 5000)
+              }
+            })
+        }, 1000)
+      })
+    } , 1000)
+  }   
  }
 
   // To set up game board
@@ -459,15 +517,15 @@ class Board extends React.Component<BoardProps, BoardState> {
     const table = [];
     let p =1;
     // Outer loop to create parent
-    for (let i = 0; i < this.props.rows; i++) {
+    for (let i = 0; i < 3; i++) {
       const children = [];
       // Inner loop to create children
-      for (let j = 0; j < this.props.cols; j++) {
+      for (let j = 0; j < 3; j++) {
         const section =  p === this.state.activeCell
-            ? <div className={"box-white"}>{this.state.images[this.state.imageIndex]}</div>
-            : <div className={"box-white"} data-key={p}>{this.state.randomPoints.includes(p) && 
-              this.state.randomPoints.indexOf(p) <= this.state.imageIndex && this.state.gameSequence === true ? 
-              this.state.images[this.state.randomPoints.indexOf(p)] : null} </div>;
+            ? <div className={"box-white"} key={p-1} data-key={p-1} onClick={this.handleLocationClick} >{!!this.state?.images ? this.state?.images[this.state?.imageIndex ?? 0]?? null : null}</div>
+            : <div className={"box-white"} onClick={this.handleLocationClick} data-key={p}>{!!this.state.randomPoints && (this.state.randomPoints || []).includes(p) && 
+              (this.state?.randomPoints || []).indexOf(p) <= this.state.imageIndex && this.state.gameSequence === true ? 
+              (this.state?.images[(this.state.randomPoints || []).indexOf(p)] ?? null) : null} </div>;
         children.push(
           <td key={p}>
            {section}
@@ -484,11 +542,12 @@ class Board extends React.Component<BoardProps, BoardState> {
   createResultTable = () => {
     const table = [];
     let p = 1;
+    if((this.state?.allImages || []).length > 0) {
     // Outer loop to create parent
-    for (let i = 0; i < this.props.rows; i++) {
+    for (let i = 0; i < (this.props.foils === 1 ? 3 : 4); i++) {
       const children = [];
       // Inner loop to create children
-      for (let j = 0; j < this.props.cols; j++) {
+      for (let j = 0; j < 3 ; j++) {
         const section = <div className={"box-white"} key={p-1} data-key={p-1}
           onClick={this.handleResultClick} >{this.state.allImages[p-1]}</div>
         children.push(
@@ -498,9 +557,11 @@ class Board extends React.Component<BoardProps, BoardState> {
         );
         p++;
       }
+    
       // Create the parent and add the children
       table.push(<tr key={i}>{children}</tr>);
     }
+  }
     return table;
   };
 
@@ -516,40 +577,46 @@ class Board extends React.Component<BoardProps, BoardState> {
     let board;
     let boardResult;
     let alertText = null;
-    
-      board = (
-        <table className="box-table" id="options-table" style={this.getTableStyles()}>
-          <tbody>{this.createTable()}</tbody>
-        </table>
-      );
+    if(!!this.state) { 
+      if(!this.state?.loading && (this.state?.images || []).length > 0) {
+        board = (
+          <table className="box-table" id="options-table" style={this.getTableStyles()}>
+            <tbody>{this.createTable()}</tbody>
+          </table>
+        );
+      }
       boardResult = (
         <table className="box-table" id="images-table" style={this.getTableStyles()}>
           <tbody>{this.createResultTable()}</tbody>
         </table>
       );
-     
-      alertText = this.state.gameSequence ? (
+      alertText = !this.state?.loading && !!this.state.gameSequence ? (
         <div className="box-info">
           {i18n.t("LEARN_THE_SEQUENCE")}
         </div>
-      ) : !this.state.gameSequence ? (this.state.resultClickIndex === 0 ? (
+      ) : (!!this.state.enableTap || !!this.state.enableLocationTap) && this.state.resultClickIndex < this.props.seqLength ? 
+        (this.state.resultClickIndex === 0 ? (
         <div className="box-info">
-          { i18n.t("TAP_THE_1st_PICTURE")}
-        </div>
+          {!!this.state.enableTap ? i18n.t("TAP_THE_1st_PICTURE") : i18n.t("PLACE_THE_1st_PICTURE")}
+        </div>  
       ) : this.state.resultClickIndex === 1 ? (
         <div className="box-info">
-          { i18n.t("TAP_THE_2nd_PICTURE")}
+          {!!this.state.enableTap ? i18n.t("TAP_THE_2nd_PICTURE"): i18n.t("PLACE_THE_2nd_PICTURE")}
         </div>
       ) : this.state.resultClickIndex === 2 ? (
         <div className="box-info">
-          { i18n.t("TAP_THE_3rd_PICTURE")}
+          {!!this.state.enableTap ? i18n.t("TAP_THE_3rd_PICTURE") :  i18n.t("PLACE_THE_3rd_PICTURE")}
+        </div>
+      ) : this.state.resultClickIndex === 3 ? (
+        <div className="box-info">
+          {!!this.state.enableTap ? i18n.t("TAP_THE_4th_PICTURE") :  i18n.t("PLACE_THE_4th_PICTURE")}
         </div>
       ) : null) : null; 
-    // }
-
+      }
+    
     return (
       <div>       
-        {!!this.state.showModalInfo ? <InfoModal
+        {!!this.state && (!!this.state.showModalInfo ? <InfoModal
           show={this.state.showModalInfo}
           modalClose={this.handleClose}
           msg={i18n.t("You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.")}
@@ -565,23 +632,31 @@ class Board extends React.Component<BoardProps, BoardState> {
            onSubmit={(data: any) => {
             const stateDetails =   Object.assign({},data)
             stateDetails.start_time = data.start_time?.getHours() + ":"+ data.start_time?.getMinutes() 
-            this.setState({staticData: stateDetails, showModalInfo: true, showQuestions: false})
+            this.setState({loading:true, staticData: stateDetails})
+            setTimeout(() => {
+              this.resetState()
+            }, 1500)
           }} />
         )
         :
         (
           <div>
             <div className="timer-div">
-              {(!!this.state.autoCorrect && this.state.trail<= 3) && "Trial " + (this.state.trail)}
+              {(!!this.state.autoCorrect && this.state.trail<= this.props.encodingTrials) && "Trial " + (this.state.trail)}
               <br />
             </div>
             <div className="mt-30 box-game">
               <div style={{float:"left"}}> {board}</div>
-              {boardResult}
+              <div className="secondbox">
+              {(this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) && boardResult}
+              </div>
               {alertText}
             </div>
           </div>
-        )}
+        ))}
+        <Backdrop className="backdrop" open={this.state.loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       </div>
     );
   }

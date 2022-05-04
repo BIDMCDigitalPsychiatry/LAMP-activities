@@ -48,7 +48,7 @@ export default class Questions extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      data: null,
+      data: {},
       startTimer: 60,
       timeout: false
     }

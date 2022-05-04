@@ -106,40 +106,17 @@ const images = [
 export default function getImages(limit:number, selected?:any) {
     const result = []
     let randomSelected:Array<number> 
-    console.log(limit, selected, images.length)
     randomSelected = selected ??  []
     for (let i = 0; i<limit ; i++){
       const random = Math.floor(Math.random() * images.length)
-      console.log(randomSelected, random)
 
       if(!randomSelected.includes(random)) {
         randomSelected.push(random) 
         result.push(images[random])
-        console.log(randomSelected, random)
 
       } else {
-        console.log("sdd")
         i = i-1
       }
     }
-    console.log({images : result, numbers: randomSelected})
     return {images : result, numbers: randomSelected}
 }
-
-// export default function getImages(limit:number) {
-//   const result = []
-//   let randomSelected:Array<number> 
-//   console.log(limit, images.length)
-//   randomSelected = []
-//   for (let i = 0; i<limit ; i++){
-//     const random = Math.floor(Math.random() * images.length)
-//     if(!randomSelected.includes(random)) { // && (selected || []).includes(images[random]) ) {
-//       randomSelected.push(random) 
-//       result.push(images[random])
-//     } else {
-//       i = i-1
-//     }
-//   }
-//   console.log(result)
-//   return result
-// }

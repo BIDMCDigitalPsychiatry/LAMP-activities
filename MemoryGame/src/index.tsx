@@ -13,9 +13,18 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.render(
-    <AppContainer>
-      <Boxes/>
-    </AppContainer>,
-  document.getElementById('root') as HTMLElement
-);
+
+// const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+// const eventer = window[eventMethod]
+// const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+// eventer(
+//     messageEvent, (e:any) => {    
+		ReactDOM.render(
+		  <AppContainer>
+		      <Boxes data={null} />
+		  </AppContainer>,
+		  document.getElementById("root")
+		);
+//     },
+//     false
+// )

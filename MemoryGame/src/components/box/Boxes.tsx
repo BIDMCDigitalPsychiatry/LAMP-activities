@@ -23,8 +23,12 @@ interface AppState {
   noBack: boolean;
 }
 
-class Box extends React.Component<{}, AppState> {
-  constructor(props: {}) {
+interface AppProps {
+  data: any
+}
+
+class Box extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
     super(props);
     const state = {
       autoCorrect:false,
@@ -43,10 +47,8 @@ class Box extends React.Component<{}, AppState> {
       messageEvent,
       (e: any) => {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
-        console.log(e.data)
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        console.log(settings)
         this.setState({ autoCorrect: e.data.autoCorrect, settings, noBack: e.data.noBack, loaded: true });
       },
       false
@@ -66,7 +68,7 @@ class Box extends React.Component<{}, AppState> {
   render() {
     return (
       <div>
-        {this.state && this.state.loaded && (
+        {this.state && !!this.state.loaded && (
           <div>
              {!this.state.noBack && <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
@@ -77,16 +79,14 @@ class Box extends React.Component<{}, AppState> {
             <div className="heading">{i18n.t("MEMORY_GAME")}</div>
             <div className="game-board">
              {!!this.state.loaded && <Board 
-                animationInterval={this.state.settings?.animation_interval * 1000 ?? 1000}
-                animationPersistance={this.state.settings?.animation_persistance * 1000 ?? 2000}
-                cols={this.state.settings?.cols ?? 3}
-                encodingTrials={this.state.settings?.encoding_trials ?? 3}
+                animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
+                animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 3000}
+                foils={this.state.settings?.foils ?? 2}
+                encodingTrials={this.state.settings?.encoding_trials ?? 2}
                 language={i18n.language}
-                retensionInterval={this.state.settings?.retension_interval * 1000 ?? 1000}
-                rows={this.state.settings?.rows ?? 3}
-                seqLength={this.state.settings?.sequence_length ?? 3}
+                seqLength={!!this.state.settings?.foils ? (this.state.settings?.foils === 1 ? 3 : 4) : 4}
                 time={this.state.time} 
-                autoCorrect={!!this.state.autoCorrect ? false : true}
+                autoCorrect={this.state.autoCorrect}
               />}
             </div>
           </div>
