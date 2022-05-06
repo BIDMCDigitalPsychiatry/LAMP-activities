@@ -57,6 +57,7 @@ interface BoardState {
   sendResponse: boolean;
   images: any,
   loading: boolean;
+  supportsSidebar: boolean;
 }
 
 interface BoardProps {
@@ -113,6 +114,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       successStages: 0,
       successTapImage: false,
       successTaps: 0,
+      supportsSidebar:window.matchMedia("(min-width: 768px)").matches,
       trail:0,
       wrongTaps: 0,
     };
@@ -210,6 +212,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       states: null,
       successStages: 0,
       successTaps: 0,
+      supportsSidebar:window.matchMedia("(min-width: 768px)").matches,
       trail: (this.state?.trail ?? 0) + 1,
       wrongTaps: 0,
     }, () => {
@@ -569,7 +572,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   // To set the game board table size based on screen resolution
   getTableStyles = () => {
     const size = window.innerWidth - (window.innerWidth * 10) / 100;
-    const styles = { height: `${size}px`, width: `${size}px` };
+    const styles = { width: `${size}px` };
     return styles;
   };
 
@@ -646,6 +649,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             <div className="timer-div">
               {(!!this.state.autoCorrect && this.state.trail<= this.props.encodingTrials) && "Trial " + (this.state.trail)}
               <br />
+              {this.state.supportsSidebar === false && alertText}
             </div>
             <div className="mt-30 box-game">
               <div style={{float:"left"}}> {board}</div>
@@ -653,7 +657,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               {(!this.state.loading && this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) 
                 && boardResult}
               </div>
-              {alertText}
+              {this.state.supportsSidebar === true && alertText}
             </div>
           </div>
         ))}
