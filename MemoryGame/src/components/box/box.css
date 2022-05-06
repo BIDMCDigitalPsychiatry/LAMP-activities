@@ -56,14 +56,14 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	left: 0;
 }
 .box-white{
-	height: 130px;	
-	width:130px;
+	height: 128px;	
+	width:128px;
 	background-color: white;
 	border: medium #a8a5a5;
 }
 .box-white svg, .box-white img{
-	width: 130px !important;
-	height: 130px !important;
+	width: 100% !important;
+	height: 126px !important;
 }
 .box-green{
 	height: 100%;	
@@ -296,7 +296,7 @@ td{
 	left: -40px !important;
 }
 .backdrop {
-	z-index: 9999;
+	z-index: 9999 !important;
 	color: "#fff";
   }
 .inactive{background-color: #fff;}

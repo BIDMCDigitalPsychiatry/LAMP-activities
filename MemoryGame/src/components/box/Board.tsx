@@ -134,8 +134,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // On load function - set state of the gamne
-  componentDidMount = () => {
-   
+  componentDidMount = () => {   
     if(!this.props.autoCorrect || this.props.encodingTrials === 0){
       this.setState({
          showQuestions: true
@@ -161,7 +160,19 @@ class Board extends React.Component<BoardProps, BoardState> {
 
    // Reset game state for each state
   resetState = () => {
-
+    if(this.props.encodingTrials > 0 && this.state.trail === this.props.encodingTrials && !this.state.showQuestions) {
+      this.setState({
+        showQuestions:true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            showQuestions: false,
+          }, () => {
+            this.resetState()
+          })
+        }, 60000)
+      })
+    } else {
     clearInterval(this.timer!);
     clearInterval(this.timerBox!);
     clearInterval(this.resetGoBox!);
@@ -192,7 +203,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       randomPoints: [],
       resultClickIndex:0,
       sendResponse: false,
-      showModalInfo:  this.props.encodingTrials > 0 && (this.state?.trail ?? 0) === 0 ? true : false,
+      showModalInfo: (this.state?.trail ?? 0) === 0 ? true : false,
       showQuestions: false,
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
@@ -213,19 +224,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.handleClose(false)
       },1500)
       }
-      if(this.state.trail === this.props.encodingTrials + 1 && !this.state.showQuestions) {
-        this.setState({
-          showQuestions:true
-        }, () => {
-          setTimeout(() => {
-            this.setState({
-              showQuestions: false,
-            }, () => {
-              this.resetState()
-            })
-          }, 60000)
-        })
-      }
+      
 
       this.resetBoxClass();
       // To show wait message
@@ -239,7 +238,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     })
            
   }
-    
+}
   // };
   // // Rest box styles after each load
   resetBoxClass = () => {
@@ -270,30 +269,30 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, 2000)      
         }       
       }
-          this.setState({
-            clickedImageIndex: index,                
-            enableLocationTap: false,
-            enableTap:
-              this.state.resultClickIndex + 1  < this.state.randomPoints.length
-                ? true
-                : false,
-            resultClickIndex:this.state.resultClickIndex + 1,
+      this.setState({
+        clickedImageIndex: index,                
+        enableLocationTap: false,
+        enableTap:
+          this.state.resultClickIndex + 1  < this.state.randomPoints.length
+            ? true
+            : false,
+        resultClickIndex: (this.state.autoCorrect && !success) || !this.state.autoCorrect ? 
+          this.state.resultClickIndex + 1 : this.state.resultClickIndex,
+        stateSuccessTaps: success
+          ? this.state.stateSuccessTaps + 1
+          : this.state.stateSuccessTaps,
+        stateWrongTaps: !success
+          ? this.state.stateWrongTaps + 1
+          : this.state.stateWrongTaps,
+        successTaps: success
+          ? this.state.successTaps + 1
+          : this.state.successTaps,
+        wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
 
-            stateSuccessTaps: success
-              ? this.state.stateSuccessTaps + 1
-              : this.state.stateSuccessTaps,
-            stateWrongTaps: !success
-              ? this.state.stateWrongTaps + 1
-              : this.state.stateWrongTaps,
-            successTaps: success
-              ? this.state.successTaps + 1
-              : this.state.successTaps,
-            wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
-
-          })
+      })
+      if(!this.state.autoCorrect) {
           this.updateWithTaps(index, success);
-      
-     
+      }
   }
 }
 
@@ -368,24 +367,25 @@ class Board extends React.Component<BoardProps, BoardState> {
         boxes.push(r[key]);
       });
     }
-    if (this.state.enableTap) {
-      const route = {
-        duration: lastclickTime,
-        item: boxNo,
-        level: this.state.gameState,
-        type: statusVal,
-        value: null,
-      };
-      boxes.push(route);
-    }
+    const route = {
+      duration: lastclickTime,
+      item: boxNo,
+      level: this.state.gameState,
+      type: statusVal,
+      value: null,
+    };
+    boxes.push(route);
     this.setState({
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
     }, () => {
-      if(this.state.resultClickIndex + 1  > this.state.randomPoints.length && !this.state.autoCorrect){        
-          setTimeout(() => {
-            this.sendGameResult()
-          }, 5000)                
+      if(this.state.resultClickIndex + 1  > this.state.randomPoints.length && !this.state.autoCorrect){         
+        setTimeout(() => {
+          this.setState({
+            loading:true,
+          })       
+          this.sendGameResult()
+        }, 2000)                
       }
     });
   };
@@ -399,14 +399,15 @@ class Board extends React.Component<BoardProps, BoardState> {
     } else {
       points = points + 1;
     }
+
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.props.time,
         static_data: Object.assign(this.state.staticData ?? {},{
           correct_answers: this.state.stateSuccessTaps,
           point: points,
+          total_questions: this.props.seqLength,
           wrong_answers: this.state.stateWrongTaps,
-          total_questions: this.props.seqLength
         }),
         temporal_slices: JSON.parse(this.state.boxes),
         timestamp: new Date().getTime(),
@@ -619,11 +620,12 @@ class Board extends React.Component<BoardProps, BoardState> {
         {!!this.state && (!!this.state.showModalInfo ? <InfoModal
           show={this.state.showModalInfo}
           modalClose={this.handleClose}
-          msg={i18n.t("You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.")}
+          msg={i18n.t("INSTRUCTION")}
           language={i18n.language}
         /> :
         !!this.state.showQuestions ? (
           <Questions
+           language={this.props.language}
            onStateChange={(data: any) => {
             const stateDetails =   Object.assign({},data)
             stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
@@ -648,7 +650,8 @@ class Board extends React.Component<BoardProps, BoardState> {
             <div className="mt-30 box-game">
               <div style={{float:"left"}}> {board}</div>
               <div className="secondbox">
-              {(this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) && boardResult}
+              {(!this.state.loading && this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) 
+                && boardResult}
               </div>
               {alertText}
             </div>

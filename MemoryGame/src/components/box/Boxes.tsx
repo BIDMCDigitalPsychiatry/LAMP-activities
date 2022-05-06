@@ -23,12 +23,10 @@ interface AppState {
   noBack: boolean;
 }
 
-interface AppProps {
-  data: any
-}
 
-class Box extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+
+class Box extends React.Component<{}, AppState> {
+  constructor(props: {}) {
     super(props);
     const state = {
       autoCorrect:false,
@@ -37,7 +35,8 @@ class Box extends React.Component<AppProps, AppState> {
       settings: {},
       time: new Date().getTime(),
     };
-    this.state = state;
+    this.state = state;  
+
     const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";
     const eventer = window[eventMethod];
     const messageEvent =
@@ -49,10 +48,10 @@ class Box extends React.Component<AppProps, AppState> {
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
         const configuration = e.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ autoCorrect: e.data.autoCorrect, settings, noBack: e.data.noBack, loaded: true });
+        this.setState({  autoCorrect: e.data.autoCorrect, settings, noBack: e.data.noBack, loaded: true });
       },
       false
-    );
+    );     
   }
 
   // To refresh the game
@@ -64,10 +63,12 @@ class Box extends React.Component<AppProps, AppState> {
     parent.postMessage(null, "*");
   }
 
+
   // Game render function
   render() {
     return (
       <div>
+        {console.log(this.state)}
         {this.state && !!this.state.loaded && (
           <div>
              {!this.state.noBack && <nav className="back-link">
@@ -78,7 +79,8 @@ class Box extends React.Component<AppProps, AppState> {
             </nav>
             <div className="heading">{i18n.t("MEMORY_GAME")}</div>
             <div className="game-board">
-             {!!this.state.loaded && <Board 
+             {!!this.state.loaded && Object.keys(this.state.settings).length > 0 &&  
+             <Board 
                 animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
                 animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 3000}
                 foils={this.state.settings?.foils ?? 2}

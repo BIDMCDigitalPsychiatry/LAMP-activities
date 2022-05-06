@@ -10,6 +10,7 @@
 import * as React from 'react';
 import DatePicker from "react-datepicker";
 import { Timer } from '../common/Timer';
+import i18n from "./../../i18n";
 
 import "./box.css";
 
@@ -31,6 +32,7 @@ function range(min:number, max: number) {
 interface Props {
   onSubmit (data: any): void;
   onStateChange(data: any): void;
+  language: string;
 }
 
 interface State {
@@ -42,9 +44,11 @@ export default class Questions extends React.Component<Props, State> {
   private months = ["January","February","March","April","May","June","July",
   "August","September","October","November","December"];
   private days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  private years = range(2022, new Date().getFullYear())
+  private years = range(2021, new Date().getFullYear() + 1)
   private monthDates= Array.from(Array(getDaysInCurrentMonth()).keys())
   private seasons = ["Summer", "Winter", "Autumn", "Spring"]
+
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -52,6 +56,7 @@ export default class Questions extends React.Component<Props, State> {
       startTimer: 60,
       timeout: false
     }
+    i18n.changeLanguage(!props.language ? "en-US" : props.language);
   }
 
   passTimerUpdate = (timerValue: number) => {
@@ -81,7 +86,7 @@ export default class Questions extends React.Component<Props, State> {
 
         <div className='memory-outer'>
           <div className='question-nav'>
-            <p>About what time is it?</p>
+            <p>{i18n.t("ABOUT_TIME")}</p>
             <div>
             <DatePicker
               selected={this.state.data?.start_time}
@@ -89,7 +94,6 @@ export default class Questions extends React.Component<Props, State> {
                   const details =  Object.assign({},this.state?.data) ?? {}
                   details.start_time = details.start_time ?? date
                   this.props.onStateChange( Object.assign({},details))
-
                   this.setState({data:details})
                 }
               }
@@ -102,7 +106,7 @@ export default class Questions extends React.Component<Props, State> {
             </div>
           </div>
           <div className='question-nav'>
-            <p>What is today’ date?</p>
+            <p>{i18n.t("TODAY")}</p>
             <select onChange={(evt) => {
                   const details = this.state.data
                   details.today_date = this.state.data?.today_date ?? evt.target.value
@@ -111,14 +115,14 @@ export default class Questions extends React.Component<Props, State> {
                   })
                 }
               }>
-              <option> Select date</option>
+              <option>{i18n.t("SELECT_DATE")}</option>
               {this.monthDates.map((i : number) => (
                 <option value={i+1}>{i+1}</option>
               ))}              
             </select>
           </div>
           <div className='question-nav'>
-            <p>What is the month?</p>
+            <p>{i18n.t("CURRENT_MONTH")}</p>
             <select onChange={(evt) => {
                   const details = this.state.data
                   details.month = this.state.data?.month ?? evt.target.value
@@ -127,14 +131,14 @@ export default class Questions extends React.Component<Props, State> {
                   })
                 }
               }>
-              <option> Select month</option>
+              <option>{i18n.t("SELECT_MONTH")}</option>
               {this.months.map((month : string) => (
                 <option value={month}>{month}</option>
               ))}
             </select>
           </div>
           <div className='question-nav'>
-            <p>What is the year?</p>
+            <p>{i18n.t("CURRENT_YEAR")}</p>
             <select onChange={(evt) => {
                   const details = this.state.data
                   details.year = this.state.data?.year ?? evt.target.value
@@ -143,14 +147,14 @@ export default class Questions extends React.Component<Props, State> {
                   })
                 }
               }>
-              <option> Select year</option>
+              <option>{i18n.t("SELECT_YEAR")}</option>
               {this.years.map((year : number) => (
                 <option value={year}>{year}</option>
               ))}
             </select>
           </div>
           <div className='question-nav'>
-            <p>What is the day of the week?</p>
+            <p>{i18n.t("CURRENT_DAY")}</p>
             <select onChange={(evt) => {
                   const details = this.state.data
                   details.day = this.state.data?.day ?? evt.target.value
@@ -159,14 +163,14 @@ export default class Questions extends React.Component<Props, State> {
                   })
                 }
               }>
-              <option> Select day</option>
+              <option>{i18n.t("SELECT_DAY")}</option>
               {this.days.map((day : string) => (
                 <option value={day}>{day}</option>
               ))}
             </select>
           </div>
           <div className='question-nav'>
-            <p>What season is this?</p>
+            <p>{i18n.t("CURRENT_SEASON")}</p>
             <select value={this.state.data?.season ?? ""} onChange={(evt) => {
                   const details = this.state.data
                   details.season = this.state.data?.season ?? evt.target.value
@@ -175,7 +179,7 @@ export default class Questions extends React.Component<Props, State> {
                   })
                 }
               }>
-              <option> Select season</option>
+              <option>{i18n.t("SELECT_SEASON")}</option>
               {this.seasons.map((season : string) => (
                 <option value={season}>{season}</option>
               ))}
@@ -184,7 +188,7 @@ export default class Questions extends React.Component<Props, State> {
           <div className='text-right'>
           <button className='primary' onClick={() => {
             this.props.onSubmit(this.state.data)
-          }}>submit</button>
+          }}>{i18n.t("SUBMIT")}</button>
           </div>
         </div>
       </div>

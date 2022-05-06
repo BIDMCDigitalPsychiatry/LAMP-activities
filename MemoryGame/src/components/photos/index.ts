@@ -77,9 +77,6 @@ const background = () => {
     "36",
   ];
 
-  console.log("BACKRANDOM", images[Math.floor(Math.random() * images.length)]);
-  // console.log("BACKRANDOM",Backgrounds()[Math.floor(Math.random() * 36)])
-  // return Backgrounds()[Math.floor(Math.random() * 36)]
   return images[Math.floor(Math.random() * images.length)];
 };
 
