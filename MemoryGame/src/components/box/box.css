@@ -13,7 +13,7 @@ body{background: rgba(53,159,254,1);}
 nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .timer-div {
 	margin-top: 10px;
-	min-height: 100px;
+	min-height: 60px;
 	color: rgb(253, 254, 255);
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
@@ -90,7 +90,7 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	right: 5%; */
 	max-width: 350px;
 	max-height: 350px;
-	height: 350px !important;
+	/* height: 350px !important; */
 }
 box-result-table{
 	width: 100% !important;
@@ -322,5 +322,12 @@ button.primary:hover{background-color: #197ed8}
 		display: block;
 		padding: 10px 15px;
 		margin-bottom: 10px;
+	}
+	.box-info{bottom: auto; background: transparent; color: #fff;}
+	.box-white{width: 100px; height: 100px;}
+	.box-table tr{height: 100px;}
+	.box-white svg, .box-white img{
+		
+		height: 100px !important;
 	}
 }
