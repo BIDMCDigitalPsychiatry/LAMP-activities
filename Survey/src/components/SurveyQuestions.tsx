@@ -175,6 +175,31 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#2F9D7E",
     },
   },
+  btngreen: {
+    background: "#92E7CA",
+    borderRadius: "40px",
+    fontWeight: 600,
+    minWidth: "160px",
+    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
+    lineHeight: "38px",
+    margin: "5% 5px 0 5px",
+    textTransform: "capitalize",
+    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.75)",
+    cursor: "pointer !important",
+    [theme.breakpoints.up("md")]: {
+      marginTop: 30,
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "40%",
+    },
+    "& span": { cursor: "pointer" },
+    "&:hover": {
+      background: "#92E7CA",
+      boxShadow:
+        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+    },
+  },
   formLabelMatrix : { alignItems: "center", margin : "0 auto" },
   timeMatrix:{
     "& div":{
@@ -217,32 +242,6 @@ const useStyles = makeStyles((theme) => ({
       width: "82%",
     },
   },
-  btngreen: {
-    background: "#92E7CA",
-    borderRadius: "40px",
-    fontWeight: 600,
-    minWidth: "160px",
-    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
-    lineHeight: "38px",
-    margin: "5% 5px 0 5px",
-    textTransform: "capitalize",
-    fontSize: "16px",
-    color: "rgba(0, 0, 0, 0.75)",
-    cursor: "pointer !important",
-    [theme.breakpoints.up("md")]: {
-      marginTop: 30,
-    },
-    [theme.breakpoints.down("sm")]: {
-      minWidth: "40%",
-    },
-    "& span": { cursor: "pointer" },
-    "&:hover": {
-      background: "#92E7CA",
-      boxShadow:
-        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-    },
-  },
-  
   btnBack: {
     borderRadius: "40px",
     minWidth: "160px",
@@ -554,7 +553,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const ampm = []
 
   const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1, 13): range(0, 24)
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1,13): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
   if((!!options?.timePattern && options?.timePattern === "standard") ||
   (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
@@ -922,7 +921,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow>
-          <TableCell style={{minWidth:"30%", maxWidth:"150px"}}>
+          <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
             <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
