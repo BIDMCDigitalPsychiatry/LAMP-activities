@@ -245,9 +245,9 @@ const useStyles = makeStyles((theme) => ({
   btnBack: {
     borderRadius: "40px",
     minWidth: "160px",
+    fontWeight: 600,
     boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.05)",
     lineHeight: "38px",
-    fontFamily: "inter",
     textTransform: "capitalize",
     fontSize: "16px",
     cursor: "pointer",
@@ -323,7 +323,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#F5F5F5",
     boxShadow: "none",
     marginTop: 54,
-    maxHeight: 300,
+    maxHeight: 200,
     minWidth: 57,
     borderRadius: 0,
     "& ul": { padding: 0 },
@@ -338,6 +338,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     [theme.breakpoints.up("md")]: {
       justifyContent: "center",
+      minHeight: 250
     },
     [theme.breakpoints.down("xs")]: {
       overflow: "hidden !important",
@@ -552,7 +553,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const ampm = []
 
   const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(0, 12): range(0, 24)
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1,13): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
   if((!!options?.timePattern && options?.timePattern === "standard") ||
   (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
