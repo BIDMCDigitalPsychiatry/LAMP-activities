@@ -291,13 +291,18 @@ const useStyles = makeStyles((theme) => ({
   },
   sliderResponse: {
     marginTop: "60px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "20px",
+    },
     "& h4": {
       color: "#22977B",
       fontSize: 25,
       fontWeight: 600,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: 16,
+      },
     },
   },
-
   questionhead: {
     "& h5": { fontSize: 18, fontWeight: 600 },
     "& span": {
@@ -306,6 +311,10 @@ const useStyles = makeStyles((theme) => ({
       // color: "rgba(0, 0, 0, 0.5)",
       lineHeight: "16px !important",
     },
+  },
+  checkP:{
+    maxWidth: 65,
+    display:"block"
   },
   timeHours: {
     padding: 0,
@@ -371,6 +380,11 @@ const useStyles = makeStyles((theme) => ({
       position: "absolute",
       overflow: "auto",
       width: "100%",
+    },
+  },
+  surveyQuestionMatrixAlign: {
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 20px !important",
     },
   },
   radioLabel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", alignItems: "center !important", textAlign: "left" },
@@ -729,9 +743,10 @@ function ShortTextSection({ onChange, value, ...props }) {
 
 function RadioRating({ onChange, options, value, mtValue, ...props }) {
   const [val, setValue] = useState(value)
+  const classes = useStyles()
   return (
     <Box textAlign="center" mt={mtValue}>
-      <Grid direction="row" container justify="center" alignItems="center">
+      <Grid direction="row" container justify="center" style={{ alignItems: mtValue === 0 ? "top" : "center"}}>
         {options.map((option) => (
           <Box mr={1}>
             <RateAnswer
@@ -742,7 +757,7 @@ function RadioRating({ onChange, options, value, mtValue, ...props }) {
               }}
               value={option.value}
             />
-            <Typography variant="caption">
+            <Typography variant="caption" className={mtValue === 0? classes.checkP : null}>
               <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
             </Typography>
           </Box>
@@ -900,7 +915,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         </Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign}>
+        <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
           <ReactMarkdown source={t(x.description?.toString() ?? "" )} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
