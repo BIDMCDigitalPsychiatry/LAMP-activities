@@ -175,6 +175,31 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#2F9D7E",
     },
   },
+  btngreen: {
+    background: "#92E7CA",
+    borderRadius: "40px",
+    fontWeight: 600,
+    minWidth: "160px",
+    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
+    lineHeight: "38px",
+    margin: "5% 5px 0 5px",
+    textTransform: "capitalize",
+    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.75)",
+    cursor: "pointer !important",
+    [theme.breakpoints.up("md")]: {
+      marginTop: 30,
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "40%",
+    },
+    "& span": { cursor: "pointer" },
+    "&:hover": {
+      background: "#92E7CA",
+      boxShadow:
+        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+    },
+  },
   formLabelMatrix : { alignItems: "center", margin : "0 auto" },
   timeMatrix:{
     "& div":{
@@ -217,32 +242,6 @@ const useStyles = makeStyles((theme) => ({
       width: "82%",
     },
   },
-  btngreen: {
-    background: "#92E7CA",
-    borderRadius: "40px",
-    fontWeight: 600,
-    minWidth: "160px",
-    boxShadow: "0px 10px 15px rgba(146, 231, 202, 0.25)",
-    lineHeight: "38px",
-    margin: "5% 5px 0 5px",
-    textTransform: "capitalize",
-    fontSize: "16px",
-    color: "rgba(0, 0, 0, 0.75)",
-    cursor: "pointer !important",
-    [theme.breakpoints.up("md")]: {
-      marginTop: 30,
-    },
-    [theme.breakpoints.down("sm")]: {
-      minWidth: "40%",
-    },
-    "& span": { cursor: "pointer" },
-    "&:hover": {
-      background: "#92E7CA",
-      boxShadow:
-        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-    },
-  },
-  
   btnBack: {
     borderRadius: "40px",
     minWidth: "160px",
@@ -292,13 +291,18 @@ const useStyles = makeStyles((theme) => ({
   },
   sliderResponse: {
     marginTop: "60px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "20px",
+    },
     "& h4": {
       color: "#22977B",
       fontSize: 25,
       fontWeight: 600,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: 16,
+      },
     },
   },
-
   questionhead: {
     "& h5": { fontSize: 18, fontWeight: 600 },
     "& span": {
@@ -307,6 +311,10 @@ const useStyles = makeStyles((theme) => ({
       // color: "rgba(0, 0, 0, 0.5)",
       lineHeight: "16px !important",
     },
+  },
+  checkP:{
+    maxWidth: 65,
+    display:"block"
   },
   timeHours: {
     padding: 0,
@@ -372,6 +380,11 @@ const useStyles = makeStyles((theme) => ({
       position: "absolute",
       overflow: "auto",
       width: "100%",
+    },
+  },
+  surveyQuestionMatrixAlign: {
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 20px !important",
     },
   },
   radioLabel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", alignItems: "center !important", textAlign: "left" },
@@ -554,7 +567,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const ampm = []
 
   const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1, 13): range(0, 24)
+  (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")? range(1,13): range(0, 24)
   const minutevalues = ["00", "15", "30", "45"]
   if((!!options?.timePattern && options?.timePattern === "standard") ||
   (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
@@ -730,9 +743,10 @@ function ShortTextSection({ onChange, value, ...props }) {
 
 function RadioRating({ onChange, options, value, mtValue, ...props }) {
   const [val, setValue] = useState(value)
+  const classes = useStyles()
   return (
     <Box textAlign="center" mt={mtValue}>
-      <Grid direction="row" container justify="center" alignItems="center">
+      <Grid direction="row" container justify="center" style={{ alignItems: mtValue === 0 ? "top" : "center"}}>
         {options.map((option) => (
           <Box mr={1}>
             <RateAnswer
@@ -743,7 +757,7 @@ function RadioRating({ onChange, options, value, mtValue, ...props }) {
               }}
               value={option.value}
             />
-            <Typography variant="caption">
+            <Typography variant="caption" className={mtValue === 0? classes.checkP : null}>
               <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
             </Typography>
           </Box>
@@ -901,7 +915,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         </Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign}>
+        <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
           <ReactMarkdown source={t(x.description?.toString() ?? "" )} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
@@ -922,7 +936,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow>
-          <TableCell style={{minWidth:"30%", maxWidth:"150px"}}>
+          <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
             <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
