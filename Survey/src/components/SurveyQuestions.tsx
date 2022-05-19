@@ -112,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
       margin : "0",
     }
   },
+  marginBottom40: {
+    marginBottom: "40px !important"
+  },
   sliderActionsContainer: {
     textAlign: "center",
     width: "100%",
@@ -212,7 +215,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight : "0px !important"
     },
     "& tr" : {
-      padding:"25px 0"
+      padding:"25px 0",
     },
     "& p" : {marginTop : "0px !important", marginBottom : "3px !important"}
   },
@@ -347,7 +350,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     [theme.breakpoints.up("md")]: {
       justifyContent: "center",
-      minHeight: 250
     },
     [theme.breakpoints.down("xs")]: {
       overflow: "hidden !important",
@@ -743,10 +745,11 @@ function ShortTextSection({ onChange, value, ...props }) {
 
 function RadioRating({ onChange, options, value, mtValue, ...props }) {
   const [val, setValue] = useState(value)
+
   const classes = useStyles()
   return (
     <Box textAlign="center" mt={mtValue}>
-      <Grid direction="row" container justify="center" style={{ alignItems: mtValue === 0 ? "top" : "center"}}>
+      <Grid direction="row" container justify="center" style={{ alignItems: "top" }}>
         {options.map((option) => (
           <Box mr={1}>
             <RateAnswer
@@ -757,7 +760,7 @@ function RadioRating({ onChange, options, value, mtValue, ...props }) {
               }}
               value={option.value}
             />
-            <Typography variant="caption" className={mtValue === 0? classes.checkP : null}>
+            <Typography variant="caption" className={classes.checkP}>
               <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
             </Typography>
           </Box>
@@ -935,7 +938,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         ))}
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
-        <TableRow>
+        <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
             <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
@@ -1069,7 +1072,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
     </Box>
     <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settingsQuestions - 1 && (
-              <Fab onClick={index === settingsQuestions - 1 ? onComplete : handleNext} className={classes.btngreen}>
+              <Fab onClick={index === settingsQuestions - 1 ? onComplete : handleNext} className={classes.btngreen + " " + classes.marginBottom40} >
                 {t("Submit")}
               </Fab>
             )}
@@ -1158,6 +1161,8 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     { label: t("Several Times"), value: 1 },
     { label: t("Not at all"), value: 0 },
   ]
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
+
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
@@ -1166,7 +1171,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
       component = <Rating options={options} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "rating":
-      component = <RadioRating options={options} mtValue={5} onChange={onChange} value={!!value ? value.value : undefined} />
+      component = <RadioRating options={options} mtValue={!supportsSidebar ? 0 : 5} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "likert":
     case "boolean":
