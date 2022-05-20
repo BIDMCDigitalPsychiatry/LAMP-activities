@@ -209,10 +209,23 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "0px"
     },
   },
+  firstTr : {
+    fontWeight: "bold",
+    "& td": {
+      padding: 0,
+      verticalAlign: "top",
+      border: 0,
+    } 
+  },
+  secondTr: {
+    "& td": {
+      padding: "5px 0",
+    } 
+  },
   matrix : {   
     "& td" :{
       paddingLeft : "0px !important",
-      paddingRight : "0px !important"
+      paddingRight : "0px !important",      
     },
     "& tr" : {
       padding:"25px 0",
@@ -743,7 +756,7 @@ function ShortTextSection({ onChange, value, ...props }) {
 }
 
 
-function RadioRating({ onChange, options, value, mtValue, ...props }) {
+function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
   const [val, setValue] = useState(value)
 
   const classes = useStyles()
@@ -760,9 +773,11 @@ function RadioRating({ onChange, options, value, mtValue, ...props }) {
               }}
               value={option.value}
             />
-            <Typography variant="caption" className={classes.checkP}>
-              <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
-            </Typography>
+            {type !== "matrix" && (
+              <Typography variant="caption" className={classes.checkP}>
+                <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
+              </Typography>
+            )}            
           </Box>
         ))}
       </Grid>
@@ -927,12 +942,20 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <Box className={classes.questionScroll}>
 
     <Table className={classes.matrix}>
-    {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert"  || x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
-      <TableRow>
+    {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert"  || x.type === "rating"  || x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
+      <TableRow  className={classes.firstTr}>
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
             {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
+             </TableCell>
+        ))}
+      </TableRow>)}
+      {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert"  || x.type === "rating"  || x.type === "list"  ||x.type === "boolean" || x.type === "multiselect") && (
+      <TableRow className={classes.secondTr}>
+        <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
+         {(x.options || []).map((x) => (
+          <TableCell className={classes.textCenter}> 
             <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${x.value?.toString()})` : x.value?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
@@ -1017,16 +1040,22 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null} />
             </TableCell>
-            ) : x.type === "rating" ? (
+            ) : x.type === "rating" ? 
+              ((x.options || []).map((op, j) => (
               <TableCell className={classes.textCenter}>
-            <RadioRating mtValue={0} options={x.options} onChange={(val) => {
-              setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
-              const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
-              onResponse(data)
-            }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null}  />
-            </TableCell>
-            ):x.type === "time"?(
+                <RateAnswer
+                  checked={csvParse(selectedValue[idx+qindex]?.value || []).includes(op.value)}
+                  onChange={(val) => {
+                    setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
+                    const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
+                    const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+                    onResponse(data)
+                  }} 
+                  value={op.value}
+                />
+              </TableCell>
+
+            ))):x.type === "time"?(
               <Box className={classes.timeMatrix}>
             <TimeSelection onChange={(val) => {
               const response = { item: question.text, value: val }
@@ -1171,7 +1200,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
       component = <Rating options={options} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "rating":
-      component = <RadioRating options={options} mtValue={!supportsSidebar ? 0 : 5} onChange={onChange} value={!!value ? value.value : undefined} />
+      component = <RadioRating options={options} type="normal" mtValue={!supportsSidebar ? 0 : 5} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "likert":
     case "boolean":
