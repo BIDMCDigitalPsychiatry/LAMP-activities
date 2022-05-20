@@ -73,9 +73,9 @@ body{background: rgba(53,159,254,1);}
  .game-table
 {
 	position: fixed; 
-	top: 110px;   
+	top: 80px;   
 	width: 100%;
-	bottom: 50px;
+	bottom: 90px;
 } 
 .negative-points{
 	padding: 5px;
