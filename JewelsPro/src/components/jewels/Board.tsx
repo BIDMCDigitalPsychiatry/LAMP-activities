@@ -240,7 +240,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     let p = 0;
     const rows = 10
     const cols = 8
-    const height = (window.innerHeight - (window.innerHeight * 20) / 100) / 10
+    const height = (window.innerHeight - (window.innerHeight * 15) / 100) / 10.5
     // let diamondStyle = this.props.currentDiamond[0]
     // Outer loop to create parent
     for (let i = 0; i < rows; i++) {
