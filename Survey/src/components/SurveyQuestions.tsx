@@ -225,7 +225,8 @@ const useStyles = makeStyles((theme) => ({
   matrix : {   
     "& td" :{
       paddingLeft : "0px !important",
-      paddingRight : "0px !important",      
+      paddingRight : "0px !important",  
+      width: "3%"    
     },
     "& tr" : {
       padding:"25px 0",
@@ -422,6 +423,7 @@ const useStyles = makeStyles((theme) => ({
     "& div": {
       [theme.breakpoints.down("xs")]: {
         maxWidth: "100px",
+        width: "30%"
       },
     },
   },
