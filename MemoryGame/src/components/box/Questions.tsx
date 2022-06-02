@@ -66,6 +66,8 @@ export default class Questions extends React.Component<Props, State> {
           timeout: true,
         }
       );
+      this.props.onSubmit(this.state.data)
+
     }
     this.setState({
       startTimer: timerValue,
@@ -171,7 +173,7 @@ export default class Questions extends React.Component<Props, State> {
           </div>
           <div className='question-nav'>
             <p>{i18n.t("CURRENT_SEASON")}</p>
-            <select value={this.state.data?.season ?? ""} onChange={(evt) => {
+            <select onChange={(evt) => {
                   const details = this.state.data
                   details.season = this.state.data?.season ?? evt.target.value
                   this.setState({data:details}, () => {
@@ -185,11 +187,7 @@ export default class Questions extends React.Component<Props, State> {
               ))}
             </select>
           </div>
-          <div className='text-right'>
-          <button className='primary' onClick={() => {
-            this.props.onSubmit(this.state.data)
-          }}>{i18n.t("SUBMIT")}</button>
-          </div>
+         
         </div>
       </div>
     );

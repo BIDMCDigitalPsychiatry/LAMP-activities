@@ -73,10 +73,15 @@ interface BoardProps {
 
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
+  private locationautoTimer: any;
   private timerBox: any;
   private resetWaitBox: any;
   private resetGoBox: any;
-
+  private autoCorrectionTimer: any;
+  private autoCorrectionStartTimer: any;
+  private resetTimer: any;
+  private correctionTimer: any;
+  private locationTimer: any;
   constructor(props: BoardProps) {
     super(props);
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
@@ -123,8 +128,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   // Modal close is handled here
   handleClose = (status: boolean) => {
     this.setState({
-      lastClickTime: new Date().getTime() ,
-      loading:false,
+      lastClickTime: new Date().getTime(),      
       showModalInfo: status,   
     }, () => {
       this.resetGoBox = setTimeout(() => {
@@ -136,38 +140,34 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // On load function - set state of the gamne
-  componentDidMount = () => {   
-    if(!this.props.autoCorrect || this.props.encodingTrials === 0){
-      this.setState({
-         showQuestions: true
-      }, () => {
-       setTimeout(() => {
-          this.setState({
-            gameSequence : false,
-            loading:true,
-            showQuestions: false,
-          }, () => {
-            this.resetState();
-          });       
-      }, 60000);
-      })
-    } else {
-      this.setState({
-        loading: true,
-      }, () => {
-        this.resetState();
-      })
-    }
+  componentDidMount = () => {       
+    this.setState({
+      loading: true,
+    }, () => {
+      this.resetState();
+    })    
   };
 
    // Reset game state for each state
   resetState = () => {
-    if(this.props.encodingTrials > 0 && this.state.trail === this.props.encodingTrials && !this.state.showQuestions) {
+    clearInterval(this.timer!);
+    clearInterval(this.timerBox!);
+    clearInterval(this.resetGoBox!);
+    clearInterval(this.resetWaitBox!);
+    clearInterval(this.autoCorrectionTimer)
+    clearInterval(this.resetTimer)
+    clearInterval(this.correctionTimer)
+    clearInterval(this.autoCorrectionStartTimer)
+    clearInterval(this.locationTimer)
+    clearInterval(this.locationautoTimer)
+    if(this.state.trail === 3 && !this.state.showQuestions) {
       this.setState({
+        loading: false,
         showQuestions:true
       }, () => {
         setTimeout(() => {
           this.setState({
+            loading: true,
             showQuestions: false,
           }, () => {
             this.resetState()
@@ -175,18 +175,17 @@ class Board extends React.Component<BoardProps, BoardState> {
         }, 60000)
       })
     } else {
-    clearInterval(this.timer!);
-    clearInterval(this.timerBox!);
-    clearInterval(this.resetGoBox!);
-    clearInterval(this.resetWaitBox!);
+    
+
     const selected = getImages(this.props.seqLength, [])
-    const resultImages = selected.images.concat(getImages((this.props.foils === 1 ? 9 : 12) - this.props.seqLength, selected.numbers).images).sort(() => Math.random() - 0.5);
-     this.setState({
+    const resultImages = selected.images.concat(getImages((this.props.foils === 1 ? 9 : 12) - this.props.seqLength, 
+      selected.numbers, selected.keys).images).sort(() => Math.random() - 0.5);
+
+    this.setState({
       activeCell: -1,
-      allImages: resultImages,
+      allImages:  this.state.trail <= 3 && this.state.allImages.length > 0 ? this.state.allImages : resultImages,
       animate: false,
-      autoCorrect: (!!this.props.autoCorrect && this.props.encodingTrials > 0 && 
-        ((this.state?.trail  ?? 0) < this.props.encodingTrials)) ? true : false,
+      autoCorrect: this.state.trail <= 3 ? true : false,
       boxClass: ["box-square"],
       boxCount: 1,
       boxes: null,
@@ -198,14 +197,14 @@ class Board extends React.Component<BoardProps, BoardState> {
       gameSequence: false,
       gameState: 0,
       imageIndex:0,
-      images: selected?.images,
+      images: this.state.trail <= 3  && this.state.allImages.length > 0 ? this.state.images : selected?.images,
       lastClickTime: null,
-      loading: (this.state?.trail ?? 0) > 0 ? true : false,
+      loading: this.state.trail > 0 ? true : false,
       orderNumber: -1,
-      randomPoints: [],
+      randomPoints: this.state.trail <= 3  && this.state.randomPoints.length > 0 ? this.state.randomPoints : getRandomNumbers(this.props.seqLength, 1, 9),
       resultClickIndex:0,
       sendResponse: false,
-      showModalInfo: (this.state?.trail ?? 0) === 0 ? true : false,
+      showModalInfo: this.state.trail === 0 ? true : false,
       showQuestions: false,
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
@@ -213,37 +212,40 @@ class Board extends React.Component<BoardProps, BoardState> {
       successStages: 0,
       successTaps: 0,
       supportsSidebar:window.matchMedia("(min-width: 768px)").matches,
-      trail: (this.state?.trail ?? 0) + 1,
+      trail: this.state.trail + 1,
       wrongTaps: 0,
     }, () => {
       if(this.state.trail > 1) {
-        const items = Array.from(document.querySelectorAll("#options-table div"))
-        for(const item of items){
-          if(item) {
-          item.innerHTML = ""
-        }        
-      }
-      setTimeout(() => {
-        this.handleClose(false)
-      },1500)
-      }
-      
-
+          let items = Array.from(document.querySelectorAll("#options-table div"))
+          for(const item of items){
+            if(item) {
+            item.innerHTML = ""
+          }
+        }    
+          items = Array.from(document.querySelectorAll("#images-table div"))
+          for(const item of items){
+            if(item) {
+            item.innerHTML = ""
+          }               
+        }
+        setTimeout(() => {
+          this.handleClose(false)         
+        }, 1000)
+      }   
       this.resetBoxClass();
       // To show wait message
-       this.resetWaitBox = setTimeout(() => {   
-           this.setState({
-             gameSequence: true,
-             orderNumber: -1,
-             randomPoints: [],
-           })   
-       }, 1000);
-    })
-           
+      this.resetWaitBox = setTimeout(() => {  
+          this.setState({
+            gameSequence: true,
+            orderNumber: -1,
+          })   
+      }, 1000);   
+
+      
+    })           
   }
 }
-  // };
-  // // Rest box styles after each load
+ // Rest box styles after each load
   resetBoxClass = () => {
     Array.from(document.getElementsByClassName("box-white")).forEach((elem) => {
       elem.className = "box-white inactive";
@@ -252,26 +254,45 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   handleLocationClick = (e:any) => {
     if(!!this.state.enableLocationTap) {
+      if(!!this.state.autoCorrect) {
+        clearInterval(this.autoCorrectionTimer)
+        clearInterval(this.resetTimer)
+        clearInterval(this.correctionTimer)
+        clearInterval(this.autoCorrectionStartTimer)
+        clearInterval(this.locationTimer)
+        clearInterval(this.locationautoTimer)
+
+      }
       let success = false
       const index = e.target.closest("div").getAttribute("data-key")
       const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
-      if((!!this.state.successTapImage && parseInt(index, 10) === imageIndex) || !!this.state.autoCorrect) {
+      if((!!this.state.successTapImage && parseInt(index, 10) === imageIndex)) {
         success = true
         const ele = document.querySelector("[data-key='"+imageIndex+"']")
         if (ele) {
           ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])        
-        }       
-      } else if(!success) {
+        }
+      } else {
         const ele = document.querySelector("[data-key='"+index+"']")
-
         if (ele) {
-
           ele.className = "box-white error-box"  
+          this.setState({
+            clickedImageIndex: index,                
+            enableLocationTap: false,
+            enableTap:
+              this.state.resultClickIndex + 1  < this.state.randomPoints.length
+                ? true
+                : false}, () => {
           setTimeout(() => {
-            ele.className = "box-white"  
-          }, 2000)      
-        }       
+            ele.className = "box-white" 
+            if(!!this.state.autoCorrect) {
+              this.correctLocation()
+            }
+          }, 1500) 
+        })     
+        }          
       }
+      
       this.setState({
         clickedImageIndex: index,                
         enableLocationTap: false,
@@ -279,8 +300,8 @@ class Board extends React.Component<BoardProps, BoardState> {
           this.state.resultClickIndex + 1  < this.state.randomPoints.length
             ? true
             : false,
-        resultClickIndex: (this.state.autoCorrect && !success) || !this.state.autoCorrect ? 
-          this.state.resultClickIndex + 1 : this.state.resultClickIndex,
+        resultClickIndex:  !!success || !this.state.autoCorrect ? 
+            this.state.resultClickIndex + 1 : this.state.resultClickIndex,        
         stateSuccessTaps: success
           ? this.state.stateSuccessTaps + 1
           : this.state.stateSuccessTaps,
@@ -291,56 +312,59 @@ class Board extends React.Component<BoardProps, BoardState> {
           ? this.state.successTaps + 1
           : this.state.successTaps,
         wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
-
-      })
-      if(!this.state.autoCorrect) {
+      }, () => {                    
+        if(!this.state.autoCorrect) {
           this.updateWithTaps(index, success);
-      }
+        }
+        this.setUpdateProcess()
+      })      
   }
 }
 
   handleResultClick = (e:any) => {    
-    if (this.state.enableTap) {  
+    if (this.state.enableTap) { 
+      if(!!this.state.autoCorrect) {
+        clearInterval(this.autoCorrectionTimer)
+        clearInterval(this.resetTimer)
+        clearInterval(this.correctionTimer)
+        clearInterval(this.autoCorrectionStartTimer)
+        clearInterval(this.locationTimer)
+        clearInterval(this.locationautoTimer)
+      } 
+      
       const index = e.target.closest("div").getAttribute("data-key")
       const success =  this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex]
-      const targets = e.target.closest("table").querySelectorAll("div")
-      for(const i of targets){
-        i.className = (i.getAttribute("data-key") !== index) ?
-           "box-white inactive"
-        : "box-white"
-       }
+     console.log(success, index )
+        const targets = e.target.closest("table").querySelectorAll("div")
+        for(const i of targets){
+          i.className = !success && i.getAttribute("data-key") === index ?
+              "box-white inactive error-box"
+            : (i.getAttribute("data-key") !== index) && !!success ?
+            "box-white inactive"
+          : "box-white"
+        }
         this.setState({
           enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex,successTapImage: success
-         })
-          
-         setTimeout(() => {
+        }, () => {
+        setTimeout(() => {
           for(const i of targets){
-            i.className = (i.getAttribute("data-key") === index) ?
-               "box-white inactive"
-            : "box-white"
-           }
-         }, 2000)
-       
-       if(!success && !!this.state.autoCorrect ) {
-         const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
-         const items = e.target.closest("table").querySelectorAll("div")
-         for(const item of items){
-          item.className = (parseInt(item.getAttribute("data-key"), 10) !== correctIndex) ?
-             "box-white inactive"
-          : "box-white"
-         }
-       } else if(!success){
-        for(const i of targets){
-          i.className = (i.getAttribute("data-key") === index) ?
-             "box-white error-box"
-          : "box-white"
-         }
-         setTimeout(() => {
-          for(const i of targets){
-            i.className = "box-white"
-           }
-         }, 1500)
-       }
+            i.className =  "box-white"
+          }           
+        }, 1000)
+
+        if(!success && !!this.state.autoCorrect ) {
+          setTimeout(() => {
+            this.correctPicture()
+          }, 1500)
+        } 
+        if(!!success && !!this.state.autoCorrect ) {
+          this.locationTimer = setTimeout(() => {
+            this.correctLocation()
+          }, 5000)
+        }
+      })
+        
+                   
    }
   }
  
@@ -431,18 +455,17 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Set game state values
   setGameState = () => {
-    const rP = getRandomNumbers(this.props.seqLength, 1, 9);
     // State values for game state
-    
     this.setState({
       enableTap: false,
+      loading: false,
       orderNumber: -1,
-      randomPoints: rP,
+      randomPoints:  this.state.randomPoints,
       successTaps: 0,
       wrongTaps: 0,
+    }, () => {
+      this.timer = setTimeout(() => this.showBoxes( this.state.randomPoints , 0), 1000);    
     });
-    this.timer = setTimeout(() => this.showBoxes(rP, 0), 1000);
-    
   };
 
   // Show boxes one by one in secific time intervals
@@ -464,18 +487,15 @@ class Board extends React.Component<BoardProps, BoardState> {
           enableTap: true,
           gameSequence: false,
           lastClickTime: new Date().getTime(),
-        });
-      }, this.props.animationPersistance);
-      if(!!this.state.autoCorrect) {
-        setTimeout(() => {
-          this.updateAutoCorrection()
-        }, 5000);        
+        });        
+      }, this.props.animationPersistance); 
+      if(!!this.state.autoCorrect) {   
+        this.updateAutoCorrection()
       }
-    }
-  
+    }  
   };
 
-  updateAutoCorrection = () => {
+  correctPicture = () => {
     const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
     const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
     const ele = document.querySelector("[data-key='"+imageIndex+"']")
@@ -487,35 +507,89 @@ class Board extends React.Component<BoardProps, BoardState> {
             "box-white inactive"
           : "box-white"
         }
-      }
+      } 
       setTimeout(() => {
+        for(const item of items){
+          if(item) {
+            item.className = "box-white"
+          }
+        } 
+      }, 1500)
       this.setState({
-        enableLocationTap: true, enableTap: false
+        enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex,successTapImage: true
       }, () => {
-        setTimeout(() => {
-          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
-          this.setState({
-            enableLocationTap: false, enableTap: true,
-              resultClickIndex:this.state.resultClickIndex + 1,
-            }, () => {
-              if(this.state.resultClickIndex === this.state.randomPoints.length) {
-                setTimeout(() => {
-                  this.resetState()
-                }, 1000)
-              } else {
-                setTimeout(() => {
-                  if(this.state.resultClickIndex < this.state.randomPoints.length) {
-                    this.updateAutoCorrection()
-                  } 
-                }, 5000)
-              }
-            })
-        }, 1000)
+        this.locationTimer = setTimeout(() => {          
+          this.correctLocation()
+        } , 5000)      
       })
-    } , 1000)
-  }   
- }
+    }
+  }
 
+  correctLocation = () => {
+    const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
+    const ele = document.querySelector("[data-key='"+imageIndex+"']")
+    if (ele) {
+      ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
+      this.setState({
+        enableLocationTap: false, enableTap: true, resultClickIndex: this.state.resultClickIndex + 1
+      }, () => {
+        this.setUpdateProcess()
+      })        
+    }
+  }
+
+  setUpdateProcess = () => {
+    if (!!this.state.autoCorrect) {
+      if (this.state.resultClickIndex < this.state.randomPoints.length) {
+        this.updateAutoCorrection() 
+      } else {
+        setTimeout(() => {
+          this.resetState()
+        }, 1500)
+      }
+    }
+  }
+
+  updateAutoCorrection = () => {
+    clearInterval(this.locationTimer)
+    this.autoCorrectionStartTimer = setTimeout(() => {
+      const correctIndex = this.state.allImages.indexOf(this.state.images[this.state.resultClickIndex])
+      const imageIndex = this.state.randomPoints[this.state.resultClickIndex]
+      const ele = document.querySelector("[data-key='"+imageIndex+"']")
+      if (ele) {
+        const items = Array.from(document.querySelectorAll("#images-table div"))
+        for(const item of items){
+          if(item) {
+          item.className = (item?.getAttribute("data-key") !== correctIndex.toString()) ?
+              "box-white inactive"
+            : "box-white"
+          }
+        }
+        setTimeout(() => {
+          for(const item of items){
+            if(item) {
+              item.className = "box-white"
+            }
+          } 
+        }, 1500)
+        this.locationautoTimer = setTimeout(() => {
+          ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
+          this.setState({
+            enableLocationTap: false, enableTap: true, locationIndex: this.state.resultClickIndex + 1, resultClickIndex: this.state.resultClickIndex + 1
+          }, () => {
+            if(this.state.resultClickIndex < this.state.randomPoints.length) {
+                this.updateAutoCorrection() 
+            } else {
+              setTimeout(() => {
+                this.resetState()
+              }, 1500)
+            }
+          })
+        } , 5000)  
+      }
+    }, 5000)  
+  }   
+ 
   // To set up game board
   createTable = () => {
     const table = [];
@@ -647,7 +721,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         (
           <div>
             <div className="timer-div">
-              {(!!this.state.autoCorrect && this.state.trail<= this.props.encodingTrials) && "Trial " + (this.state.trail)}
+              {(!!this.state.autoCorrect && this.state.trail<= 3) && "Trial " + (this.state.trail)}
               <br />
               {this.state.supportsSidebar === false && alertText}
             </div>
@@ -662,8 +736,8 @@ class Board extends React.Component<BoardProps, BoardState> {
           </div>
         ))}
         <Backdrop className="backdrop" open={this.state.loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </div>
     );
   }
