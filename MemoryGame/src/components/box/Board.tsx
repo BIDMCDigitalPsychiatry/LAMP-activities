@@ -172,7 +172,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, () => {
             this.resetState()
           })
-        }, 60000)
+        }, 59999)
       })
     } else {
     
@@ -714,7 +714,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             this.setState({loading:true, staticData: stateDetails})
             setTimeout(() => {
               this.resetState()
-            }, 1500)
+            }, 1000)
           }} />
         )
         :

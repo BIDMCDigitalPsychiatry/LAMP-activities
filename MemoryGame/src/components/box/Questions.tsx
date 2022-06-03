@@ -59,19 +59,16 @@ export default class Questions extends React.Component<Props, State> {
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
   }
 
-  passTimerUpdate = (timerValue: number) => {
-    if (timerValue === 0) {
-      this.setState(
-        {
-          timeout: true,
-        }
-      );
-      this.props.onSubmit(this.state.data)
-
-    }
-    this.setState({
-      startTimer: timerValue,
-    });
+  passTimerUpdate = (timerValue: number) => {    
+    if(timerValue === 1) {
+      setTimeout(() => {
+        this.props.onSubmit(this.state.data)
+      }, 1000)
+    } else {
+      this.setState({
+        startTimer: timerValue,
+      });
+    }    
   };
 
   render() {
@@ -82,7 +79,7 @@ export default class Questions extends React.Component<Props, State> {
         <Timer
           passTimerUpdate={this.passTimerUpdate}
           startTimeInSeconds={this.state.startTimer}
-          startTimer={60}
+          startTimer={59}
         />
       ) : null}
 
@@ -186,8 +183,7 @@ export default class Questions extends React.Component<Props, State> {
                 <option value={season}>{season}</option>
               ))}
             </select>
-          </div>
-         
+          </div>         
         </div>
       </div>
     );
