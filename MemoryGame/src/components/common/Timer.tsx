@@ -28,11 +28,15 @@ export class Timer extends React.Component<Props, State> {
     }
     // To update the timer value
     decrementTimeRemaining = () => {
-        if (this.state.timeRemainingInSeconds > 0) {
+        if (this.state.timeRemainingInSeconds >= 0) {
             this.setState({
                 timeRemainingInSeconds: this.state.timeRemainingInSeconds - 1
+            }, () => {
+                if(this.state.timeRemainingInSeconds === 1) {                    
+                    clearInterval(this.timer);
+                }
+                this.props.passTimerUpdate(this.state.timeRemainingInSeconds);  
             });
-            this.props.passTimerUpdate(this.state.timeRemainingInSeconds);  
         } else {
             clearInterval(this.timer!);
         }
@@ -48,8 +52,8 @@ export class Timer extends React.Component<Props, State> {
 
     // Return timer in minutes and seconds
     getTimeInMinutesAndSeconds = (t:number) => {
-        if(this.state.timeRemainingInSeconds === 0) {
-            this.props.passTimerUpdate(this.state.timeRemainingInSeconds);  
+        if(this.state.timeRemainingInSeconds === 1) {
+            clearInterval(this.timer)
         }
         let minutes;
         let seconds;
