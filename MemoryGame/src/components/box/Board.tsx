@@ -169,14 +169,13 @@ class Board extends React.Component<BoardProps, BoardState> {
           this.setState({
             loading: true,
             showQuestions: false,
+            trail:this.state.trail + 1,
           }, () => {
             this.resetState()
           })
         }, 59999)
       })
     } else {
-    
-
     const selected = getImages(this.props.seqLength, [])
     const resultImages = selected.images.concat(getImages((this.props.foils === 1 ? 9 : 12) - this.props.seqLength, 
       selected.numbers, selected.keys).images).sort(() => Math.random() - 0.5);
