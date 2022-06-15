@@ -459,7 +459,6 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Show boxes one by one in secific time intervals
   showBoxes = (rP: Array<number>, i: number) => {
-    console.log( this.props.animationInterval)
     this.setState({
       activeCell: rP[i],
       successTaps: 0,
