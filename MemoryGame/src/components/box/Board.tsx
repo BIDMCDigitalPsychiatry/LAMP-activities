@@ -132,7 +132,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       showModalInfo: status,   
     }, () => {
         this.setState({lastClickTime: new Date().getTime()}, () =>{
-          setTimeout(() => {
+          this.timer = setTimeout(() => {
             this.setGameState();
           }, this.props.animationInterval)
         });
@@ -230,12 +230,9 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.handleClose(false)         
       }   
       this.resetBoxClass();
-      // To show wait message
-      // this.resetWaitBox = setTimeout(() => {  
-          this.setState({
-            orderNumber: -1,
-          })   
-      // }, 1000);  
+      this.setState({
+        orderNumber: -1,
+      })   
     })           
   }
 }
@@ -473,11 +470,12 @@ class Board extends React.Component<BoardProps, BoardState> {
         imageIndex: i,
       });
       this.timerBox = setTimeout(() => {
+        
+        this.showBoxes(rP, i + 1)
         this.setState({
           gameSequence: true,
         });
-        this.showBoxes(rP, i + 1)
-      }, this.props.animationInterval);
+      }, this.props.animationInterval + 300);
     } else {
       this.timerBox = setTimeout(() => {
         this.setState({
