@@ -81,7 +81,7 @@ class Box extends React.Component<{}, AppState> {
              {!!this.state.loaded && Object.keys(this.state.settings).length > 0 &&  
              <Board 
                 animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
-                animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 3000}
+                animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 1000}
                 foils={this.state.settings?.foils ?? 1}
                 encodingTrials={this.state.settings?.encoding_trials ?? 3}
                 language={i18n.language}

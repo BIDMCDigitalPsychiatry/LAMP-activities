@@ -456,7 +456,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       successTaps: 0,
       wrongTaps: 0,
     }, () => {
-      this.timer = setTimeout(() => this.showBoxes( this.state.randomPoints , 0), this.props.animationInterval);    
+      this.showBoxes( this.state.randomPoints , 0);    
     });
   };
 
@@ -464,8 +464,6 @@ class Board extends React.Component<BoardProps, BoardState> {
   showBoxes = (rP: Array<number>, i: number) => {
     this.setState({
       activeCell: rP[i],
-      gameSequence: true,
-
       successTaps: 0,
       wrongTaps: 0,
     });
@@ -474,7 +472,12 @@ class Board extends React.Component<BoardProps, BoardState> {
         animate: true,
         imageIndex: i,
       });
-      this.timerBox = setTimeout(() => this.showBoxes(rP, i + 1), this.props.animationInterval);
+      this.timerBox = setTimeout(() => {
+        this.setState({
+          gameSequence: true,
+        });
+        this.showBoxes(rP, i + 1)
+      }, this.props.animationInterval);
     } else {
       this.timerBox = setTimeout(() => {
         this.setState({
@@ -553,14 +556,9 @@ class Board extends React.Component<BoardProps, BoardState> {
             : "box-white"
           }
         }
-        setTimeout(() => {
-          for(const item of items){
-            if(item) {
-              item.className = "box-white"
-            }
-          } 
-        }, 1500)
+      
         this.locationautoTimer = setTimeout(() => {
+          this.resetBoxGreyClass()
           ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
           this.setState({
             enableLocationTap: false, enableTap: true, locationIndex: this.state.resultClickIndex + 1, resultClickIndex: this.state.resultClickIndex + 1
