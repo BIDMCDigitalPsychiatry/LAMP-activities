@@ -44,7 +44,7 @@ export default class Questions extends React.Component<Props, State> {
   private months = ["January","February","March","April","May","June","July",
   "August","September","October","November","December"];
   private days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  private years = range(2021, new Date().getFullYear() + 1)
+  private years = range(new Date().getFullYear() - 10, new Date().getFullYear() + 5)
   private monthDates= Array.from(Array(getDaysInCurrentMonth()).keys())
   private seasons = ["Summer", "Winter", "Autumn", "Spring"]
 

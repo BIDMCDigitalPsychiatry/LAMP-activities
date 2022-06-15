@@ -191,7 +191,7 @@ ol,ul {
 	margin-bottom:1em
 }
 
-.box-info{position: absolute; width: 100%; text-align: center; bottom: 0; background-color: #fff; color: #359ffe; padding: 10px;}
+.box-info{ width: 100%; text-align: center;  color: #fff; padding: 10px;}
 .box-alert{   
 	z-index: 111;
     position: absolute;
