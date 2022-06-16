@@ -137,24 +137,61 @@ const images = [
  ]
 ]
 
-
-export default function getImages(limit:number, selected?:any, selectedKeys?:any) {
-    const result = []
-    const keys = Array.from(Array(12).keys())
-    const keysSelected:Array<number> = selectedKeys ?? []
-    let randomSelected:Array<number> 
-    randomSelected = selected ??  []
-    for (let i = 0; i < limit ; i++){
-      const randomKey = Math.floor(Math.random() * keys.length)
-      const random = Math.floor(Math.random() * 4)
-
-      if(!keysSelected.includes(randomKey)) {
-        randomSelected.push(random) 
-        keysSelected.push(randomKey)
-        result.push(images[randomKey][random])
-      } else {
-        i = i-1
-      }
+function getKeys(limit:number) {
+  const keys = Array.from(Array(12).keys())
+  const keysSelected:Array<number> = []
+  for (let i = 0; i < limit ; i++){
+    const randomKey = Math.floor(Math.random() * keys.length)
+    if(!keysSelected.includes(randomKey)) {
+      keysSelected.push(randomKey)
+    } else {
+      i=i-1
     }
-    return {images : result, numbers: randomSelected, keys: keysSelected }
+  }
+  return keysSelected
 }
+
+
+export default function getImages(limit:number) {
+    const result = []
+    const allImages = []
+    const keysSelected:Array<number> = getKeys(limit)
+    console.log(keysSelected)
+    let randomAllSelected:Array<number> 
+    randomAllSelected = []
+    console.log(limit)
+    for(let i = 0; i < limit; i++) {
+      const random = Math.floor(Math.random() * 4)
+        result.push(images[keysSelected[i]][random])
+        console.log(keysSelected[i], i, randomAllSelected)
+        allImages.push(images[keysSelected[i]][random])
+        randomAllSelected = []
+        for (let j = 0; j < 2 ;j++) {
+          const randomKey = Math.floor(Math.random() * 4)
+          if(randomKey !== random && !randomAllSelected.includes(randomKey)) {
+            randomAllSelected.push(randomKey)
+            allImages.push(images[keysSelected[i]][randomKey])
+          } else {
+            j = j - 1
+          }
+        }
+    }
+
+
+    return {images : result, resultImages: shuffle(allImages) }
+}
+
+function shuffle(array: any) {
+  let currentIndex = array.length  
+  let randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+

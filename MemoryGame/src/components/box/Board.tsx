@@ -176,13 +176,11 @@ class Board extends React.Component<BoardProps, BoardState> {
         }, 59999)
       })
     } else {
-    const selected = getImages(this.props.seqLength, [])
-    const resultImages = selected.images.concat(getImages((this.props.foils === 1 ? 9 : 12) - this.props.seqLength, 
-      selected.numbers, selected.keys).images).sort(() => Math.random() - 0.5);
+    const selected = getImages(this.props.seqLength)
 
     this.setState({
       activeCell: -1,
-      allImages:  this.state.allImages.length > 0 ? this.state.allImages : resultImages,
+      allImages:  this.state.allImages.length > 0 ? this.state.allImages : selected.resultImages,
       animate: false,
       autoCorrect: this.state.trail <= 3 ? true : false,
       boxClass: ["box-square"],
@@ -652,7 +650,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           <tbody>{this.createResultTable()}</tbody>
         </table>
       );
-      alertText = !this.state?.loading ? (
+      alertText = !this.state?.loading && !this.state.enableTap  && !this.state.enableLocationTap && !!this.state.gameSequence  ? (
         <div className="box-info">
           {i18n.t("LEARN_THE_SEQUENCE")}
         </div>
