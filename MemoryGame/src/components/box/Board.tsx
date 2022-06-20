@@ -173,7 +173,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, () => {
             this.resetState()
           })
-        }, 59999)
+        }, 59999 )
       })
     } else {
     const selected = getImages(this.props.seqLength)
@@ -196,7 +196,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       imageIndex:0,
       images: this.state.allImages.length > 0 ? this.state.images : selected?.images,
       lastClickTime: null,
-      loading: this.state.trail > 0 ? true : false,
+      loading: this.state.trail > 0 && this.state.trail <=3 ? true : false,
       orderNumber: -1,
       randomPoints: this.state.randomPoints.length > 0 ? this.state.randomPoints : getRandomNumbers(this.props.seqLength, 1, 9),
       resultClickIndex:0,
@@ -225,7 +225,17 @@ class Board extends React.Component<BoardProps, BoardState> {
             item.innerHTML = ""
           }               
         }
-        this.handleClose(false)         
+        if(this.state.trail <= 3) { this.handleClose(false) } else {
+          this.timerBox = setTimeout(() => {
+            this.setState({
+              enableTap: true,
+              gameSequence: false,
+              imageIndex: this.props.seqLength -1,
+              lastClickTime: new Date().getTime(),
+              loading:false,
+            });        
+          }, 200);
+        }      
       }   
       this.resetBoxClass();
       this.setState({
