@@ -226,7 +226,6 @@ class Board extends React.Component<BoardProps, BoardState> {
           }               
         }
         if(this.state.trail <= 3) { this.handleClose(false) } else {
-          this.timerBox = setTimeout(() => {
             this.setState({
               enableTap: true,
               gameSequence: false,
@@ -234,7 +233,6 @@ class Board extends React.Component<BoardProps, BoardState> {
               lastClickTime: new Date().getTime(),
               loading:false,
             });        
-          }, 200);
         }      
       }   
       this.resetBoxClass();
