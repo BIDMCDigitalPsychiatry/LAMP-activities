@@ -46,7 +46,6 @@ interface BoardState {
   trail:number;
   showQuestions: boolean;
   staticData: any;
-  startTime:number;
   successStages: number;
   successTaps: number;
   successTapImage: boolean;
@@ -117,7 +116,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       sendResponse: false,
       showModalInfo: false,
       showQuestions: false,
-      startTime:new Date().getTime(),
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
@@ -179,7 +177,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, () => {    
             this.resetState()
           })
-        }, 59999)
+        }, 59999 )
       })
     } else {
     const selected = getImages(this.props.seqLength)
@@ -262,8 +260,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
 
   handleLocationClick = (e:any) => {
-    if(!!this.state.enableLocationTap && (this.state.boxes === null || (this.state.boxes !== null && JSON.parse(this.state.boxes).length 
-    <  2* this.state.randomPoints.length))) {
+    if(!!this.state.enableLocationTap) {
       this.resetBoxGreyClass()
       if(!!this.state.autoCorrect) {
         clearInterval(this.autoCorrectionTimer)
@@ -332,7 +329,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           ? this.state.successTaps + 1
           : this.state.successTaps,
         wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
-      }, () => {                   
+      }, () => {                    
         this.updateWithTaps(index, 2, success);
         this.setUpdateProcess()
       })      
@@ -340,9 +337,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 }
 
   handleResultClick = (e:any) => {    
-    if (this.state.enableTap && (this.state.boxes === null || (this.state.boxes !== null && JSON.parse(this.state.boxes).length 
-    <  2* this.state.randomPoints.length))) {
-          if(!!this.state.autoCorrect) {
+    if (this.state.enableTap) { 
+      if(!!this.state.autoCorrect) {
         clearInterval(this.autoCorrectionTimer)
         clearInterval(this.resetTimer)
         clearInterval(this.correctionTimer)
@@ -364,7 +360,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.setState({
           clickedIndex: index, enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex,successTapImage: success
         }, () => {
-        this.updateWithTaps(index, 1, success);
+          this.updateWithTaps(index, 1, success);
 
         if(!success && !!this.state.autoCorrect ) {
           setTimeout(() => {
@@ -382,7 +378,7 @@ class Board extends React.Component<BoardProps, BoardState> {
  
   // To track echa tap on box
   updateStateWithTaps = () => {
-    if(JSON.parse(this.state.boxes).length === 2*this.state.randomPoints.length) {
+    console.log("state", this.state.states)
     const states = [];
     if (this.state.states !== null) {
       const r = JSON.parse(this.state.states);
@@ -392,28 +388,21 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     const box = JSON.parse(this.state.boxes);
     states.push(box);
+    console.log(states)
     this.setState({
       states: JSON.stringify(states),
     }, () => {
-        if(this.state.autoCorrect !== true)
-        {
-          setTimeout(() => {
+      console.log(this.state.resultClickIndex + 1, this.state.randomPoints.length, !this.state.autoCorrect)
+      if(this.state.resultClickIndex + 1  > this.state.randomPoints.length && !this.state.autoCorrect){
+        setTimeout(() => {
           this.setState({
             loading:true,
           })    
           this.sendGameResult()
    
         }, 2000) 
-      } else {
-        this.resetTimer = setTimeout(() => {
-          this.setState({
-            loading:true,
-          })    
-          this.resetState()   
-        }, 2000) 
-      }             
+      }        
     });
-  }
   };
 
   // Update the state values after each game state
@@ -432,14 +421,12 @@ class Board extends React.Component<BoardProps, BoardState> {
       item: type,
       level: this.state.trail > 3 ? 4 : this.state.trail,
       type: statusVal,
-      value: parseInt(index.toString(), 10),
+      value: index,
     };
     boxes.push(route);
     this.setState({
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
-    }, () => {
-        this.updateStateWithTaps()
     })
   };
 
@@ -452,6 +439,20 @@ class Board extends React.Component<BoardProps, BoardState> {
     } else {
       points = points + 1;
     }
+    console.log({
+      duration: new Date().getTime() - this.props.time,
+      static_data: Object.assign(this.state.staticData ?? {},{
+        correct_answers: this.state.stateSuccessTaps,
+        correct_images: this.state.imageSelections,
+        correct_locations:this.state.randomPoints,
+        point: points,
+        total_questions: this.props.seqLength,
+        wrong_answers: this.state.stateWrongTaps,
+      }),
+      temporal_slices: JSON.parse(this.state.states),
+      timestamp: new Date().getTime(),
+    })
+console.log(this.state.states)
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.props.time,
@@ -568,8 +569,18 @@ class Board extends React.Component<BoardProps, BoardState> {
     if (!!this.state.autoCorrect) {
       if (this.state.resultClickIndex < this.state.randomPoints.length) {
         this.updateAutoCorrection() 
+      } else {
+        this.updateStateWithTaps()
+        setTimeout(() => {
+          this.resetState()
+        }, 1500)
       }
-    } 
+    } else {
+      console.log(this.state.resultClickIndex, this.state.randomPoints.length)
+      if (this.state.resultClickIndex >= this.state.randomPoints.length) {
+        this.updateStateWithTaps()
+      }
+    }
   }
 
   updateAutoCorrection = () => {
@@ -587,22 +598,17 @@ class Board extends React.Component<BoardProps, BoardState> {
             : "box-white"
           }
         }
-        this.updateWithTaps(correctIndex, 1, false);
-        this.setState({
-            enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex, successTapImage: true
-          })
+      
         this.locationautoTimer = setTimeout(() => {
           this.resetBoxGreyClass()
           ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
-          this.updateWithTaps(imageIndex, 2, false);
           this.setState({
             enableLocationTap: false, enableTap: true, locationIndex: this.state.resultClickIndex + 1, resultClickIndex: this.state.resultClickIndex + 1
           }, () => {
-            if(JSON.parse(this.state.boxes).length < 2 * this.state.randomPoints.length) {
+            if(this.state.resultClickIndex < this.state.randomPoints.length) {
                 this.updateAutoCorrection() 
             } else {
-              clearInterval(this.resetTimer)
-              this.resetTimer= setTimeout(() => {
+              setTimeout(() => {
                 this.resetState()
               }, 1500)
             }
@@ -732,7 +738,7 @@ class Board extends React.Component<BoardProps, BoardState> {
            }} 
            onSubmit={(data: any) => {
             const stateDetails =   Object.assign({},data)
-            stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
+            stateDetails.start_time = data.start_time?.getHours() + ":"+ data.start_time?.getMinutes() 
             this.setState({loading:true, staticData: stateDetails})
             setTimeout(() => {
               this.resetState()

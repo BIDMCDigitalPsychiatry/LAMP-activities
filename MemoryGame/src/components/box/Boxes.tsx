@@ -22,9 +22,6 @@ interface AppState {
   time:number;
   noBack: boolean;
 }
-
-
-
 class Box extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
@@ -89,7 +86,7 @@ class Box extends React.Component<{}, AppState> {
                 time={this.state.time} 
                 autoCorrect={this.state.autoCorrect}
               />
-            } 
+            }
             </div>
           </div>
         )}
