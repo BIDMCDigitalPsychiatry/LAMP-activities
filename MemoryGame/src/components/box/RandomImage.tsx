@@ -156,14 +156,13 @@ export default function getImages(limit:number) {
     const result = []
     const allImages = []
     const keysSelected:Array<number> = getKeys(limit)
-    console.log(keysSelected)
     let randomAllSelected:Array<number> 
     randomAllSelected = []
-    console.log(limit)
+    const imageSelctions:Array<any>  = []
     for(let i = 0; i < limit; i++) {
       const random = Math.floor(Math.random() * 4)
         result.push(images[keysSelected[i]][random])
-        console.log(keysSelected[i], i, randomAllSelected)
+
         allImages.push(images[keysSelected[i]][random])
         randomAllSelected = []
         for (let j = 0; j < 2 ;j++) {
@@ -175,10 +174,10 @@ export default function getImages(limit:number) {
             j = j - 1
           }
         }
+        imageSelctions.push({"category": keysSelected[i] + 1, "index": random + 1 }) 
+
     }
-
-
-    return {images : result, resultImages: shuffle(allImages) }
+    return {images : result, resultImages: shuffle(allImages), imageIndexes:imageSelctions  }
 }
 
 function shuffle(array: any) {
@@ -191,7 +190,6 @@ function shuffle(array: any) {
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
-
   return array;
 }
 
