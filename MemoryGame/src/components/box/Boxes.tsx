@@ -27,7 +27,7 @@ class Box extends React.Component<{}, AppState> {
     super(props);
     const state = {
       autoCorrect:false,
-      loaded: true,
+      loaded: false,
       noBack:false,
       settings: {},
       time: new Date().getTime(),
