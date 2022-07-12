@@ -300,7 +300,8 @@ class Board extends React.Component<BoardProps, BoardState> {
             clickedImageIndex: index,                
             enableLocationTap: false,
             enableTap:
-              this.state.resultClickIndex + 1  < this.state.randomPoints.length
+            this.state.boxes === null || (this.state.boxes != null && 
+              JSON.parse(this.state.boxes).length < 2*this.state.randomPoints.length)    
                 ? true
                 : false}, () => {
           setTimeout(() => {
@@ -317,7 +318,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         clickedImageIndex: index,                
         enableLocationTap: false,
         enableTap:
-          this.state.resultClickIndex + 1  < this.state.randomPoints.length
+        this.state.boxes === null || (this.state.boxes != null && 
+          JSON.parse(this.state.boxes).length < 2*this.state.randomPoints.length)
             ? true
             : false,
         resultClickIndex:  !!success || !this.state.autoCorrect ? 
@@ -420,27 +422,30 @@ class Board extends React.Component<BoardProps, BoardState> {
   updateWithTaps = (index: number, type: number, statusVal: boolean) => {
     const boxes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
-
+    let status = true
     if (typeof this.state.boxes !== "undefined" && this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
       Object.keys(r).forEach((key) => {
         boxes.push(r[key]);
       });
+      status = (r[r.length-1].item === type) ? false : true
     }
-    const route = {
-      duration: lastclickTime,
-      item: type,
-      level: this.state.trail > 3 ? 4 : this.state.trail,
-      type: statusVal,
-      value: parseInt(index.toString(), 10),
-    };
-    boxes.push(route);
-    this.setState({
-      boxes: JSON.stringify(boxes),
-      lastClickTime: new Date().getTime(),
-    }, () => {
-        this.updateStateWithTaps()
-    })
+    if(!!status) {
+      const route = {
+        duration: lastclickTime,
+        item: type,
+        level: this.state.trail > 3 ? 4 : this.state.trail,
+        type: statusVal,
+        value: parseInt(index.toString(), 10),
+      };
+      boxes.push(route);
+      this.setState({
+        boxes: JSON.stringify(boxes),
+        lastClickTime: new Date().getTime(),
+      }, () => {
+          this.updateStateWithTaps()
+      })
+    }
   };
 
   // Call the API to pass game result
@@ -502,31 +507,33 @@ class Board extends React.Component<BoardProps, BoardState> {
       activeCell: rP[i],
       successTaps: 0,
       wrongTaps: 0,
-    });
-    if (i + 1 <= rP.length) {
-      this.setState({
-        animate: true,
-        imageIndex: i,
-      });
-      this.timerBox = setTimeout(() => {
-        
-        this.showBoxes(rP, i + 1)
+    }, () => {
+      if (i < rP.length) {
         this.setState({
-          gameSequence: true,
-        });
-      }, this.props.animationInterval + 300);
-    } else {
-      this.timerBox = setTimeout(() => {
-        this.setState({
-          enableTap: true,
-          gameSequence: false,
-          lastClickTime: new Date().getTime(),
+          animate: true,
+          imageIndex: i,
+        }, () => {
+          this.timerBox = setTimeout(() => {          
+            this.showBoxes(rP, i + 1)
+            this.setState({
+              gameSequence: true,
+            });
+          }, this.props.animationInterval + 300);
         });        
-      }, this.props.animationPersistance); 
-      if(!!this.state.autoCorrect) {   
-        this.updateAutoCorrection()
+      } else {
+        this.timerBox = setTimeout(() => {
+          this.setState({
+            enableTap: true,
+            gameSequence: false,
+            lastClickTime: new Date().getTime(),
+          });        
+        }, this.props.animationPersistance); 
+        if(!!this.state.autoCorrect) {   
+          this.updateAutoCorrection()
+        }
       }
-    }  
+    });
+      
   };
 
   correctPicture = () => {
@@ -601,10 +608,9 @@ class Board extends React.Component<BoardProps, BoardState> {
             if(JSON.parse(this.state.boxes).length < 2 * this.state.randomPoints.length) {
                 this.updateAutoCorrection() 
             } else {
-              clearInterval(this.resetTimer)
               this.resetTimer= setTimeout(() => {
                 this.resetState()
-              }, 1500)
+              }, 2000)
             }
           })
         } , 8000)  
@@ -690,7 +696,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           <tbody>{this.createResultTable()}</tbody>
         </table>
       );
-      alertText = !this.state?.loading && !this.state.enableTap  && !this.state.enableLocationTap && !!this.state.gameSequence  ? (
+      alertText = !this.state?.loading && !this.state.enableTap  && !this.state.enableLocationTap ? (
         <div className="box-info">
           {i18n.t("LEARN_THE_SEQUENCE")}
         </div>
@@ -751,7 +757,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               <div style={{float:"left"}}> {board}</div>
               <div className="secondbox">
               {(!this.state.loading && this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) 
-                && boardResult}
+                && <div>{boardResult}</div>}
               </div>
             </div>
             {this.state.supportsSidebar === true && alertText}

@@ -86,7 +86,7 @@ class Box extends React.Component<{}, AppState> {
                 time={this.state.time} 
                 autoCorrect={this.state.autoCorrect}
               />
-            }
+             }
             </div>
           </div>
         )}
