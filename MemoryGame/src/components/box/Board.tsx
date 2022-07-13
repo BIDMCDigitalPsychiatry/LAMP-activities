@@ -526,11 +526,12 @@ class Board extends React.Component<BoardProps, BoardState> {
             enableTap: true,
             gameSequence: false,
             lastClickTime: new Date().getTime(),
-          });        
-        }, this.props.animationPersistance); 
-        if(!!this.state.autoCorrect) {   
-          this.updateAutoCorrection()
-        }
+          }, () => {
+            if(!!this.state.autoCorrect) {   
+              this.updateAutoCorrection()
+            }  
+          });
+        }, this.props.animationPersistance);       
       }
     });
       
