@@ -521,7 +521,6 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, this.props.animationInterval + 300);
         });        
       } else {
-        console.log(this.state)
         this.timerBox = setTimeout(() => {
           this.setState({
             enableTap: true,
