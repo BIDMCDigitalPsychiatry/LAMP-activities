@@ -521,16 +521,18 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, this.props.animationInterval + 300);
         });        
       } else {
+        console.log(this.state)
         this.timerBox = setTimeout(() => {
           this.setState({
             enableTap: true,
             gameSequence: false,
             lastClickTime: new Date().getTime(),
-          });        
-        }, this.props.animationPersistance); 
-        if(!!this.state.autoCorrect) {   
-          this.updateAutoCorrection()
-        }
+          }, () => {
+            if(!!this.state.autoCorrect) {   
+              this.updateAutoCorrection()
+            }  
+          });
+        }, this.props.animationPersistance);       
       }
     });
       
