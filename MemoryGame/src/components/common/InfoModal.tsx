@@ -47,6 +47,7 @@
          animation={false}
          aria-labelledby="contained-modal-title-vcenter"
          centered={true}
+         backdrop="static"
        >
          <Modal.Header closeButton={true}>
            <Modal.Title>mindLamp</Modal.Title>

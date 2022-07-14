@@ -316,12 +316,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       
       this.setState({
         clickedImageIndex: index,                
-        enableLocationTap: false,
-        enableTap:
-        this.state.boxes === null || (this.state.boxes != null && 
-          JSON.parse(this.state.boxes).length < 2*this.state.randomPoints.length)
-            ? true
-            : false,
         resultClickIndex:  !!success || !this.state.autoCorrect ? 
             this.state.resultClickIndex + 1 : this.state.resultClickIndex,        
         stateSuccessTaps: success
@@ -357,17 +351,19 @@ class Board extends React.Component<BoardProps, BoardState> {
       const success =  this.state.allImages[parseInt(index, 10)] === this.state.images[this.state.resultClickIndex]
         const targets = e.target.closest("table").querySelectorAll("div")
         for(const i of targets){
-          i.className = !success && i.getAttribute("data-key") === index ?
+
+          i.className = this.state.trail <= 3 ? (!success && i.getAttribute("data-key") === index ?
               "box-white inactive error-box"
             : (i.getAttribute("data-key") !== index) && !!success ?
             "box-white inactive"
-          : "box-white"
+          : "box-white") : (i.getAttribute("data-key") === index ?
+          (!success ? "box-white error-box" : "box-white")
+        : "box-white inactive") 
         }
         this.setState({
-          clickedIndex: index, enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex,successTapImage: success
+          clickedIndex: index,  locationIndex: this.state.resultClickIndex,successTapImage: success
         }, () => {
         this.updateWithTaps(index, 1, success);
-
         if(!success && !!this.state.autoCorrect ) {
           setTimeout(() => {
             this.correctPicture()
@@ -441,7 +437,16 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes.push(route);
       this.setState({
         boxes: JSON.stringify(boxes),
+        enableLocationTap: type === 1 && (
+          this.state.boxes === null || (this.state.boxes != null && 
+            JSON.parse(this.state.boxes).length < 2*this.state.randomPoints.length)) ? true : false,
+        enableTap: type === 2 && (
+        this.state.boxes === null || (this.state.boxes != null && 
+          JSON.parse(this.state.boxes).length < 2*this.state.randomPoints.length))
+            ? true
+            : false,
         lastClickTime: new Date().getTime(),
+
       }, () => {
           this.updateStateWithTaps()
       })
@@ -497,24 +502,24 @@ class Board extends React.Component<BoardProps, BoardState> {
       successTaps: 0,
       wrongTaps: 0,
     }, () => {
-      this.showBoxes( this.state.randomPoints , 0);    
+      this.showBoxes(0);    
     });
   };
 
   // Show boxes one by one in secific time intervals
-  showBoxes = (rP: Array<number>, i: number) => {
+  showBoxes = (i: number) => {
     this.setState({
-      activeCell: rP[i],
+      activeCell: this.state.randomPoints[i],
       successTaps: 0,
       wrongTaps: 0,
     }, () => {
-      if (i < rP.length) {
+      if (i < this.state.randomPoints.length) {
         this.setState({
           animate: true,
           imageIndex: i,
         }, () => {
           this.timerBox = setTimeout(() => {          
-            this.showBoxes(rP, i + 1)
+            this.showBoxes(i + 1)
             this.setState({
               gameSequence: true,
             });
@@ -549,9 +554,10 @@ class Board extends React.Component<BoardProps, BoardState> {
             "box-white inactive"
           : "box-white"
         }
-      }      
+      } 
+    
       this.setState({
-        enableLocationTap: true, enableTap: false, locationIndex: this.state.resultClickIndex, successTapImage: true
+        locationIndex: this.state.resultClickIndex, successTapImage: true
       }, () => {
         this.locationTimer = setTimeout(() => {          
           this.correctLocation()
@@ -567,7 +573,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     if (ele) {
       ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex]) 
       this.setState({
-        enableLocationTap: false, enableTap: true, resultClickIndex: this.state.resultClickIndex + 1
+        resultClickIndex: this.state.resultClickIndex + 1
       })      
     }
   }
@@ -597,14 +603,14 @@ class Board extends React.Component<BoardProps, BoardState> {
         }
         this.updateWithTaps(correctIndex, 1, false);
         this.setState({
-            enableLocationTap: true, enableTap: false,  locationIndex: this.state.resultClickIndex, successTapImage: true
+            locationIndex: this.state.resultClickIndex, successTapImage: true
           })
         this.locationautoTimer = setTimeout(() => {
           this.resetBoxGreyClass()
           ele.innerHTML = renderToString(this.state.images[this.state.resultClickIndex])
           this.updateWithTaps(imageIndex, 2, false);
           this.setState({
-            enableLocationTap: false, enableTap: true, locationIndex: this.state.resultClickIndex + 1, resultClickIndex: this.state.resultClickIndex + 1
+            locationIndex: this.state.resultClickIndex + 1, resultClickIndex: this.state.resultClickIndex + 1
           }, () => {
             if(JSON.parse(this.state.boxes).length < 2 * this.state.randomPoints.length) {
                 this.updateAutoCorrection() 
@@ -722,7 +728,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       }
     
     return (
-      <div>       
+      <React.Fragment>       
         {!!this.state && (!!this.state.showModalInfo ? <InfoModal
           show={this.state.showModalInfo}
           modalClose={this.handleClose}
@@ -748,26 +754,25 @@ class Board extends React.Component<BoardProps, BoardState> {
         )
         :
         (
-          <div>
+          <React.Fragment>
             <div className="timer-div">
-              {(!!this.state.autoCorrect && this.state.trail<= 3) && "Trial " + (this.state.trail)}
-              <br />
+              {(!!this.state.autoCorrect && this.state.trail<= 3) && <div>{"Trial " + (this.state.trail)}<br /></div>}              
               {this.state.supportsSidebar === false && alertText}
             </div>
             <div className="mt-30 box-game">
               <div style={{float:"left"}}> {board}</div>
               <div className="secondbox">
               {(!this.state.loading && this.state.imageIndex  === this.props.seqLength - 1 && !this.state.gameSequence) 
-                && <div>{boardResult}</div>}
+                ? <React.Fragment>{boardResult}</React.Fragment> :  <React.Fragment />}
               </div>
             </div>
             {this.state.supportsSidebar === true && alertText}
-          </div>
+          </React.Fragment>
         ))}
         <Backdrop className="backdrop" open={this.state.loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-      </div>
+      </React.Fragment>
     );
   }
 }
