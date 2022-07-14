@@ -179,7 +179,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }, () => {    
             this.resetState()
           })
-        }, 2000 ) // 59999)
+        }, 59999)
       })
     } else {
     const selected = getImages(this.props.seqLength)
