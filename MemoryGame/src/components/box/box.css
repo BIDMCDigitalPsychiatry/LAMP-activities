@@ -314,6 +314,13 @@ button.primary{
 }
 button.primary:hover{background-color: #197ed8}
 .text-right{text-align: right;}
+@media only screen and (max-width: 769px){
+	.box-white{width: 115px; height: 115px;}
+	.box-table tr{height: 115px;}
+	.box-white svg, .box-white img{
+		height: 115px !important;
+	}
+}
 @media only screen and (max-width: 415px){
 	.question-nav select, .react-datepicker__input-container input{
 		padding: 8px;
@@ -324,10 +331,17 @@ button.primary:hover{background-color: #197ed8}
 		margin-bottom: 10px;
 	}
 	.box-info{bottom: auto; background: transparent; color: #fff;}
-	.box-white{width: 100px; height: 100px;}
-	.box-table tr{height: 100px;}
+	.box-white{width: 95px; height: 95px;}
+	.box-table tr{height: 95px;}
 	.box-white svg, .box-white img{
-		
-		height: 100px !important;
+		height: 95px !important;
 	}
+}
+@media only screen and (max-width: 376px){
+	.box-white{width: 70px; height: 70px;}
+	.box-table tr{height: 70px;}
+	.box-white svg, .box-white img{
+		height: 70px !important;
+	}
+	
 }
