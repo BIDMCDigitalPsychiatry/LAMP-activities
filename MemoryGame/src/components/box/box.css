@@ -331,10 +331,10 @@ button.primary:hover{background-color: #197ed8}
 		margin-bottom: 10px;
 	}
 	.box-info{bottom: auto; background: transparent; color: #fff;}
-	.box-white{width: 95px; height: 95px;}
-	.box-table tr{height: 95px;}
+	.box-white{width: 85px; height: 85px;}
+	.box-table tr{height: 85px;}
 	.box-white svg, .box-white img{
-		height: 95px !important;
+		height: 85px !important;
 	}
 }
 @media only screen and (max-width: 376px){
