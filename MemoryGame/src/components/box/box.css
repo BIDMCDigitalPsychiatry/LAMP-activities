@@ -300,7 +300,7 @@ td{
 	color: "#fff";
   }
 .inactive{background-color: #fff;}
-.error-box {border: 2px solid red;}
+.error-box{outline: 2px solid red;}
 .inactive svg{opacity: 0.2;}
 button.primary{
 	background-color: #359ffe;
