@@ -16,6 +16,7 @@
     "no-console": false,
     "jsx-no-lambda": false,
     "jsx-boolean-value": false,
+    "exhaustive-deps": false,
     "no-shadowed-variable": false
   }
 }

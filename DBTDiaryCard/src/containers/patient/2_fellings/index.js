@@ -65,16 +65,17 @@ export default function FellingView({ settings, ...props }) {
   const [initialised, setInitialised] = useState(false)
 
   useEffect(() => {
-    if(!!settings) {
-    const emotionItems = settings?.emotions ?? []
-    const extraItems = ["Sad", "Shame", "Anger", "Fear/Worry", "Joy"]
-    extraItems.map((item) => {
-      emotionItems.push({emotion: i18n.t(item)})
-    })
-    console.log(emotionItems)
-    setEmotionItems(emotionItems)
-    setInitialised(true)
-  }
+    function initialise() {
+      const emotionItems = settings?.emotions ?? []
+      const extraItems = ["Sad", "Shame", "Anger", "Fear/Worry", "Joy"]
+      extraItems.map((item) => {
+        emotionItems.push({emotion: i18n.t(item)})
+        return
+      })
+      setEmotionItems(emotionItems)
+      setInitialised(true)
+    }
+    initialise()    
   }, [])
 
   const updateRate = (key, emotion, rate) => {
