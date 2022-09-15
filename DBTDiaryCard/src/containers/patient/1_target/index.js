@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState}  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 import RateCountAnswer from '../../../components/RateCountAnswer'
 import HeaderView from '../../../components/HeaderView'
 import { useTranslation } from "react-i18next"
-// import { useSnackbar } from "notistack"
+import { useSnackbar } from "notistack"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,8 +45,18 @@ const useStyles = makeStyles((theme) => ({
 export default function TargetView({ settings, ...props }) {
   const classes = useStyles()
   const [targets, setTargets] = React.useState(props.report && props.report.target ? props.report.target : { effective: {}, ineffective: {} })
-  const { t } = useTranslation()
-  // const { enqueueSnackbar } = useSnackbar()
+  const { t, i18n  } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
+  const [ineffectiveItems, setIneffectiveItems] = useState(settings?.targetIneffective ?? [])
+  const [initialised, setInitialised] = useState(false)
+  
+  useEffect(() => {
+    const ineffectiveItems = settings?.targetIneffective ?? []
+    ineffectiveItems.push({target: i18n.t("Quit Therapy"),measure: i18n.t("Times") })
+    ineffectiveItems.push({target: i18n.t("Die by suicide"),measure: i18n.t("Times") })
+    setIneffectiveItems(ineffectiveItems)
+    setInitialised(true)
+  }, [])
 
   const updateUrge = (type, target, key, value) => {
     if (type === 'effective') {
@@ -125,9 +135,9 @@ export default function TargetView({ settings, ...props }) {
           (settings?.targetEffective ?? []).length > 0 && Object.keys(targets.effective).length === (settings?.targetEffective ?? []).length))) {
       onContinue()
     } else {
-      // enqueueSnackbar(t("Rating and acted values are required for each item."), {
-      //   variant: "error",
-      // })
+      enqueueSnackbar(t("Rating and acted values are required for each item."), {
+        variant: "error",
+      })
     }
   }
 
@@ -170,7 +180,7 @@ export default function TargetView({ settings, ...props }) {
           <div className={classes.headerContainer}>
             <Typography className={classes.headerTitle}>{t("INEFFECTIVE")}</Typography>
           </div>
-          {(settings?.targetIneffective ?? []).map((item, index) => {
+          {!!initialised && (ineffectiveItems ?? []).map((item, index) => {
             const actValue = (targets.ineffective && targets.ineffective["ineffective" + index] && targets.ineffective["ineffective" + index].act) ?
               (targets.ineffective["ineffective" + index].act.trim().length === 0 ? 0 : targets.ineffective["ineffective" + index].act) : ''
             const urgeValue = !!targets.ineffective && targets.ineffective["ineffective" + index]?.urge >= 0 ? targets.ineffective["ineffective" + index].urge : -1

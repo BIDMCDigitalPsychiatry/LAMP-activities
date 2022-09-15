@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -6,6 +6,7 @@ import { Grid } from '@material-ui/core'
 import ExperienceAnswer from '../../../components/ExperienceAnswer'
 import HeaderView from '../../../components/HeaderView'
 import { useTranslation } from "react-i18next"
+import { useSnackbar } from "notistack"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,8 +59,23 @@ const useStyles = makeStyles((theme) => ({
 export default function FellingView({ settings, ...props }) {
   const classes = useStyles()
   const [result, setResult] = React.useState(props.report && !!props.report.emotion ? props.report.emotion : { felling: {} })
-  const { t } = useTranslation()
-  // const { enqueueSnackbar } = useSnackbar()
+  const { t , i18n } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
+  const [emotionItems, setEmotionItems] = useState(settings?.emotions ?? [])
+  const [initialised, setInitialised] = useState(false)
+
+  useEffect(() => {
+    if(!!settings) {
+    const emotionItems = settings?.emotions ?? []
+    const extraItems = ["Sad", "Shame", "Anger", "Fear/Worry", "Joy"]
+    extraItems.map((item) => {
+      emotionItems.push({emotion: i18n.t(item)})
+    })
+    console.log(emotionItems)
+    setEmotionItems(emotionItems)
+    setInitialised(true)
+  }
+  }, [])
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
@@ -80,9 +96,9 @@ export default function FellingView({ settings, ...props }) {
     if (onContinue && ((settings?.emotions ?? []).length === 0 || ((settings?.emotions ?? []).length > 0 && Object.keys(result.felling).length === (settings?.emotions ?? []).length))) {
       onContinue()
     } else {
-      // enqueueSnackbar(t("Rating required for each item."), {
-      //   variant: "error",
-      // })
+      enqueueSnackbar(t("Rating required for each item."), {
+        variant: "error",
+      })
     }
   }
 
@@ -97,7 +113,7 @@ export default function FellingView({ settings, ...props }) {
       />
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
-          {(settings?.emotions ?? []).map((item, index) => {
+          {!!initialised && (emotionItems ?? []).map((item, index) => {
             const rate = result && !!result.felling && result.felling["emotion" + index]?.rate >= 0 ? result.felling["emotion" + index].rate : -1
             return (
               <ExperienceAnswer

@@ -16,8 +16,6 @@ import SkillHelpView from './6_skillhelp'
 import { useTranslation } from "react-i18next"
 
 import actions from '../home/action'
-import QuitTherapy from './8_quit'
-import UrgeSuicide from "./9_suicide"
 
 const { updateReport, createReport } = actions
 
@@ -75,8 +73,8 @@ function HomeView(props) {
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-        const settings = props.data.activity.settings;
-        const configuration = props.data.configuration;
+        const settings = props?.data?.activity?.settings;
+        const configuration = props?.data?.configuration;
         setSettings(settings);
         updateReport(null)
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
@@ -84,11 +82,12 @@ function HomeView(props) {
     }, [props.data, i18n])
 
     useEffect(() => {
-        if(!!settings) setActive(0)
+       if(!!settings)
+         setActive(0)
     }, [settings])
 
     useEffect(() => {
-        if (active === 10) {
+        if (active === 8) {
             let finalReport = createReport(props.report)
             finalReport.duration = new Date().getTime() - time           
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
@@ -99,7 +98,7 @@ function HomeView(props) {
         return ( 
              <div className={classes.root}>                          
                 <div className={classes.headerContainer}>
-                    {!props.data.noBack && <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
+                    {!props.data?.noBack && <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
                             <ArrowBack />
                     </IconButton>}
                     <Typography className={classes.headerTitle}>{t("LIFE_WORTH_LIVING_GOAL")}</Typography>
@@ -130,12 +129,8 @@ function HomeView(props) {
         return (<EffortView {...props} onContinue={() => setActive(6)} onBack={() => setActive(41)} />)
     } else if (active === 6) {
         return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)} />)
-    } else if (active === 7) {
-        return (<QuitTherapy {...props} onContinue={() => setActive(8)} onBack={() => setActive(!props.report || (props.report && props.report.skillToday) ? 6 : 42)} />)
-    }else if (active === 8) {
-        return (<UrgeSuicide {...props} onContinue={() => setActive(9)} onBack={() => setActive(7)} />)
-    }else if(active === 9) {
-        return (<NoteView {...props} onContinue={() => setActive(10)} onBack={() => setActive(8)} />)
+    } else if(active === 7) {
+        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(!props.report || (props.report && props.report.skillToday) ? 6 : 42)} />)
     } else {
         return null
     }
