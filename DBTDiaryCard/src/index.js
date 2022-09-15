@@ -5,6 +5,8 @@ import Patient from "./containers/patient/index"
 import './i18n'
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { SnackbarProvider } from "notistack"
+
 
 // You MUST load the configuration immediately upon script start.
 // Any delays will cause the script to entirely miss the config event.
@@ -20,11 +22,14 @@ const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 eventer(
     messageEvent, (e) => {    
 		ReactDOM.render(
+			<SnackbarProvider>
+
 		  <AppContainer>
 		    <Provider store={store}>
 		      <Patient data={e.data} />
 		    </Provider>
-		  </AppContainer>,
+		  </AppContainer>
+		  </SnackbarProvider>,
 		  document.getElementById("root")
 		);
     },
