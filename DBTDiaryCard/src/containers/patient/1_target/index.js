@@ -47,7 +47,7 @@ export default function TargetView({ settings, ...props }) {
   const [targets, setTargets] = React.useState(props.report && props.report.target ? props.report.target : { effective: {}, ineffective: {} })
   const { t, i18n  } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
-  const [ineffectiveItems, setIneffectiveItems] = useState(settings?.targetIneffective ?? [])
+  const [ineffectiveItems, setIneffectiveItems] = useState([])
   const [initialised, setInitialised] = useState(false)
   
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function TargetView({ settings, ...props }) {
       setInitialised(true)
     }
     initialise()
-  }, [])
+  }, [i18n, settings])
 
   const updateUrge = (type, target, key, value) => {
     if (type === 'effective') {
