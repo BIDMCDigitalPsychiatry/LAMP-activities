@@ -61,22 +61,21 @@ export default function FellingView({ settings, ...props }) {
   const [result, setResult] = React.useState(props.report && !!props.report.emotion ? props.report.emotion : { felling: {} })
   const { t , i18n } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
-  const [emotionItems, setEmotionItems] = useState(settings?.emotions ?? [])
+  const [emotionItems, setEmotionItems] = useState([])
   const [initialised, setInitialised] = useState(false)
 
   useEffect(() => {
     function initialise() {
       const emotionItems = settings?.emotions ?? []
       const extraItems = ["Sad", "Shame", "Anger", "Fear/Worry", "Joy"]
-      extraItems.map((item) => {
-        emotionItems.push({emotion: i18n.t(item)})
-        return
+      extraItems.forEach((item) => {
+        emotionItems.push({emotion: i18n.t(item)})       
       })
       setEmotionItems(emotionItems)
       setInitialised(true)
     }
     initialise()    
-  }, [])
+  }, [i18n, settings])
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
