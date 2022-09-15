@@ -51,11 +51,14 @@ export default function TargetView({ settings, ...props }) {
   const [initialised, setInitialised] = useState(false)
   
   useEffect(() => {
-    const ineffectiveItems = settings?.targetIneffective ?? []
-    ineffectiveItems.push({target: i18n.t("Quit Therapy"),measure: i18n.t("Times") })
-    ineffectiveItems.push({target: i18n.t("Die by suicide"),measure: i18n.t("Times") })
-    setIneffectiveItems(ineffectiveItems)
-    setInitialised(true)
+    function initialise() {
+      const ineffectiveItems = settings?.targetIneffective ?? []
+      ineffectiveItems.push({target: i18n.t("Quit Therapy"),measure: i18n.t("Times") })
+      ineffectiveItems.push({target: i18n.t("Die by suicide"),measure: i18n.t("Times") })
+      setIneffectiveItems(ineffectiveItems)
+      setInitialised(true)
+    }
+    initialise()
   }, [])
 
   const updateUrge = (type, target, key, value) => {
