@@ -53,7 +53,7 @@ export default function TargetView({ settings, ...props }) {
   useEffect(() => {
     function initialise() {
       const ineffectiveItems = settings?.targetIneffective ?? []
-      ineffectiveItems.push({target: i18n.t("Quit Therapy"),measure: i18n.t("Times") })
+      ineffectiveItems.push({target: i18n.t("Quit therapy"),measure: i18n.t("Times") })
       ineffectiveItems.push({target: i18n.t("Die by suicide"),measure: i18n.t("Times") })
       setIneffectiveItems(ineffectiveItems)
       setInitialised(true)
