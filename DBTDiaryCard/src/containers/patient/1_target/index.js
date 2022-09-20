@@ -138,8 +138,8 @@ export default function TargetView({ settings, ...props }) {
       }
     }
     if (onContinue && !!status && (
-      (settings?.targetIneffective ?? []).length === 0 || ( 
-        (settings?.targetIneffective ?? []).length > 0 && Object.keys(targets.ineffective).length === (settings?.targetIneffective ?? []).length)) &&
+      (ineffectiveItems ?? []).length === 0 || ( 
+        (ineffectiveItems ?? []).length > 0 && Object.keys(targets.ineffective).length === (ineffectiveItems ?? []).length)) &&
       (
         (settings?.targetEffective ?? []).length === 0 || ( 
           (settings?.targetEffective ?? []).length > 0 && Object.keys(targets.effective).length === (settings?.targetEffective ?? []).length))) {
@@ -202,7 +202,7 @@ export default function TargetView({ settings, ...props }) {
                 key={"ineffective" + index}
                 unit={item.measure}
                 customunit={item.customUnit}
-                separator={index < ((settings?.targetIneffective ?? []).length - 1)}
+                separator={index < ((ineffectiveItems ?? []).length - 1)}
                 actedValue={actValue}
                 urgeValue={urgeValue}
                 selectedActed={(value) => updateAct('ineffective', item.target, "ineffective" + index, value)}

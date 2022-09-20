@@ -93,7 +93,7 @@ export default function FellingView({ settings, ...props }) {
     if (updateReport) {
       updateReport('emotion', result)
     }
-    if (onContinue && ((settings?.emotions ?? []).length === 0 || ((settings?.emotions ?? []).length > 0 && Object.keys(result.felling).length === (settings?.emotions ?? []).length))) {
+    if (onContinue && ((emotionItems ?? []).length === 0 || ((emotionItems ?? []).length > 0 && Object.keys(result.felling).length === (emotionItems ?? []).length))) {
       onContinue()
     } else {
       enqueueSnackbar(t("Rating required for each item."), {
