@@ -107,7 +107,7 @@ export default function RateCountAnswer({ title, unit, customunit, separator, ur
                     <Grid direction='row' container>
                         <CssTextField disabled={urgeValue < 0}
                            value={t(actedValue)} onChange={event => selectedActed && selectedActed(event.target.value)} />
-                        <Typography className={classes.unitTitle} style={{color:'rgba(0, 0, 0, 0.7)'}}>{t(unit.toUpperCase())}</Typography>
+                        <Typography className={classes.unitTitle} style={{color:'rgba(0, 0, 0, 0.7)'}}>{t(unit?.toUpperCase())}</Typography>
                     </Grid>
                 </Grid>
             </Grid>
