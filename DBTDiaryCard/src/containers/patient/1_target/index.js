@@ -65,7 +65,7 @@ export default function TargetView({ settings, ...props }) {
       setInitialised(true)
     }
     initialise()
-  }, [i18n, settings])
+  }, [i18n, settings, staticItems])
 
   const updateUrge = (type, target, key, value) => {
     if (type === 'effective') {
