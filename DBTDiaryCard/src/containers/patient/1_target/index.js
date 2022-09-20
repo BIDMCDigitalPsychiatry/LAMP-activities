@@ -49,23 +49,24 @@ export default function TargetView({ settings, ...props }) {
   const { enqueueSnackbar } = useSnackbar()
   const [ineffectiveItems, setIneffectiveItems] = useState([])
   const [initialised, setInitialised] = useState(false)
-  const staticItems = [
-    {target: i18n.t("Die"), measure:i18n.t("times")},
-    {target: i18n.t("Suicide"),measure: i18n.t("Times") },
-    {target: i18n.t("Use/ Drink"),measure: i18n.t("Times") },
-    {target: i18n.t("Self-Harm"),measure: i18n.t("Times") },
-    {target: i18n.t("Quit therapy"),measure: i18n.t("Times") },
-    {target: i18n.t("Die by suicide"),measure: i18n.t("Times") }
-  ]
+  
   
   useEffect(() => {
     function initialise() {
+      const staticItems = [
+        {target: i18n.t("Die"), measure:i18n.t("times")},
+        {target: i18n.t("Suicide"),measure: i18n.t("Times") },
+        {target: i18n.t("Use/ Drink"),measure: i18n.t("Times") },
+        {target: i18n.t("Self-Harm"),measure: i18n.t("Times") },
+        {target: i18n.t("Quit therapy"),measure: i18n.t("Times") },
+        {target: i18n.t("Die by suicide"),measure: i18n.t("Times") }
+      ]
       const ineffectiveItems = settings?.targetIneffective.concat(staticItems) ?? staticItems
       setIneffectiveItems(ineffectiveItems)
       setInitialised(true)
     }
     initialise()
-  }, [i18n, settings, staticItems])
+  }, [i18n, settings])
 
   const updateUrge = (type, target, key, value) => {
     if (type === 'effective') {
