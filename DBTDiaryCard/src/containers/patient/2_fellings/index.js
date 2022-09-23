@@ -67,7 +67,7 @@ export default function FellingView({ settings, ...props }) {
   useEffect(() => {
     function initialise() {
       const emotionItems = settings?.emotions ?? []
-      const extraItems = ["Sad", "Shame", "Anger", "Fear/Worry", "Joy"]
+      const extraItems = ["Sadness", "Shame", "Anger", "Fear/Worry", "Joy"]
       extraItems.forEach((item) => {
         emotionItems.push({emotion: i18n.t(item)})       
       })

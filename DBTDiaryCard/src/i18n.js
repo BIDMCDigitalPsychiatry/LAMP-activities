@@ -7,7 +7,7 @@ const resources = {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
       CONTINUE: "Continue",
       TARGET_BEHAVIORS: "Target behaviors",
-      ANSWER_RADIO_RATING_FORMATS: "0= not at all, 5 = extremely",
+      ANSWER_RADIO_RATING_FORMATS: "0= Not at all - 5= Extremely Strong",
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "Which target behaviors did you experience today?",
       EFFECTIVE: "Effective",
@@ -131,7 +131,7 @@ const resources = {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
       CONTINUE: "Continue",
       TARGET_BEHAVIORS: "लक्षित व्यवहार",
-      ANSWER_RADIO_RATING_FORMATS: "0= बिल्कुल नहीं, 5 = extremely",
+      ANSWER_RADIO_RATING_FORMATS: "0= बिल्कुल नहीं - 5 = बेहद मजबूत",
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "Which target behaviors did you experience today?",
       EFFECTIVE: "प्रभावी",
@@ -255,7 +255,7 @@ const resources = {
       LIFE_WORTH_LIVING_GOAL: "Vida digna de Ser Vivida. (Metas)",
       CONTINUE: "continuar",
       TARGET_BEHAVIORS: "Conductas objetivo",
-      ANSWER_RADIO_RATING_FORMATS: "0= nada, 5= extremadamente",
+      ANSWER_RADIO_RATING_FORMATS: "0= de nada - 5= demasiado fuerte",
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "¿Qué conducta problema experimentaste hoy?",
       EFFECTIVE: "efectivo",
