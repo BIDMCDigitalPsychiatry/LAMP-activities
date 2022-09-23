@@ -61,7 +61,7 @@ export default function TargetView({ settings, ...props }) {
         {target: i18n.t("Quit therapy"),measure: i18n.t("Times") },
         {target: i18n.t("Die by suicide"),measure: i18n.t("Times") }
       ]
-      const ineffectiveItems = settings?.targetIneffective.concat(staticItems) ?? staticItems
+      const ineffectiveItems = (settings?.targetIneffective || []).concat(staticItems) ?? staticItems
       setIneffectiveItems(ineffectiveItems)
       setInitialised(true)
     }
