@@ -55,8 +55,8 @@ export default function TargetView({ settings, ...props }) {
     function initialise() {
       const staticItems = [
         {target: i18n.t("Die"), measure:i18n.t("times")},
-        {target: i18n.t("Suicide"),measure: i18n.t("Times") },
-        {target: i18n.t("Use/ Drink"),measure: i18n.t("Times") },
+        // {target: i18n.t("Suicide"),measure: i18n.t("Times") },
+        // {target: i18n.t("Use/ Drink"),measure: i18n.t("Times") },
         {target: i18n.t("Self-Harm"),measure: i18n.t("Times") },
         {target: i18n.t("Quit therapy"),measure: i18n.t("Times") },
         {target: i18n.t("Die by suicide"),measure: i18n.t("Times") }
