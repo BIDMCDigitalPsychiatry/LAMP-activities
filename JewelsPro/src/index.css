@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: rgba(53,159,254,1);
+  background: #fff;
 }
 
 .countdown-timer__text{

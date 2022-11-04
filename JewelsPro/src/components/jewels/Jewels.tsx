@@ -17,11 +17,9 @@ import "./jewels.css";
 import * as React from "react";
 import { isUndefined } from "util";
 import Board from "./Board";
-
 const colors = [
   "pink",
   "green",
-  "blue",
   "violet",
   "brown",
   "red",
@@ -129,6 +127,22 @@ class Jewels extends React.Component<{}, AppState> {
     this.messageEvent()
   }
 
+  getLevelColor = (level: number) => {
+
+    switch(level) {
+      case 1:
+        return "#FFFFFF"
+        case 2:
+          return "#BDD2FA"
+          case 3:
+            return "#5E92F2"
+            case 4:
+              return "#1257D9"
+              default:
+                return "#1A4493"
+    }
+  }
+
   updateLevel = (bonus: number, routesValus: any, totalJewelsCollected: number, totalAttempts:number, pointVal: number) => {
     const level =  Math.floor((this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count);
     const routeData:any = []
@@ -142,9 +156,10 @@ class Jewels extends React.Component<{}, AppState> {
     Object.keys(r1).forEach((key) => {
       routeData.push(r1[key]);
     });   
- 
+
+
     if(level > 1) {
-        let levelCount = Math.floor((level - 1) / this.state.settings.x_changes_in_level_count) ;
+     let levelCount = Math.floor((level - 1) / this.state.settings.x_changes_in_level_count) ;
         const diamondCount =  this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount) > 25 ? 25 : this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount);            
         let shapeCount = this.state.shapeCount
         if(this.state.settings.variant === "trails_b") {
@@ -163,6 +178,8 @@ class Jewels extends React.Component<{}, AppState> {
             totalJewelsCollected: this.state.totalJewelsCollected + totalJewelsCollected
           },
           () => {
+            document.body.style.backgroundColor = this.getLevelColor(this.state.level)
+
             pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
           }
         );
@@ -249,8 +266,11 @@ class Jewels extends React.Component<{}, AppState> {
 
     if (isUndefined(this.state)) {
       this.state = state;
+      document.body.style.backgroundColor = this.getLevelColor(this.state.level)
     } else {
-      this.setState(state);
+      this.setState(state, () => {
+        document.body.style.backgroundColor = this.getLevelColor(this.state.level)
+      });
     }
   };
   // Shuffle the diamond numbers
