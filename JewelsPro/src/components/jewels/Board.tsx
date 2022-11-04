@@ -291,7 +291,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         <table className="game-table">
           <tbody>{this.createTable()}</tbody>
         </table>
-      );
+      )
       // When wrong diamond is tapped
       timer =
         this.state.startTimer > 0 ? (
@@ -300,11 +300,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
             startTimeInSeconds={this.state.startTimer}
             startTimer={1}
           />
-        ) : null;
+        ) : null
       negSection =
         this.state.negativePoints < 0 && this.state.displayNegativePoints ? (
           <NegativePoints startPoints={this.state.negativePoints} />
-        ) : null;
+        ) : null
       // negSection =  <NegativePoints startPoints={this.state.negativePoints} />
       // Jewel info in the bottom for the inital state
       const classVal =
@@ -320,7 +320,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
             <span className="number-text"> 1</span>
           </div>
         </div>
-      ) : null;
+      ) : null
     } else {
       // When timer expires or successfully completed
       board =
@@ -328,7 +328,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           <div className="game-over">{i18n.t("CONGRATS")} !!!</div>
         ) : (
           <div className="game-over">{i18n.t("TIMEOUT")} !!!</div>
-        );
+        )
     }
     return (
       <div>
@@ -336,7 +336,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
           {timer}
           {negSection}
         </div>
-        <br />
         {board}
         {jewelInfo}
       </div>
