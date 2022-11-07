@@ -85,8 +85,11 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
     font-size: 12px;
     border-radius: 11px;
 	text-align: center;
-	margin: 0 auto;
-	/* margin-left: 5px;
+	position: absolute;
+    margin-left: 100px;
+    margin-top: -8px;
+	/* margin: 0 auto;
+	margin-left: 5px;
 	position: absolute;
     left: 57%; */
     
@@ -434,5 +437,11 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
     margin: 16px 18px 0 10px;
 }
-.countdown-timer{background-color: #fff;}
-.countdown-timer__text{color: rgba(53,159,254,1) !important;}
+.countdown-timer{background-color: #fff; display: flex; align-items: center; justify-content: center; height: 30px;}
+.countdown-timer__text{color: rgba(53,159,254,1) !important;
+
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	min-height: 25px;
+  }
