@@ -335,6 +335,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         <div className="countdown-timer">
           {timer}
           {negSection}
+          <br/>
         </div>
         {board}
         {jewelInfo}

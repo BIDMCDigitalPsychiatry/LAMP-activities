@@ -5,13 +5,7 @@ body {
   background: #fff;
 }
 
-.countdown-timer__text{
-  text-align: center;
-  width: 100%;
-  color: #fff;
-  font-size: 14px;
-  min-height: 25px;
-}
+
 .modal-header{border-bottom: 0;}
 .modal-footer{border-top: 0;}
 .modal-body{padding: 0 1rem; font-size: 15px;}
