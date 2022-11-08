@@ -18,7 +18,7 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-router-redux": "^4.0.8",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "notistack": "^1.0.10",
     "react-vega": "^7.4.1",
     "redux": "^4.0.5",
