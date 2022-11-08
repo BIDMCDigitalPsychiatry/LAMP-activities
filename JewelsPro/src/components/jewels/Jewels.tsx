@@ -131,15 +131,13 @@ class Jewels extends React.Component<{}, AppState> {
 
     switch(level) {
       case 1:
-         return "#FFFFFF"
-        case 2:
-          return "#BDD2FA"
-          case 3:
-            return "#5E92F2"
-            case 4:
-              return "#1257D9"
-              default:
-                return "#1A4493"
+        return "#BDD2FA"
+      case 2:
+        return "#5E92F2"
+      case 3:
+        return "#1257D9"
+      default:
+        return "#1A4493"
     }
   }
 
