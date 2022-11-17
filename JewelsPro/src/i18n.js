@@ -9,6 +9,48 @@ const resources = {
       JEWELS: "Jewels",
       TIMEOUT: "Timeout",
     },
+  }, "de-DE": {
+    translation: {
+      CONGRATS: "Gl\u00fcckwunsch",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "Juwelen",
+      TIMEOUT: "Zeit abgelaufen",
+    },
+  }, "da-DK": {
+    translation: {
+      CONGRATS: "Tillykke",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "Smykker",
+      TIMEOUT: "Tiden er udl\u00f8bet",
+    },
+  }, "fr-FR": {
+    translation: {
+      CONGRATS: "Bravo\u2009!",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "\u202fBijoux",
+      TIMEOUT: "Timeout",
+    },
+  }, "ko-KR": {
+    translation: {
+      CONGRATS: "\ucd95\ud558\ud574\uc694",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "\ubcf4\uc11d\ub4e4",
+      TIMEOUT: "\uc2dc\uac04 \uc885\ub8cc",
+    },
+  }, "it-IT": {
+    translation: {
+      CONGRATS: "Congratulazioni",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "\ubcf4\uc11d\ub4e4",
+      TIMEOUT: "Tempo scaduto",
+    },
+  }, "zh-CN": {
+    translation: {
+      CONGRATS: "\u606d\u559c\uff01",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "\u73e0\u5b9d",
+      TIMEOUT: "\u8d85\u65f6",
+    },
   },
   "es-ES": {
     translation: {
