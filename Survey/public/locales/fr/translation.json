@@ -1,0 +1,13 @@
+{
+	"question": "question",
+	"Question number of total": "Question {{ number }} of {{ total }}",
+	"Next" : "Suivant",
+	"Submit": "Envoyer",
+	"Mood": "Humeur",
+	"Sleep and Social": "Sleep and Social",
+	"Anxiety": "Anxi\u00e9t\u00e9",
+	"Psychosis and Social": "Psychosis and Social",
+	"App Usability": "App Usability",
+	"Water and Nutrition": "Eau et nutrition",
+	"Please enter your response" : "Veuillez entrer votre r\u00e9ponse"	
+}
