@@ -25,5 +25,6 @@ module.exports = {
       },
     ],
   },
+  performance: { hints: false },
   plugins: [new UglifyJsPlugin()],
 }
