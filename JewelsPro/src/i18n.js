@@ -2,26 +2,33 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  "en-US": {
+  "da-DK": {
     translation: {
-      CONGRATS: "Congrats",
+      CONGRATS: "Tillykke",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "Jewels",
-      TIMEOUT: "Timeout",
+      JEWELS: "Smykker",
+      TIMEOUT: "Tiden er udl\u00f8bet",
     },
-  }, "de-DE": {
+  },"de-DE": {
     translation: {
       CONGRATS: "Gl\u00fcckwunsch",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
       JEWELS: "Juwelen",
       TIMEOUT: "Zeit abgelaufen",
     },
-  }, "da-DK": {
+  },"en-US": {
     translation: {
-      CONGRATS: "Tillykke",
+      CONGRATS: "Congrats",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "Smykker",
-      TIMEOUT: "Tiden er udl\u00f8bet",
+      JEWELS: "Jewels",
+      TIMEOUT: "Timeout",
+    },
+  }, "es-ES": {
+    translation: {
+      CONGRATS: "Felicidades",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "¿Quieres guardar los resultados de tu juego antes de continuar?",
+      JEWELS: "Joyas",
+      TIMEOUT: "el tiempo muerto",
     },
   }, "fr-FR": {
     translation: {
@@ -30,21 +37,28 @@ const resources = {
       JEWELS: "\u202fBijoux",
       TIMEOUT: "Timeout",
     },
-  }, "ko-KR": {
+  }, "hi-IN": {
     translation: {
-      CONGRATS: "\ucd95\ud558\ud574\uc694",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "\ubcf4\uc11d\ub4e4",
-      TIMEOUT: "\uc2dc\uac04 \uc885\ub8cc",
+      CONGRATS: "बधाई हो",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?",
+      JEWELS: "गहने",
+      TIMEOUT: "समय समाप्त",
     },
-  }, "it-IT": {
+  },"it-IT": {
     translation: {
       CONGRATS: "Congratulazioni",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
       JEWELS: "\ubcf4\uc11d\ub4e4",
       TIMEOUT: "Tempo scaduto",
     },
-  }, "zh-CN": {
+  },"ko-KR": {
+    translation: {
+      CONGRATS: "\ucd95\ud558\ud574\uc694",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      JEWELS: "\ubcf4\uc11d\ub4e4",
+      TIMEOUT: "\uc2dc\uac04 \uc885\ub8cc",
+    },
+  },  "zh-CN": {
     translation: {
       CONGRATS: "\u606d\u559c\uff01",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
@@ -52,22 +66,8 @@ const resources = {
       TIMEOUT: "\u8d85\u65f6",
     },
   },
-  "es-ES": {
-    translation: {
-      CONGRATS: "Felicidades",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "¿Quieres guardar los resultados de tu juego antes de continuar?",
-      JEWELS: "Joyas",
-      TIMEOUT: "el tiempo muerto",
-    },
-  },
-  "hi-IN": {
-    translation: {
-      CONGRATS: "बधाई हो",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?",
-      JEWELS: "गहने",
-      TIMEOUT: "समय समाप्त",
-    },
-  },
+  
+  
 };
 
 i18n
