@@ -223,16 +223,9 @@ export default function Breathe({ ...props }) {
   }
 
   useEffect(() => {
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // Listen to message from child window
-
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {})
-        const configuration = e.data.configuration
+    
+        const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {})
+        const configuration = props.data.configuration
         const langugae = configuration
           ? configuration.hasOwnProperty("language")
             ? configuration.language
@@ -245,9 +238,7 @@ export default function Breathe({ ...props }) {
             new Audio(settingsData?.audio_url ?? settingsData?.audio ?? "")
           )
         }
-      },
-      false
-    )
+     
   }, [])
 
   useEffect(() => {
@@ -344,7 +335,7 @@ export default function Breathe({ ...props }) {
 
               <Box textAlign="center" mt={1}>
                 <Fab className={classes.btnpeach} onClick={handleNext}>
-                  Start
+                {t("Start")}
                 </Fab>
               </Box>
             </Box>

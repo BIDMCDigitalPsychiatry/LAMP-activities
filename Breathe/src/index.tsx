@@ -11,10 +11,17 @@ import { AppContainer } from "react-hot-loader"
 import Breathe from './components/Breathe'
 import './index.css'
 import "material-icons"
-
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+  messageEvent, (e) => {  
 ReactDOM.render(
   <AppContainer>
-    <Breathe />
+    <Breathe data={e.data}/>
   </AppContainer>,  
   document.getElementById('root') as HTMLElement
-);
+) 
+},
+false
+)

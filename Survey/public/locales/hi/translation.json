@@ -10,5 +10,12 @@
 	"App Usability": "ऐप की उपयोगिता",
 	"Water and Nutrition": "पानी और पोषण/भोजन",
 	"Back": "पहले का",
-	"Please enter your response": "कृपया अपनी प्रतिक्रिया दर्ज करें"
+	"Please enter your response": "कृपया अपनी प्रतिक्रिया दर्ज करें",
+	"Your response:": "आपका जवाब:",
+	"Nearly All the Time": "लगभग सारा समय",
+	"More than Half the Time": "आधे से ज्यादा समय",
+	"Several Times": "बहुत बार",
+	"Not at all": "बिल्कुल नहीं",
+	"(Select one)": "(किसी एक को चुने)",
+	"(0 being terrible, 10 being excellent)": "(0 ख़राब होना, 10 उत्तम होना)"
 }
