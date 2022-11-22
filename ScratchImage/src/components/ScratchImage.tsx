@@ -178,29 +178,19 @@ export default function ScratchImage({ ...props }) {
 
   
   useEffect(() => {
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // Listen to message from child window     
     setBrushComponent(<BrushElement setBrush={setBrush} />)
     setCanvasComponent(<CanvasElement setCanvas={setCanvas} />)
-    setCoverComponent(<CoverElement setCover={setCover} />)   
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {})
-        const configuration = e.data.configuration
-        const langugae = configuration
-          ? configuration.hasOwnProperty("language")
-            ? configuration.language
-            : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)
-        setSettings(settingsData)   
-        setNoBack(e.data.noBack)          
-      },
-      false
-    )
+    setCoverComponent(<CoverElement setCover={setCover} />)  
+    const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {})
+    const configuration = props.data.configuration
+    const langugae = configuration
+      ? configuration.hasOwnProperty("language")
+        ? configuration.language
+        : "en-US"
+      : "en-US"
+    i18n.changeLanguage(langugae)
+    setSettings(settingsData)   
+    setNoBack(props.data.noBack) 
   }, [])
 
   const touchMove = (event: any) => {

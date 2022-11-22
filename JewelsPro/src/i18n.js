@@ -48,7 +48,7 @@ const resources = {
     translation: {
       CONGRATS: "Congratulazioni",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "\ubcf4\uc11d\ub4e4",
+      JEWELS: "Gioielli",
       TIMEOUT: "Tempo scaduto",
     },
   },"ko-KR": {

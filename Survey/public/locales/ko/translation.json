@@ -3,6 +3,8 @@
 	"Question number of total": "\ubb38\ud56d\ub4e4 {{ number }} of {{ total }}",
 	"Next ": "\ub2e4\uc74c ", "Submit": "\uc81c\ucd9c\ud558\uae30",
 	"Mood": "\uae30\ubd84",
+	"Back":"\uc774\uc804\uc73c\ub85c \ub3cc\uc544\uac00\uc138\uc694",
 	"Sleep and Social": "\uc218\uba74\uacfc \uc0ac\ud68c\uc0dd\ud65c", "Anxiety": "\ubd88\uc548\uc99d", "Psychosis and Social": "\uc815\uc2e0\ubcd1\uacfc \uc0ac\ud68c\uc0dd\ud65c", "App Usability": "\uc571 \uc774\uc6a9\uc131", "Water and Nutrition": "\ubb3c\uacfc \uc601\uc591",
-	"Please enter your response" : "\uc751\ub2f5\uc744 \uc785\ub825\ud558\uc138\uc694"	
+	"Please enter your response" : "\uc751\ub2f5\uc744 \uc785\ub825\ud558\uc138\uc694",
+	"Your response": "\uc5ec\ub7ec\ubd84\uc758 \uc751\ub2f5\uc740", "Nearly All the Time": "\uac70\uc758 \ud56d\uc0c1", "More than Half the Time": "\uc808\ubc18 \uc774\uc0c1", "Several Times": "\uba87\ubc88", "Not at all": "\uc804\ud600", "(Select one)": "(\ud558\ub098\ub97c \uc120\ud0dd\ud558\uc138\uc694)", "(0 being terrible, 10 being excellent)": "(0\uc740 \ud615\ud3b8\uc5c6\uc74c, 10\uc740 \uc815\ub9d0 \uc88b\uc74c)"	
 }
