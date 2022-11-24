@@ -1,6 +1,5 @@
 // Core Imports
 import React, { useState, useRef, useEffect } from "react"
-import { Trans } from "react-i18next"
 import {
   Typography,
   makeStyles,
@@ -932,6 +931,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
+        {console.log({  number: (index + 1), total: settingsQuestions })}
           {`${t("Question number of total", {  number: (index + 1), total: settingsQuestions })}`}
         </Typography>
       </Box>
@@ -1281,7 +1281,8 @@ function Questions({
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-        {`${t("Question number of total", { number: (index + 1), total: settings.length })}`}
+        {console.log({  number: (index + 1), total: settings.length })}
+        {`${t("Question number of total", { "number": (index + 1), "total": settings.length })}`}
         </Typography>
       </Box>
 

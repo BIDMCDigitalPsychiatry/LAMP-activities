@@ -178,19 +178,29 @@ export default function ScratchImage({ ...props }) {
 
   
   useEffect(() => {
+    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+    const eventer = window[eventMethod]
+    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+    // Listen to message from child window     
     setBrushComponent(<BrushElement setBrush={setBrush} />)
     setCanvasComponent(<CanvasElement setCanvas={setCanvas} />)
-    setCoverComponent(<CoverElement setCover={setCover} />)  
-    const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {})
-    const configuration = props.data.configuration
-    const langugae = configuration
-      ? configuration.hasOwnProperty("language")
-        ? configuration.language
-        : "en-US"
-      : "en-US"
-    i18n.changeLanguage(langugae)
-    setSettings(settingsData)   
-    setNoBack(props.data.noBack) 
+    setCoverComponent(<CoverElement setCover={setCover} />)   
+    eventer(
+      messageEvent,
+      (e: any) => {
+        const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {})
+        const configuration = e.data.configuration
+        const langugae = configuration
+          ? configuration.hasOwnProperty("language")
+            ? configuration.language
+            : "en-US"
+          : "en-US"
+        i18n.changeLanguage(langugae)
+        setSettings(settingsData)   
+        setNoBack(e.data.noBack)          
+      },
+      false
+    )
   }, [])
 
   const touchMove = (event: any) => {
@@ -251,8 +261,8 @@ export default function ScratchImage({ ...props }) {
           context.textAlign = "center"
           context.font = "bold 30px inter"
           context.fillText(t("Swipe around the"), canvas.width / 2, canvas.height / 2 - 35)
-          context.fillText(t("Screen to reveal"), canvas.width / 2, canvas.height / 2)
-          context.fillText(t("The hidden image"), canvas.width / 2, canvas.height / 2 + 35)
+          context.fillText(t("screen to reveal"), canvas.width / 2, canvas.height / 2)
+          context.fillText(t("the hidden image"), canvas.width / 2, canvas.height / 2 + 35)
           setImage(background())
           setImageIndex(imageIndex + 1)
           setImageTime(new Date().getTime())

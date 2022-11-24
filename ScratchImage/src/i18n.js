@@ -4,32 +4,40 @@ import { initReactI18next } from "react-i18next"
 const resources = {
   "da-DK":{
     translation: {
-      "Well done!": "Godt g\u00e5et!",
-      "Swipe around the": "Stryg rundt p\u00e5",
-      "screen to reveal": "sk\u00e6rmen for at afsl\u00f8re", 
-      "the hidden image": "det skjulte billede",
-      "Good": "God",
       "Bad": "D\u00e5rlig",
-      "Submit": "Send",
-      "Leaving so soon?": "Rejser du s\u00e5 tidligt?",
+      "Close":"Luk",
+      "Do another one": "Lav en til",
+      "Done": "F\u00e6rdig",
+      "Good": "God",
       "If you leave without submitting, your entry will be lost.": "Hvis du rejser uden at indsende, vil din indtastning g\u00e5 tabt.",
+      "Leaving so soon?": "Rejser du s\u00e5 tidligt?",
       "No, don’t leave yet": "Nej, du m\u00e5 ikke rejse endnu",
-      "Yes, leave": "Ja, g\u00e5"
+      "Scratch card": "Skrabekort",
+      "Submit": "Send",
+      "Swipe around the": "Stryg rundt p\u00e5",
+      "Well done!": "Godt g\u00e5et!",
+      "Yes, leave": "Ja, g\u00e5",
+      "screen to reveal": "sk\u00e6rmen for at afsl\u00f8re", 
+      "the hidden image": "det skjulte billede"    
     }
   },
   "de-DE":{
     translation: {
-      "Well done!": "Gut gemacht!",
-      "Swipe around the": "Wische \u00fcber den Bildschirm", 
-      "screen to reveal": "aufzudecken", 
-      "the hidden image": "um das versteckte Bild",
-      "Good": "Gut",
       "Bad": "Schlecht",
-      "Submit": "Absenden",
-      "Leaving so soon?": "Gehst du schon?",
+      "Close": "Schlie\u00dfen", 
+      "Do another one": "Noch einmal spielen", 
+      "Done": "Erledigt",
+      "Good": "Gut",
       "If you leave without submitting, your entry will be lost.": "Wenn du die Seite verl\u00e4sst, ohne auf Absenden zu tippen, geht dein Eintrag verloren.",
+      "Leaving so soon?": "Gehst du schon?",
       "No, don’t leave yet": "Nein, die Seite noch nicht verlassen",
-      "Yes, leave": "Ja, die Seite verlassen"
+      "Scratch card": "Rubbelkarte",
+      "Submit": "Absenden",
+      "Swipe around the": "Wische \u00fcber den Bildschirm", 
+      "Well done!": "Gut gemacht!",
+      "Yes, leave": "Ja, die Seite verlassen", 
+      "screen to reveal": "aufzudecken", 
+      "the hidden image": "um das versteckte Bild"    
     }
   },
   
@@ -38,76 +46,120 @@ const resources = {
       "Close": "Close",
       "Do another one": "Do another one",
       "Scratch card": "Scratch card",
-      "Screen to reveal": "Screen to reveal",
-      "Swipe around the": "Swipe around the",
-      "Swipe around the screen to reveal the hidden image": "Swipe around the screen to reveal the hidden image",
-      "Swipe your finger around the screen to reveal the image hidden underneath": "Swipe your finger around the screen to reveal the image hidden underneath",
-      "The hidden image": "The hidden image",
+      "Swipe around the": "Swipe around the",      
       "Well done!": "Well done!",
+      "screen to reveal": "Screen to reveal",
+      "the hidden image": "The hidden image"
     },
   },
   "es-ES": {
     translation: {
+      "Bad":"Malo",
       "Close": "Cerrar",
       "Do another one": "Haz otro",
+      "Done": "\u00a1Listo!",
+      "Good": "Bueno",
+      "If you leave without submitting, your entry will be lost.": "Si te sales sin enviar, perder\u00e1s lo que ha hecho hasta ahora",
+      "Leaving so soon?": "\u00bfYa te quieres salir?",
+      "No, don’t leave yet": "No, no me quiero salir todav\u00eda ",      
       "Scratch card": "tarjeta de rascar",
-      "Screen to reveal": "pantalla para revelar",
+      "Submit": "Enviar",
       "Swipe around the": "Desliza el dedo por",
-      "Swipe around the screen to reveal the hidden image": "Desliza el dedo por la pantalla para revelar la imagen oculta",
-      "Swipe your finger around the screen to reveal the image hidden underneath": "Deslice el dedo por la pantalla para revelar la imagen oculta debajo",
-      "The hidden image": "la imagen oculta",
       "Well done!": "Bien hecho!",
+      "Yes, leave":  "Si, ya me quiero salir",
+      "screen to reveal": "pantalla para revelar",
+      "the hidden image": "la imagen oculta",
     },
-  },  "fr-FR":{
+  },  
+  "fr-FR":{
     translation: {
-      "Well done!": "Well done!",
-      "Swipe around the": "Swipe around the",
-      "screen to reveal": "screen to reveal",
-      "the hidden image": "the hidden image",
-      "Good": "Bien",
       "Bad": "Mal",
-      "Submit": "Submit",
-      "Leaving so soon?": "Vous partez d\u00e9j\u00e0\u2009?",
+      "Close": "Fermer",
+      "Do another one": "Faites-en un autre", 
+      "Done": "Termin\u00e9",
+      "Good": "Bien",
       "If you leave without submitting, your entry will be lost.": "Si vous quittez sans sauvegarder, votre entr\u00e9e sera perdue.",
+      "Leaving so soon?": "Vous partez d\u00e9j\u00e0\u2009?",
       "No, don’t leave yet": "Non, Ne partez pas d\u00e9j\u00e0",
-      "Yes, leave": "Oui, partir"
+      "Scratch card": "Carte \u00e0 gratter", 
+      "Submit": "Submit",
+      "Swipe around the": "Balayez l\u2019\u00e9cran pour", 
+      "Well done!": "Bien jou\u00e9",
+      "Yes, leave": "Oui, partir",
+      "screen to reveal": "r\u00e9v\u00e9ler l\u2019image",
+      "the hidden image": "cach\u00e9e"
     }
   },  "hi-IN": {
     translation: {
+      "Bad": "बुरा",
       "Close": "बंद करे",
       "Do another one": "दूसरा करे",
+      "Done": "पूरा हुआ",
+      "Good": "अच्छा",   
+      "If you leave without submitting, your entry will be lost.": "यदि आप सूचनाओ को बिना जमा किए छोड़ देते हैं, तो यह खो जाएंगी।",  
+      "Leaving so soon?": "बहुत जल्दी जा रहे?",
+	    "No, don’t leave yet": "नहीं, अभी तक नहीं छूटी है l",
       "Scratch card": "कार्ड को स्क्रैच करें",
-      "Screen to reveal": "स्क्रीन में पुनः लाने के लिए ",
-      "Swipe around the": "अपनी उंगली को स्क्रीन के चारों ओर अच्छे से घुमाएँ ",
-      "Swipe around the screen to reveal the hidden image": "नीचे छिपी ईमेज को उजागर करने के लिए अपनी उंगली को स्क्रीन के चारों ओर अच्छे से रगड़ते हुए घुमाएँ l",
-      "Swipe your finger around the screen to reveal the image hidden underneath": "नीचे छिपी ईमेज को उजागर करने के लिए अपनी उंगली को स्क्रीन के चारों ओर अच्छे से घुमाएँ l",
-      "The hidden image": " छिपी हुए चित्र ",
+      "Submit": "जमा करें",
+      "Swipe around the": "अपनी उंगली को स्क्रीन के चारों ओर अच्छे से घुमाएँ ",      
       "Well done!": "बहुत बढ़िया !",
+      "Yes, leave": "हाँ, जाने दे",
+      "screen to reveal": "स्क्रीन में पुनः लाने के लिए ",
+      "the hidden image": " छिपी हुए चित्र "
     },
   }, "it-IT":{
     translation: {
-      "Well done!": "Ben fatto!", "Swipe around the": "Scorrere il dito intorno a", "screen to reveal": "schermo da scoprire", "the hidden image": "immagine nascosta",
-      "Good": "Bene",
       "Bad": "Male",
-      "Submit": "Invia",
-      "Leaving so soon?": "Gi\u00e0 finito?",
+      "Close": "Chiudi", 
+      "Do another one": "Farne un altro",
+      "Done": "Fatto",
+      "Good": "Bene",
       "If you leave without submitting, your entry will be lost.": "Se si esce senza premere invio, i dati inseriti andranno persi.",
+      "Leaving so soon?": "Gi\u00e0 finito?",
       "No, don’t leave yet": "No, aspettare ad uscire.",
-      "Yes, leave": "Ora \u00e8 possibile uscire dall\u2019app"
+      "Scratch card": "Gratta e vinci",
+      "Submit": "Invia",
+      "Swipe around the": "Scorrere il dito intorno a",         
+      "Well done!": "Ben fatto!",
+      "Yes, leave": "Ora \u00e8 possibile uscire dall\u2019app",
+      "screen to reveal": "schermo da scoprire", 
+      "the hidden image": "immagine nascosta"   
     }
   },"ko-KR":{
     translation: {
-      "Well done!": "\uc798\ud558\uc168\uc2b5\ub2c8\ub2e4!", "Swipe around the": "\u2026\uc606\uc73c\ub85c \ub118\uae30\uc2ed\uc2dc\uc624", "screen to reveal": "\ubcf4\uc774\ub294 \uc2a4\ud06c\ub9b0", "the hidden image": "\uc228\uaca8\uc9c4 \uc774\ubbf8\uc9c0",
-      "Good": "\uc88b\uc74c", "Bad": "\ub098\uc068",
+      "Bad": "\ub098\uc068",
+      "Close": "\ub2eb\uae30", 
+      "Do another one": "\ud558\ub098 \ub354 \ud558\uc138\uc694",
+      "Done": "\uc885\ub8cc",
+      "Good": "\uc88b\uc74c", 
+      "If you leave without submitting, your entry will be lost.": "\uc81c\ucd9c\ud558\uc9c0 \uc54a\uace0 \ub098\uac00\uc2dc\uba74, \uc785\ub825\ub41c \uc790\ub8cc\uac00 \uc720\uc2e4\ub429\ub2c8\ub2e4.", 
+      "Leaving so soon?": "\ubc8c\uc368 \ub098\uac00\uc2dc\ub098\uc694?", 
+      "No, don’t leave yet": "\uc544\ub2c8\uc624, \uc544\uc9c1 \ub098\uac00\uc9c0 \ub9c8\uc138\uc694", 
+      "Scratch card": "\uce74\ub4dc\ub97c \uae01\uae30",
       "Submit": "\uc81c\ucd9c\ud558\uae30",
-      "Leaving so soon?": "\ubc8c\uc368 \ub098\uac00\uc2dc\ub098\uc694?", "If you leave without submitting, your entry will be lost.": "\uc81c\ucd9c\ud558\uc9c0 \uc54a\uace0 \ub098\uac00\uc2dc\uba74, \uc785\ub825\ub41c \uc790\ub8cc\uac00 \uc720\uc2e4\ub429\ub2c8\ub2e4.", "No, don’t leave yet": "\uc544\ub2c8\uc624, \uc544\uc9c1 \ub098\uac00\uc9c0 \ub9c8\uc138\uc694", "Yes, leave": "\ub124, \ub098\uac00\uc138\uc694"
+      "Swipe around the": "\u2026\uc606\uc73c\ub85c \ub118\uae30\uc2ed\uc2dc\uc624", 
+      "Well done!": "\uc798\ud558\uc168\uc2b5\ub2c8\ub2e4!", 
+      "Yes, leave": "\ub124, \ub098\uac00\uc138\uc694",
+      "screen to reveal": "\ubcf4\uc774\ub294 \uc2a4\ud06c\ub9b0",
+      "the hidden image": "\uc228\uaca8\uc9c4 \uc774\ubbf8\uc9c0"     
     }
   }, "zh-CN":{
     translation: {
-      "Well done!": "\u975e\u5e38\u597d\uff01", "Swipe around the": "\u7528\u624b\u6307\u6ed1\u52a8", "screen to reveal": "\u5c4f\u5e55\u4ee5\u663e\u793a", "the hidden image": "\u9690\u85cf\u56fe\u50cf",
-      "Good": "\u597d", "Bad": "\u4e0d\u597d",
+      "Bad": "\u4e0d\u597d",
+      "Close": "\u5173\u95ed", 
+      "Do another one": "\u518d\u6765\u4e00\u6b21",
+      "Done": "\u5b8c\u6210",
+      "Good": "\u597d",
+      "If you leave without submitting, your entry will be lost.": "\u5982\u679c\u4e0d\u63d0\u4ea4\u5c31\u79bb\u5f00\uff0c\u8f93\u5165\u7684\u8bb0\u5f55\u5c06\u4f1a\u4e22\u5931.", 
+      "Leaving so soon?": "\u8fd9\u4e48\u5feb\u5c31\u8981\u79bb\u5f00", 
+      "No, don’t leave yet": "\u4e0d\uff0c\u5148\u4e0d\u79bb\u5f00",
+      "Scratch card": "\u522e\u522e\u5361",
       "Submit": "\u63d0\u4ea4",
-      "Leaving so soon?": "\u8fd9\u4e48\u5feb\u5c31\u8981\u79bb\u5f00", "If you leave without submitting, your entry will be lost.": "\u5982\u679c\u4e0d\u63d0\u4ea4\u5c31\u79bb\u5f00\uff0c\u8f93\u5165\u7684\u8bb0\u5f55\u5c06\u4f1a\u4e22\u5931.", "No, don’t leave yet": "\u4e0d\uff0c\u5148\u4e0d\u79bb\u5f00", "Yes, leave": "\u662f\uff0c\u8981\u79bb\u5f00"
+      "Swipe around the": "\u7528\u624b\u6307\u6ed1\u52a8", 
+      "Well done!": "\u975e\u5e38\u597d\uff01", 
+      "Yes, leave": "\u662f\uff0c\u8981\u79bb\u5f00",
+      "screen to reveal": "\u5c4f\u5e55\u4ee5\u663e\u793a",
+      "the hidden image": "\u9690\u85cf\u56fe\u50cf"      
     }
   } 
 };
