@@ -120,7 +120,7 @@ const resources = {
       "Quick Tips to Improve Your": "Quick Tips to Improve Your",
       "Read": "Lu",
             "Hope": "Hope",
-      "Tip": "Tip",
+      "Tip": "Astuce",
       
       "Social": "Social",
      
