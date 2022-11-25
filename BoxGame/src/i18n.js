@@ -85,7 +85,7 @@ const resources = {
       GAME_OVER: "Game Over",
       GO: "Go",
       LEVEL: "Niveau",
-      NEXT: "Next",
+      NEXT: "Suivant",
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
         "Maintenant, appuyez sur les cases dans l\u2019ordre o\u00f9 elles se sont \u00e9clair\u00e9es.",
       NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
