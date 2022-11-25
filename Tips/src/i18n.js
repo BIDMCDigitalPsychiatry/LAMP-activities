@@ -123,7 +123,6 @@ const resources = {
       "Tip": "Tip",
       
       "Social": "Social",
-      "Mental Health Resources": "Mental Health Resources",
      
       "Stress Tips": "Stress Astuces",
       "Social Tips": "Social Astuces",
