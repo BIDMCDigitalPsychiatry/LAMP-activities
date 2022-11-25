@@ -1,6 +1,8 @@
 {
 	"question": "domanda",
 	"Question number of total": "Domanda {{ number }} of {{ total }}",
+	"Question": "Domanda",
+	"of":"di",
 	"Next": "Successiva", "Submit": "Invia",
 	"Mood": "Umore",
 	"Back" :"Indietro",

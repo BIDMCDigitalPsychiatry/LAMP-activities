@@ -932,7 +932,11 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
         {console.log({  number: (index + 1), total: settingsQuestions })}
-          {`${t("Question number of total", {  number: (index + 1), total: settingsQuestions })}`}
+          {/* {`${t("Question number of total", {  number: (index + 1), total: settingsQuestions })}`} */}
+          <span>{`${t("Question")}`}</span> 
+          {` ${(index + 1)} `} 
+          <span>{`${t("of")}`}</span>
+          {` ${settingsQuestions}`}
         </Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
@@ -1281,8 +1285,10 @@ function Questions({
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-        {console.log({  number: (index + 1), total: settings.length })}
-        {`${t("Question number of total", { "number": (index + 1), "total": settings.length })}`}
+        <span>{`${t("Question")}`}</span>
+        {` ${(index + 1)} `} 
+         <span>{`${t("of")}`}</span> 
+         {` ${settings.length}`}
         </Typography>
       </Box>
 

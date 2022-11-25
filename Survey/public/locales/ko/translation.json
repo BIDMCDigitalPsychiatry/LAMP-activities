@@ -1,7 +1,10 @@
 {
 	"question": "\ubb38\ud56d\ub4e4",
 	"Question number of total": "\ubb38\ud56d\ub4e4 {{ number }} of {{ total }}",
-	"Next ": "\ub2e4\uc74c ", "Submit": "\uc81c\ucd9c\ud558\uae30",
+	"Question": "\ubb38\ud56d\ub4e4",
+	"of":"의",
+	"Next ": "\ub2e4\uc74c ", 
+	"Submit": "\uc81c\ucd9c\ud558\uae30",
 	"Mood": "\uae30\ubd84",
 	"Back":"\uc774\uc804\uc73c\ub85c \ub3cc\uc544\uac00\uc138\uc694",
 	"Sleep and Social": "\uc218\uba74\uacfc \uc0ac\ud68c\uc0dd\ud65c", "Anxiety": "\ubd88\uc548\uc99d", "Psychosis and Social": "\uc815\uc2e0\ubcd1\uacfc \uc0ac\ud68c\uc0dd\ud65c", "App Usability": "\uc571 \uc774\uc6a9\uc131", "Water and Nutrition": "\ubb3c\uacfc \uc601\uc591",
