@@ -12,7 +12,7 @@ import "material-icons"
 import SurveyQuestions from './components/SurveyQuestions'
 import './index.css';
 import { SnackbarProvider } from "notistack"
-
+import "./i18n"
 const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"

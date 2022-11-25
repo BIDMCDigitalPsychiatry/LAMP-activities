@@ -1,6 +1,8 @@
 {
 	"question": "Pregunta",
 	"Question number of total": "Pregunta {{ number }} de {{ total }}",
+	"Question": "Pregunta",
+	"of":"de",
 	"Next" : "Siguiente",
 	"Submit": "Enviar",
 	"Mood": "Humor",

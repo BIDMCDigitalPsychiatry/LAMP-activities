@@ -1,6 +1,8 @@
 {
 	"question": "प्रश्न",
 	"Question number of total": "प्रश्न {{ number }} की {{ total }}",
+	"Question": "प्रश्न",
+	"of":"की",
 	"Next" : "आगे",
 	"Submit": "जमा करें",
 	"Mood": "मूड",

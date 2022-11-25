@@ -8,13 +8,16 @@ i18n
   .init({
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",
-      preload: true,      
+      preload: true,
+      // for all available options read the backend's repository readme file
     },
+    
     keySeparator: false,
     nsSeparator: false,
+
     react: {
       useSuspense: false,
-    },    
+    },
   })
 
 export default i18n
