@@ -17,7 +17,7 @@ const resources = {
       "Anxiety": "Angst", "Psychosis and Social": "Psykose og socialt ", "App Usability": "App-brugervenlighed", "Water and Nutrition": "Vand og ern\u00e6ring",
       "Please enter your response" : "Indtast venligst dit svar",
       "Back":"Tilbage",
-      "Your response:": "Dit svar:", "Nearly All the Time": "N\u00e6sten hele tiden", "More than Half the Time": "Mere end halvdelen af tiden", "Several Times": "Flere gange", "Not at all": "slet ikke", "(Select one)": "(V\u00e6lg en)", "(0 being terrible, 10 being excellent)": "(0 er forf\u00e6rdeligt 10 er fremragende)"
+      "Your response": "Dit svar", "Nearly All the Time": "N\u00e6sten hele tiden", "More than Half the Time": "Mere end halvdelen af tiden", "Several Times": "Flere gange", "Not at all": "slet ikke", "(Select one)": "(V\u00e6lg en)", "(0 being terrible, 10 being excellent)": "(0 er forf\u00e6rdeligt 10 er fremragende)"
     },
   },
   "de-DE": {
@@ -33,7 +33,7 @@ const resources = {
       "Yes": "Ja", "No": "Nein",
       "Sleep and Social": "Schlaf und Soziales", "Anxiety": "Angst", "Psychosis and Social": "Psychose und Soziales", "App Usability": "App-Nutzbarkeit", "Water and Nutrition": "Wasser und Ern\u00e4hrung",
       "Please enter your response" : "Bitte Antwort eingeben",
-      "Your response:": "Deine Antwort:", "Nearly All the Time": "Fast die ganze Zeit", "More than Half the Time": "Mehr als die H\u00e4lfte der Zeit", "Several Times": "Mehrmals", "Not at all": "\u00dcberhaupt nicht", "(Select one)": "(Eine Option ausw\u00e4hlen)", "(0 being terrible, 10 being excellent)": "(0 ist schrecklich, 10 ist ausgezeichnet)"	
+      "Your response": "Deine Antwort", "Nearly All the Time": "Fast die ganze Zeit", "More than Half the Time": "Mehr als die H\u00e4lfte der Zeit", "Several Times": "Mehrmals", "Not at all": "\u00dcberhaupt nicht", "(Select one)": "(Eine Option ausw\u00e4hlen)", "(0 being terrible, 10 being excellent)": "(0 ist schrecklich, 10 ist ausgezeichnet)"	
     },
   },
   "en-US": {
@@ -48,7 +48,8 @@ const resources = {
       "Psychosis and Social": "Psychosis and Social",
       "App Usability": "App Usability",
       "Water and Nutrition": "Water and Nutrition",
-      "Please enter your response" : "Please enter your response"	
+      "Please enter your response" : "Please enter your response"	,
+      "Your response":"Your response",
     },
   },
   "es-ES": {
@@ -68,7 +69,7 @@ const resources = {
       "Back": "Previa",
       "Yes": "Si",
           "No": "No",
-      "Your response:": "Tu respuesta",
+      "Your response": "Tu respuesta",
       "Nearly All the Time": "Casi todo el tiempo",
       "More than Half the Time": "Más de la mitad del tiempo",
       "Several Times": "Varias veces",
@@ -95,7 +96,7 @@ const resources = {
       "Yes": "Oui", "No": "Non",
       "Water and Nutrition": "Eau et nutrition",
       "Please enter your response" : "Veuillez entrer votre r\u00e9ponse"	,
-      "Your response:": "Votre r\u00e9ponse:",
+      "Your response": "Votre r\u00e9ponse",
       "Nearly All the Time": "Presque tout le temps", 
       "More than Half the Time": "Plus de la moiti\u00e9 du temps", 
       "Several Times": "Plusieurs fois", 
@@ -122,7 +123,7 @@ const resources = {
       "Yes": "हाँ",
           "No": "नही",
       "Please enter your response": "कृपया अपनी प्रतिक्रिया दर्ज करें",
-      "Your response:": "आपका जवाब:",
+      "Your response": "आपका जवाब",
       "Nearly All the Time": "लगभग सारा समय",
       "More than Half the Time": "आधे से ज्यादा समय",
       "Several Times": "बहुत बार",
@@ -143,7 +144,7 @@ const resources = {
       "Yes": "S\u00ec", "No": "No", 
       "Sleep and Social": "Sonno e Comportamento Sociale", "Anxiety": "Ansia", "Psychosis and Social": "Psicosi e Comportamento Sociale", "App Usability": "Fruibilit\u00e0 dell'App", "Water and Nutrition": "Acqua e Alimentazione",
       "Please enter your response" : "Please enter your response"	,
-      "Your response:": "La tua risposta:", "Nearly All the Time": "Quasi Sempre", "More than Half the Time": "Pi\u00f9 della Met\u00e0 del Tempo", "Several Times": "Diverse Volte", "Not at all": "Mai", "(Select one)": "(Seleziona una)", "(0 being terrible, 10 being excellent)": "(0 equivalente a terribile, 10 equivalente a  eccellente)"
+      "Your response": "La tua risposta", "Nearly All the Time": "Quasi Sempre", "More than Half the Time": "Pi\u00f9 della Met\u00e0 del Tempo", "Several Times": "Diverse Volte", "Not at all": "Mai", "(Select one)": "(Seleziona una)", "(0 being terrible, 10 being excellent)": "(0 equivalente a terribile, 10 equivalente a  eccellente)"
     },
   },
     "ko-KR": {
@@ -159,7 +160,7 @@ const resources = {
       "Back":"\uc774\uc804\uc73c\ub85c \ub3cc\uc544\uac00\uc138\uc694",
       "Sleep and Social": "\uc218\uba74\uacfc \uc0ac\ud68c\uc0dd\ud65c", "Anxiety": "\ubd88\uc548\uc99d", "Psychosis and Social": "\uc815\uc2e0\ubcd1\uacfc \uc0ac\ud68c\uc0dd\ud65c", "App Usability": "\uc571 \uc774\uc6a9\uc131", "Water and Nutrition": "\ubb3c\uacfc \uc601\uc591",
       "Please enter your response" : "\uc751\ub2f5\uc744 \uc785\ub825\ud558\uc138\uc694",
-      "Your response:": "\uc5ec\ub7ec\ubd84\uc758 \uc751\ub2f5\uc740", "Nearly All the Time": "\uac70\uc758 \ud56d\uc0c1", "More than Half the Time": "\uc808\ubc18 \uc774\uc0c1", "Several Times": "\uba87\ubc88", "Not at all": "\uc804\ud600", "(Select one)": "(\ud558\ub098\ub97c \uc120\ud0dd\ud558\uc138\uc694)", "(0 being terrible, 10 being excellent)": "(0\uc740 \ud615\ud3b8\uc5c6\uc74c, 10\uc740 \uc815\ub9d0 \uc88b\uc74c)"	
+      "Your response": "\uc5ec\ub7ec\ubd84\uc758 \uc751\ub2f5\uc740", "Nearly All the Time": "\uac70\uc758 \ud56d\uc0c1", "More than Half the Time": "\uc808\ubc18 \uc774\uc0c1", "Several Times": "\uba87\ubc88", "Not at all": "\uc804\ud600", "(Select one)": "(\ud558\ub098\ub97c \uc120\ud0dd\ud558\uc138\uc694)", "(0 being terrible, 10 being excellent)": "(0\uc740 \ud615\ud3b8\uc5c6\uc74c, 10\uc740 \uc815\ub9d0 \uc88b\uc74c)"	
     },
   },  "zh-CN": {
     translation: {
@@ -174,7 +175,7 @@ const resources = {
       "Yes": "\u6709\u7684", "No": "\u6ca1\u6709",
       "Sleep and Social": "\u7761\u7720\u4e0e\u793e\u4ea4", "Anxiety": "\u7126\u8651", "Psychosis and Social": "\u7cbe\u795e\u75c5\u4e0e\u793e\u4ea4", "App Usability": "APP\u7684\u53ef\u7528\u6027", "Water and Nutrition": "\u6c34\u5206\u4e0e\u8425\u517b",
       "Please enter your response" : "\u8bf7\u8f93\u5165\u60a8\u7684\u56de\u590d"	,
-      "Your response:": "\u60a8\u7684\u56de\u5e94\uff1a", "Nearly All the Time": "\u51e0\u4e4e\u6240\u6709\u65f6\u95f4", "More than Half the Time": "\u4e00\u534a\u4ee5\u4e0a\u7684\u65f6\u95f4", "Several Times": "\u591a\u6b21", "Not at all": "\u4e00\u70b9\u90fd\u6ca1\u6709", "(Select one)": "(\u9009\u62e9\u4e00\u4e2a)", "(0 being terrible, 10 being excellent)": "(0\u5206\u7cdf\u7cd5\uff0c10\u5206\u4f18\u79c0)"
+      "Your response": "\u60a8\u7684\u56de\u5e94\uff1a", "Nearly All the Time": "\u51e0\u4e4e\u6240\u6709\u65f6\u95f4", "More than Half the Time": "\u4e00\u534a\u4ee5\u4e0a\u7684\u65f6\u95f4", "Several Times": "\u591a\u6b21", "Not at all": "\u4e00\u70b9\u90fd\u6ca1\u6709", "(Select one)": "(\u9009\u62e9\u4e00\u4e2a)", "(0 being terrible, 10 being excellent)": "(0\u5206\u7cdf\u7cd5\uff0c10\u5206\u4f18\u79c0)"
     },
   }
 };
