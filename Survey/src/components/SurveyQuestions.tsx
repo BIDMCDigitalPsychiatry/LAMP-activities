@@ -892,7 +892,7 @@ function Rating({ onChange, options, value, ...props }) {
       </Grid>
       <Box className={classes.sliderResponse}>
         <Typography variant="caption" display="block" gutterBottom>
-          {t("Your response:")}
+          {t("Your response")}:
         </Typography>
         <Typography variant="h4">
           <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />          
