@@ -520,7 +520,7 @@ class Balloons extends React.Component<{}, AppState> {
           type="button"
           name="pump_balloon"
           id="pump_balloon"
-          value={i18n.t("PUMP_UP_BALLOON") as string}
+          value={`${i18n.t("PUMP_UP_BALLOON")}`}
           disabled={
             this.state.balloon_number > this.state.balloon_count ||
             this.state.balloon_burst === true
