@@ -144,6 +144,8 @@ const resources = {
       "Yes": "S\u00ec", "No": "No", 
       "Sleep and Social": "Sonno e Comportamento Sociale", "Anxiety": "Ansia", "Psychosis and Social": "Psicosi e Comportamento Sociale", "App Usability": "Fruibilit\u00e0 dell'App", "Water and Nutrition": "Acqua e Alimentazione",
       "Please enter your response" : "Please enter your response"	,
+      "Today I felt suspicious of others":"Oggi mi sono sentito sospettoso verso gli altri",
+      "Today I spent time with other people (in person)": "Oggi ho passato del tempo con altre persone (di persona)",
       "Your response": "La tua risposta", "Nearly All the Time": "Quasi Sempre", "More than Half the Time": "Pi\u00f9 della Met\u00e0 del Tempo", "Several Times": "Diverse Volte", "Not at all": "Mai", "(Select one)": "(Seleziona una)", "(0 being terrible, 10 being excellent)": "(0 equivalente a terribile, 10 equivalente a  eccellente)"
     },
   },
