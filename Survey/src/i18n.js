@@ -134,9 +134,9 @@ const resources = {
   },
   "it-IT": {
     translation: {
-      "of": "di",
+      "of": "su numero su un totale di",
       "question": "domanda",
-      "Question number of total": "Domanda {{ number }} di {{ total }}",
+      "Question number of total": "Domanda {{ number }} su numero su un totale di {{ total }}",
       "Question": "Domanda",
       "Next": "Successiva", "Submit": "Invia",
       "Mood": "Umore",
