@@ -188,6 +188,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    nsSeparator: false,
     keySeparator: false,
     resources,
   });
