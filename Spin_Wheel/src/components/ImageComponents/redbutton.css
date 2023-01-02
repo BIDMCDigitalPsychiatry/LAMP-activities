@@ -1,0 +1,10 @@
+.a,
+.g,
+.h{fill:#fff;}
+.b{fill:url(#a);}
+.c{fill:url(#e);}
+.d{fill:rgba(57,10,10,0.57);}
+.e{fill:url(#f);}.f{fill:#d50202;}
+.g{opacity:0.52;}
+.h{opacity:0.44;}
+.i{filter:url(#b);}

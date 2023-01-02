@@ -1,0 +1,85 @@
+
+.layout{
+  width : 100%;
+}
+.wheel{
+  width: 100%;
+  max-width: 500px;
+  margin:0 auto;
+}
+.wheel canvas{
+  width: 450px !important;
+  height: 450px !important;
+}
+h1,h3 {
+  text-align: center;  
+}
+p {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 650;
+}
+  .button-group {
+  text-align: center;
+  margin-top: -28px;
+}
+.button-class {
+  background: white !important;
+  border: none !important;
+  width: 65px;
+  height: 60px;
+  pointer-events: none;
+}
+.button-class svg{
+  width: 50px;
+  pointer-events: stroke;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+.btn:hover {
+  box-shadow: none !important;
+}
+h3.wheel-score{
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+.responsive-canvas{
+  width: 500px;
+  height: 500px;
+  object-fit: contain ;
+}
+.error-class{
+  color: red;
+  font-size: 20px;
+}
+
+h1.wheel-score{
+  font-size: 2rem;
+  margin-top: 10px;
+} 
+@media only screen and (max-width: 500px) {
+  .wheel canvas{
+    width: 350px !important;
+    height: 350px !important;
+  }
+  .button-class{
+    width: 70px;
+  }
+  .button-class svg{
+    width: 40px;
+  }
+  h1.wheel-score, h3.wheel-score{
+    font-size: 1.5rem;
+
+  }
+}
+.MuiSvgIcon-root {
+  color: white;
+}
+
+
+  
+  
+  
