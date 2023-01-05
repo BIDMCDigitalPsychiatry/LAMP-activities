@@ -98,12 +98,14 @@ const Layout = ({...props}) => {
 
   useEffect(() => {
     if(isGameOver) {
-      parent.postMessage(routes.length > 0 ? JSON.stringify({
-        timestamp: new Date().getTime(),
-        duration: new Date().getTime() - time,
-        temporal_slices: JSON.parse(JSON.stringify(routes)),
-        static_data: {},
-       }) : null, "*")   
+      setTimeout(()=>{
+        parent.postMessage(routes.length > 0 ? JSON.stringify({
+          timestamp: new Date().getTime(),
+          duration: new Date().getTime() - time,
+          temporal_slices: JSON.parse(JSON.stringify(routes)),
+          static_data: {},
+         }) : null, "*") 
+      }, 5000)     
 
     }
   }, [isGameOver])
