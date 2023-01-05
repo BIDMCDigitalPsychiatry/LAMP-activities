@@ -43,12 +43,12 @@ const Layout = ({...props}) => {
   const [spinIndex, setSpinIndex] = useState(0)
   const [selectedItem1, setSelectedItem1] = useState<any>(null)
   const [selectedItem2, setSelectedItem2] = useState<any>(null)
+  const [isGameOver, setIsGameOver] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [total,setTotal] = useState(props.data.activity?.settings?.balance)  
   const [routes, setRoutes] = useState<any>([])
   const time = new Date().getTime()
   const [buttonIndex, setButtonIndex] = useState(0)
-  // const [loading, setLoading] = useState(true)
   const [complete, setComplete] = useState(false)
   const highRiskConditionsLoseWheel = convertObjtoArray(settingsData?.high_risk[0]?.loose, settingsData?.high_risk[0]?.zero?.probability)
   const highRiskConditionsWinWheel = convertObjtoArray(settingsData?.high_risk[0]?.win, settingsData?.high_risk[0]?.zero?.probability) 
@@ -97,7 +97,7 @@ const Layout = ({...props}) => {
   }, [complete])
 
   useEffect(() => {
-    if(totalSpins<=0) {
+    if(isGameOver) {
       parent.postMessage(routes.length > 0 ? JSON.stringify({
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - time,
@@ -106,7 +106,7 @@ const Layout = ({...props}) => {
        }) : null, "*")   
 
     }
-  }, [totalSpins])
+  }, [isGameOver])
   
   useEffect(()=>{    
     if(showResult){
@@ -145,7 +145,6 @@ const Layout = ({...props}) => {
         <Container>          
           <Row>
             <Col>
-              {/* <h1 className='wheel-score'>{i18n.t<string>("TOTAL_BALANCE")} : ${total}</h1> */}
               <h1 className='wheel-score'>{i18n.t<string>("TOTAL_BALANCE")} : {displayTotal()}</h1>
             </Col>
           </Row>
@@ -161,6 +160,8 @@ const Layout = ({...props}) => {
               setClicked={setClicked}
               setShowResult={setShowResult}
               setTimeTaken={setTimeTaken}
+              totalSpins={totalSpins}
+              setIsGameOver={setIsGameOver}
               />            
               {spinIndex > 0 ? (<p>{i18n.t<string>("YOU_WON")} : {showResult && selectedItem2 !=null ? `${selectedItem1}` : ""}</p>) : <p/>}
             </Col>
@@ -175,6 +176,8 @@ const Layout = ({...props}) => {
               setClicked={setClicked}
               setShowResult={setShowResult}
               setTimeTaken={setTimeTaken}
+              totalSpins={totalSpins}
+              setIsGameOver={setIsGameOver}
               />
             
               {spinIndex > 0 ? <p>{i18n.t<string>("YOU_LOSE")} : {showResult && selectedItem2 !=null ? `${selectedItem2}` : ""}</p> : <p/>}
@@ -212,7 +215,7 @@ const Layout = ({...props}) => {
               <h3 className='wheel-score'>{i18n.t<string>("TOTAL_SPINS")} : {totalSpins}</h3>   
             </Col>
           </Row> 
-          {totalSpins<=0 && <Row>
+          {isGameOver && <Row>
               <Col>
                 <p className='error-class'>{i18n.t<string>("GAME_OVER")}</p>   
               </Col>
