@@ -5,7 +5,7 @@ import React from 'react'
 import WheelComponent from '../WheelComponent'
 
 const SpinWheel = ({...props}: any) => {
-  const {centerX, centerY, canvasId, wheelId, selectedItem, clicked, setClicked, setShowResult, setTimeTaken} = props;
+  const {centerX, centerY, canvasId, wheelId, selectedItem, clicked, setClicked, setShowResult, setTimeTaken, totalSpins, setIsGameOver} = props;
   const segments = [
     '0',
     '50',
@@ -28,6 +28,9 @@ const SpinWheel = ({...props}: any) => {
   ]
   const onFinished = (winner : any) => {
     setShowResult(true)
+    if(totalSpins===0){
+      setIsGameOver(true)
+    }
   }
 
  
