@@ -21,7 +21,6 @@ p {
 }
   .button-group {
   text-align: center;
-  margin-top: -28px;
 }
 .button-class {
   background: white !important;
@@ -73,6 +72,26 @@ h1.wheel-score{
   h1.wheel-score, h3.wheel-score{
     font-size: 1.5rem;
 
+  }
+}
+@media only screen and (max-width: 400px) {
+  .wheel canvas{
+    width: 290px !important;
+    height: 290px !important;
+    margin-top: -30px;
+    margin-left: 10px;
+  }
+  h1.wheel-score, h3.wheel-score{
+    font-size: 1.1rem;
+  }
+  .button-class{
+    width: 60px;
+    height: 35px;
+    padding: 0;
+  }
+  .button-class svg{
+    width: 35px;
+    height: 35px;
   }
 }
 .MuiSvgIcon-root {
