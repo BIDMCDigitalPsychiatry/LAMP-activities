@@ -7,7 +7,7 @@ import  GreenButtonSVG from "../components/ImageComponents/greenButtonSVG";
 import  RedButtonSVG from "../components/ImageComponents/redButtonSVG";
 import  YellowButtonSVG from "../components/ImageComponents/yellowButtonSVG";
 import SpinWheel from '../components/spinwheel/SpinWheel';
-import { convertObjtoArray } from '../helper/helper';
+import { convertObjtoArray , shuffleArray} from '../helper/helper';
 import i18n from "../i18n";
 import {
   makeStyles,
@@ -50,11 +50,15 @@ const Layout = ({...props}) => {
   const time = new Date().getTime()
   const [buttonIndex, setButtonIndex] = useState(0)
   const [complete, setComplete] = useState(false)
+  const [conditionsForRed, setConditionsForRed] = useState<any>([])
+  const [conditionsForYellow, setConditionsForYellow] = useState<any>([])
+  const [conditionsForBlue, setConditionsForBlue] = useState<any>([])
+  const [conditionsForGreen, setConditionsForGreen] = useState<any>([])
   const highRiskConditionsLoseWheel = convertObjtoArray(settingsData?.high_risk[0]?.loose, settingsData?.high_risk[0]?.zero?.probability)
   const highRiskConditionsWinWheel = convertObjtoArray(settingsData?.high_risk[0]?.win, settingsData?.high_risk[0]?.zero?.probability) 
   const lowRiskConditionsLoseWheel = convertObjtoArray(settingsData?.low_risk[0]?.loose, settingsData?.low_risk[0]?.zero?.probability) 
   const lowRiskConditionsWinWheel = convertObjtoArray(settingsData?.low_risk[0]?.win, settingsData?.low_risk[0]?.zero?.probability) 
-
+  const riskArray = ['highrisk', 'highrisk', 'lowrisk','lowrisk']
   
   const [showResult, setShowResult] = useState(false)
 
@@ -75,7 +79,17 @@ const Layout = ({...props}) => {
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     setSettingsData(settings)     
   }, [])
-  
+
+  useEffect(() => { 
+    if(settingsData !== null && settingsData!== undefined) {      
+      shuffleArray(riskArray)
+      setConditionsForRed(riskArray[0]) 
+      setConditionsForYellow(riskArray[1])
+      setConditionsForGreen(riskArray[2])  
+      setConditionsForBlue(riskArray[3])   
+
+    }  
+  }, [settingsData])
 
   const selectItem =(values1 : any, values2 : any) =>{
     if(totalSpins>0) {        
@@ -134,6 +148,16 @@ const Layout = ({...props}) => {
     }
   }
 
+  const setConditions = (condition : any) =>{
+    if(condition === 'highrisk'){
+      selectItem(highRiskConditionsWinWheel, highRiskConditionsLoseWheel)
+    }
+    else {
+      selectItem(lowRiskConditionsWinWheel, lowRiskConditionsLoseWheel)
+    }
+
+  }
+
     return (
       <div className="layout">        
         <AppBar position="static" style={{ background: "rgba(53,159,254,1)", boxShadow: "none" }}>
@@ -189,25 +213,34 @@ const Layout = ({...props}) => {
             <Col xs={12} className="button-group">
               <Button className='button-class'
                type="button"               
-               onClick={()=>{ setButtonIndex(1); selectItem(highRiskConditionsWinWheel, highRiskConditionsLoseWheel)}}>
+               onClick={()=>{ 
+                setButtonIndex(1); 
+                setConditions(conditionsForRed)
+               }}>
                 <RedButtonSVG/>
               </Button>
               <Button
                className='button-class'
                type="button"
-               onClick={()=>{ setButtonIndex(2); selectItem(highRiskConditionsWinWheel, highRiskConditionsLoseWheel)}}>
+               onClick={()=>{ setButtonIndex(2);
+               setConditions(conditionsForYellow)}}>
                 <YellowButtonSVG/>
               </Button>
               <Button
                className='button-class' 
                type="button" 
-               onClick={()=>{ setButtonIndex(3); selectItem(lowRiskConditionsWinWheel, lowRiskConditionsLoseWheel)}}>
+               onClick={()=>{ 
+                setButtonIndex(3);
+                setConditions(conditionsForGreen)}}>
                 <GreenButtonSVG/>
               </Button>
               <Button 
                 className='button-class' 
                 type="button" 
-                onClick={()=>{ setButtonIndex(4); selectItem(lowRiskConditionsWinWheel, lowRiskConditionsLoseWheel)}}>
+                onClick={()=>{ 
+                  setButtonIndex(4);                   
+                  setConditions(conditionsForBlue)
+                  }}>
                 <BluebuttonSVG/>
               </Button>
             </Col>

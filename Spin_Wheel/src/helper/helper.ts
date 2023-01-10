@@ -50,5 +50,10 @@ export function convertObjtoArray(data: any, zeroProbability : any) {
     return resultArray;
 }
 
+export function shuffleArray(arr : any) {
+    arr.sort(() => Math.random() - 0.5);
+    return arr;
+}
+
 
 
