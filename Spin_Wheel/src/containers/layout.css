@@ -10,6 +10,7 @@
 .wheel canvas{
   width: 450px !important;
   height: 450px !important;
+  margin-top: -30px;
 }
 h1,h3 {
   text-align: center;  
@@ -60,8 +61,10 @@ h1.wheel-score{
 } 
 @media only screen and (max-width: 500px) {
   .wheel canvas{
-    width: 350px !important;
-    height: 350px !important;
+    width: 300px !important;
+    height: 300px !important;
+    margin-left: 20px;
+    margin-top: -30px;
   }
   .button-class{
     width: 70px;
@@ -76,10 +79,10 @@ h1.wheel-score{
 }
 @media only screen and (max-width: 400px) {
   .wheel canvas{
-    width: 290px !important;
-    height: 290px !important;
+    width: 225px !important;
+    height: 225px !important;
     margin-top: -30px;
-    margin-left: 10px;
+    margin-left: 15%;
   }
   h1.wheel-score, h3.wheel-score{
     font-size: 1.1rem;

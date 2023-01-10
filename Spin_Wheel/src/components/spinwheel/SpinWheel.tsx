@@ -45,7 +45,7 @@ const SpinWheel = ({...props}: any) => {
       arrowColor='white'
       buttonText=''
       isOnlyOnce={false}
-      size={200}
+      size={175}
       upDuration={100}
       downDuration={1000}
       circleCenterX={centerX}
