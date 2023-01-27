@@ -56,6 +56,7 @@ interface BoardState {
   successTaps: number;
   wrongTaps: number;
   route: any;
+  lastClickTime: any;
   lastSelectedColor: string;
   correctGoCount: number;
   totalGoCount: number;
@@ -98,6 +99,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       goArray: [],
       goIndexes: [],
       index: 0,
+      lastClickTime : new Date().getTime(),
       lastSelectedColor: "",
       newColor: "",
       noGoArray: [],
@@ -1033,7 +1035,10 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     if (!this.state.clickedBubbleIndexes.includes(index)) {
       let route = {};
+    const dif = new Date().getTime() - this.state.lastClickTime;
+    const lastclickTime = dif;
       route = {
+        duration: lastclickTime,
         item: this.state.route.length + 1,
         level: this.props.level,
         type: success,
@@ -1045,6 +1050,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       };
       this.setState((prevState) => ({
         clickedBubbleIndexes: [...prevState.clickedBubbleIndexes, index],
+        lastClickTime: new Date().getTime(),
         route: [...prevState.route, route],
       }));
     }

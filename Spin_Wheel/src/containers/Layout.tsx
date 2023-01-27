@@ -59,6 +59,7 @@ const Layout = ({...props}) => {
   const lowRiskConditionsLoseWheel = convertObjtoArray(settingsData?.low_risk[0]?.loose, settingsData?.low_risk[0]?.zero?.probability) 
   const lowRiskConditionsWinWheel = convertObjtoArray(settingsData?.low_risk[0]?.win, settingsData?.low_risk[0]?.zero?.probability) 
   const riskArray = ['highrisk', 'highrisk', 'lowrisk','lowrisk']
+  const [selectedCondition, setSelectedCondition] = useState<any>(null)
   
   const [showResult, setShowResult] = useState(false)
 
@@ -132,7 +133,7 @@ const Layout = ({...props}) => {
           "item": spinIndex,
           "level": buttonIndex, 
           "type": total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10),
-          "value": null
+          "value": selectedCondition
       }
       setRoutes([...routes,route])
     } 
@@ -150,9 +151,11 @@ const Layout = ({...props}) => {
 
   const setConditions = (condition : any) =>{
     if(condition === 'highrisk'){
+      setSelectedCondition(1)
       selectItem(highRiskConditionsWinWheel, highRiskConditionsLoseWheel)
     }
     else {
+      setSelectedCondition(0)
       selectItem(lowRiskConditionsWinWheel, lowRiskConditionsLoseWheel)
     }
 
@@ -214,7 +217,7 @@ const Layout = ({...props}) => {
               <Button className='button-class'
                type="button"               
                onClick={()=>{ 
-                setButtonIndex(1); 
+                setButtonIndex(1);
                 setConditions(conditionsForRed)
                }}>
                 <RedButtonSVG/>
