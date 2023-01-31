@@ -111,16 +111,18 @@ const resources = {
     },
   },  "zh-CN": {
     translation: {
-      VOICE_RECORDING: "Voice Recording",
-      UPLOAD: "\u4e0a\u4f20",
-      CLEAR: "\u6e05\u9664",
+      VOICE_RECORDING: "語音錄音",
+      UPLOAD: "上傳",
+      CLEAR: " 清除",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
       AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
-      INFO_MAX_RECORD_TIME_REACHED: "\u6700\u957f\u5f55\u5236\u65f6\u95f4\u4e3a4\u5206\u949f",
+      INFO_MAX_RECORD_TIME_REACHED: " 最長錄音時間為 4 分鐘",
       ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
-      UPLOAD_BTN: "\u4e0a\u4f20",
-      CLEAR_BTN: "\u6e05\u9664",
+      UPLOAD_BTN: "上傳",
+      CLEAR_BTN: " 清除",
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again"
+
+
     },
   },
   };
