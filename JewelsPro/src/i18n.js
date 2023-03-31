@@ -60,11 +60,18 @@ const resources = {
     },
   },  "zh-CN": {
     translation: {
-      CONGRATS: "\u606d\u559c\uff01",
+      CONGRATS: "恭喜！",
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "\u73e0\u5b9d",
-      TIMEOUT: "\u8d85\u65f6",
+      JEWELS: "珠宝",
+      TIMEOUT:  "超时",
     },
+    "zh-HK": {
+      translation: {
+        CONGRATS: "恭喜！",
+        DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+        JEWELS: "珠寶",
+        TIMEOUT: "超時",
+      },
   },
   
   

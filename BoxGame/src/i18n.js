@@ -155,22 +155,40 @@ const resources = {
     },
   },  "zh-CN": {
     translation: {
-      BOX_GAME: "\u76d2\u5b50\u6e38\u620f",
-      CONGRATS: "\u606d\u559c\uff01",
-      GAME_OVER: "\u6e38\u620f\u7ed3\u675f",
-      GO: "\u5f00\u59cb",
-      LEVEL: "\u7ea7\u522b",
-      NEXT: "\u4e0b\u4e00\u6b65",
+      BOX_GAME: "盒子游戏",
+      CONGRATS: "恭喜！",
+      GAME_OVER:  "游戏结束",
+      GO: "开始",
+      LEVEL: "级别",
+      NEXT: "下一步",
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "\u73b0\u5728\u6309\u7a81\u51fa\u663e\u793a\u7684\u987a\u5e8f\u70b9\u51fb\u8fd9\u4e9b\u76d2\u5b50\u3002",
+        "现在按突出显示的顺序点击这些盒子.",
       NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
         "Now tap on the boxes in the reverse order they were highlighted.",
-      PLEASE_REMEMBER_THE_SEQUENCE: "\u8bf7\u8bb0\u4f4f\u987a\u5e8f",
-      PLEASE_WAIT_AND_WATCH: "\u8bf7\u7b49\u5f85\u5e76\u89c2\u770b",
+      PLEASE_REMEMBER_THE_SEQUENCE: "请记住顺序",
+      PLEASE_WAIT_AND_WATCH: "请等待并观看",
       REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
-        "\u6309\u7167\u770b\u5230\u7684\u987a\u5e8f\u8bb0\u4f4f\u7a81\u51fa\u663e\u793a\u7684\u76d2\u5b50\u3002",
-      TIME_OUT: "\u8d85\u65f6",
+        "按照看到的顺序记住突出显示的盒子",
+      TIME_OUT:  "超时",
     },
+    "zh-HK": {
+      translation: {
+        BOX_GAME:  "盒子遊戲",
+        CONGRATS: "恭喜！",
+        GAME_OVER: "遊戲結束",
+        GO: "開始",
+        LEVEL: "級別",
+        NEXT: "下一步",
+        NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
+          "現在按突出顯示的順序點擊這些盒子。",
+        NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
+          "Now tap on the boxes in the reverse order they were highlighted.",
+        PLEASE_REMEMBER_THE_SEQUENCE: "請記住順序",
+        PLEASE_WAIT_AND_WATCH: "請等待並觀看",
+        REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
+          "按照看到的順序記住突出顯示的盒子",
+        TIME_OUT: "超時",
+      },
   }
 };
 

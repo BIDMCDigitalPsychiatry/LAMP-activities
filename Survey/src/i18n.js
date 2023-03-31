@@ -169,16 +169,32 @@ const resources = {
       "question": "\u95ee\u9898",
       "Question number of total": "\u95ee\u9898 {{ number }} of {{ total }}",
       "Question": "\u95ee\u9898",
-      "of":"的",
+      "of":"of",
       "Next": "\u4e0b\u4e00\u6b65", 
       "Submit": "\u63d0\u4ea4",
       "Mood": "\u60c5\u7eea",
       "Back":"\u8fd4\u56de",
-      "Yes": "\u6709\u7684", "No": "\u6ca1\u6709",
+      "Yes": "\u662f", "No": "\u5426",
       "Sleep and Social": "\u7761\u7720\u4e0e\u793e\u4ea4", "Anxiety": "\u7126\u8651", "Psychosis and Social": "\u7cbe\u795e\u75c5\u4e0e\u793e\u4ea4", "App Usability": "APP\u7684\u53ef\u7528\u6027", "Water and Nutrition": "\u6c34\u5206\u4e0e\u8425\u517b",
       "Please enter your response" : "\u8bf7\u8f93\u5165\u60a8\u7684\u56de\u590d"	,
-      "Your response": "\u60a8\u7684\u56de\u5e94\uff1a", "Nearly All the Time": "\u51e0\u4e4e\u6240\u6709\u65f6\u95f4", "More than Half the Time": "\u4e00\u534a\u4ee5\u4e0a\u7684\u65f6\u95f4", "Several Times": "\u591a\u6b21", "Not at all": "\u4e00\u70b9\u90fd\u6ca1\u6709", "(Select one)": "(\u9009\u62e9\u4e00\u4e2a)", "(0 being terrible, 10 being excellent)": "(0\u5206\u7cdf\u7cd5\uff0c10\u5206\u4f18\u79c0)"
+      "Your response": "\u60a8\u7684\u56de\u5e94", "Nearly All the Time": "\u51e0\u4e4e\u6240\u6709\u65f6\u95f4", "More than Half the Time": "\u4e00\u534a\u4ee5\u4e0a\u7684\u65f6\u95f4", "Several Times": "\u591a\u6b21", "Not at all": "\u4e00\u70b9\u90fd\u6ca1\u6709", "(Select one)": "(\u9009\u62e9\u4e00\u4e2a)", "(0 being terrible, 10 being excellent)": "(0\u5206\u7cdf\u7cd510\u5206\u4f18\u79c0)"
     },
+    "zh-HK": {
+      translation: {
+        "question": "\u554f\u984c",
+        "Question number of total": "\u554f\u984c {{ number }} of {{ total }}",
+        "Question": "\u554f\u984c",
+        "of":"of",
+        "Next": "\u4e0b\u4e00\u6b65", 
+        "Submit": "\u63d0\u4ea4",
+        "Mood": "\u60c5\u7dd2",
+        "Back":"\u8fd4\u56de",
+        "Yes": "\u662f", "No": "\u5426",
+        "Sleep and Social": "\u7761\u7720\u8207\u793e\u4ea4", "Anxiety": "\u7126\u616e", "Psychosis and Social": "\u7cbe\u795e\u75c5\u8207\u793e\u4ea4", "App Usability": "APP\u7684\u53ef\u7528\u6027", "Water and Nutrition": "\u6c34\u5206\u8207\u71df\u990a",
+        "Please enter your response" : "\u8acb\u8f38\u5165\u60a8\u7684\u56de\u590d"	,
+        "Your response": "\u60a8\u7684\u56de\u61c9", "Nearly All the Time": "\u5e7e\u4e4e\u6240\u6709\u6642\u9593", "More than Half the Time": "\u4e00\u534a\u4ee5\u4e0a\u7684\u6642\u9593", "Several Times": "\u591a\u6b21", "Not at all": "\u4e00\u9ede\u90fd\u6c92\u6709", "(Select one)": "(\u9078\u64c7\u4e00\u500b)", "(0 being terrible, 10 being excellent)": "(0\u5206\u7cdf\u7cd510\u5206\u512a\u79c0)"
+      },
+    }
   }
 };
 

@@ -102,16 +102,28 @@ const resources = {
     },
   }, "zh-CN":{
     translation: {
-      CATS_AND_DOGS: "\u732b\u548c\u72d7",
+      CATS_AND_DOGS: "猫和狗",
       CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "\u7ee7\u7eed\u70b9\u51fb\u540e\u9762\u6709\u53ea\u72d7\u7684\u76d2\u5b50. \u70b9\u51fb\u540e\u9762\u6709\u53ea\u732b\u7684\u76d2\u5b50.",
-      GAME_OVER: "\u6e38\u620f\u7ed3\u675f",  
+        "继续点击后面有只狗的盒子。点击后面有只猫的盒子.",
+      GAME_OVER:"游戏结束",  
       NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "\u73b0\u5728\u70b9\u51fb\u540e\u9762\u6709\u53ea\u732b\u7684\u76d2\u5b50\u3002\u4e0d\u8981\u70b9\u51fb\u540e\u9762\u6709\u53ea\u72d7\u7684\u76d2\u5b50",
+        "现在点击后面有只猫的盒子。不要点击后面有只狗的盒子.",
       OK: "Ok",
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "\u70b9\u51fb\u540e\u9762\u6709\u53ea\u72d7\u7684\u76d2\u5b50",     
+      "点击后面有只狗的盒子",     
     },
+    "zh-HK":{
+      translation: {
+        CATS_AND_DOGS:  "貓和狗",
+        CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
+        "繼續點擊後面有隻狗的盒子。點擊後面有隻貓的盒子",
+        GAME_OVER:"遊戲結束",  
+        NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
+        "現在點擊後面有隻貓的盒子。不要點擊後面有隻狗的盒子",
+        OK: "Ok",
+        TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
+        "點擊後面有隻狗的盒子",     
+      },
   } 
   
 };

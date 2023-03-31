@@ -111,22 +111,33 @@ const resources = {
     },
   },  "zh-CN": {
     translation: {
-      VOICE_RECORDING: "語音錄音",
-      UPLOAD: "上傳",
-      CLEAR: " 清除",
+      VOICE_RECORDING: "\u8bed\u97f3\u5f55\u97f3",
+      UPLOAD: "\u4e0a\u4f20",
+      CLEAR: " \u6e05\u9664",
       PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
       AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
-      INFO_MAX_RECORD_TIME_REACHED: " 最長錄音時間為 4 分鐘",
+      INFO_MAX_RECORD_TIME_REACHED: " \u6700\u957f\u5f55\u5236\u65f6\u95f4\u4e3a\u0034\u5206\u949f",
       ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
-      UPLOAD_BTN: "上傳",
-      CLEAR_BTN: " 清除",
-      CLICK_TO_CLEAR_MSG: "Click upload or clear to record again"
-
-
+      UPLOAD_BTN: "\u4e0a\u4f20",
+      CLEAR_BTN: " \u6e05\u9664",
+      CLICK_TO_CLEAR_MSG: "\u70b9\u51fb\u4e0a\u4f20\u6216\u6e05\u9664\u91cd\u65b0\u5f55\u5236"
     },
-  },
-  };
-  
+    "zh-HK": {
+      translation: {
+        VOICE_RECORDING: "\u8a9e\u97f3\u9304\u97f3",
+        UPLOAD: "\u4e0a\u50b3",
+        CLEAR: " \u6e05\u9664",
+        PRESS_MICROPHONE_TO_RECORD: "Press the microphone to record",
+        AN_ERROR_HAS_BEEN_OCCURRED_WHILE_RECORDING: "An error has been occurred while recording. Please try again later.",
+        INFO_MAX_RECORD_TIME_REACHED: " \u6700\u9577\u9304\u88fd\u6642\u9593\u70ba\u0034\u5206\u9418",
+        ERROR_MAX_RECORD_TIME_REACHED: "Maximum recording limit of 4 minutes has been reached.",
+        UPLOAD_BTN: "\u4e0a\u50b3",
+        CLEAR_BTN: " \u6e05\u9664",
+        CLICK_TO_CLEAR_MSG: "\u9ede\u64ca\u4e0a\u50b3\u6216\u6e05\u9664\u91cd\u65b0\u9304\u88fd"
+      },
+    },
+  }
+}
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
