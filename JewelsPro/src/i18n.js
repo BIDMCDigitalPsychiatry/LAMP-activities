@@ -73,7 +73,7 @@ const resources = {
         TIMEOUT: "超時",
       },
   },
-  
+}
   
 };
 

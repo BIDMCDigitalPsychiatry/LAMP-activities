@@ -124,6 +124,7 @@ const resources = {
         TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "點擊後面有隻狗的盒子",     
       },
+    }
   } 
   
 };

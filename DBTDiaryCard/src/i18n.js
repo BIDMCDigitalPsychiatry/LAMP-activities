@@ -1241,7 +1241,7 @@ const resources = {
       INTERPERSONAL_EFFECRIVENESS: "Habilidades de efectividad interpersonal",
       QUESTION_NUMBER_OF_TOTAL: " {{ number }} of {{ total }}"
       },
-    },
+    },    
 };
 	
 i18n
