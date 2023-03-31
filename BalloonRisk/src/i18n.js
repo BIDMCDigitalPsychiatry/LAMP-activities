@@ -70,14 +70,26 @@ const resources = {
     },
   }, "zh-CN": {
     translation: {
-      BALLOON_RISK: "\u6c14\u7403\u98ce\u9669",
-      GAME_OVER: "\u6e38\u620f\u7ed3\u675f",
+      BALLOON_RISK: "气球风险",
+      GAME_OVER:  "游戏结束",
       OK: "\u5dee",
-      PUMP_UP_BALLOON: "\u7ed9\u6c14\u7403\u5145\u6c14",
-      TOTAL_POINTS: "\u603b\u79ef\u5206",
-      CURRENT_POINTS: "\u5f53\u524d\u79ef\u5206",
-      COLLECT_POINTS: "\u6536\u96c6\u79ef",
-      BALLOON_BURSTED: "\u6c14\u7403\u7206\u70b8",
+      PUMP_UP_BALLOON: "给气球充气",
+      TOTAL_POINTS: "总积分",
+      CURRENT_POINTS: "当前积分",
+      COLLECT_POINTS: "收集积",
+      BALLOON_BURSTED: "气球爆炸",
+    },
+  },
+  "zh-HK": {
+    translation: {
+      BALLOON_RISK: "氣球風險",
+      GAME_OVER: "遊戲結束",
+      OK: "\u5dee",
+      PUMP_UP_BALLOON: "給氣球充氣",
+      TOTAL_POINTS: "總積分",
+      CURRENT_POINTS: "當前積分",
+      COLLECT_POINTS: "收集積",
+      BALLOON_BURSTED: "氣球爆炸",
     },
   },
   "es-ES": {

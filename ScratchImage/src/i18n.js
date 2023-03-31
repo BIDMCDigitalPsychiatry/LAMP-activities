@@ -150,7 +150,7 @@ const resources = {
       "Do another one": "\u518d\u6765\u4e00\u6b21",
       "Done": "\u5b8c\u6210",
       "Good": "\u597d",
-      "If you leave without submitting, your entry will be lost.": "\u5982\u679c\u4e0d\u63d0\u4ea4\u5c31\u79bb\u5f00\uff0c\u8f93\u5165\u7684\u8bb0\u5f55\u5c06\u4f1a\u4e22\u5931.", 
+      "If you leave without submitting, your entry will be lost.": "\u5982\u679c\u4e0d\u63d0\u4ea4\u5c31\u79bb\u5f00\uff0c\u8f93\u5165\u7684\u8bb0\u5f55\u5c06\u4f1a\u4e22\u5931\u3002", 
       "Leaving so soon?": "\u8fd9\u4e48\u5feb\u5c31\u8981\u79bb\u5f00", 
       "No, don’t leave yet": "\u4e0d\uff0c\u5148\u4e0d\u79bb\u5f00",
       "Scratch card": "\u522e\u522e\u5361",
@@ -160,6 +160,25 @@ const resources = {
       "Yes, leave": "\u662f\uff0c\u8981\u79bb\u5f00",
       "screen to reveal": "\u5c4f\u5e55\u4ee5\u663e\u793a",
       "the hidden image": "\u9690\u85cf\u56fe\u50cf"      
+    }
+    , "zh-HK":{
+      translation: {
+        "Bad": "\u4e0d\u597d",
+        "Close": "\u95dc\u9589", 
+        "Do another one": "\u518d\u4f86\u4e00\u6b21",
+        "Done": "\u5b8c\u6210",
+        "Good": "\u597d",
+        "If you leave without submitting, your entry will be lost.": "\u5982\u679c\u4e0d\u63d0\u4ea4\u5c31\u96e2\u958b\uff0c\u8f38\u5165\u7684\u8a18\u9304\u5c07\u6703\u4e1f\u5931\u3002", 
+        "Leaving so soon?": "\u9019\u9ebc\u5feb\u5c31\u8981\u96e2\u958b", 
+        "No, don’t leave yet": "\u4e0d\uff0c\u5148\u4e0d\u96e2\u958b",
+        "Scratch card": "\u522e\u522e\u5361",
+        "Submit": "\u63d0\u4ea4",
+        "Swipe around the": "\u7528\u624b\u6307\u6ed1\u52d5", 
+        "Well done!": "\u975e\u5e38\u597d\uff01", 
+        "Yes, leave": "\u662f\uff0c\u8981\u96e2\u958b",
+        "screen to reveal": "\u5c4f\u5e55\u4ee5\u986f\u793a",
+        "the hidden image": "\u96b1\u85cf\u5716\u50cf"    
+      }
     }
   } 
 };

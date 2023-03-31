@@ -193,6 +193,28 @@ const resources = {
       YOU_GOT_PERCENT: "\u5f97\u5206 {{ percentage }}",
     },
   },
+  "zh-HK": {
+    translation: {
+      COMPLETED: "\u5df2\u5b8c\u6210",
+      CONGRATULATIONS: "\u606d\u559c\uff01",
+      GO: "\u958b\u59cb",
+      LEVEL_NUMBER: "\u7d1a\u5225 {{ gameLevel }}",
+      LEVEL_NUM_COMPLETED: "\u7d1a\u5225 {{ levelNumber }} \u5df2\u5b8c\u6210",
+      NUMBER_OF_CORRECTLY_ANSWERED_GO_TRIALS: "{{ correctGoCount }} number of correctly answered (popped) Go trials and {{ percentage }}",
+      NUMBER_OF_CORRECTLY_ANSWERED_NO_GO_TRIALS: "{{ correctNoGo }} number of correctly answered (unpopped) No-Go trials and {{ percentage }}",
+      NUMBER_OF_FALSE_HITS: "{{ falseHitsCount }} number of false hits (hitting screen anywhere other than a bubble)",
+      NUMBER_OF_INCORRECTLY_ANSWERED_GO_TRIALS: "{{ missedClicks }} number of missed (unpopped) Go trials and {{ percentage }}",
+      NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS: "{{ wrongNoGoCount }} number of incorrectly answered (popped) No-Go trials and {{ percentage }}",
+      POP_THE_BUBBLES: "\u5f48\u51fa\u6c23\u6ce1!",
+      TAP_TO_CONTINUE: "\u9ede\u64ca\u7e7c\u7e8c",
+      TAP_TO_POP_LEVEL_1_BUBBLES_BOTTOM:"\u5f48\u51fa\u6b63\u78ba\u7684\u6c23\u7403\u5c07\u8d0f\u5f97\u7a4d\u5206.",
+      TAP_TO_POP_LEVEL_1_BUBBLES_TOP:"\u9ede\u64ca\u4ee5\u50c5\u5f48\u51fa\u6240\u6709\u7c89\u8272\u3001\u85cd\u8272\u548c\u9ec3\u8272\u6c23\u6ce1.",
+      TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP:"DON’T POP TWO BUBBLES OF THE SAME COLOR IN A ROW.",
+      TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM:"ONLY POP YELLOW AND BLUE BUBBLES.",
+      TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM:"ONLY POP PINK YELLOW AND BLUE BUBBLES.",
+      YOU_GOT_PERCENT: "\u5f97\u5206 {{ percentage }}",
+    },
+  },
   
 };
   

@@ -105,17 +105,30 @@ const resources = {
   },
   "zh-CN":{
     translation: {
-      CONGRATS: "\u606d\u559c",
+      CONGRATS: "恭喜！",
       GAME: "\u5f69\u7968",      
-      GAME_OVER: "\u6e38\u620f\u7ed3\u675f",
-      TIME_OUT: "\u6682\u505c",
+      GAME_OVER: "游戏结束",
+      TIME_OUT:  "超时",
       TOTAL_BALANCE: "\u603b\u4f59\u989d",
       TOTAL_SPINS: "\u603b\u65cb\u8f6c",
       YOU_LOSE: "\u4f60\u8f93\u4e86",
       YOU_WON: "\u4f60\u8d62\u4e86",
       
     },
+    "zh-HK":{
+      translation: {
+        CONGRATS: "恭喜！",
+        GAME: "\u5f69\u7968",      
+        GAME_OVER: "遊戲結束",
+        TIME_OUT:"超時",
+        TOTAL_BALANCE: "\u603b\u4f59\u989d",
+        TOTAL_SPINS: "\u603b\u65cb\u8f6c",
+        YOU_LOSE: "\u4f60\u8f93\u4e86",
+        YOU_WON: "\u4f60\u8d62\u4e86",
+        
+      },
   }
+}
   
 };
 
