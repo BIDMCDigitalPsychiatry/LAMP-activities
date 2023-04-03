@@ -95,18 +95,11 @@ height: 30px;
     width: 100% !important;
     height: auto !important;
   }
-  /* .footer{
-    bottom: 0vh;
-  } */
-  
+  .footer{
+    bottom: 50px;
+  }
   
 }
-
-.fixed_bottom{
-  bottom: 0% !important;
-}
-
-
 
 @media only screen and (min-width: 1000px) {
   .modal-content{
