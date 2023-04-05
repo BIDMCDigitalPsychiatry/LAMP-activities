@@ -11,9 +11,18 @@ import { AppContainer } from "react-hot-loader"
 import ScratchImage from './components/ScratchImage'
 import './index.css';
    
-ReactDOM.render(
+const eventMethod = typeof window.addEventListener !== "undefined" ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+    messageEvent, (e:any) => {
+		ReactDOM.render(
   <AppContainer>
-    <ScratchImage />
+    <ScratchImage  data={e.data}/>
   </AppContainer>,  
   document.getElementById('root') as HTMLElement
-);
+  );
+  },
+  false
+)
+
