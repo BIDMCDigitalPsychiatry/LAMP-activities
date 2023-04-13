@@ -150,7 +150,7 @@ const Layout = ({...props} : any) =>{
               </Col>
             </Row>
            {showStartButton && <Row>
-              <Col className="mt-150">               
+              <Col className="mt-80">               
               <Button variant="primary" className="start-button" size="sm" onClick={()=>{setStartGame(true); setShowStartButton(false)}}>
                 {i18n.t<string>("START_GAME")}
              </Button>

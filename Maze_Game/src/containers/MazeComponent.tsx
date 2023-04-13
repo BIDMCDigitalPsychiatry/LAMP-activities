@@ -5,15 +5,14 @@ import p5 from "p5";
 
 let cx: number;
 let cy: number;
-const radius1 = 50;
+const radius1 = 170;
 let cells: Array<any> = [];
 let ball: Ball;
 let ball2: Ball;
-const ballspeed = 0.5;
-const ballspeed2 = 0.5;
+const ballspeed = 0.7;
+const ballspeed2 = 0.7;
 const ballradius = 17;
-let gap = 23;
-const circlegap = 50;
+let gap = 8;
 let x: number;
 let y: number;
 let x2: number;
@@ -151,19 +150,23 @@ class Ball {
 }
 
 function setCells(p: any, circles: number) {
-  for (let i = 0; i < circles; i++) {
+  for (let i = circles-1; i >= 0; i--) {
     const angles = [];   
 
     for (let j = 0; j <= i + 1; j++) {
       const a = p.random(0, 360);
       angles.push(a);
     }
-    const r = (radius1 + circlegap * i) / 2;
+
+    // const r = (radius1 - circlegap * i) / 2;
+
+    const r = (radius1/circles) * (i+1);
     const pos = p.createVector(cx, cy);
     const c = new Circle(pos, i, angles, r, gap);
     cells.push(c);
-    gap = gap - 3
+    gap = gap + 3
   }
+  cells.reverse()
 }
 
 function requestAccess() {
@@ -258,7 +261,7 @@ function setup(p: any, props: any) {
 function drawCircles(p: any) {
   const col = p.color(0, 0, 0);
 
-  p.strokeWeight(3);
+  p.strokeWeight(2);
   p.stroke(col);
   p.noFill();
   for (const element of cells) {
@@ -471,7 +474,7 @@ export const MazeComponent = (props: any) => {
         collided2 = false
         duration = new Date().getTime()
         cells = [];
-        gap = 23;
+        gap = 8;
       };
     },
     [props.gameLevel, props.circles]
