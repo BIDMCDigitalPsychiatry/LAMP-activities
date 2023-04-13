@@ -38,8 +38,8 @@ height: calc(100% - 60px);
   background: #007bff !important;
   border:   none;    
 }
-.mt-150 {
-  margin-top: -150px;
+.mt-80 {
+  margin-top: -80px;
 }
 .btn-outline-secondary {
   background: none;
