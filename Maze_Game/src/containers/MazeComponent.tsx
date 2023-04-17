@@ -154,12 +154,9 @@ function setCells(p: any, circles: number) {
     const angles = [];   
 
     for (let j = 0; j <= i + 1; j++) {
-      const a = p.random(0, 360);
+      const a = p.random(0, 350);
       angles.push(a);
     }
-
-    // const r = (radius1 - circlegap * i) / 2;
-
     const r = (radius1/circles) * (i+1);
     const pos = p.createVector(cx, cy);
     const c = new Circle(pos, i, angles, r, gap);
