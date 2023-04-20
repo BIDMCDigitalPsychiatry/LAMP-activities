@@ -57,10 +57,10 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 	position: fixed;
 	bottom: 0px;
 	width: 100%;
-	padding: 10px;
+	padding: 7px;
 	background-color: #fff;
 	color: black;
-	height: 60px;
+	height: 55px;
 }
 
 .jewel-info .diamond-style{display: inline-block;}
@@ -73,9 +73,9 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
  .game-table
 {
 	position: fixed; 
-	top: 80px;   
+	top: 70px;   
 	width: 100%;
-	bottom: 90px;
+	bottom: 110px;
 } 
 .negative-points{
 	padding: 5px;
@@ -437,7 +437,7 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
     margin: 16px 18px 0 10px;
 }
-.countdown-timer{background-color: #fff; display: flex; align-items: center; justify-content: center; height: 30px;}
+.countdown-timer{background-color: #fff; display: flex; align-items: center; justify-content: center; height: 15px;}
 .countdown-timer__text{color: rgba(53,159,254,1) !important;
 
 	text-align: center;
