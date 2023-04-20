@@ -261,7 +261,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           );
           k++;
         } else {
-          children.push(<td key={p} >{p}</td>);
+          children.push(<td key={p} />);
         }
         p++;
       }
