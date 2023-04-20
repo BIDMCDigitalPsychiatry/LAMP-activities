@@ -238,9 +238,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
     const table = [];
     let k = 0;
     let p = 0;
-    const rows = 10
-    const cols = 8
-    const height = (window.innerHeight - (window.innerHeight * 15) / 100) / 10.5
+    const rows = 9
+    const cols = 6
+    const height = (window.innerHeight - (window.innerHeight * 15) / 100) / 12.5
     // let diamondStyle = this.props.currentDiamond[0]
     // Outer loop to create parent
     for (let i = 0; i < rows; i++) {
@@ -261,7 +261,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           );
           k++;
         } else {
-          children.push(<td key={p} />);
+          children.push(<td key={p} >{p}</td>);
         }
         p++;
       }
