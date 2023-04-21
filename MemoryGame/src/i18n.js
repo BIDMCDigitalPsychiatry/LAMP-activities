@@ -294,6 +294,7 @@ const resources = {
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
     },
+  },
      "zh-HK": {
       translation: {
         ABOUT_TIME:"About what time is it?",
@@ -328,7 +329,7 @@ const resources = {
       },
     }
   },
- };
+ 
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
