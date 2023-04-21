@@ -171,6 +171,7 @@ const resources = {
         "按照看到的顺序记住突出显示的盒子",
       TIME_OUT:  "超时",
     },
+  },
     "zh-HK": {
       translation: {
         BOX_GAME:  "盒子遊戲",
@@ -191,7 +192,6 @@ const resources = {
       },
     }
   }
-};
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
