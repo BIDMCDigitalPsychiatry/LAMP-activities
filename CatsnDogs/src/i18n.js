@@ -112,6 +112,7 @@ const resources = {
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
       "点击后面有只狗的盒子",     
     },
+  },
     "zh-HK":{
       translation: {
         CATS_AND_DOGS:  "貓和狗",
@@ -125,7 +126,7 @@ const resources = {
         "點擊後面有隻狗的盒子",     
       },
     }
-  } 
+  
   
 };
 
