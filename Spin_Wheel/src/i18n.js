@@ -115,6 +115,7 @@ const resources = {
       YOU_WON: "\u4f60\u8d62\u4e86",
       
     },
+  },
     "zh-HK":{
       translation: {
         CONGRATS: "恭喜！",
@@ -130,8 +131,6 @@ const resources = {
   }
 }
   
-};
-
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({

@@ -122,6 +122,7 @@ const resources = {
       CLEAR_BTN: " \u6e05\u9664",
       CLICK_TO_CLEAR_MSG: "\u70b9\u51fb\u4e0a\u4f20\u6216\u6e05\u9664\u91cd\u65b0\u5f55\u5236"
     },
+  },
     "zh-HK": {
       translation: {
         VOICE_RECORDING: "\u8a9e\u97f3\u9304\u97f3",
@@ -137,7 +138,7 @@ const resources = {
       },
     },
   }
-}
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({

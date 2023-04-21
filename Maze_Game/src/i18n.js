@@ -130,10 +130,24 @@ const resources = {
       YES: "\u662f\u7684",
       YOU_WON: "\u60a8\u8d62\u4e86"       
     },
-  }
-  
-};
+  },
 
+"zh-HK":{
+  translation: {
+    CONGRATS: "Congrats",
+    CONTINUE: "Continue to next level?",
+    GAME: "Maze",      
+    GAME_OVER: "Game Over", 
+    LEVEL: "Level",
+    NO:"No" , 
+    PERMISSION:"Click to grant accelerometer Permission",
+    START_GAME: "Start Game",
+    YES: "Yes",  
+    YOU_WON: "You Won"
+  },
+}
+}
+  
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({

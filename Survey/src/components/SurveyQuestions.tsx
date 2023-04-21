@@ -1621,7 +1621,7 @@ export default function SurveyQuestions({...props}) {
     const configuration = props.data.configuration;
     setActivity(activity);
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
-  }, [])
+  }, [props.data])
 
   useEffect(() => {
     if(!!activity) {
