@@ -65,6 +65,7 @@ const resources = {
       JEWELS: "珠宝",
       TIMEOUT:  "超时",
     },
+  },
     "zh-HK": {
       translation: {
         CONGRATS: "恭喜！",
@@ -73,7 +74,7 @@ const resources = {
         TIMEOUT: "超時",
       },
   },
-}
+
   
 };
 
