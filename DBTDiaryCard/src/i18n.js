@@ -13,6 +13,7 @@ const resources = {
       EFFECTIVE: "Effective",
       INEFFECTIVE: "Ineffective",
       NEXT: "Next",
+      MINUTES: "MINUTES",
       BACK: "Back",
       URGES: "Urges",
       URGE_TO_QUIT_THERAPY: "Urge to quit therapy",
@@ -129,6 +130,7 @@ const resources = {
     translation: {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
       CONTINUE: "Weitere",
+      MINUTES: "Minuten",
       TARGET_BEHAVIORS: "Zielverhalten",
       ANSWER_RADIO_RATING_FORMATS: "0= \u00dcberhaupt nicht - 5= Extremely Strong",
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
@@ -251,6 +253,7 @@ const resources = {
   }, "da-DK": {
     translation: {
       LIFE_WORTH_LIVING_GOAL: "Life worth living goal",
+      MINUTES: "minutter",
       CONTINUE: "Forts\u00e6tte",
       TARGET_BEHAVIORS: "M\u00e5ladf\u00e6rd",
       ANSWER_RADIO_RATING_FORMATS: "0= Not at all - 5= Extremely Strong",
@@ -380,6 +383,7 @@ const resources = {
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "Which target behaviors did you experience today?",
       EFFECTIVE: "Efficace",
+      MINUTES: "minutes",
       INEFFECTIVE: "inefficace",
       NEXT: "Suivant",
       BACK: "Retour",
@@ -503,6 +507,7 @@ const resources = {
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "Which target behaviors did you experience today?",
       EFFECTIVE: "\ud6a8\uacfc\uc801\uc778",
+      MINUTES: "\ubd84",
       INEFFECTIVE: "\ube44\ud6a8\uacfc\uc801\uc778",
       NEXT: "\ub2e4\uc74c",
       BACK: "\uc774\uc804\uc73c\ub85c \ub3cc\uc544\uac00\uc138\uc694",
@@ -626,6 +631,7 @@ const resources = {
       WHICH_TARGET_BEHAVIORS_DID_YOU_EXPERIENCE_TODAY:
         "Which target behaviors did you experience today?",
       EFFECTIVE: "efficace",
+      MINUTES: "minuti",
       INEFFECTIVE: "Inefficace",
       NEXT: "Successiva",
       BACK: "Indietro",
@@ -750,6 +756,7 @@ const resources = {
         "Which target behaviors did you experience today?",
       EFFECTIVE: "有效",
       INEFFECTIVE: "无效",
+      MINUTES: "分钟",
       NEXT: "下一步",
       BACK: "\u8fd4\u56de",
       URGES: "Urges",
@@ -874,6 +881,7 @@ const resources = {
         "Which target behaviors did you experience today?",
       EFFECTIVE: "有效",
       INEFFECTIVE: "無效",
+      MINUTES: "分鐘",
       NEXT: "下一步",
       BACK: "返回",
       URGES: "Urges",
@@ -998,6 +1006,7 @@ const resources = {
         "Which target behaviors did you experience today?",
       EFFECTIVE: "प्रभावी",
       INEFFECTIVE: "अप्रभावी",
+      MINUTES: "मिनिट",
       NEXT: "आगे",
       BACK: "Back",
       EMOTIONS: "भावनाएँ",
@@ -1125,6 +1134,7 @@ const resources = {
       NEXT: "Siguiente",
       BACK: "Espalda",
       EMOTIONS: "Emociones",
+      MINUTES: "minutos",
       WHICH_EMOTIONS_DID_YOU_EXPERIENCE_TODAY:
         "¿Qué emociones experimentaste hoy?",
       SKILLS: "Skills",
