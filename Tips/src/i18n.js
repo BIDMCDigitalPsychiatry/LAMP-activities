@@ -205,6 +205,9 @@ const resources = {
       "Definitions": "Definitions",
       "Goals": "\u76ee\u6807",
       "Tips": "\u8d34\u58eb",
+      "Tip": "贴士",
+      "Mark complete": "標記完成",
+      "Was this helpful today?": "今天，这些对你有帮助吗？",
       "Department of Mental Health (DMH)": "\u7cbe\u795e\u5065\u5eb7\u90e8 (DMH)",
       "National Alliance on Mental Illness (NAMI)":
         "\u5168\u56fd\u7cbe\u795e\u75be\u75c5\u8054\u76df (NAMI)",
@@ -220,6 +223,9 @@ const resources = {
         "Definitions": "Definitions",
         "Goals": "\u76ee\u6a19",
         "Tips": "\u8cbc\u58eb",
+        "Tip" : "貼士",
+        "Mark complete": "标记完成",
+        "Was this helpful today?": "今天，這些對你有幫助嗎？",
         "Department of Mental Health (DMH)": "\u7cbe\u795e\u5065\u5eb7\u90e8 (DMH)",
         "National Alliance on Mental Illness (NAMI)":
           "\u5168\u570b\u7cbe\u795e\u75be\u75c5\u806f\u76df (NAMI)",

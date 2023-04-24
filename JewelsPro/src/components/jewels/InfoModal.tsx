@@ -50,10 +50,10 @@ export class InfoModal extends React.Component<Props, State> {
               <Modal.Body>{i18n.t(this.props.msg)}</Modal.Body>
               <Modal.Footer>              
                   <Button variant="link" onClick={() => this.handleClose(true)}>
-                    Yes
+                    {i18n.t("Yes")}
                   </Button>
                   <Button variant="link" onClick={() => this.handleClose(false)}>
-                    No
+                    {i18n.t("No")}
                   </Button>
             </Modal.Footer>
          </Modal>    
