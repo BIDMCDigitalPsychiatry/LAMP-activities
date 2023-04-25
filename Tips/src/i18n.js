@@ -214,6 +214,7 @@ const resources = {
       "NAMI Massachussetts": "\u5168\u56fd\u7cbe\u795e\u75be\u75c5\u8054\u76df\u9a6c\u8428\u8bf8\u585e\u5dde\u5206\u90e8",
       "Exercise": "\u953b\u70bc",
     },
+  },
     "zh-HK": {
       translation: {
         "Mood Tips": "\u60c5\u7dd2\u8cbc\u58eb", "Quick Tips to Improve Your": "\u4f7f\u7528\u5feb\u901f\u8cbc\u58eb\u6539\u5584", "Read": "\u95b1\u8b80", "Hope": "\u5e0c\u671b", "Tip": "\u8cbc\u58eb", "Was this helpful today?": "\u4eca\u5929\uff0c\u9019\u4e9b\u5c0d\u4f60\u6709\u5e6b\u52a9\u55ce\uff1f", "Yes": "\u662f", "No": "\u5426", "Mark complete": "\u6a19\u8a18\u5b8c\u6210", "Social": "\u793e\u4ea4", "Mental Health Resources": "\u5fc3\u7406\u5065\u5eb7\u8cc7\u6e90", "Physical Wellness": "\u8eab\u9ad4\u5065\u5eb7", "Suggested Reading": "\u63a8\u85a6\u95b1\u8b80", "Motivation": "\u52d5\u6a5f", "Stress Tips": "\u58d3\u529b\u8cbc\u58eb",
@@ -233,8 +234,8 @@ const resources = {
         "Exercise": "\u935b\u7149",
       },
     }
-  },
-};
+  };
+
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
