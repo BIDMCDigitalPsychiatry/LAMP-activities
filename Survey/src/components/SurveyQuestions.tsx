@@ -892,7 +892,7 @@ function Rating({ onChange, options, value, ...props }) {
       </Grid>
       <Box className={classes.sliderResponse}>
         <Typography variant="caption" display="block" gutterBottom>
-          {t("Your response")}:
+          {t("Your response")}<span>:</span>
         </Typography>
         <Typography variant="h4">
           <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />          
@@ -938,7 +938,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown source={t(x.description?.toString() ?? "" )} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
+          <ReactMarkdown source={`${t(x.description?.toString() ?? "" )}`} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
         </Typography>
       </Box>
         <Box className={classes.questionScroll}>
@@ -949,7 +949,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
+            {(x.description || "").length > 0  && <ReactMarkdown source={` ${t(x.description?.toString())}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
              </TableCell>
         ))}
       </TableRow>)}
@@ -958,14 +958,14 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${x.value?.toString()})` : x.value?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
-            <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
+            <ReactMarkdown source={t(question.text) +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
   x.type === "list"  ||x.type === "boolean" || x.type === "likert"  ?  (
@@ -1620,8 +1620,9 @@ export default function SurveyQuestions({...props}) {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
+    console.log(configuration)
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
-  }, [props.data])
+  }, [])
 
   useEffect(() => {
     if(!!activity) {
