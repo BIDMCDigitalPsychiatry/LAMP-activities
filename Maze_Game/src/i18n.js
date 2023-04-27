@@ -6,6 +6,7 @@ const resources = {
     translation: {
       CONGRATS: "Tillykke",
       CONTINUE: "Fortsæt til næste niveau?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING : "Do you want to save your game results before proceeding?",
       GAME: "Labyrint",      
       GAME_OVER: "Spillet Overstået",  
       LEVEL: "Niveau",
@@ -13,13 +14,14 @@ const resources = {
       PERMISSION: "Klik for at give accelerometertilladelse",
       START_GAME : "Start Spil",
       YES: "Ja",
-      YOU_WON: "Du vandt"
+      YOU_WON: "Du vandt",      
     }
   },
   "de-DE":{
     translation: {
       CONGRATS: "Herzlichen Glückwunsch",
       CONTINUE: "Weiter zum nächsten Level?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING : "Do you want to save your game results before proceeding?",
       GAME: "Labyrinth",      
       GAME_OVER: "Spiel ist aus", 
       LEVEL: "Ebene",     
@@ -35,6 +37,7 @@ const resources = {
     translation: {
       CONGRATS: "Congrats",
       CONTINUE: "Continue to next level?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING : "Do you want to save your game results before proceeding?",
       GAME: "Maze",      
       GAME_OVER: "Game Over", 
       LEVEL: "Level",
@@ -49,6 +52,7 @@ const resources = {
     translation: {
       CONGRATS: "Felicidades",
       CONTINUE: "¿Continuar al siguiente nivel?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "¿Quieres guardar los resultados de tu juego antes de continuar?",
       GAME: "Laberinto",      
       GAME_OVER: "Juego Terminado", 
       LEVEL: "Nivel",    
@@ -63,6 +67,7 @@ const resources = {
       translation: {
         CONGRATS: "Félicitations",
         CONTINUE: "Continuer au niveau suivant ?",
+        DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
         GAME: "Labyrinthe",      
         GAME_OVER: "Jeu terminé", 
         LEVEL: "Niveau",   
@@ -77,6 +82,7 @@ const resources = {
     translation: {
       CONGRATS: "बधाई हो",
       CONTINUE: "अगले स्तर पर जारी रखें?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?",
       GAME: "भूल भुलैया",      
       GAME_OVER: "खेल खत्म",   
       LEVEL: "लेवल",
@@ -91,6 +97,7 @@ const resources = {
     translation: {
       CONGRATS: "Congratulazioni",
       CONTINUE: "Continua al livello successivo?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
       GAME: "Labirinto",      
       GAME_OVER: "Fin de partie",  
       LEVEL: "Livello", 
@@ -106,6 +113,7 @@ const resources = {
     translation: {
       CONGRATS: "\ucd95\ud558\ud574\uc694",
       CONTINUE: "\ub2e4\uc74c\u0020\ub2e8\uacc4\ub85c\u0020\uacc4\uc18d\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c\u003f",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
       GAME: "\ubbf8\ub85c",      
       GAME_OVER: "\uac8c\uc784\u0020\ub05d",
       LEVEL:"\uc218\uc900",
@@ -119,35 +127,37 @@ const resources = {
   },
   "zh-CN":{
     translation: {
-      CONGRATS: "\u606d\u559c",
-      CONTINUE: "\u7ee7\u7eed\u5230\u4e0b\u4e00\u4e2a\u7ea7\u522b\uff1f",
-      GAME: "\u8ff7\u5bab",      
-      GAME_OVER: "\u6e38\u620f\u7ed3\u675f",  
-      LEVEL:"\u6c34\u5e73",
-      NO: "\u4e0d",
-      PERMISSION:"\u5355\u51fb\u4ee5\u6388\u4e88\u52a0\u901f\u5ea6\u8ba1\u6743\u9650",
-      START_GAME:"\u542f\u52a8\u6e38\u620f",
-      YES: "\u662f\u7684",
-      YOU_WON: "\u60a8\u8d62\u4e86"       
+      CONGRATS: "恭喜！",
+      CONTINUE: "Continue to next level?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      GAME: "Maze",      
+      GAME_OVER: "游戏结束", 
+      LEVEL: "级别",
+      NO:"否",
+      PERMISSION:"Click to grant accelerometer Permission",
+      START_GAME: "开始",
+      YES: "是",
+      YOU_WON: "You Won"
     },
   },
-
-"zh-HK":{
-  translation: {
-    CONGRATS: "Congrats",
-    CONTINUE: "Continue to next level?",
-    GAME: "Maze",      
-    GAME_OVER: "Game Over", 
-    LEVEL: "Level",
-    NO:"No" , 
-    PERMISSION:"Click to grant accelerometer Permission",
-    START_GAME: "Start Game",
-    YES: "Yes",  
-    YOU_WON: "You Won"
-  },
-}
-}
+  "zh-HK":{
+    translation: {
+      CONGRATS: "恭喜！",
+      CONTINUE: "Continue to next level?",
+      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      GAME: "Maze",      
+      GAME_OVER: "遊戲結束",
+      LEVEL: "級別",
+      NO:"否",
+      PERMISSION:"Click to grant accelerometer Permission",
+      START_GAME: "開始",
+      YES: "是",
+      YOU_WON: "You Won"      
+    },
+  }
   
+};
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
