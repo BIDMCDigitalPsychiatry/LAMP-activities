@@ -1620,7 +1620,6 @@ export default function SurveyQuestions({...props}) {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
-    console.log(configuration)
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, [])
 
