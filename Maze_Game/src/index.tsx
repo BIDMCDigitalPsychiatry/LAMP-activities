@@ -10,13 +10,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import  Layout from "./containers/Layout";
-const settingsDataInitial = { 
-    
-  "configuration" : {
-    "language" : "en-US"
-  }
-  
-}
+
 
 const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
@@ -26,9 +20,7 @@ eventer(
 		ReactDOM.render(
       <AppContainer>
         <Layout 
-        data={
-        e.data ? e.data : 
-        settingsDataInitial}
+        data={e.data}
           />
       </AppContainer>, 		  
 		  document.getElementById("root")

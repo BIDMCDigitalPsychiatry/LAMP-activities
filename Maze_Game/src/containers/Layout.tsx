@@ -13,8 +13,8 @@ const Layout = ({...props} : any) =>{
     const [gameLevel, setGameLevel] = useState(1)
     const [footerMsg, setFooterMsg] = useState("")
     const [confirmModalShow, setConfirmModalShow] = useState(false)
+    const [exitModalShow, setExitModalShow] = useState(false)
     const [levelCompleted, setLevelCompleted] = useState(false)
-    const [complete, setComplete] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
     const time = new Date().getTime()
     const [timeTaken, setTimeTaken] = useState(0)
@@ -24,7 +24,7 @@ const Layout = ({...props} : any) =>{
 
       useEffect(() => {  
         const configuration = props?.data?.configuration;
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
         setFooterMsg(i18n.t<string>("LEVEL")+" "+gameLevel)
         if(gameLevel === 1) {
           if (
@@ -35,11 +35,12 @@ const Layout = ({...props} : any) =>{
             }
             else {
               setShowStartButton(true)
-            }
-          
+            }          
         }
-      }, [])
-    
+     
+      }, [props.data])
+
+      
       const showModal = () => {
         setConfirmModalShow(true)
        }
@@ -68,44 +69,36 @@ const Layout = ({...props} : any) =>{
           setIsGameOver(true)
         }
         }
-       },[levelCompleted]) 
-
-       useEffect(() => {
-        if(isGameOver) {
+       },[levelCompleted])
+       
+       const sentResult = () => {
           setTimeout(()=>{
             parent.postMessage(routes.length > 0 ? JSON.stringify({
               timestamp: new Date().getTime(),
               duration: new Date().getTime() - time,
               temporal_slices: JSON.parse(JSON.stringify(routes)),
               static_data: {},
-             }) : null, "*") 
-          }, 5000)     
-    
+            }) : null, "*") 
+          }, 5000)
+       }
+
+       useEffect(() => {
+        if(isGameOver) {
+          sentResult()    
         }
       }, [isGameOver])
 
       
-       useEffect(() => {
-        if(complete) {
-          parent.postMessage(JSON.stringify({ completed: true }), "*")      
-        }
-      }, [complete])
+      
 
       
     return(
         <div className="main-class">
-          <ModalPopup
+          {confirmModalShow && <ModalPopup
             show={confirmModalShow}
             onHide={(e : any) =>{
               hideModal()
-              setTimeout(()=>{
-                parent.postMessage(routes.length > 0 ? JSON.stringify({
-                  timestamp: new Date().getTime(),
-                  duration: new Date().getTime() - time,
-                  temporal_slices: JSON.parse(JSON.stringify(routes)),
-                  static_data: {},
-                 }) : null, "*") 
-              }, 5000)    
+              sentResult()        
             }}
             message={i18n.t<string>("CONTINUE")}
             handleConfirm={(e: any) => {
@@ -124,9 +117,29 @@ const Layout = ({...props} : any) =>{
             }            
             }}
             action="mindLamp"
-          />         
+          />    }
+
+          {exitModalShow && <ModalPopup
+            show={exitModalShow}
+            onHide={(e : any) =>{
+              setExitModalShow(false)
+              setTimeout(()=>{
+                parent.postMessage(null, "*")
+              }, 5000)    
+            }}
+            message={i18n.t("DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING")}
+            handleConfirm={(e: any) => {
+              setExitModalShow(false)
+              sentResult()   
+                       
+            }}
+            action="mindLamp"
+          />      }   
           <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={() => setComplete(true)} />
+              <FontAwesomeIcon icon={faArrowLeft} onClick={() => {routes.length>0 ? setExitModalShow(true) : 
+              setTimeout(()=>{
+                parent.postMessage(null, "*")
+              }, 5000)  }} />
             </nav>            
             <div className="heading">{i18n.t<string>("GAME")}</div>
             

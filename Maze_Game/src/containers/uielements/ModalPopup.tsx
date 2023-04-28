@@ -15,7 +15,7 @@ const ModalPopup = ({...props}) => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [props.show]);
+  }, [props.message]);
 
   return (
     <Modal  className="modal"{...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered={true} backdrop="static">
