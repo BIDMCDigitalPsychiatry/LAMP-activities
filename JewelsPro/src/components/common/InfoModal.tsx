@@ -7,13 +7,11 @@
  */
 import * as React from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import i18n from "./../../i18n";
 
 interface Props  {
     show: boolean;
-    modalClose(status:boolean, point:number):void;
+    modalClose(status:boolean):void;
     msg:string;
-    language:string
 }
 
 interface State {
@@ -30,30 +28,27 @@ export class InfoModal extends React.Component<Props, State> {
     }  
 
     // Handles modal close 
-    handleClose = (status:boolean) => {
+    handleClose = () => {
       this.setState({
         showStatus : false
       });
-      this.props.modalClose(status, 2);
+      this.props.modalClose(false);
     } 
      
     // Modal render function
     render() {   
          return (            
-          <Modal show={this.state.showStatus} onHide={() => this.handleClose(false)} animation={false}
+          <Modal show={this.state.showStatus} onHide={this.handleClose} animation={false}
               size="sm"
               aria-labelledby="contained-modal-title-vcenter"
               centered={true}>
                 <Modal.Header closeButton={true}>
                   <Modal.Title>mindLamp</Modal.Title>
                 </Modal.Header>
-              <Modal.Body>{i18n.t(this.props.msg)}</Modal.Body>
+              <Modal.Body>{this.props.msg}</Modal.Body>
               <Modal.Footer>              
-                  <Button variant="link" onClick={() => this.handleClose(true)}>
-                  {i18n.t("Yes")}
-                  </Button>
-                  <Button variant="link" onClick={() => this.handleClose(false)}>
-                  {i18n.t("No")}
+                  <Button variant="link" onClick={this.handleClose}>
+                    Ok
                   </Button>
             </Modal.Footer>
          </Modal>    

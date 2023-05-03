@@ -8,6 +8,7 @@
 import * as React from "react";
 import { Timer } from "../common/Timer";
 import { Diamond } from "./Diamond";
+import { InfoModal } from "./InfoModal";
 
 import i18n from "./../../i18n";
 import { NegativePoints } from "./NegativePoints";
@@ -19,6 +20,7 @@ export interface BoardProps {
   diamondColor: string;
   diamondNumbers: Array<number>;
   handleClose:any;
+  sendDataToDashboard:any;
   gameTime: number;
   orderNumbers: Array<number>;
   shapes: Array<string>;
@@ -41,7 +43,9 @@ interface DiamondState {
   startTimer: number;
   stepNumber: number;
   tapCount: number;
-  timeout: boolean;
+  timeout: boolean;  
+  showConfirmModal: boolean;
+
 }
 
 class Board extends React.Component<BoardProps, DiamondState> {
@@ -63,6 +67,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
       stepNumber: 0,
       tapCount: 0,
       timeout: false,
+      showConfirmModal: false
+
     };
     i18n.changeLanguage(props.language);
   }
@@ -227,8 +233,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
         if (
           statusVal === true &&
           this.props.diamondNumbers.length === this.state.stepNumber
-        ) {
-          this.sendGameResult(2);
+        ) {          
+          // this.sendGameResult(2);
+          this.setState({showConfirmModal: true})
+
         }
       }
     );
@@ -279,6 +287,15 @@ class Board extends React.Component<BoardProps, DiamondState> {
     const totalAttempts = this.state.tapCount + 1;
     this.props.updateLevel(totalBonusCollected, this.state.route, totalJewelsCollected, totalAttempts, pointVal)
   };
+
+  handleConfirmClose = (status:boolean, pointVal: number) => {    
+    if(status=== true) {
+      this.sendGameResult(2)
+    } else {
+      this.props.sendDataToDashboard(2)      
+    }
+    this.setState({showConfirmModal: false})
+  }
   // Render the game board
   render() {
     let board;
@@ -330,11 +347,19 @@ class Board extends React.Component<BoardProps, DiamondState> {
           <div className="game-over">{i18n.t("TIMEOUT")} !!!</div>
         )
     }
+    const confirmModal = this.state && this.state.showConfirmModal === true ? (
+      <InfoModal
+        show={this.state.showConfirmModal===true}
+        modalClose={this.handleConfirmClose}
+        msg={i18n.t("CONTINUE")}
+        language={i18n.language}
+      />) : null
     return (
       <div>
         <div className="countdown-timer">
           {timer}
           {negSection}
+          {confirmModal}
           <br/>
         </div>
         {board}
