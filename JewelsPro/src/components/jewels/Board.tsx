@@ -292,7 +292,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     if(status=== true) {
       this.sendGameResult(2)
     } else {
-      this.props.sendDataToDashboard(2)      
+      this.sendGameResult(1)     
     }
     this.setState({showConfirmModal: false})
   }

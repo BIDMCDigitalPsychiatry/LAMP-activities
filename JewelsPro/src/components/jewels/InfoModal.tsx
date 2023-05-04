@@ -40,21 +40,23 @@ export class InfoModal extends React.Component<Props, State> {
     // Modal render function
     render() {   
          return (            
-          <Modal show={this.state.showStatus} onHide={() => this.handleClose(false)} animation={false}
-              size="sm"
+          <Modal className="modal" show={this.state.showStatus} onHide={() => this.handleClose(false)} animation={false}
+              size="xl"
               aria-labelledby="contained-modal-title-vcenter"
               centered={true}>
                 <Modal.Header closeButton={true}>
-                  <Modal.Title>mindLamp</Modal.Title>
+                  <Modal.Title className="modal-title">mindLamp</Modal.Title>
                 </Modal.Header>
-              <Modal.Body>{i18n.t(this.props.msg)}</Modal.Body>
-              <Modal.Footer>              
-                  <Button variant="link" onClick={() => this.handleClose(true)}>
+              <Modal.Body className="pt-4 pb-5">{i18n.t(this.props.msg)}</Modal.Body>
+              <Modal.Footer>
+                <div className="m-0">              
+                  <Button variant="primary" onClick={() => this.handleClose(true)}>
                   {i18n.t("Yes")}
                   </Button>
-                  <Button variant="link" onClick={() => this.handleClose(false)}>
+                  <Button variant="primary" onClick={() => this.handleClose(false)}>
                   {i18n.t("No")}
                   </Button>
+                </div>
             </Modal.Footer>
          </Modal>    
         );
