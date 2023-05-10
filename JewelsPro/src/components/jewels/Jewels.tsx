@@ -313,9 +313,8 @@ class Jewels extends React.Component<{}, AppState> {
     this.state.level > 0 && this.state.routes.length > 0 ? this.setState(({showModal: 2})) : parent.postMessage(null, "*");
   }
 
-  handleClose = (status:boolean, pointVal: number) => {
-    if(status) {
-      const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
+  sendDataToDashboard = (pointVal : number) => {
+    const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
       parent.postMessage(
         JSON.stringify({
           static_data: {
@@ -331,6 +330,11 @@ class Jewels extends React.Component<{}, AppState> {
         }),
         "*"
       );
+  }
+  handleClose = (status:boolean, pointVal: number) => {
+    if(status) {
+      this.sendDataToDashboard(pointVal)
+      
     } else {
       this.state.showModal === 1 ?  window.location.reload() : parent.postMessage(null, "*")
     }
@@ -372,6 +376,7 @@ class Jewels extends React.Component<{}, AppState> {
                 language={i18n.language}
                 updateLevel={this.updateLevel}
                 handleClose={this.handleClose}
+                sendDataToDashboard={this.sendDataToDashboard}
               />
             </div>
           </div>

@@ -202,6 +202,35 @@ ol,ul {
 	animation:blinker 1s linear infinite;
 	color:green!important
 }
+.modal-content{
+	position: static;
+	width: 600px;
+	left : 300px;  
+  }
+  .btn-primary {
+	background: none;
+	color: #007bff;
+	border:   none;
+	
+  }
+  .btn-outline-secondary {
+	background: none;
+	color: #007bff;
+	border:   none;
+  }  
+  .modal-title{
+	border: none;
+  }
+  .modal-header{
+  border-bottom: none;
+  height: 30px;
+  }
+  .modal-footer {
+	border-top: none;
+  }
+  .modal-body {
+	height: 40px;
+  }
 @-webkit-keyframes blinker {
 	50% {
 		opacity:0
@@ -444,4 +473,9 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 	color: #fff;
 	font-size: 14px;
 	min-height: 25px;
+  }
+  @media only screen and (min-width: 1000px) {
+	.modal-content{
+	  margin-left: 20%;
+	 }    
   }
