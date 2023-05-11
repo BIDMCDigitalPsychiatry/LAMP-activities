@@ -11,6 +11,7 @@ import {
   Toolbar,
   Icon,
 } from "@material-ui/core";
+import ResponsiveDialog from "./ResponsiveDialog";
 import TipNotification from "./TipNotification";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#FFF9E5",
     borderRadius: "10px",
     padding: "20px 20px 20px 20px",
-    textAlign: "left",
+    textAlign: "justify",
     margin: "20px auto 0px",
     "& h6": { fontSize: 16, fontWeight: 600, color: "rgba(0, 0, 0, 0.75)" },
   },
@@ -148,12 +149,8 @@ export default function LearnTips({ ...props }) {
   const [details, setDetails] = useState(null);
   const [images, setImages] = useState(null);
   const [settings, setSettings] = useState([]);
-  const [time, setTime] = useState(new Date().getTime())
   const [activityData, setActivityData] = useState<any>(null);
   const { t } = useTranslation();
-  const [routes, setRoutes] = useState<any>([])
-  const [tipTime, setTipTime] = useState(0)
-  const [tipIndex, setTipIndex] = useState(0)
 
   useEffect(() => {
     const propsData = props.data;
@@ -169,34 +166,24 @@ export default function LearnTips({ ...props }) {
     setActivityData(propsData.activity ?? {});
   }, []);
 
-  const completeMarkingTips = (status: string | null) => {
+  const completeMarkingTips = (status: string) => {
     // eslint-disable-next-line no-restricted-globals
-    const troutes = []
-    const route = {
-      duration: new Date().getTime() -tipTime,
-      item: tipIndex,
-      level: null,
-      type: null,
-      value: status,
-    };
-    if (routes.length > 0) {
-      const r = JSON.parse(routes)
-      Object.keys(r).forEach((key) => {
-        troutes.push(r[key]);
-      });
-    }
-    troutes.push(route)
-    setRoutes(JSON.stringify(troutes))
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        static_data: {
+          sentiment: status,
+        },
+        temporal_slices: [],
+      }),
+      "*"
+    )    
   };
 
   const backToParentTips = () => {
     // eslint-disable-next-line no-restricted-globals 
     /*eslint no-restricted-globals: ["error", "event"]*/
-    parent.postMessage(JSON.stringify({
-      timestamp: new Date().getTime(),
-      duration: new Date().getTime() - time,      
-      temporal_slices: routes.length > 0 ? JSON.parse(routes) : [],
-   }), "*")
+    parent.postMessage(JSON.stringify({ completed: true }), "*")
   };
 
   return (
@@ -204,7 +191,7 @@ export default function LearnTips({ ...props }) {
       <Box pb={4}>
         <Grid container spacing={4}>
           <Grid item xs  className={classes.rightArrow}>
-            <IconButton aria-label="Back" onClick={() => backToParentTips()}>
+          <IconButton aria-label="Back" onClick={() => backToParentTips()}>
               <Icon>arrow_back</Icon>
             </IconButton>
           </Grid>
@@ -227,8 +214,6 @@ export default function LearnTips({ ...props }) {
                     <Box
                       className={classes.tipStyle}
                       onClick={() => {
-                        setTipIndex(index + 1)
-                        setTipTime(new Date().getTime())
                         setOpenDialog(true);
                         setTitle(detail.title);
                         setDetails(detail.text);
@@ -253,7 +238,30 @@ export default function LearnTips({ ...props }) {
               ))
             : ""}
         </Grid>
-      </Box>      
+      </Box>
+      <ResponsiveDialog
+        transient={false}
+        animate
+        fullScreen
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false);
+        }}
+      >
+        <AppBar
+          position="static"
+          style={{ background: "#FFF9E5", boxShadow: "none" }}
+        >
+          <Toolbar className={classes.toolbardashboard}>
+            <IconButton
+              onClick={() => setOpenDialog(false)}
+              color="default"
+              aria-label="Menu"
+            >
+              <Icon>arrow_back</Icon>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
         <TipNotification
           title={title}
           details={details}
@@ -263,12 +271,8 @@ export default function LearnTips({ ...props }) {
             setOpenDialog(false);
             completeMarkingTips(status);
           }}
-          open={openDialog}
-          onClose={() => {
-            completeMarkingTips(null);
-            setOpenDialog(false);
-          }}
         />
+      </ResponsiveDialog>
     </Container>
   );
 }

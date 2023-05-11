@@ -760,6 +760,7 @@ function ShortTextSection({ onChange, value, ...props }) {
 
 function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
   const [val, setValue] = useState(value)
+  const { t } = useTranslation()
 
   const classes = useStyles()
   return (
@@ -777,7 +778,7 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
             />
             {type !== "matrix" && (
               <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
+                <ReactMarkdown source={t(option.description?.toString())} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
               </Typography>
             )}            
           </Box>

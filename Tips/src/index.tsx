@@ -10,7 +10,6 @@ const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 eventer(
   messageEvent,
   (e: any) => {
-    console.log(e.data)
     ReactDOM.render(
       <React.StrictMode>
         <LearnTips data={e.data} />
