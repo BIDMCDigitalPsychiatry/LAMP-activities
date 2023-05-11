@@ -1,0 +1,137 @@
+import React, { useEffect, useState } from "react";
+import {Button, Col, Container, Form,Image, Row } from "react-bootstrap";
+import i18n from "../i18n";
+
+  const ems: any = [
+    {
+      "emotion" : 'Happiness',
+      "index" : 1,
+    }, 
+    {
+      "emotion" : 'Sadness',
+      "index" : 2,
+    },
+    { 
+      "emotion" : 'Fear',
+      "index" : 3,
+    },
+    { 
+      "emotion" : 'Anger',
+      "index" : 4,
+    },
+    {
+      "emotion" : 'Neutral',
+      "index" : 5,
+    }
+  ]
+
+
+const Emotions = ({...props} : any) => {   
+  const [image, setImage] = useState(props.data.image)
+  const [num, setNum] = useState(props.level)
+  const [emotions, setEmotions] = useState<any>([])  
+  const [error, setError] = useState("")
+  const duration =  new Date().getTime()
+
+
+  const initialize = () => {
+    const newArray = ems.map ((em: any)=>{
+      return {
+        ...em,
+        "selected" : false
+      }
+    })
+    setEmotions(newArray)
+  }
+  useEffect(()=>{
+    setImage(props.data.image)
+    setNum(props.level)  
+    initialize()  
+  },[props.data.image, props.level])
+
+
+  const handleOnCick = (e: any) => {
+    const newArray = emotions
+    setEmotions(newArray.map((em : any)=>{
+      if(e.target.id === em.emotion){
+        em.selected = true
+      }
+      else {
+        em.selected = false
+      }
+      return em
+    }))
+    
+  }
+
+  const handleSave = () => {
+    const selected = emotions.find((em : any)=> em.selected === true)
+    if(selected === undefined) {
+      setError(i18n.t<string>("SELECT AN OPTION BEFORE PROCEEDING"))
+    }
+    else {
+      setError("")
+      props.handleLevelCompleted(selected, (new Date().getTime() - duration)/1000)
+    }
+  }
+
+    return(    
+        <div> 
+          <Container> 
+          <Row>
+              <Col> 
+                <p className="index">{num} {i18n.t<string>("OF")} 10</p>              
+              </Col>
+            </Row>          
+            <Row className="image">
+              <Col>                            
+              <Image              
+                src=
+                {image}
+                thumbnail={true}
+                />
+              </Col>
+            </Row> 
+            <Row>
+              <Col>                            
+                <p className="question">{i18n.t<string>("WHAT EMOTION IS THIS")}?</p>
+              </Col>
+            </Row>
+           {error !== "" && <Row>
+              <Col>                            
+                <p className='error-message'>{error} </p>
+              </Col>
+            </Row>  }          
+            <Row>
+              <Col className="begin">
+                <Form>                  
+                  {emotions.map((emotion: any, index: number)=>{
+                    return <div key={index} className="emotions">
+                      <input
+                        type="checkbox"
+                        id={emotion.emotion}
+                        name={emotion.emotion}
+                        value={emotion.emotion}
+                        checked={emotion.selected}
+                        onChange={(e: any)=>handleOnCick(e)}
+                      />
+                      {i18n.t<string>(emotion.emotion.toUpperCase())}
+                    </div>
+                  })}
+                                  
+                </Form>
+              </Col>
+            </Row>
+            <Row>
+              <Col>                            
+                <Button variant="primary" className="start-button" onClick={()=>handleSave()}>
+                  {i18n.t<string>("SAVE")}
+              </Button>
+              </Col>
+            </Row>
+          </Container>         
+          
+         </div>
+      )
+}
+export default Emotions

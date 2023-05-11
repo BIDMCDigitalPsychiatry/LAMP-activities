@@ -1,0 +1,130 @@
+.col {
+  overflow : hidden;
+  text-align: center;
+}
+.main-class{
+height: calc(100% - 60px);
+}
+.modal-content{
+  border: 3px solid #0000eb;
+  position: static;
+  width: 600px;
+  left : 300px;  
+}
+.btn-primary {
+  background: none;
+  color: #007bff;
+  border:   none;
+  
+}
+.mt-80 {
+  margin-top: -80px;
+}
+.btn-outline-secondary {
+  background: none;
+  color: #007bff;
+  border:   none;
+}  
+.modal-title{
+  border: none;
+}
+.modal-header{
+border-bottom: none;
+height: 30px;
+}
+.modal-footer {
+  border-top: none;
+}
+.modal-body {
+  height: 40px;
+}
+.heading{
+	text-align: center;
+  background: rgba(53,159,254,1);
+  padding: 15px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+.home-link{
+	position: absolute;
+	right: 0;
+}
+.back-link{
+	position: absolute;
+	left: 10px;
+  color: white;
+  padding-top: 15px;  
+}
+
+.error-class{
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  top: 15px;
+  position: relative;
+}
+
+.error-message{
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+}
+
+.index {
+  color: rgba(53,159,254,1);
+}
+.question {
+  color: black;
+  padding-top: 10px;
+  font-size: 30px;
+  font-weight: 450;
+}
+.begin {
+  text-align: left;
+  margin-left: 10%;
+}
+.start-button {
+  color: white !important;
+  background: rgb(73,151,208);
+  border:   none;    
+  width: 150px;
+  border-radius: 0rem;
+}
+
+.image {
+  height: 40%;
+}
+.emotions {
+  padding-bottom: 10px;
+}
+input[type=checkbox]{
+  margin-right: 10px;
+  accent-color : black;
+}
+
+
+
+@media only screen and (min-width: 500px) {
+  .modal-content{
+    margin-left: 20%;
+   }  
+   .begin {
+    text-align: left;
+    margin-left: 35%;
+  }  
+  .img-thumbnail{
+    height: 280px !important;
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .modal-content{
+    margin-left: 20%;
+   }  
+   .begin {
+    text-align: left;
+    margin-left: 37%;
+  }  
+}
