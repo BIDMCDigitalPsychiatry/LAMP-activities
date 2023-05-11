@@ -11,8 +11,6 @@ import {
   Box,
   Fab,
   Container,
-  AppBar,
-  Toolbar,
 } from "@material-ui/core"
 
 import classnames from "classnames"
@@ -20,7 +18,6 @@ import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
 import gfm from "remark-gfm"
 import emoji from "remark-emoji"
-import ResponsiveDialog from "./ResponsiveDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -124,18 +121,6 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: "4px",
       },
     },
-    
-  toolbardashboard: {
-    minHeight: 65,
-    padding: "0 10px",
-    "& h5": {
-      color: "rgba(0, 0, 0, 0.75)",
-      textAlign: "center",
-      fontWeight: "600",
-      fontSize: 18,
-      width: "calc(100% - 96px)",
-    },
-  },
   })
 )
   
@@ -150,36 +135,8 @@ export default function TipNotification({ ...props }) {
   const completeMarkingTips = () => {
     props.onComplete(status)
   }
-
-  function LinkRenderer(data:any) {
-    return <a href={data.href} target="_blank">{data.children}</a>
-  }
   
   return (
-    <ResponsiveDialog
-    transient={false}
-    animate
-    fullScreen
-    open={props.open}
-    onClose={props.onClose as any}
-  >
-    <AppBar
-      position="static"
-      style={{ background: "#FFF9E5", boxShadow: "none" }}
-    >
-      <Toolbar className={classes.toolbardashboard}>
-        <IconButton
-          onClick={() => {
-            props.onClose() 
-          }}
-          color="default"
-          aria-label="Menu"
-        >
-          <Icon>arrow_back</Icon>
-        </IconButton>
-      </Toolbar>
-    </AppBar>
- 
     <Container maxWidth={false} className={classes.mainContainer}>
       <Box className={classes.header}>
         <Box width={1} className={classes.headerIcon}>
@@ -194,12 +151,8 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
-                 {props.details}
-              </ReactMarkdown>
-              
-            : ""} 
-            
+              <ReactMarkdown source={props.details} escapeHtml={false}/>
+            : ""}
             </Typography>
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
@@ -240,8 +193,6 @@ export default function TipNotification({ ...props }) {
           </CardContent>
         </Grid>
       </Grid>
-          </Container>
-          </ResponsiveDialog>
-
+    </Container>
   )
 }
