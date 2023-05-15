@@ -104,7 +104,15 @@ input[type=checkbox]{
   accent-color : black;
 }
 
+.btn-primary:focus {
+  box-shadow: none !important;
+  background: rgb(73,151,208) !important;
+}
+.btn-primary:hover {
+  background: #007bff !important;
 
+
+}
 
 @media only screen and (min-width: 500px) {
   .modal-content{

@@ -32,13 +32,14 @@ const Emotions = ({...props} : any) => {
   const [emotions, setEmotions] = useState<any>([])  
   const [error, setError] = useState("")
   const duration =  new Date().getTime()
+  const totalLevels = props.totalLevels
 
 
-  const initialize = () => {
+  const initialize = (data: any) => {
     const newArray = ems.map ((em: any)=>{
-      return {
+        return {
         ...em,
-        "selected" : false
+        "selected" : (em.emotion.toLowerCase() === data?.selected?.toLowerCase()) ? true : false
       }
     })
     setEmotions(newArray)
@@ -46,8 +47,8 @@ const Emotions = ({...props} : any) => {
   useEffect(()=>{
     setImage(props.data.image)
     setNum(props.level)  
-    initialize()  
-  },[props.data.image, props.level])
+    initialize(props.data)  
+  },[props.data, props.level])
 
 
   const handleOnCick = (e: any) => {
@@ -64,14 +65,14 @@ const Emotions = ({...props} : any) => {
     
   }
 
-  const handleSave = () => {
+  const handleSave = (text: string) => {
     const selected = emotions.find((em : any)=> em.selected === true)
     if(selected === undefined) {
       setError(i18n.t<string>("SELECT AN OPTION BEFORE PROCEEDING"))
     }
     else {
       setError("")
-      props.handleLevelCompleted(selected, (new Date().getTime() - duration)/1000)
+      props.handleLevelCompleted(selected, (new Date().getTime() - duration)/1000, text)
     }
   }
 
@@ -124,9 +125,12 @@ const Emotions = ({...props} : any) => {
             </Row>
             <Row>
               <Col>                            
-                <Button variant="primary" className="start-button" onClick={()=>handleSave()}>
-                  {i18n.t<string>("SAVE")}
-              </Button>
+               {num !== 1 && <><Button  className="start-button" onClick={()=>handleSave("previous")}>
+                  {i18n.t<string>("PREVIOUS")}
+              </Button><span>&nbsp;&nbsp;</span></>}
+              <Button  className="start-button" onClick={()=>handleSave(num !== totalLevels ? "next" : "save")}>
+                  {num !== totalLevels ? i18n.t<string>("NEXT") : i18n.t<string>("SAVE")}
+              </Button>              
               </Col>
             </Row>
           </Container>         
