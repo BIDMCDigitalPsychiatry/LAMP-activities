@@ -1,3 +1,5 @@
+
+import React from "react"
 import { useState } from "react"
 import {
   Icon,
@@ -16,8 +18,7 @@ import {
 import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
-import gfm from "remark-gfm"
-import emoji from "remark-emoji"
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -157,10 +158,10 @@ export default function TipNotification({ ...props }) {
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
                 <Grid container className={classes.colorLine} spacing={0} >
-                  <Grid item xs={3} lg={3} className={classes.lineyellow}></Grid>
-                  <Grid item xs={3} lg={3} className={classes.linegreen}></Grid>
-                  <Grid item xs={3} lg={3} className={classes.linered}></Grid>
-                  <Grid item xs={3} lg={3} className={classes.lineblue}></Grid>
+                  <Grid item xs={3} lg={3} className={classes.lineyellow}/>
+                  <Grid item xs={3} lg={3} className={classes.linegreen}/>
+                  <Grid item xs={3} lg={3} className={classes.linered}/>
+                  <Grid item xs={3} lg={3} className={classes.lineblue}/>
                 </Grid>
               </Grid>
             </Box>
