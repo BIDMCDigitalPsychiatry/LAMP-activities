@@ -11,17 +11,12 @@
     "interface-name":  [true, "never-prefix"],
     "member-access": false,
     "member-ordering": false,
+    "object-literal-sort-keys":false, 
+    "ordered-imports": false,
     "no-console": false,
     "jsx-no-lambda": false,
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "no-unused-variable": false,
-    "one-variable-per-declaration" : false,
-    "jsx-boolean-value": [true, "never"],
-    "jsx-self-close": false,
-    "no-shadowed-variable": true
+    "jsx-boolean-value": false,
+    "no-shadowed-variable": false
   },
-  "jsRules": {
-    "object-literal-sort-keys": false 
-  }
+  "jsRules": true
 }
