@@ -10,7 +10,6 @@ i18n
       loadPath: "/locales/{{lng}}/{{ns}}.json",
       preload: true,      
     },
-    nsSeparator: false,
     keySeparator: false,
     nsSeparator: false,
     react: {
