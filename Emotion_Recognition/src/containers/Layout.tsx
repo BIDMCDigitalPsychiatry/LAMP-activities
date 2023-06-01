@@ -1,11 +1,12 @@
 import "./layout.css"
 import React, { useEffect, useState } from "react";
-import {Col, Container, Row } from "react-bootstrap";
+import {Col, Container,  Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import ModalPopup from './uielements/ModalPopup';
+import { shuffleArray } from "src/functions";
 
 const Layout = ({...props} : any) =>{  
     const [level, setLevel] = useState(1)  
@@ -20,21 +21,35 @@ const Layout = ({...props} : any) =>{
       useEffect(() => {  
         const configuration = props.data.configuration;
         const data = props.data.activity?.settings ? props.data.activity?.settings : null ;
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        setSettings(data) 
-        setTotalLevels(data?.length)   
+        shuffleArray(data)
+        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");    
+        const newArray = data?.map ((em: any)=>{
+
+          return {
+            ...em,
+            "selected" : ""
+          }
+        })    
+        setSettings(newArray?.slice(0, 10)) 
+        setTotalLevels(data?.length>10 ? 10 : data?.length)   
       }, [props.data])
 
       useEffect(()=>{
         if(settings!== null){
-          if(level === totalLevels+1) {
-            setGameOver(true)   
+          if(level <= totalLevels+1) {
+            setCurrentEmotion(settings[level-1]) 
           }
-          else {setCurrentEmotion(settings[level-1])}
+          
         }
       }, [level, settings])
 
+      useEffect(()=>{
+        if(gameOver){sentResult()}   
+
+      }, [gameOver])
+
       const sentResult = () => {
+        console.log(routes)
         setTimeout(()=>{
           parent.postMessage(routes.length > 0 ? JSON.stringify({
             timestamp: new Date().getTime(),
@@ -42,27 +57,38 @@ const Layout = ({...props} : any) =>{
             temporal_slices: JSON.parse(JSON.stringify(routes)),
             static_data: {},
           }) : null, "*") 
-      }, 2000)}
+      }, 2000)}   
 
-     useEffect(() => {
-      if(gameOver) {
-        sentResult()    
-      }
-    }, [gameOver])
-
-
-      const handleLevelCompleted = (selected : any, duration: any) => {
-        if(!gameOver){           
+      const handleLevelCompleted = (selected : any, duration: any, text: string) => {        
+          if(!routes.find((item:any)=>item.item===level))  {         
             const route = {
               "duration": duration,
               "item": level,
               "level": currentEmotion?.emotionText ,
-              "type": selected?.emotion.toLowerCase() === currentEmotion?.emotion.toLowerCase() ? true : false,
+              "type": selected?.emotion?.toLowerCase() === currentEmotion?.emotion?.toLowerCase() ? true : false,
               "value": selected?.emotion
             }      
-            setRoutes([...routes,route]) 
-            setLevel(level+1)     
-          }
+            setRoutes([...routes,route])  
+            const newArray = settings?.map ((em: any, index: number)=>{
+              if(level === index+1){
+                  em.selected = selected.emotion
+                  return em
+              }else{
+                return em
+              }
+            }) 
+            setSettings(newArray)
+            }
+            if(text=== "previous"){
+              setLevel(level-1)
+            } 
+            else if(text==="save"){
+              setGameOver(true)
+            }  
+            else {
+              setLevel(level+1)
+            }
+          
       }
 
       return(
@@ -100,7 +126,13 @@ const Layout = ({...props} : any) =>{
               </Row>                          
               <Row>
               <Col>  
-                   <Emotions data={currentEmotion} handleLevelCompleted={handleLevelCompleted} level={level<=totalLevels ? level : totalLevels}/>                
+                   <Emotions 
+                   data={currentEmotion}
+                   handleLevelCompleted={handleLevelCompleted}
+                   totalLevels={totalLevels} 
+                   level={level<=totalLevels ? level : totalLevels}
+                   setLevel={setLevel}
+                   />                
               </Col>
             </Row>
            
