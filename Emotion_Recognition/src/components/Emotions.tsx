@@ -81,7 +81,7 @@ const Emotions = ({...props} : any) => {
           <Container> 
           <Row>
               <Col> 
-                <p className="index">{num} {i18n.t<string>("OF")} 10</p>              
+                <p className="index">{num} {i18n.t<string>("OF")} {totalLevels}</p>              
               </Col>
             </Row>          
             <Row className="image">

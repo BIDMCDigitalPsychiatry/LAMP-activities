@@ -6,6 +6,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import ModalPopup from './uielements/ModalPopup';
+import { shuffleArray } from "src/functions";
 
 const Layout = ({...props} : any) =>{  
     const [level, setLevel] = useState(1)  
@@ -20,6 +21,7 @@ const Layout = ({...props} : any) =>{
       useEffect(() => {  
         const configuration = props.data.configuration;
         const data = props.data.activity?.settings ? props.data.activity?.settings : null ;
+        shuffleArray(data)
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");    
         const newArray = data?.map ((em: any)=>{
 
@@ -28,8 +30,8 @@ const Layout = ({...props} : any) =>{
             "selected" : ""
           }
         })    
-        setSettings(newArray) 
-        setTotalLevels(data?.length)   
+        setSettings(newArray?.slice(0, 10)) 
+        setTotalLevels(data?.length>10 ? 10 : data?.length)   
       }, [props.data])
 
       useEffect(()=>{
@@ -47,6 +49,7 @@ const Layout = ({...props} : any) =>{
       }, [gameOver])
 
       const sentResult = () => {
+        console.log(routes)
         setTimeout(()=>{
           parent.postMessage(routes.length > 0 ? JSON.stringify({
             timestamp: new Date().getTime(),
@@ -62,12 +65,12 @@ const Layout = ({...props} : any) =>{
               "duration": duration,
               "item": level,
               "level": currentEmotion?.emotionText ,
-              "type": selected?.emotion.toLowerCase() === currentEmotion?.emotion.toLowerCase() ? true : false,
+              "type": selected?.emotion?.toLowerCase() === currentEmotion?.emotion?.toLowerCase() ? true : false,
               "value": selected?.emotion
             }      
             setRoutes([...routes,route])  
-            const newArray = settings.map ((em: any)=>{
-              if(currentEmotion.emotion.toLowerCase() === em.emotion.toLowerCase()){
+            const newArray = settings?.map ((em: any, index: number)=>{
+              if(level === index+1){
                   em.selected = selected.emotion
                   return em
               }else{
@@ -87,7 +90,6 @@ const Layout = ({...props} : any) =>{
             }
           
       }
-
 
       return(
         <div className="main-class">   
