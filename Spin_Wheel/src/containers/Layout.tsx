@@ -60,6 +60,7 @@ const Layout = ({...props}) => {
   const lowRiskConditionsWinWheel = convertObjtoArray(settingsData?.low_risk[0]?.win, settingsData?.low_risk[0]?.zero?.probability) 
   const riskArray = ['highrisk', 'highrisk', 'lowrisk','lowrisk']
   const [selectedCondition, setSelectedCondition] = useState<any>(null)
+  const [disableButtons, setDisableButtons] = useState(false)
   
   const [showResult, setShowResult] = useState(false)
 
@@ -101,13 +102,21 @@ const Layout = ({...props}) => {
         setTotalSpins(totalSpins-1)
         setSpinIndex(spinIndex+1)
         setShowResult(false)
-        setClicked(true)      
+        setClicked(true)   
+        setDisableButtons(true)   
                 
       }
   }  
   useEffect(() => {
     if(complete) {
-      parent.postMessage(JSON.stringify({ completed: true }), "*")      
+      setTimeout(()=>{
+        parent.postMessage(routes.length > 0 ? JSON.stringify({
+          timestamp: new Date().getTime(),
+          duration: new Date().getTime() - time,
+          temporal_slices: JSON.parse(JSON.stringify(routes)),
+          static_data: {},
+         }) : null, "*") 
+      }, 5000)   
     }
   }, [complete])
 
@@ -124,10 +133,10 @@ const Layout = ({...props}) => {
 
     }
   }, [isGameOver])
-  
-  useEffect(()=>{    
-    if(showResult){
-      setTotal(total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10))      
+
+  const handleLevelComplete = () => {
+
+    setTotal(total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10))        
       const route = {
           "duration": timeTaken/1000+"s",
           "item": spinIndex,
@@ -136,9 +145,8 @@ const Layout = ({...props}) => {
           "value": selectedCondition
       }
       setRoutes([...routes,route])
-    } 
- 
-  },[showResult])
+      setDisableButtons(false)   
+  }
 
   const displayTotal = () =>{
     if(Math.sign(total) === -1) {
@@ -188,6 +196,7 @@ const Layout = ({...props}) => {
               clicked={clicked}
               setClicked={setClicked}
               setShowResult={setShowResult}
+              handleLevelComplete={handleLevelComplete}
               setTimeTaken={setTimeTaken}
               totalSpins={totalSpins}
               setIsGameOver={setIsGameOver}
@@ -203,6 +212,7 @@ const Layout = ({...props}) => {
               selectedItem = {selectedItem2}
               clicked={clicked}
               setClicked={setClicked}
+              handleLevelComplete={handleLevelComplete}
               setShowResult={setShowResult}
               setTimeTaken={setTimeTaken}
               totalSpins={totalSpins}
@@ -215,7 +225,8 @@ const Layout = ({...props}) => {
           <Row>
             <Col xs={12} className="button-group">
               <Button className='button-class'
-               type="button"               
+               type="button"
+               disabled={disableButtons}               
                onClick={()=>{ 
                 setButtonIndex(1);
                 setConditions(conditionsForRed)
@@ -224,6 +235,7 @@ const Layout = ({...props}) => {
               </Button>
               <Button
                className='button-class'
+               disabled={disableButtons}   
                type="button"
                onClick={()=>{ setButtonIndex(2);
                setConditions(conditionsForYellow)}}>
@@ -231,7 +243,8 @@ const Layout = ({...props}) => {
               </Button>
               <Button
                className='button-class' 
-               type="button" 
+               type="button"
+               disabled={disableButtons}  
                onClick={()=>{ 
                 setButtonIndex(3);
                 setConditions(conditionsForGreen)}}>
@@ -240,6 +253,7 @@ const Layout = ({...props}) => {
               <Button 
                 className='button-class' 
                 type="button" 
+                disabled={disableButtons} 
                 onClick={()=>{ 
                   setButtonIndex(4);                   
                   setConditions(conditionsForBlue)
