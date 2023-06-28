@@ -28,6 +28,7 @@ const SpinWheel = ({...props}: any) => {
   ]
   const onFinished = (winner : any) => {
     setShowResult(true)
+    setClicked(false)
     handleLevelComplete()
     if(totalSpins===0){
       setIsGameOver(true)

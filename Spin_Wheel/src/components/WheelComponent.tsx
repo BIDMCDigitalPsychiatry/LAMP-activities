@@ -66,8 +66,7 @@ const WheelComponent = ({
       maxSpeed = Math.PI / segments.length
       frames = 0
       timerHandle = window.setInterval(onTimerTick, timerDelay)
-    }    
-    setClicked(false)
+    }      
   }
   
   const onTimerTick = () => {
