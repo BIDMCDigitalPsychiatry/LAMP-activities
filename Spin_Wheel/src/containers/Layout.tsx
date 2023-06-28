@@ -94,17 +94,15 @@ const Layout = ({...props}) => {
   }, [settingsData])
 
   const selectItem =(values1 : any, values2 : any) =>{
-    if(totalSpins>0) {        
+    if(totalSpins>0) {   
+        setClicked(true)      
         const selectedItemTemp1 = getRandomWithProbability(values1)
         setSelectedItem1(selectedItemTemp1)
         const selectedItemTemp2 = getRandomWithProbability(values2)
         setSelectedItem2(selectedItemTemp2)
         setTotalSpins(totalSpins-1)
         setSpinIndex(spinIndex+1)
-        setShowResult(false)
-        setClicked(true)   
-        setDisableButtons(true)   
-                
+        setShowResult(false)               
       }
   }  
   useEffect(() => {
@@ -145,8 +143,12 @@ const Layout = ({...props}) => {
           "value": selectedCondition
       }
       setRoutes([...routes,route])
-      setDisableButtons(false)   
+      setTimeout(()=>{
+        setDisableButtons(false)   
+      },1000)
+      
   }
+
 
   const displayTotal = () =>{
     if(Math.sign(total) === -1) {
@@ -158,6 +160,7 @@ const Layout = ({...props}) => {
   }
 
   const setConditions = (condition : any) =>{
+    if(!clicked){
     if(condition === 'highrisk'){
       setSelectedCondition(1)
       selectItem(highRiskConditionsWinWheel, highRiskConditionsLoseWheel)
@@ -166,7 +169,7 @@ const Layout = ({...props}) => {
       setSelectedCondition(0)
       selectItem(lowRiskConditionsWinWheel, lowRiskConditionsLoseWheel)
     }
-
+    }
   }
 
     return (
@@ -227,7 +230,8 @@ const Layout = ({...props}) => {
               <Button className='button-class'
                type="button"
                disabled={disableButtons}               
-               onClick={()=>{ 
+               onClick={()=>{                 
+                setDisableButtons(true) 
                 setButtonIndex(1);
                 setConditions(conditionsForRed)
                }}>
@@ -237,7 +241,9 @@ const Layout = ({...props}) => {
                className='button-class'
                disabled={disableButtons}   
                type="button"
-               onClick={()=>{ setButtonIndex(2);
+               onClick={()=>{ 
+                setDisableButtons(true) 
+                setButtonIndex(2);
                setConditions(conditionsForYellow)}}>
                 <YellowButtonSVG/>
               </Button>
@@ -246,6 +252,7 @@ const Layout = ({...props}) => {
                type="button"
                disabled={disableButtons}  
                onClick={()=>{ 
+                setDisableButtons(true) 
                 setButtonIndex(3);
                 setConditions(conditionsForGreen)}}>
                 <GreenButtonSVG/>
@@ -255,6 +262,7 @@ const Layout = ({...props}) => {
                 type="button" 
                 disabled={disableButtons} 
                 onClick={()=>{ 
+                  setDisableButtons(true) 
                   setButtonIndex(4);                   
                   setConditions(conditionsForBlue)
                   }}>
