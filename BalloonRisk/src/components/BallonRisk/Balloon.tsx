@@ -55,7 +55,7 @@ class Balloons extends React.Component<{}, AppState> {
     
     this.state = {
       balloon_burst: false,
-      balloon_count: 2,
+      balloon_count: 15,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,
@@ -148,20 +148,22 @@ class Balloons extends React.Component<{}, AppState> {
     );
   };
 
-
-  
-
-
-  getRandomGaussian =  (mean: any, std: any) => {
-    const values = []
-    const v = Math.pow(std * this.state.balloon_count, 2)
-
-    for (let i = 0; i < this.state.balloon_count; i++){
-      values[i] = Math.sqrt(mean + (std/this.state.balloon_count))
+  getRandomGaussian = function (mean: any, std: any) {
+    let u = 0;
+    let v = 0;
+    while (u === 0) {
+      u = Math.random();
     }
-    console.log(values)
-    return values[0]
-  };
+    while (v === 0) {
+      v = Math.random();
+    }
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    num = num / 10.0 + 0.5;
+    if (num > 1 || num < 0) {
+      return this.getRandomGaussian();
+    }
+    return num * std + mean;
+    }
 
   // Pump the balloon
   pumpBalloon = async () => {
@@ -296,10 +298,6 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
-    this.getRandomGaussian(
-      this.state.breakpoint_mean,
-      this.state.breakpoint_std
-    )
     const currentDate = this.dateFormating();
     return participantData.currentDate === currentDate &&
       participantData.hasOwnProperty("breakPointArray") &&
