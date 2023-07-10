@@ -76,8 +76,8 @@ function HomeView(props) {
         const settings = props?.data?.activity?.settings;
         const configuration = props?.data?.configuration;
         setSettings(settings);
-        updateReport(typeof localStorage.getItem("activity-dbt-"+ props?.data?.activity?.id) !== 'undefined' ? 
-        JSON.parse(JSON.stringify(localStorage.getItem("activity-dbt-"+ props?.data?.activity?.id))): null)         
+        updateReport(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' ? 
+        JSON.parse(JSON.stringify(localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id))): null)         
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
         setTime(new Date().getTime());
     }, [])
