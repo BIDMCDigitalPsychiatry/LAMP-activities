@@ -5,10 +5,6 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import * as React from "react";
 
 import Board from "./Board";
@@ -51,32 +47,13 @@ class Box extends React.Component<{}, AppState> {
     );     
   }
 
-  // To refresh the game
-  clickHome = () => {
-    window.location.reload();
-  };
-
-  clickBack = () => {
-    parent.postMessage(null, "*");
-  }
-
-
   // Game render function
   render() {
     return (
       <div>
-        {this.state && !!this.state.loaded && (
-          <div>
-             {!this.state.noBack && <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>}
-            <nav className="home-link">
-              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-            </nav>
-            <div className="heading">{i18n.t("MEMORY_GAME")}</div>
-            <div className="game-board">
-             {!!this.state.loaded && Object.keys(this.state.settings).length > 0 &&  
-             <Board 
+        {this.state && !!this.state.loaded &&  Object.keys(this.state.settings).length > 0 &&  
+             (<Board 
+              noBack={this.state.noBack}
                 animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
                 animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 1000}
                 foils={this.state.settings?.foils ?? 2}
@@ -86,9 +63,7 @@ class Box extends React.Component<{}, AppState> {
                 time={this.state.time} 
                 autoCorrect={this.state.autoCorrect}
               />
-             }
-            </div>
-          </div>
+            
         )}
       </div>
     );

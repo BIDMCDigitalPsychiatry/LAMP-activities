@@ -1171,8 +1171,9 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
 
 function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
   const { t } = useTranslation()
-
+console.log(value)
   const onChange = (value) => {
+
     onResponse({ item: text, value })
   }
   const binaryOpts = [
@@ -1264,6 +1265,7 @@ function Questions({
   settings,
   responses,
   x,
+  activityId,
   totalQuestions,
   setActiveStep,
   onResponse,
@@ -1277,6 +1279,7 @@ function Questions({
   const classes = useStyles()
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
   const { t } = useTranslation()
+  console.log(responses)
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
@@ -1295,7 +1298,8 @@ function Questions({
             options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
             value={responses.current[idx]}
             onResponse={(response) => {
-              const data = updateResponses(x, response, responses, idx, startTime, setActiveStep, totalQuestions)              
+              const data = updateResponses(x, response, responses, idx, startTime, setActiveStep, totalQuestions)   
+              localStorage.setItem("activity-survey-"+ activityId, JSON.stringify(data))           
               onResponse(data)
             }}
             startTime={new Date().getTime()}
@@ -1349,7 +1353,11 @@ function Section({
   noBack,
   ...props
 }) {
-  const base = value.settings.map((x) => ({ item: x.text, value: null, duration: 0 }))
+  const activityId = value?.id
+ console.log(localStorage.getItem("activity-survey-"+ activityId), activityId) 
+  const values = JSON.parse(localStorage.getItem("activity-survey-"+ activityId) ?? "[]")
+  const base = value.settings.map((x, index) => (    
+    values[index] ?? { item: x.text, value:  null, duration: 0 }))
   const responses = useRef(base)
   const [activeStep, setActiveStep] = useState(0)
   const classes = useStyles()
@@ -1393,7 +1401,7 @@ function Section({
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
                 startTime={new Date().getTime()}              
-                responses={responses}
+                responses={responses.current}
                 settingsQuestions={settings.length}
                 handleBack={handleBack}
                 handleNext={handleNext}
@@ -1403,7 +1411,7 @@ function Section({
                 idx={index}
                 x={x}
                 index ={idx}
-
+                activityId={activityId}
                 settings={settings}
                 responses={responses}
                 setActiveStep={setActiveStep}
@@ -1436,7 +1444,7 @@ function Section({
       setTimeout(() => {
         type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length)
         setElementIn(true)
-      }, 1000)
+      }, 100)
     }
     type === 0 ? setTab(tab - 1) : setTab(tab + 1)
     const val = type === 0 ? progressValue - 100 / settings.length : progressValue + 100 / settings.length
@@ -1521,6 +1529,7 @@ function Section({
             <Questions
               idx={calcIndex(idx)}
               x={x}
+              activityId={activityId}
               index ={idx}
               settings={settings}
               responses={responses}
@@ -1621,6 +1630,7 @@ export default function SurveyQuestions({...props}) {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
+    console.log(localStorage.getItem("activity-survey-"+ activity.id)) 
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, [])
 

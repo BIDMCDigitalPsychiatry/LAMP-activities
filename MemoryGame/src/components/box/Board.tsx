@@ -8,6 +8,10 @@
 import * as React from "react";
 import getImages from "./RandomImage"
 
+import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { renderToString } from 'react-dom/server'
 
 import { Backdrop,  CircularProgress } from "@material-ui/core";
@@ -76,6 +80,7 @@ interface BoardProps {
   seqLength: number;
   time: number;
   language: string;
+  noBack: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -698,6 +703,16 @@ class Board extends React.Component<BoardProps, BoardState> {
     return table;
   };
 
+  
+  // To refresh the game
+  clickHome = () => {
+    window.location.reload();
+  };
+
+  clickBack = () => {
+    this.sendGameResult()
+  }
+
   // To set the game board table size based on screen resolution
   getTableStyles = () => {
     const size = window.innerWidth - (window.innerWidth * 10) / 100;
@@ -749,61 +764,70 @@ class Board extends React.Component<BoardProps, BoardState> {
         </div>
       ) : null) : null; 
       }
-    
-    return (
-      <div>       
-        {!!this.state && 
-        !!this.state.error ? (
-          <div>Some unexpected error, please <button onClick={() => this.resetState(1)}>restart</button> the trial</div>
-        ) :
-        (!!this.state.showModalInfo ? <InfoModal
-          show={this.state.showModalInfo}
-          modalClose={this.handleClose}
-          msg={i18n.t("INSTRUCTION")}
-          language={i18n.language}
-        /> :
-        !!this.state.showQuestions ? (
-          <Questions
-           language={this.props.language}
-           onStateChange={(data: any) => {
-            const stateDetails =   Object.assign({},data)
-            stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
-            this.setState({staticData: stateDetails})
-           }} 
-           onSubmit={(data: any) => {
-            const stateDetails =   Object.assign({},data)
-            stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
-            this.setState({loading:true, staticData: stateDetails})
-            setTimeout(() => {
-              this.resetState()
-            }, 1000)
-          }} />
-        )
-        :
-        (
-          <div>
-            <div className="timer-div">
-              {(!!this.state.autoCorrect && this.state.trail<= 3) && <div>{"Trial " + (this.state.trail)}<br /></div>}              
-              {this.state.supportsSidebar === false && alertText}
-            </div>
-            <div className="mt-30 box-game">
-              <div style={{float:"left"}}> {board}</div>
-              <div className="secondbox">
-                <ErrorBoundary errorFn={() => this.resetState(1)}>
-                  {boardResult}
-                </ErrorBoundary>
+
+      return (
+        <div>
+               {!this.props.noBack && <nav className="back-link">
+                <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+              </nav>}
+              <nav className="home-link">
+                <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+              </nav>
+              <div className="heading">{i18n.t("MEMORY_GAME")}</div>
+              <div className="game-board">
+        <div>       
+          {!!this.state && 
+          !!this.state.error ? (
+            <div>Some unexpected error, please <button onClick={() => this.resetState(1)}>restart</button> the trial</div>
+          ) :
+          (!!this.state.showModalInfo ? <InfoModal
+            show={this.state.showModalInfo}
+            modalClose={this.handleClose}
+            msg={i18n.t("INSTRUCTION")}
+            language={i18n.language}
+          /> :
+          !!this.state.showQuestions ? (
+            <Questions
+             language={this.props.language}
+             onStateChange={(data: any) => {
+              const stateDetails =   Object.assign({},data)
+              stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
+              this.setState({staticData: stateDetails})
+             }} 
+             onSubmit={(data: any) => {
+              const stateDetails =   Object.assign({},data)
+              stateDetails.start_time = new Date(data.start_time)?.getHours() + ":"+ new Date(data.start_time)?.getMinutes() 
+              this.setState({loading:true, staticData: stateDetails})
+              setTimeout(() => {
+                this.resetState()
+              }, 1000)
+            }} />
+          )
+          :
+          (
+            <div>
+              <div className="timer-div">
+                {(!!this.state.autoCorrect && this.state.trail<= 3) && <div>{"Trial " + (this.state.trail)}<br /></div>}              
+                {this.state.supportsSidebar === false && alertText}
               </div>
+              <div className="mt-30 box-game">
+                <div style={{float:"left"}}> {board}</div>
+                <div className="secondbox">
+                  <ErrorBoundary errorFn={() => this.resetState(1)}>
+                    {boardResult}
+                  </ErrorBoundary>
+                </div>
+              </div>
+              {this.state.supportsSidebar === true && alertText}
             </div>
-            {this.state.supportsSidebar === true && alertText}
-          </div>
-        ))}
-        <Backdrop className="backdrop" open={this.state.loading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </div>
-    );
+          ))}
+          <Backdrop className="backdrop" open={this.state.loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </div>
+       </div>
+       </div> 
+      );
+    }
   }
-}
-
-
-export default Board;
+  export default Board;

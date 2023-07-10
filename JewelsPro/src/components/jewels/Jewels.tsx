@@ -306,11 +306,11 @@ class Jewels extends React.Component<{}, AppState> {
   };
   // To refresh the game
   clickHome = () => {
-    this.state.level > 0 && this.state.routes.length > 0 ? this.setState(({showModal: 1})) : window.location.reload();
+    window.location.reload();
   };
 
   clickBack = () => {
-    this.state.level > 0 && this.state.routes.length > 0 ? this.setState(({showModal: 2})) : parent.postMessage(null, "*");
+    this.sendDataToDashboard(2)
   }
 
   sendDataToDashboard = (pointVal : number) => {

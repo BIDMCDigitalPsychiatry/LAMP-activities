@@ -163,7 +163,7 @@ class Balloons extends React.Component<{}, AppState> {
       return this.getRandomGaussian();
     }
     return num * std + mean;
-  };
+    }
 
   // Pump the balloon
   pumpBalloon = async () => {
@@ -248,6 +248,7 @@ class Balloons extends React.Component<{}, AppState> {
                 localStorage.getItem("balloonrisk_") || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
+              console.log(breakPointData)
               this.setState((prevState) => ({
                 break_point_array: [
                   ...prevState.break_point_array,
@@ -316,6 +317,13 @@ class Balloons extends React.Component<{}, AppState> {
 
   sendGameData = async () => {
     const currentDate = this.dateFormating();
+    console.log({
+      currentDate,
+      breakPointArray: this.state.break_point_array,
+      balloonCount: this.state.balloon_count,
+      breakpointMean: this.state.breakpoint_mean,
+      breakpointStd: this.state.breakpoint_std,
+    })
     localStorage.setItem(
       "balloonrisk_",
       JSON.stringify({
@@ -390,7 +398,9 @@ class Balloons extends React.Component<{}, AppState> {
     const participantData: any = JSON.parse(
       localStorage.getItem("balloonrisk_") || "{}"
     );
+    console.log(participantData)
     const breakPointData = this.getBreakPoinData(participantData, false);
+    console.log(breakPointData)
     this.setState((prevState) => ({
       collected_points: [
         ...prevState.collected_points,
@@ -427,7 +437,7 @@ class Balloons extends React.Component<{}, AppState> {
   };
   
   clickBack = () => {
-    parent.postMessage(null, "*");
+    this.sendGameData()
   }
 
   // Game render function

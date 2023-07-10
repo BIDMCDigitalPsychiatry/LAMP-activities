@@ -8,8 +8,6 @@
 import * as React from "react";
 import Board from "./Board";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import i18n from "./../../i18n";
 
@@ -59,32 +57,13 @@ class CatsNDogs extends React.Component<{}, AppState> {
     }
   };
 
-  // To refresh the game
-  clickHome = () => {
-    window.location.reload(false);
-  };
-  
-  clickBack = () => {
-    parent.postMessage(null, "*");
-  }
 
   // Game render function
   render() {
     return (
       <div>
         {this.state && this.state.loaded && (
-          <div>
-            {!this.state.noBack && <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>}
-            <nav className="home-link">
-              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-            </nav>
-            <div className="heading">{i18n.t("CATS_AND_DOGS")}</div>
-            <div className="game-board">
-              <Board language={i18n.language} time={this.state.time} />
-            </div>
-          </div>
+          <Board noBack={this.state.noBack} language={i18n.language} time={this.state.time} />
         )}
       </div>
     );

@@ -132,6 +132,8 @@ export default function JournalEntries({ ...props }) {
   }
   
   useEffect(() => {
+    const val = localStorage.getItem('activity-journal-'+(props?.activity?.id ?? "")) ?? ""
+    setJounalValue(val)
     const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
     const eventer = window[eventMethod]
     const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
@@ -177,6 +179,10 @@ export default function JournalEntries({ ...props }) {
     const monthname = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     return weekday[date.getDay()] + " " + monthname[date.getMonth()] + ", " + date.getDate()
   }
+
+  useEffect(() => {
+    localStorage.setItem('activity-journal-'+(props?.activity?.id ?? ""), journalValue)
+  }, [journalValue])
 
   return (
     <div className={classes.root}>
