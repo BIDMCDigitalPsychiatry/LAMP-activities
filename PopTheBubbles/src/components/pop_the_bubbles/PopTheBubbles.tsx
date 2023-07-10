@@ -475,7 +475,16 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   };
 
   clickBack = () => {
-    parent.postMessage(null, "*");
+    const temporalSlices = [].concat.apply([], this.state.route);
+    parent.postMessage(
+      JSON.stringify({
+        duration: new Date().getTime() - this.state.time,
+        static_data: {},
+        temporal_slices: temporalSlices,
+        timestamp: new Date().getTime(),
+      }),
+      "*"
+    );
   }
   // Game render function
   render() {

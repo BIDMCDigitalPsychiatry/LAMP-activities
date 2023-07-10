@@ -9,6 +9,10 @@ import * as React from "react";
 import { getRandomNumbers } from "../../functions";
 import i18n from "./../../i18n";
 
+import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Timer } from "../common/Timer";
 import "./box.css";
 
@@ -47,6 +51,7 @@ interface BoardProps {
   reverse: boolean;
   time: number;
   language: string;
+  noBack: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -452,6 +457,14 @@ class Board extends React.Component<BoardProps, BoardState> {
     const styles = { height: `${size}px`, width: `${size}px` };
     return styles;
   };
+    // To refresh the game
+    clickHome = () => {
+      window.location.reload(false);
+    };
+  
+    clickBack = () => {
+      this.sendGameResult()
+    }
 
   // Render the game board
   render() {
@@ -542,6 +555,15 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     return (
       <div>
+             {!this.props.noBack && <nav className="back-link">
+              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+            </nav>}
+            <nav className="home-link">
+              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+            </nav>
+            <div className="heading">{i18n.t("BOX_GAME")}</div>
+            <div className="game-board">
+      <div>
         <div className="timer-div">
           {timer}
           {level}
@@ -555,6 +577,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         {nextButton}
 
         {alertText}
+      </div>
+      </div>
       </div>
     );
   }

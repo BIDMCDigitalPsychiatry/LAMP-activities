@@ -8,6 +8,9 @@
 
 import { Box } from "./Box";
 
+import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { InfoModal } from "../common/InfoModal";
 import { Timer } from "../common/Timer";
 
@@ -21,6 +24,7 @@ import "./box.css";
 export interface BoardProps {
   language: string;
   time: number;
+  noBack: boolean;
 }
 
 interface BoardState {
@@ -425,6 +429,16 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     this.checkStatus();
   };
+
+  
+  // To refresh the game
+  clickHome = () => {
+    window.location.reload(false);
+  };
+  
+  clickBack = () => {
+    this.sendGameResult()
+  }
   // Render the game board
   render() {
     let boxes;
@@ -543,9 +557,20 @@ class Board extends React.Component<BoardProps, BoardState> {
     ) : null;
     return (
       <div>
+            {!this.props.noBack && <nav className="back-link">
+              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+            </nav>}
+            <nav className="home-link">
+              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+            </nav>
+            <div className="heading">{i18n.t("CATS_AND_DOGS")}</div>
+            <div className="game-board">
+      <div>
         <div className="timer-div">{timer}</div>
         <div className="mt-30">{boxes}</div>
         {modal}
+      </div>
+      </div>
       </div>
     );
   }

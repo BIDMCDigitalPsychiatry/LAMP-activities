@@ -108,8 +108,6 @@ const actions = {
             },
             temporal_slices: temporal_slices
         }
-        console.log(report, finalReport)
-
         return finalReport
     }
 }

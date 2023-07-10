@@ -73,12 +73,12 @@ const Layout = ({...props} : any) =>{
        
        const sentResult = () => {
           setTimeout(()=>{
-            parent.postMessage(routes.length > 0 ? JSON.stringify({
+            parent.postMessage(JSON.stringify({
               timestamp: new Date().getTime(),
               duration: new Date().getTime() - time,
               temporal_slices: JSON.parse(JSON.stringify(routes)),
               static_data: {},
-            }) : null, "*") 
+            }), "*") 
           }, 5000)
        }
 
@@ -136,10 +136,7 @@ const Layout = ({...props} : any) =>{
             action="mindLamp"
           />      }   
           <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={() => {routes.length>0 ? setExitModalShow(true) : 
-              setTimeout(()=>{
-                parent.postMessage(null, "*")
-              }, 5000)  }} />
+              <FontAwesomeIcon icon={faArrowLeft} onClick={sentResult} />
             </nav>            
             <div className="heading">{i18n.t<string>("GAME")}</div>
             

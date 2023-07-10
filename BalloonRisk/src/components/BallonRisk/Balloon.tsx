@@ -55,7 +55,7 @@ class Balloons extends React.Component<{}, AppState> {
     
     this.state = {
       balloon_burst: false,
-      balloon_count: 15,
+      balloon_count: 2,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,
@@ -148,21 +148,19 @@ class Balloons extends React.Component<{}, AppState> {
     );
   };
 
-  getRandomGaussian = function (mean: any, std: any) {
-    let u = 0;
-    let v = 0;
-    while (u === 0) {
-      u = Math.random();
+
+  
+
+
+  getRandomGaussian =  (mean: any, std: any) => {
+    const values = []
+    const v = Math.pow(std * this.state.balloon_count, 2)
+
+    for (let i = 0; i < this.state.balloon_count; i++){
+      values[i] = Math.sqrt(mean + (std/this.state.balloon_count))
     }
-    while (v === 0) {
-      v = Math.random();
-    }
-    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-    num = num / 10.0 + 0.5;
-    if (num > 1 || num < 0) {
-      return this.getRandomGaussian();
-    }
-    return num * std + mean;
+    console.log(values)
+    return values[0]
   };
 
   // Pump the balloon
@@ -248,6 +246,7 @@ class Balloons extends React.Component<{}, AppState> {
                 localStorage.getItem("balloonrisk_") || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
+              console.log(breakPointData)
               this.setState((prevState) => ({
                 break_point_array: [
                   ...prevState.break_point_array,
@@ -297,6 +296,10 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
+    this.getRandomGaussian(
+      this.state.breakpoint_mean,
+      this.state.breakpoint_std
+    )
     const currentDate = this.dateFormating();
     return participantData.currentDate === currentDate &&
       participantData.hasOwnProperty("breakPointArray") &&
@@ -316,6 +319,13 @@ class Balloons extends React.Component<{}, AppState> {
 
   sendGameData = async () => {
     const currentDate = this.dateFormating();
+    console.log({
+      currentDate,
+      breakPointArray: this.state.break_point_array,
+      balloonCount: this.state.balloon_count,
+      breakpointMean: this.state.breakpoint_mean,
+      breakpointStd: this.state.breakpoint_std,
+    })
     localStorage.setItem(
       "balloonrisk_",
       JSON.stringify({
@@ -390,7 +400,9 @@ class Balloons extends React.Component<{}, AppState> {
     const participantData: any = JSON.parse(
       localStorage.getItem("balloonrisk_") || "{}"
     );
+    console.log(participantData)
     const breakPointData = this.getBreakPoinData(participantData, false);
+    console.log(breakPointData)
     this.setState((prevState) => ({
       collected_points: [
         ...prevState.collected_points,
@@ -427,7 +439,7 @@ class Balloons extends React.Component<{}, AppState> {
   };
   
   clickBack = () => {
-    parent.postMessage(null, "*");
+    this.sendGameData()
   }
 
   // Game render function
