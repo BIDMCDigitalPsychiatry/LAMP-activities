@@ -20,7 +20,7 @@ eventer(
     messageEvent, (e:any) => {
 		ReactDOM.render(
       <AppContainer>
-        <PopTheBubbles activity={e.data.activity} configuration={e.data.configuration} noBack={e.data.noBack} />
+        <PopTheBubbles activity={null} configuration={null} noBack={true} />
       </AppContainer>,
     document.getElementById('root') as HTMLElement
     );

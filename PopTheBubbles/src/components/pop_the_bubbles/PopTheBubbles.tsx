@@ -75,7 +75,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     );   
     this.state = {
       allRoutes: [],
-      bubble_count: [60, 80, 80],
+      bubble_count: [10, 10, 80],
       bubble_duration: 1.5, // 0,
       bubble_speed: [30, 40, 50],
       completed: false,
@@ -225,6 +225,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     levelVal: number,
     route: any
   ) => {
+    console.log(route)
     this.setState((prevState) => ({
       completed,
       correctGoCount,
@@ -235,7 +236,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       levelCompleted: true,
       levelVal,
       missedClicks,
-      route: [...prevState.route, route],
+      // route: [...prevState.route, route],
       score: stateScore > 0 ? stateScore : 0,
       stateSuccessTaps: this.state.stateSuccessTaps + successTaps,
       stateWrongTaps: this.state.stateWrongTaps + wrongTaps,
@@ -266,6 +267,15 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     }
     this.bubbleCount = this.state.bubble_count[1];
   };
+
+  updateRoute = (route: any, completed: boolean, level: number) => {
+    const values:any = this.state.route
+    if(typeof values[level-1] === 'undefined') {
+      values[level-1] = []
+    } 
+    values[level-1].push(route)
+    this.setState({route : values , completed})
+  }
 
   updateStateData = async (obj: any) => {
     await this.setState(obj);
@@ -299,8 +309,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           this.state.gameLevel === 1 ? (
             <div className="pop-the-bubble-board">
               <div className="mt-30">
-              
-   
               <Animated animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
                 <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
                 </Animated>
@@ -450,6 +458,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           <Board
             bubbleCount={this.bubbleCount}
             onCompleted={this.onCompleted}
+            updateRoute={this.updateRoute}
             level={this.state.gameLevel}
             xCoords={this.state.xCoords}
             yCoords={this.state.yCoords}

@@ -141,8 +141,7 @@ class Jewels extends React.Component<{}, AppState> {
     }
   }
 
-  updateLevel = (bonus: number, routesValus: any, totalJewelsCollected: number, totalAttempts:number, pointVal: number) => {
-    const level =  Math.floor((this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count);
+  updateRoutes = ( routesValus: any) => {
     const routeData:any = []
     if (this.state.routes.length > 0) {
       const r = JSON.parse(this.state.routes);
@@ -153,9 +152,13 @@ class Jewels extends React.Component<{}, AppState> {
     const r1 = JSON.parse(routesValus)
     Object.keys(r1).forEach((key) => {
       routeData.push(r1[key]);
-    });   
+    }); 
+    this.setState({routes: JSON.stringify(routeData)})
+  }
 
-
+  updateLevel = (bonus: number, routesValus: any, totalJewelsCollected: number, totalAttempts:number, pointVal: number) => {
+    const level =  Math.floor((this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count);
+    this.updateRoutes(routesValus)  
     if(level > 1) {
      let levelCount = Math.floor((level - 1) / this.state.settings.x_changes_in_level_count) ;
         const diamondCount =  this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount) > 25 ? 25 : this.state.diamondCount + (this.state.settings.x_diamond_count * levelCount);            
@@ -170,7 +173,6 @@ class Jewels extends React.Component<{}, AppState> {
             diamondCount,
             level: this.state.level === level ? this.state.level : this.state.level + 1,
             loaded: false,
-            routes:JSON.stringify(routeData),
             shapeCount,
             totalAttempts: this.state.totalAttempts + totalAttempts,
             totalJewelsCollected: this.state.totalJewelsCollected + totalJewelsCollected
@@ -187,7 +189,6 @@ class Jewels extends React.Component<{}, AppState> {
               bonusPoints: this.state.bonusPoints + bonus,
               level : this.state.level === level ? this.state.level : this.state.level + 1,
               loaded: false, 
-              routes:JSON.stringify(routeData), 
               totalAttempts: this.state.totalAttempts + totalAttempts,
               totalJewelsCollected: this.state.totalJewelsCollected + totalJewelsCollected          
             },
@@ -324,7 +325,7 @@ class Jewels extends React.Component<{}, AppState> {
             total_bonus_collected: this.state.bonusPoints,
             total_jewels_collected: this.state.totalJewelsCollected,
           },
-          temporal_slices: JSON.parse(this.state.routes),
+          temporal_slices: JSON.parse(JSON.stringify(this.state.routes)),
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time
         }),
@@ -374,6 +375,7 @@ class Jewels extends React.Component<{}, AppState> {
                 orderNumbers={this.state.orderNumbers}
                 level={this.state.level}
                 language={i18n.language}
+                updateRoutes={this.updateRoutes}
                 updateLevel={this.updateLevel}
                 handleClose={this.handleClose}
                 sendDataToDashboard={this.sendDataToDashboard}
