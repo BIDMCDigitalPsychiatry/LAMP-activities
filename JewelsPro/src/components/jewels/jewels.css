@@ -103,10 +103,15 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .home-link{
 	position: absolute;
 	right: 0;
+	z-index: 9999;
+	cursor: pointer;
 }
 .back-link{
 	position: absolute;
 	left: 0;
+	padding: 16px 15px 15px 15px;
+    z-index: 9999;
+    cursor: pointer;
 }
 @-webkit-keyframes App-logo-spin {
 	0% {
@@ -462,10 +467,11 @@ ol,ul {
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
     margin: 16px 18px 0 10px;
+	z-index: 9999;
 }
-svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
-    margin: 16px 18px 0 10px;
-}
+ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
+	color: rgba(53,159,254,1);
+} 
 .countdown-timer{background-color: #fff; display: flex; align-items: center; justify-content: center; height: 15px;}
 .countdown-timer__text{color: rgba(53,159,254,1) !important;
 

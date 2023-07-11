@@ -37,6 +37,7 @@ interface BoardProps {
     levelVal: number,
     route: any
   ): void;
+  updateRoute(route: any, completed: boolean, level: number): void;
   bubbleDuration: number;
   bubbleSpeed: any;
   gameStarted: any;
@@ -121,6 +122,61 @@ class Board extends React.Component<BoardProps, BoardState> {
     };
   }
 
+  setResult = () => {
+    const filteredClickedBubble = this.state.clickedBubbleIndexes.filter(
+      (item: any, index: any, inputArray: any) => {
+        return inputArray.indexOf(item) === index;
+      }
+    );
+
+    this.setState({
+      clickedBubbleIndexes: filteredClickedBubble,
+      wrongNoGoCount: this.state.noGoIndexes.filter((value) =>
+        this.state.clickedBubbleIndexes.includes(value)
+      ).length,
+    });
+
+    const percentage =
+      (this.state.successTaps / this.state.bubblesToTapCount) * 100;
+
+    const correctGoClicks = this.state.goIndexes.filter((value) =>
+      this.state.clickedBubbleIndexes.includes(value)
+    ).length;
+
+    const wrongGoClicks = this.state.goIndexes.filter(
+      (value) => !this.state.clickedBubbleIndexes.includes(value)
+    ).length;
+
+    const correctNoGoClicks = this.state.noGoIndexes.filter(
+      (value) => !this.state.clickedBubbleIndexes.includes(value)
+    ).length;
+
+    const wrongNoGoClicks = this.state.noGoIndexes.filter((value) =>
+      this.state.clickedBubbleIndexes.includes(value)
+    ).length;
+
+    const newLevel = this.props.level;
+
+    const score = Math.round(percentage);
+
+    this.props.onCompleted(
+      score,
+      this.state.successTaps,
+      this.state.wrongTaps,
+      correctGoClicks,
+      this.state.goIndexes.length,
+      this.state.wrongNoGoCount,
+      this.state.noGoIndexes.length,
+      this.state.falseHitsCount,
+      this.state.completed,
+      wrongGoClicks,
+      correctNoGoClicks,
+      wrongNoGoClicks,
+      newLevel,
+      this.state.route
+    );
+  }
+
   // On load function - set state of the gamne
   componentDidMount = () => {
     this.timer = setInterval(() => {
@@ -145,58 +201,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               completed: true,
             });
 
-            const filteredClickedBubble = this.state.clickedBubbleIndexes.filter(
-              (item: any, index: any, inputArray: any) => {
-                return inputArray.indexOf(item) === index;
-              }
-            );
-
-            this.setState({
-              clickedBubbleIndexes: filteredClickedBubble,
-              wrongNoGoCount: this.state.noGoIndexes.filter((value) =>
-                this.state.clickedBubbleIndexes.includes(value)
-              ).length,
-            });
-
-            const percentage =
-              (this.state.successTaps / this.state.bubblesToTapCount) * 100;
-
-            const correctGoClicks = this.state.goIndexes.filter((value) =>
-              this.state.clickedBubbleIndexes.includes(value)
-            ).length;
-
-            const wrongGoClicks = this.state.goIndexes.filter(
-              (value) => !this.state.clickedBubbleIndexes.includes(value)
-            ).length;
-
-            const correctNoGoClicks = this.state.noGoIndexes.filter(
-              (value) => !this.state.clickedBubbleIndexes.includes(value)
-            ).length;
-
-            const wrongNoGoClicks = this.state.noGoIndexes.filter((value) =>
-              this.state.clickedBubbleIndexes.includes(value)
-            ).length;
-
-            const newLevel = this.props.level;
-
-            const score = Math.round(percentage);
-
-            this.props.onCompleted(
-              score,
-              this.state.successTaps,
-              this.state.wrongTaps,
-              correctGoClicks,
-              this.state.goIndexes.length,
-              this.state.wrongNoGoCount,
-              this.state.noGoIndexes.length,
-              this.state.falseHitsCount,
-              this.state.completed,
-              wrongGoClicks,
-              correctNoGoClicks,
-              wrongNoGoClicks,
-              newLevel,
-              this.state.route
-            );
+            this.setResult()
           }, timeoutPeriod);
 
           if (this.state.showBoard) {
@@ -1052,7 +1057,10 @@ class Board extends React.Component<BoardProps, BoardState> {
         clickedBubbleIndexes: [...prevState.clickedBubbleIndexes, index],
         lastClickTime: new Date().getTime(),
         route: [...prevState.route, route],
-      }));
+      }), 
+      () => {
+        this.props.updateRoute(route, false, this.props.level)
+      })
     }
   };
     

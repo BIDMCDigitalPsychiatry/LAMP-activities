@@ -293,6 +293,7 @@ export default function JournalEntries({ ...props }) {
                   <Link underline="none" onClick={() => {
                     setOpen(false)
                     saveJournal(false)
+                    localStorage.removeItem('activity-journal-'+(props?.activity?.id ?? ""))
                   }} className={classes.linkpeach}>
                     {t("Yes, leave")}
                   </Link>

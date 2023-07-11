@@ -918,6 +918,7 @@ const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) :
 function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
   handleNext, onComplete, ...props }) {
   const classes = useStyles()
+  console.log("matrix")
   const { t } = useTranslation()
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
   const [selectedValue, setSelectedValue] = useState(responses?.current ?? null)
@@ -1655,6 +1656,7 @@ export default function SurveyQuestions({...props}) {
   const setQuestions = () => {
       const settings = []
       const processed = []
+      console.log("questions")
       ;(activity.settings || []).map((question, index) => {
         if( !processed.includes(index)) {
           if(activity.settings[index+1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
@@ -1677,6 +1679,8 @@ export default function SurveyQuestions({...props}) {
           }
         }
       })
+      console.log("settings", settings)
+
       setSettings(settings)
   }
 

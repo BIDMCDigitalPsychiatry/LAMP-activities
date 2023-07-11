@@ -27,6 +27,7 @@ export interface BoardProps {
   level: number;
   language: string;
   updateLevel: any;
+  updateRoutes: any
 }
 
 interface DiamondState {
@@ -230,6 +231,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
         statusVal === true ? this.state.stepNumber + 1 : this.state.stepNumber,
       },
       () => {
+        this.props.updateRoutes(this.state.route)
         if (
           statusVal === true &&
           this.props.diamondNumbers.length === this.state.stepNumber
