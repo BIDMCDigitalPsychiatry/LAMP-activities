@@ -316,6 +316,7 @@ class Jewels extends React.Component<{}, AppState> {
 
   sendDataToDashboard = (pointVal : number) => {
     const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
+    console.log(JSON.parse(this.state.routes))
       parent.postMessage(
         JSON.stringify({
           static_data: {
@@ -325,7 +326,7 @@ class Jewels extends React.Component<{}, AppState> {
             total_bonus_collected: this.state.bonusPoints,
             total_jewels_collected: this.state.totalJewelsCollected,
           },
-          temporal_slices: JSON.parse(JSON.stringify(this.state.routes)),
+          temporal_slices: JSON.parse(this.state.routes),
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time
         }),
