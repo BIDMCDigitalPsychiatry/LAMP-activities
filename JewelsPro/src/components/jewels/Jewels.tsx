@@ -316,7 +316,6 @@ class Jewels extends React.Component<{}, AppState> {
 
   sendDataToDashboard = (pointVal : number) => {
     const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
-    console.log(JSON.parse(this.state.routes))
       parent.postMessage(
         JSON.stringify({
           static_data: {
