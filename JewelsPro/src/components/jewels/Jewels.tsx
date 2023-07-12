@@ -325,7 +325,7 @@ class Jewels extends React.Component<{}, AppState> {
             total_bonus_collected: this.state.bonusPoints,
             total_jewels_collected: this.state.totalJewelsCollected,
           },
-          temporal_slices: JSON.parse(JSON.stringify(this.state.routes)),
+          temporal_slices: JSON.parse(this.state.routes),
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time
         }),
