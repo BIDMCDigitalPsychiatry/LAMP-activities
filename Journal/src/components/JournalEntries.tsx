@@ -125,6 +125,7 @@ export default function JournalEntries({ ...props }) {
   const [loading, setLoading] = useState(false)
   const [time, setTime] = useState(new Date().getTime())
   const [noBack, setNoBack] = useState(false)
+  const [id, setId] = useState(null)
   const { t } = useTranslation()
   const CHARACTER_LIMIT = 800
   const handleClickStatus = (statusVal: string) => {
@@ -132,27 +133,20 @@ export default function JournalEntries({ ...props }) {
   }
   
   useEffect(() => {
-    const val = localStorage.getItem('activity-journal-'+(props?.activity?.id ?? "")) ?? ""
-    setJounalValue(val)
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-    // Listen to message from child window
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const configuration = e.data?.configuration ?? null
+    
+        const val = localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) ?? ""
+        setId(props.data?.activity?.id)
+       setJounalValue(val)
+        const configuration = props.data?.configuration ?? null
         const langugae = !!configuration
           ? configuration.hasOwnProperty("language")
             ? configuration.language
             : "en-US"
           : "en-US"
         i18n.changeLanguage(langugae)
-        setNoBack(e.data.noBack)
+        setNoBack(props.data.noBack)
         setTime(new Date().getTime())
-      },
-      false
-    )
+    
   }, [])
 
   const saveJournal = (completed?: boolean) => {
@@ -181,7 +175,7 @@ export default function JournalEntries({ ...props }) {
   }
 
   useEffect(() => {
-    localStorage.setItem('activity-journal-'+(props?.activity?.id ?? ""), journalValue)
+    localStorage.setItem('activity-journal-'+(id ?? ""), journalValue)
   }, [journalValue])
 
   return (

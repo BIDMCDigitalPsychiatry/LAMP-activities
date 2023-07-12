@@ -918,7 +918,6 @@ const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) :
 function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
   handleNext, onComplete, ...props }) {
   const classes = useStyles()
-  console.log("matrix")
   const { t } = useTranslation()
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
   const [selectedValue, setSelectedValue] = useState(responses?.current ?? null)
@@ -927,6 +926,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
     parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
   )
   }
+
 
   return (
     <Grid>
@@ -1077,7 +1077,8 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                     const response = { item: question.text, value: val }
                 const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
-                  }} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />)
+                  }} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
+                  )
                 :x.type === "text"?(
                   <TextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
@@ -1172,7 +1173,6 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
 
 function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
   const { t } = useTranslation()
-console.log(value)
   const onChange = (value) => {
 
     onResponse({ item: text, value })
@@ -1280,7 +1280,6 @@ function Questions({
   const classes = useStyles()
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
   const { t } = useTranslation()
-  console.log(responses)
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
@@ -1297,7 +1296,7 @@ function Questions({
             required={x.required}
             desc={x.description ?? null}
             options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
-            value={responses.current[idx]}
+            value={responses.current[idx] ?? null}
             onResponse={(response) => {
               const data = updateResponses(x, response, responses, idx, startTime, setActiveStep, totalQuestions)   
               localStorage.setItem("activity-survey-"+ activityId, JSON.stringify(data))           
@@ -1355,7 +1354,6 @@ function Section({
   ...props
 }) {
   const activityId = value?.id
- console.log(localStorage.getItem("activity-survey-"+ activityId), activityId) 
   const values = JSON.parse(localStorage.getItem("activity-survey-"+ activityId) ?? "[]")
   const base = value.settings.map((x, index) => (    
     values[index] ?? { item: x.text, value:  null, duration: 0 }))
@@ -1402,7 +1400,7 @@ function Section({
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
                 startTime={new Date().getTime()}              
-                responses={responses.current}
+                responses={responses}
                 settingsQuestions={settings.length}
                 handleBack={handleBack}
                 handleNext={handleNext}
@@ -1458,9 +1456,9 @@ function Section({
       let i = 0;
       let status = true
       for (const element of settings[index].questions){
-        if(!(!element.required || (element.required && (responses.current[actualIndex+i].value !== null && typeof responses.current[actualIndex+i].value !== "undefined" &&
-          (typeof responses.current[actualIndex+i].value !== "string" || (typeof responses.current[actualIndex+i].value === "string" &&
-          responses.current[actualIndex+i].value?.trim().length !== 0)))))) {
+        if(!(!element.required || (element.required && (responses?.current[actualIndex+i]?.value !== null && typeof responses?.current[actualIndex+i]?.value !== "undefined" &&
+          (typeof responses?.current[actualIndex+i]?.value !== "string" || (typeof responses?.current[actualIndex+i]?.value === "string" &&
+          responses?.current[actualIndex+i]?.value?.trim().length !== 0)))))) {
           enqueueSnackbar(t("Please enter your response."), {
             variant: "error",
           }) 
@@ -1473,9 +1471,9 @@ function Section({
         slideElementChange(1)
       }
     } else {
-    if(!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses.current[actualIndex].value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
-      (typeof responses.current[actualIndex].value !== "string" || (typeof responses.current[actualIndex].value === "string" &&
-       responses.current[actualIndex].value?.trim().length !== 0))))) {
+    if(!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses?.current[actualIndex]?.value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
+      (typeof responses?.current[actualIndex]?.value !== "string" || (typeof responses?.current[actualIndex]?.value === "string" &&
+       responses?.current[actualIndex]?.value?.trim().length !== 0))))) {
       slideElementChange(1)
     } else {
       enqueueSnackbar(t("Please enter your response."), {
@@ -1631,7 +1629,6 @@ export default function SurveyQuestions({...props}) {
     const activity = props.data.activity ?? (props.data ?? {});
     const configuration = props.data.configuration;
     setActivity(activity);
-    console.log(localStorage.getItem("activity-survey-"+ activity.id)) 
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, [])
 
@@ -1656,7 +1653,6 @@ export default function SurveyQuestions({...props}) {
   const setQuestions = () => {
       const settings = []
       const processed = []
-      console.log("questions")
       ;(activity.settings || []).map((question, index) => {
         if( !processed.includes(index)) {
           if(activity.settings[index+1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
@@ -1679,8 +1675,6 @@ export default function SurveyQuestions({...props}) {
           }
         }
       })
-      console.log("settings", settings)
-
       setSettings(settings)
   }
 
