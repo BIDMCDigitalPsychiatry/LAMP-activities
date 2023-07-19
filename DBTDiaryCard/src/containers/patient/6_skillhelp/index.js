@@ -58,7 +58,7 @@ export default function SkillHelpView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skillHelped', skillHelped)
+            updateReport('skillHelped', skillHelped, props.activityId)
         }
         if (onContinue && skillHelped >= 0) {
             onContinue()

@@ -79,7 +79,7 @@ export default function SkillNoView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('reason', reason)
+            updateReport('reason', reason, props.activityId)
         }
         if (onContinue && reason.trim().length > 0) {
             onContinue()

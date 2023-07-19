@@ -915,7 +915,7 @@ function Rating({ onChange, options, value, ...props }) {
 const csvParse = (x) => (Array.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
 const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
 
-function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
+function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
   handleNext, onComplete, ...props }) {
   const classes = useStyles()
   const { t } = useTranslation()
@@ -989,7 +989,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               onClick={() => {
                 setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([op.value])}})
                 const response = { item: question.text, value: csvStringify([op.value]) }
-                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+                const data = updateResponses(x, response,activityId, responses, idx+qindex, startTime, setActiveStep, total) 
                 onResponse(data)
               }}
             />
@@ -1025,7 +1025,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                 }
                 setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text,value:csvStringify(values)}})
                 const response = { item: question.text, value: csvStringify(values) }
-                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
               }}                     
             />
@@ -1040,7 +1040,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
             <Rating options={getSorted(x.options)} onChange={(val) => {
               setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
               const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+              const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total) 
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null} />
             </TableCell>
@@ -1052,7 +1052,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                   onChange={(val) => {
                     setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
                     const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-                    const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
+                    const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total) 
                     onResponse(data)
                   }} 
                   value={op.value}
@@ -1063,7 +1063,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
               <Box className={classes.timeMatrix}>
             <TimeSelection onChange={(val) => {
               const response = { item: question.text, value: val }
-          const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+          const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
           onResponse(data)
             }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
             </Box>) : null ) :
@@ -1075,14 +1075,14 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                 (
                   <ShortTextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
-                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
                   }} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                   )
                 :x.type === "text"?(
                   <TextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
-                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
                   }} charLimit={CHARACTER_LIMIT} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                 ):
@@ -1090,7 +1090,7 @@ function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiv
                   <Box className={classes.timeMatrix}>
                 <TimeSelection onChange={(val) => {
                   const response = { item: question.text, value: val }
-              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
+              const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
               onResponse(data)
                 }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                 </Box>):
@@ -1298,8 +1298,7 @@ function Questions({
             options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
             value={responses.current[idx] ?? null}
             onResponse={(response) => {
-              const data = updateResponses(x, response, responses, idx, startTime, setActiveStep, totalQuestions)   
-              localStorage.setItem("activity-survey-"+ activityId, JSON.stringify(data))           
+              const data = updateResponses(x, response, activityId,responses, idx, startTime, setActiveStep, totalQuestions)   
               onResponse(data)
             }}
             startTime={new Date().getTime()}
@@ -1317,7 +1316,7 @@ function Questions({
   )
 }
 
-const updateResponses = (x, response, responses, idx, startTime, setActiveStep, total) => {
+const updateResponses = (x, response, activityId, responses, idx, startTime, setActiveStep, total) => {
   const lastEndTime =
     responses.current
       .filter((item) => item.value != null)
@@ -1336,6 +1335,11 @@ const updateResponses = (x, response, responses, idx, startTime, setActiveStep, 
     response.endTime = new Date().getTime()
     response.type = null
     response.level = null
+    
+    localStorage.setItem("activity-survey-"+ activityId, JSON.stringify(Array.from({
+      ...responses.current,
+      length: total,
+    })))         
     return (
       Array.from({
         ...responses.current,
@@ -1396,6 +1400,7 @@ function Section({
                 x={x}
                 idx={index}
                 index ={idx}
+                activityId={activityId}
                 total={totalQuestions}
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
@@ -1516,6 +1521,7 @@ function Section({
                 index ={idx}
                 idx={calcIndex(idx)}
                 total={totalQuestions}
+                activityId={activityId}
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
                 startTime={new Date().getTime()}              

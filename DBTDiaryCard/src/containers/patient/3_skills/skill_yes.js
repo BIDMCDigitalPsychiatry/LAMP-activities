@@ -101,7 +101,7 @@ export default function SkillYesView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skill', skill)
+            updateReport('skill', skill, props.activityId)
         }
         if (onContinue && skill.skills.length > 0) {
             onContinue()
