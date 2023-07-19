@@ -85,12 +85,12 @@ function HomeView(props) {
             setTime(new Date().getTime());
         }
         initalSettings()        
-    }, [props])
+    }, [props, i18n])
 
     useEffect(() => {
-      if(!!settings)
+      if(!!settings && !!activityId)
          setActive(0)
-    }, [settings])
+    }, [settings, activityId])
 
     useEffect(() => {
         if (active === 8) {
