@@ -88,7 +88,6 @@ export default function TargetView({ settings, ...props }) {
     }
   }
 
-
   const updateAct = (type, target, key, value) => {
     if (type === 'effective') {
       let newEffective = targets.effective
@@ -122,7 +121,7 @@ export default function TargetView({ settings, ...props }) {
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
     if (updateReport) {
-      updateReport('target', targets)
+      updateReport('target', targets, props.activityId)
     }
     let status = true
     for (const i in targets.effective) {

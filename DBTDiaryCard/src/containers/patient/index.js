@@ -71,16 +71,21 @@ function HomeView(props) {
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
+    const [activityId, setActivityId] = useState(null)
 
     useEffect(() => {
-        const settings = props?.data?.activity?.settings;
-        const configuration = props?.data?.configuration;
-        setSettings(settings);
-        updateReport(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' ? 
-        JSON.parse(JSON.stringify(localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id))): null)         
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        setTime(new Date().getTime());
-    }, [])
+        const initalSettings = () => {
+            const settings = props?.data?.activity?.settings;
+            const configuration = props?.data?.configuration;
+            setSettings(settings);
+            setActivityId(props?.data?.activity?.id)
+            createReport(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' ? 
+            JSON.parse(JSON.stringify(localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id))): null, props?.data?.activity?.id)         
+            i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+            setTime(new Date().getTime());
+        }
+        initalSettings()        
+    }, [props])
 
     useEffect(() => {
       if(!!settings)
@@ -88,9 +93,8 @@ function HomeView(props) {
     }, [settings])
 
     useEffect(() => {
-        localStorage.setItem("dbt-"+ props?.data?.activity?.id, JSON.stringify(props.report)) 
         if (active === 8) {
-            let finalReport = createReport(props.report)
+            let finalReport = createReport(props.report, activityId)
             finalReport.duration = new Date().getTime() - time           
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
@@ -116,23 +120,23 @@ function HomeView(props) {
             </div>
         )
     } else if (active === 1) {
-        return (<TargetView settings={settings} {...props} onContinue={() => setActive(2)} onBack={() => setActive(0)} />)
+        return (<TargetView activityId={activityId} settings={settings} {...props} onContinue={() => setActive(2)} onBack={() => setActive(0)} />)
     } else if (active === 2) {
-        return (<EmotionView settings={settings} {...props} onContinue={() => setActive(3)} onBack={() => setActive(1)} />)
+        return (<EmotionView activityId={activityId} settings={settings} {...props} onContinue={() => setActive(3)} onBack={() => setActive(1)} />)
     } else if (active === 3) {
-        return (<SkillsView {...props} onContinue={(mode) => setActive(mode)} onBack={() => setActive(2)} />)
+        return (<SkillsView {...props} activityId={activityId} onContinue={(mode) => setActive(mode)} onBack={() => setActive(2)} />)
     } else if (active === 4) {
-        return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)} />)
+        return (<SkillYesView {...props} activityId={activityId} onContinue={() => setActive(5)} onBack={() => setActive(3)} />)
     } else if (active === 41) {
-        return (<SkillYesView {...props} onContinue={() => setActive(5)} onBack={() => setActive(3)} />)
+        return (<SkillYesView {...props} activityId={activityId} onContinue={() => setActive(5)} onBack={() => setActive(3)} />)
     } else if (active === 42) {
-        return (<SkillNoView {...props} onContinue={() => setActive(7)} onBack={() => setActive(3)} />)
+        return (<SkillNoView {...props} activityId={activityId} onContinue={() => setActive(7)} onBack={() => setActive(3)} />)
     } else if (active === 5) {
-        return (<EffortView {...props} onContinue={() => setActive(6)} onBack={() => setActive(41)} />)
+        return (<EffortView {...props} activityId={activityId} onContinue={() => setActive(6)} onBack={() => setActive(41)} />)
     } else if (active === 6) {
-        return (<SkillHelpView {...props} onContinue={() => setActive(7)} onBack={() => setActive(5)} />)
+        return (<SkillHelpView {...props} activityId={activityId} onContinue={() => setActive(7)} onBack={() => setActive(5)} />)
     } else if(active === 7) {
-        return (<NoteView {...props} onContinue={() => setActive(8)} onBack={() => setActive(!props.report || (props.report && props.report.skillToday) ? 6 : 42)} />)
+        return (<NoteView {...props} activityId={activityId} onContinue={() => setActive(8)} onBack={() => setActive(!props.report || (props.report && props.report.skillToday) ? 6 : 42)} />)
     } else {
         return null
     }

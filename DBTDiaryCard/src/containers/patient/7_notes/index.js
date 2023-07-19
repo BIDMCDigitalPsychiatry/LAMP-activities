@@ -80,7 +80,7 @@ export default function NotesView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('notes', notes)
+            updateReport('notes', notes, props.activityId)
         }
         if (onContinue) {
             onContinue()

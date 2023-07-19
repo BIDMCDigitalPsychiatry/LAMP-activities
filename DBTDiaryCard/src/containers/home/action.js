@@ -5,20 +5,24 @@ const actions = {
     UPDATE_EMOTIONS: 'UPDATE_EMOTIONS',
     UPDATE_REPORT: 'UPDATE_REPORT',
     
-    updateReport: (key, value) => {
+    updateReport: (key, value, activityId) => {
+        const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ activityId) === 'undefined' ?
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ activityId)) : {}
+        data[key] = value
+        localStorage.setItem("activity-dbtdiarycard-"+ activityId, JSON.stringify(data)) 
         return {
             type: actions.UPDATE_REPORT,
             key, value
         }
     },
     updateLivingGoal: (goal) => {
-        return {
+       return {
             type: actions.UPDATE_LIVING_GOAL,
             goal
         }
     },
     updateTargetEffective: (effective) => {
-        return {
+       return {
             type: actions.UPDATE_TARGET_EFFECTIVE,
             effective
         }
@@ -35,9 +39,10 @@ const actions = {
             emotions
         }
     },
-    createReport: (report) => {
+    createReport: (report, activityId) => {
 
         let temporal_slices = []
+        localStorage.setItem("activity-dbtdiarycard-"+ activityId, JSON.stringify(report)) 
 
         if (report && report.target && report.target.effective) {
             const keys = Object.keys(report.target.effective)

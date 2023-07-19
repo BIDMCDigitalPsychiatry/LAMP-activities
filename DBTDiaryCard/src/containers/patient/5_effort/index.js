@@ -64,7 +64,7 @@ export default function SkillEffortView(props) {
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
     if (updateReport) {
-      updateReport('effort', effortLevel)
+      updateReport('effort', effortLevel, props.activityId)
     }
     if (onContinue && effortLevel >= 0) {
       onContinue()

@@ -57,7 +57,7 @@ export default function SkillsView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skillToday', skillToday)
+            updateReport('skillToday', skillToday, props.activityId)
         }
 
         if (onContinue) {
