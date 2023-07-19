@@ -85,7 +85,7 @@ function HomeView(props) {
             setTime(new Date().getTime());
         }
         initalSettings()        
-    }, [props, i18])
+    }, [props, i18n])
 
     useEffect(() => {
       if(!!settings && !!activityId)
