@@ -86,8 +86,9 @@ function HomeView(props) {
     }, [props, i18n])
 
     useEffect(() => {
-      if(!!settings)
+      if(!!settings){ 
          setActive(0)
+      }
     }, [settings])
 
     useEffect(() => {

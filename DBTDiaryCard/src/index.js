@@ -26,7 +26,7 @@ eventer(
 
 		  <AppContainer>
 		    <Provider store={store}>
-		      <Patient />
+		      <Patient data={e.data} />
 		    </Provider>
 		  </AppContainer>
 		  </SnackbarProvider>,
