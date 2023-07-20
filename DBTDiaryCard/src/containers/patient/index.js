@@ -92,7 +92,7 @@ function HomeView(props) {
 
     useEffect(() => {
         if (active === 8) {
-            let finalReport = createReport(props.report, activityId)
+            let finalReport = createReport(props.report, props?.data?.activity?.id)
             finalReport.duration = new Date().getTime() - time           
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
