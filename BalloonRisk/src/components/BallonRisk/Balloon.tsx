@@ -42,6 +42,7 @@ interface AppState {
   break_point_array: any;
   time:number;
   no_back:boolean;
+  points: any;
 }
 
 class Balloons extends React.Component<{}, AppState> {
@@ -80,7 +81,8 @@ class Balloons extends React.Component<{}, AppState> {
       reset_data: false,
       participant_id: 0,
       break_point_array: [],
-      no_back:false
+      no_back:false,
+      points:[]
     };
 
     eventer(
@@ -148,22 +150,53 @@ class Balloons extends React.Component<{}, AppState> {
     );
   };
 
-  getRandomGaussian = function (mean: any, std: any) {
-    let u = 0;
-    let v = 0;
-    while (u === 0) {
-      u = Math.random();
+  getRandom = (mean: any, std: any): any => {
+    const u1 = Math.random();
+    const u2 = Math.random();
+    
+    let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    
+    z0 = (z0 / 10.0) + 0.5;
+
+    if (z0 > 1 || z0 < 0) {
+      return this.getRandom(mean, std);
     }
-    while (v === 0) {
-      v = Math.random();
+    return Math.round(z0 * std + mean);
+  }
+
+  getRandomGaussian =  (mean: any, std: any): any => {
+     let x = 0
+   try{ 
+      x = this.getRandom( mean, std);
+      const data =  Object.assign([], this.state.points);
+      data.push(x)
+      if(data.length === this.state.balloon_count) {
+        const sum = this.state.points.reduce((total : number, num: number) => {
+          return total+num
+        }, 0)
+  
+        const datasum =  data.reduce((total : number, num: number) => {
+          return total+num
+        }, 0)
+        
+        if(mean !== datasum/this.state.balloon_count){          
+          x = (mean * this.state.balloon_count) - sum
+          data.pop()
+          data.push(x)
+        }
+      }     
+    if(x > 1 && x <= 128) {
+      this.setState((prevState) => ({       
+        points: [...prevState.points, x]
+      })) 
+    } else {
+      return this.getRandomGaussian(mean, std)
     }
-    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-    num = num / 10.0 + 0.5;
-    if (num > 1 || num < 0) {
-      return this.getRandomGaussian();
-    }
-    return num * std + mean;
-    }
+    return x      
+} catch(e)  {
+  return this.getRandomGaussian(mean, std)
+}
+  }
 
   // Pump the balloon
   pumpBalloon = async () => {
@@ -225,6 +258,8 @@ class Balloons extends React.Component<{}, AppState> {
             localStorage.getItem("balloonrisk_") || "{}"
           );
           const breakPointData = this.getBreakPoinData(participantData);
+          console.log(breakPointData)
+          
           this.setState((prevState) => ({
             break_point_array: [...prevState.break_point_array, breakPointData],
             balloon_burst: false,
@@ -298,6 +333,7 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
+    console.log(participantData, flag)
     const currentDate = this.dateFormating();
     return participantData.currentDate === currentDate &&
       participantData.hasOwnProperty("breakPointArray") &&
@@ -307,14 +343,15 @@ class Balloons extends React.Component<{}, AppState> {
       ? participantData.breakPointArray[
           flag ? this.state.balloon_number - 1 : this.state.balloon_number
         ]
-      : Math.round(
-          this.getRandomGaussian(
+      : 
+          Math.round(this.getRandomGaussian(
             this.state.breakpoint_mean,
             this.state.breakpoint_std
-          )
-        );
+          ))
+        ;
   };
 
+ 
   sendGameData = async () => {
     const currentDate = this.dateFormating();
     console.log({
@@ -398,9 +435,8 @@ class Balloons extends React.Component<{}, AppState> {
     const participantData: any = JSON.parse(
       localStorage.getItem("balloonrisk_") || "{}"
     );
-    console.log(participantData)
     const breakPointData = this.getBreakPoinData(participantData, false);
-    console.log(breakPointData)
+    console.log("collection")
     this.setState((prevState) => ({
       collected_points: [
         ...prevState.collected_points,
