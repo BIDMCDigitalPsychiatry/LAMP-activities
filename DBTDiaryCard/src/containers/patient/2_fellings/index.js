@@ -89,14 +89,17 @@ export default function FellingView({ settings, ...props }) {
   }
 
   useEffect(() => {
+    if(!!props.activityId) { 
     setResult(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
     && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']? 
     JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']  : { felling: {} })
-  }, [])
+    }
+  }, [props.activityId])
 
   useEffect(() => {
     if(!!props.activityId) {
-      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'  ?
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'  
+      &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
       JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)): {}
       data["emotion"] = result
       localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 

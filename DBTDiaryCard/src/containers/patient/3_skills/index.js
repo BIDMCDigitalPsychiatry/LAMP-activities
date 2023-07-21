@@ -54,14 +54,17 @@ export default function SkillsView(props) {
     const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : -1)
     const { t } = useTranslation()
     useEffect(() => {
+        if(!!props.activityId) { 
         setSkillToday(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
         && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillToday']? 
         JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillToday']  : -1)
-      }, [])
+        }
+      }, [props.activityId])
 
     useEffect(() => {
         if(!!props.activityId) {
-            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'?
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'
+            &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
             JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
             data["skillToday"] = skillToday
             localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data))
