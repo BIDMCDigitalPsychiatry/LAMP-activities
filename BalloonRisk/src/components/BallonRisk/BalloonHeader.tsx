@@ -13,7 +13,7 @@ class BalloonHeader extends React.Component
   
   // Reload the page 
   reloadPage=() =>{
-    window.location.reload(false);
+    window.location.reload();
   }
 
   // Game render function
