@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -80,12 +80,27 @@ export default function NotesView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('notes', notes, props.activityId)
+            updateReport('notes', notes)
         }
         if (onContinue) {
             onContinue()
         }
     }
+    
+    useEffect(() => {
+        if(!!props.activityId) { 
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["notes"] = notes
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+        }
+      }, [notes, props.activityId])
+
+      useEffect(() => {
+        setNotes(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['notes']? 
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['notes']  : '')
+      }, [])
 
     return (
         <div className={classes.root}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -98,10 +98,25 @@ export default function SkillYesView(props) {
         setSkill({ ...skill, skills: list })
     }
 
+    useEffect(() => {
+        setSkill(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skill']? 
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skill']  : { skillToday: true, skills: [] })
+      }, [])
+
+    useEffect(() => {
+        if(!!props.activityId) { 
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["skill"] = skill
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+        }
+      }, [skill, props.activityId])
+
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skill', skill, props.activityId)
+            updateReport('skill', skill)
         }
         if (onContinue && skill.skills.length > 0) {
             onContinue()

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -53,11 +53,25 @@ export default function SkillsView(props) {
     const classes = useStyles();
     const [skillToday, setSkillToday] = React.useState(props.report ? props.report.skillToday : -1)
     const { t } = useTranslation()
+    useEffect(() => {
+        setSkillToday(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillToday']? 
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillToday']  : -1)
+      }, [])
+
+    useEffect(() => {
+        if(!!props.activityId) {
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["skillToday"] = skillToday
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data))
+        } 
+      }, [skillToday, props.activityId])
 
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skillToday', skillToday, props.activityId)
+            updateReport('skillToday', skillToday)
         }
 
         if (onContinue) {

@@ -88,10 +88,25 @@ export default function FellingView({ settings, ...props }) {
     setResult({ ...result, felling: currentFelling })
   }
 
+  useEffect(() => {
+    setResult(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+    && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']? 
+    JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']  : { felling: {} })
+  }, [])
+
+  useEffect(() => {
+    if(!!props.activityId) {
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'  ?
+      JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)): {}
+      data["emotion"] = result
+      localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+    }
+  }, [result, props.activityId])
+
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
     if (updateReport) {
-      updateReport('emotion', result, props.activityId)
+      updateReport('emotion', result)
     }
     if (onContinue && ((emotionItems ?? []).length === 0 || ((emotionItems ?? []).length > 0 && Object.keys(result.felling).length === (emotionItems ?? []).length))) {
       onContinue()

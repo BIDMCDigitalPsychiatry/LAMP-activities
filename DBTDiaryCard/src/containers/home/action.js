@@ -5,11 +5,7 @@ const actions = {
     UPDATE_EMOTIONS: 'UPDATE_EMOTIONS',
     UPDATE_REPORT: 'UPDATE_REPORT',
     
-    updateReport: (key, value, activityId) => {
-        const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ activityId) === 'undefined' ?
-        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ activityId)) : {}
-        data[key] = value
-        localStorage.setItem("activity-dbtdiarycard-"+ activityId, JSON.stringify(data)) 
+    updateReport: (key, value) => {
         return {
             type: actions.UPDATE_REPORT,
             key, value
@@ -40,7 +36,6 @@ const actions = {
         }
     },
     createReport: (report, activityId) => {
-
         let temporal_slices = []
         localStorage.setItem("activity-dbtdiarycard-"+ activityId, JSON.stringify(report)) 
 
