@@ -50,6 +50,11 @@ export default function TargetView({ settings, ...props }) {
   const [ineffectiveItems, setIneffectiveItems] = useState([])
   const [initialised, setInitialised] = useState(false)
   
+  useEffect(() => {
+    setTargets(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+    && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['target']? 
+    JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['target']  : { effective: {}, ineffective: {} })
+  }, [])
   
   useEffect(() => {
     function initialise() {
@@ -118,10 +123,19 @@ export default function TargetView({ settings, ...props }) {
     }
   }
 
+  useEffect(() => {
+    if(!!props.activityId) {
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+      JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)): {}
+      data["target"] = targets
+      localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+    }
+  }, [targets, props.activityId])
+
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
     if (updateReport) {
-      updateReport('target', targets, props.activityId)
+      updateReport('target', targets)
     }
     let status = true
     for (const i in targets.effective) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -64,12 +64,27 @@ export default function SkillEffortView(props) {
   const onUpdateReport = () => {
     const { updateReport, onContinue } = props
     if (updateReport) {
-      updateReport('effort', effortLevel, props.activityId)
+      updateReport('effort', effortLevel)
     }
     if (onContinue && effortLevel >= 0) {
       onContinue()
     }
   }
+
+  useEffect(() => {
+    setEffortLevel(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+    && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['effort']? 
+    JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['effort']  : -1)
+  }, [])
+
+  useEffect(() => {
+    if(!!props.activityId) { 
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+      JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+      data["effort"] = effortLevel
+      localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+    }
+  }, [effortLevel, props.activityId])
 
   return (
     <div className={classes.root}>

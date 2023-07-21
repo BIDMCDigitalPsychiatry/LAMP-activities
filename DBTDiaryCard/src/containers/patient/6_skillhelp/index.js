@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -58,12 +58,27 @@ export default function SkillHelpView(props) {
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('skillHelped', skillHelped, props.activityId)
+            updateReport('skillHelped', skillHelped)
         }
         if (onContinue && skillHelped >= 0) {
             onContinue()
         }
     }
+    
+    useEffect(() => {
+        if(!!props.activityId) { 
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["skillHelped"] = skillHelped
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+        }
+      }, [skillHelped, props.activityId])
+
+      useEffect(() => {
+        setSkillHelped(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']? 
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']  : -1)
+      }, [])
 
     return (
         <div className={classes.root}>

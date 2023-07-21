@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -76,10 +76,26 @@ export default function SkillNoView(props) {
     const classes = useStyles();
     const [reason, setReason] = React.useState(props.report && !!props.report.reason ? props.report.reason : '')
     const { t } = useTranslation()
+    
+    useEffect(() => {
+        if(!!props.activityId) { 
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["reason"] = reason
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+        }
+      }, [reason, props.activityId])
+
+      useEffect(() => {
+        setReason(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['reason']? 
+        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['reason']  : '')
+      }, [])
+
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props
         if (updateReport) {
-            updateReport('reason', reason, props.activityId)
+            updateReport('reason', reason)
         }
         if (onContinue && reason.trim().length > 0) {
             onContinue()
