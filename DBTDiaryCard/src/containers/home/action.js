@@ -36,7 +36,6 @@ const actions = {
         }
     },
     createReport: (report, activityId) => {
-console.log(report)
         let temporal_slices = []
         localStorage.setItem("activity-dbtdiarycard-"+ activityId, JSON.stringify(report)) 
 
