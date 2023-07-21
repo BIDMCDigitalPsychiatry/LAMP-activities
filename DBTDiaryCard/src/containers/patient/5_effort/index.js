@@ -72,14 +72,17 @@ export default function SkillEffortView(props) {
   }
 
   useEffect(() => {
+    if(!!props.activityId) { 
     setEffortLevel(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
     && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['effort']? 
     JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['effort']  : -1)
-  }, [])
+    }
+  }, [props.activityId])
 
   useEffect(() => {
     if(!!props.activityId) { 
-      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' 
+      &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
       JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
       data["effort"] = effortLevel
       localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 

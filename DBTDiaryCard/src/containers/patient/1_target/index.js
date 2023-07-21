@@ -51,10 +51,12 @@ export default function TargetView({ settings, ...props }) {
   const [initialised, setInitialised] = useState(false)
   
   useEffect(() => {
+    if(!!props.activityId) { 
     setTargets(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
     && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['target']? 
     JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['target']  : { effective: {}, ineffective: {} })
-  }, [])
+    }
+  }, [props.activityId])
   
   useEffect(() => {
     function initialise() {
@@ -125,7 +127,8 @@ export default function TargetView({ settings, ...props }) {
 
   useEffect(() => {
     if(!!props.activityId) {
-      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+      const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'
+      &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null ?
       JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)): {}
       data["target"] = targets
       localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 

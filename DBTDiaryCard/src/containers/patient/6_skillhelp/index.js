@@ -67,7 +67,8 @@ export default function SkillHelpView(props) {
     
     useEffect(() => {
         if(!!props.activityId) { 
-            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' ?
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' 
+            &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
             JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
             data["skillHelped"] = skillHelped
             localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
@@ -75,10 +76,12 @@ export default function SkillHelpView(props) {
       }, [skillHelped, props.activityId])
 
       useEffect(() => {
+        if(!!props.activityId) { 
         setSkillHelped(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
         && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']? 
         JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']  : -1)
-      }, [])
+        }
+      }, [props.activityId])
 
     return (
         <div className={classes.root}>
