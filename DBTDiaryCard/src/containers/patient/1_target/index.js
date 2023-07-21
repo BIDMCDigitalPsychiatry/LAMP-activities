@@ -128,7 +128,7 @@ export default function TargetView({ settings, ...props }) {
   useEffect(() => {
     if(!!props.activityId) {
       const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'
-      &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null ?
+      &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) != null ?
       JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)): {}
       data["target"] = targets
       localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
