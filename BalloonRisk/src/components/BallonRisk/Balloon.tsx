@@ -259,8 +259,7 @@ class Balloons extends React.Component<{}, AppState> {
             localStorage.getItem("balloonrisk_") || "{}"
           );
           const breakPointData = this.getBreakPoinData(participantData);
-          console.log(breakPointData)
-          
+         
           this.setState((prevState) => ({
             break_point_array: [...prevState.break_point_array, breakPointData],
             balloon_burst: false,
@@ -284,7 +283,6 @@ class Balloons extends React.Component<{}, AppState> {
                 localStorage.getItem("balloonrisk_") || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
-              console.log(breakPointData)
               this.setState((prevState) => ({
                 break_point_array: [
                   ...prevState.break_point_array,
@@ -334,13 +332,13 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
-    console.log(participantData, flag)
     const currentDate = this.dateFormating();
     return participantData.currentDate === currentDate &&
       participantData.hasOwnProperty("breakPointArray") &&
       this.state.balloon_count === participantData.balloonCount &&
       this.state.breakpoint_mean === participantData.breakpointMean &&
       this.state.breakpoint_std === participantData.breakpointStd
+      && participantData.breakPointArray.length > 0
       ? participantData.breakPointArray[
           flag ? this.state.balloon_number - 1 : this.state.balloon_number
         ]
@@ -355,13 +353,7 @@ class Balloons extends React.Component<{}, AppState> {
  
   sendGameData = async () => {
     const currentDate = this.dateFormating();
-    console.log({
-      currentDate,
-      breakPointArray: this.state.break_point_array,
-      balloonCount: this.state.balloon_count,
-      breakpointMean: this.state.breakpoint_mean,
-      breakpointStd: this.state.breakpoint_std,
-    })
+   
     localStorage.setItem(
       "balloonrisk_",
       JSON.stringify({
@@ -437,7 +429,6 @@ class Balloons extends React.Component<{}, AppState> {
       localStorage.getItem("balloonrisk_") || "{}"
     );
     const breakPointData = this.getBreakPoinData(participantData, false);
-    console.log("collection")
     this.setState((prevState) => ({
       collected_points: [
         ...prevState.collected_points,
