@@ -79,21 +79,21 @@ export default function SkillNoView(props) {
     
     useEffect(() => {
         if(!!props.activityId) { 
-            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'
-            &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null ?
-            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
-            data["reason"] = reason
-            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
-        }
-      }, [reason, props.activityId])
-
-      useEffect(() => {
-        if(!!props.activityId) { 
         setReason(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
         && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['reason']? 
         JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['reason']  : '')
         }
       }, [props.activityId])
+
+    useEffect(() => {
+        if(!!props.activityId) { 
+            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' 
+            &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+            data["reason"] = reason
+            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
+        }
+      }, [reason, props.activityId])
 
     const onUpdateReport = () => {
         const { updateReport, onContinue } = props

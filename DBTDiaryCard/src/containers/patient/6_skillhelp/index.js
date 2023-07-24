@@ -64,25 +64,24 @@ export default function SkillHelpView(props) {
             onContinue()
         }
     }
-    
     useEffect(() => {
         if(!!props.activityId) { 
-            const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' 
-            &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
-            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
-            data["skillHelped"] = skillHelped
-            localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data)) 
-        }
-      }, [skillHelped, props.activityId])
-
-      useEffect(() => {
-        if(!!props.activityId) { 
-        setSkillHelped(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
-        && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']? 
-        JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']  : -1)
-        }
-      }, [props.activityId])
-
+         setSkillHelped(typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined' &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null
+         ? 
+         JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['skillHelped']  : -1)
+         }
+       }, [props.activityId])
+ 
+     useEffect(() => {
+         if(!!props.activityId) {
+             const data = typeof localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== 'undefined'
+             &&  localStorage.getItem("activity-dbtdiarycard-"+ props.activityId) !== null?
+             JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId)) : {}
+             data["skillHelped"] = skillHelped
+             localStorage.setItem("activity-dbtdiarycard-"+ props.activityId, JSON.stringify(data))
+         } 
+       }, [skillHelped, props.activityId])
+ 
     return (
         <div className={classes.root}>
             <HeaderView
