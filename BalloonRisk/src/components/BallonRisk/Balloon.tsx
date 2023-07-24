@@ -166,36 +166,37 @@ class Balloons extends React.Component<{}, AppState> {
 
   getRandomGaussian =  (mean: any, std: any): any => {
      let x = 0
-   try{ 
-      x = this.getRandom( mean, std);
-      const data =  Object.assign([], this.state.points);
-      data.push(x)
-      if(data.length === this.state.balloon_count) {
-        const sum = this.state.points.reduce((total : number, num: number) => {
-          return total+num
-        }, 0)
-  
-        const datasum =  data.reduce((total : number, num: number) => {
-          return total+num
-        }, 0)
-        
-        if(mean !== datasum/this.state.balloon_count){          
-          x = (mean * this.state.balloon_count) - sum
-          data.pop()
-          data.push(x)
+    try{ 
+        x = this.getRandom( mean, std);
+        if(x > 1 && x <= 128) {
+        const data =  Object.assign([], this.state.points);
+        data.push(x)
+        if(data.length === this.state.balloon_count) {
+          const sum = this.state.points.reduce((total : number, num: number) => {
+            return total+num
+          }, 0)
+    
+          const datasum =  data.reduce((total : number, num: number) => {
+            return total+num
+          }, 0)
+          
+          if(mean !== datasum/this.state.balloon_count){          
+            x = (mean * this.state.balloon_count) - sum
+            data.pop()
+            data.push(x)
+          }
+        }     
+      
+        this.setState((prevState) => ({       
+          points: [...prevState.points, x]
+        })) 
+        } else {
+          return this.getRandomGaussian(mean, std)
         }
-      }     
-    if(x > 1 && x <= 128) {
-      this.setState((prevState) => ({       
-        points: [...prevState.points, x]
-      })) 
-    } else {
+        return x      
+    } catch(e)  {
       return this.getRandomGaussian(mean, std)
     }
-    return x      
-} catch(e)  {
-  return this.getRandomGaussian(mean, std)
-}
   }
 
   // Pump the balloon
