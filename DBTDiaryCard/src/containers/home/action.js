@@ -66,8 +66,8 @@ const actions = {
             }
         }
 
-        if (report && report.emotion && report.emotion.felling) {
-            const keys = Object.keys(report.emotion.felling)
+        if (report && report.emotion && report.emotion.feeling) {
+            const keys = Object.keys(report.emotion.feeling)
             for (i = 0; i < keys.length; i++) {
                 const value = report.emotion.felling[keys[i]]
                 temporal_slices.push({

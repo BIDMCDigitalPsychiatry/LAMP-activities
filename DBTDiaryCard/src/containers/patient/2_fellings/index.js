@@ -68,14 +68,18 @@ export default function FellingView({ settings, ...props }) {
     function initialise() {
       const emotionItems = settings?.emotions ?? []
       const extraItems = ["Sadness", "Shame", "Anger", "Fear/Worry", "Joy"]
+      emotionItems.find((i) => extraItems[0])
       extraItems.forEach((item) => {
-        emotionItems.push({emotion: i18n.t(item)})       
+        console.log(emotionItems.indexOf(item));
+        if(emotionItems.indexOf(item) == -1) {
+        emotionItems.push({emotion: i18n.t(item)})  
+        }     
       })
       setEmotionItems(emotionItems)
       setInitialised(true)
     }
     initialise()    
-  }, [i18n, settings])
+  }, [])
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
@@ -94,7 +98,7 @@ export default function FellingView({ settings, ...props }) {
     && JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']? 
     JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props.activityId))['emotion']  : { felling: {} })
     }
-  }, [props.activityId])
+  }, [props.activityId, settings,i18n])
 
   useEffect(() => {
     if(!!props.activityId) {
