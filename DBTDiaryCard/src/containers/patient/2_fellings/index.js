@@ -70,7 +70,7 @@ export default function FellingView({ settings, ...props }) {
       const extraItems = ["Sadness", "Shame", "Anger", "Fear/Worry", "Joy"]
       emotionItems.find((i) => extraItems[0])
       extraItems.forEach((item) => {
-        if(emotionItems.indexOf(item) == -1) {
+        if(emotionItems.indexOf(item) === -1) {
         emotionItems.push({emotion: i18n.t(item)})  
         }     
       })
@@ -78,7 +78,7 @@ export default function FellingView({ settings, ...props }) {
       setInitialised(true)
     }
     initialise()    
-  }, [])
+  }, [i18n, settings])
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
