@@ -70,7 +70,6 @@ export default function FellingView({ settings, ...props }) {
       const extraItems = ["Sadness", "Shame", "Anger", "Fear/Worry", "Joy"]
       emotionItems.find((i) => extraItems[0])
       extraItems.forEach((item) => {
-        console.log(emotionItems.indexOf(item));
         if(emotionItems.indexOf(item) == -1) {
         emotionItems.push({emotion: i18n.t(item)})  
         }     
