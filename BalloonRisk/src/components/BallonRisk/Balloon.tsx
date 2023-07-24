@@ -56,7 +56,7 @@ class Balloons extends React.Component<{}, AppState> {
     
     this.state = {
       balloon_burst: false,
-      balloon_count: 15,
+      balloon_count: 3,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,
@@ -338,7 +338,7 @@ class Balloons extends React.Component<{}, AppState> {
       this.state.balloon_count === participantData.balloonCount &&
       this.state.breakpoint_mean === participantData.breakpointMean &&
       this.state.breakpoint_std === participantData.breakpointStd
-      && participantData.breakPointArray.length > 0
+      && (participantData.breakPointArray.length === (flag ? this.state.balloon_number - 1 : this.state.balloon_number))
       ? participantData.breakPointArray[
           flag ? this.state.balloon_number - 1 : this.state.balloon_number
         ]
