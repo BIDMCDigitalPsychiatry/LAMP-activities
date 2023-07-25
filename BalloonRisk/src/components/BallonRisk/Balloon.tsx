@@ -56,7 +56,7 @@ class Balloons extends React.Component<{}, AppState> {
     
     this.state = {
       balloon_burst: false,
-      balloon_count: 3,
+      balloon_count: 15,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,

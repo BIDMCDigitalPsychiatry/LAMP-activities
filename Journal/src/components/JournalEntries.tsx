@@ -24,6 +24,7 @@ import i18n from "../i18n"
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
 import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 import CloseIcon from '@material-ui/icons/Close';
+import ConfirmationDialog from "./ConfirmationDialog"
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -126,6 +127,7 @@ export default function JournalEntries({ ...props }) {
   const [time, setTime] = useState(new Date().getTime())
   const [noBack, setNoBack] = useState(false)
   const [id, setId] = useState(null)
+  const [confirm, setConfirm] = useState(false)
   const { t } = useTranslation()
   const CHARACTER_LIMIT = 800
   const handleClickStatus = (statusVal: string) => {
@@ -133,10 +135,13 @@ export default function JournalEntries({ ...props }) {
   }
   
   useEffect(() => {
-    
-        const val = localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) ?? ""
-        setId(props.data?.activity?.id)
-       setJounalValue(val)
+        if(typeof localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) !== 'undefined' &&
+        (localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0) {
+          setLoading(true)
+          setConfirm(true)
+        } else { 
+          setId(props.data?.activity?.id)
+        }
         const configuration = props.data?.configuration ?? null
         const langugae = !!configuration
           ? configuration.hasOwnProperty("language")
@@ -144,9 +149,8 @@ export default function JournalEntries({ ...props }) {
             : "en-US"
           : "en-US"
         i18n.changeLanguage(langugae)
-        setNoBack(props.data.noBack)
+        setNoBack(props?.data?.noBack)
         setTime(new Date().getTime())
-    
   }, [])
 
   const saveJournal = (completed?: boolean) => {
@@ -175,11 +179,30 @@ export default function JournalEntries({ ...props }) {
   }
 
   useEffect(() => {
-    localStorage.setItem('activity-journal-'+(id ?? ""), journalValue)
+    if(!!id) { 
+      localStorage.setItem('activity-journal-'+(id ?? ""), journalValue)
+    }
   }, [journalValue])
+
+  const loadData = (statusVal: boolean) => {
+    if(!!statusVal) { 
+      setId(props.data?.activity?.id)
+      const val = localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) ?? ""
+      setJounalValue(val)
+    } else {
+      localStorage.setItem('activity-journal-'+(id ?? ""), "")
+    }
+    setLoading(false)
+    setConfirm(false)
+  }
 
   return (
     <div className={classes.root}>
+      <ConfirmationDialog            
+        onClose={() => setConfirm(false)}
+        open={confirm}
+        confirmAction={loadData} 
+        confirmationMsg={t("Do you want to resume the activity with the locally saved data?")}/>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
