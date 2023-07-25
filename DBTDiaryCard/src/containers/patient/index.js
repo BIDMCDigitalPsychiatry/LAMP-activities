@@ -79,6 +79,9 @@ function HomeView(props) {
             if(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' &&
             localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) != null ) {
                 setConfirm(true)
+            } else {
+                const settings = props?.data?.activity?.settings;
+                setSettings(settings);
             }
            i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
             setTime(new Date().getTime());
