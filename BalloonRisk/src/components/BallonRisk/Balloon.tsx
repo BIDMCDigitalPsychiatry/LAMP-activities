@@ -84,13 +84,17 @@ class Balloons extends React.Component<{}, AppState> {
       no_back:false,
       points:[]
     };
-
     eventer(
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
         const settings = e.data.activity?.settings ?? (e.data.settings ?? {})
         this.setState({
+          points:this.getRandomGaussianArray(settings
+            ? settings.breakpoint_mean
+            : this.state.breakpoint_mean, settings
+            ? settings.breakpoint_std
+            : this.state.breakpoint_std),
           balloon_count: settings
             ? settings.balloon_count
             : this.state.balloon_count,
@@ -106,9 +110,26 @@ class Balloons extends React.Component<{}, AppState> {
       },
       false
     );
-    const participantData = localStorage.getItem("balloonrisk_");
-    if (!participantData) {
-      const currentDate = this.dateFormating();
+    const currentDate = this.dateFormating();
+    const participantData: any = JSON.parse(
+      localStorage.getItem("balloonrisk_") || JSON.stringify({
+        currentDate,
+        balloonCount: this.state.balloon_count ?? 15,
+        breakpointMean: this.state.breakpoint_mean ?? 64.5,
+        breakpointStd: this.state.breakpoint_std?? 37,
+        breakPointArray:this.state.points.length > 0 ? this.state.points:  this.getRandomGaussianArray(this.state.breakpoint_mean, this.state.breakpoint_std)
+      })
+    );
+
+    if (localStorage.getItem(
+      "balloonrisk_") === null || (!!participantData && 
+     (  participantData.currentDate !== currentDate ||
+      !participantData.hasOwnProperty("breakPointArray") ||
+      this.state.balloon_count !== participantData.balloonCount ||
+      this.state.breakpoint_mean !== participantData.breakpointMean ||
+      this.state.breakpoint_std !== participantData.breakpointStd))) {
+      this.setState({
+        points:this.getRandomGaussianArray( this.state.breakpoint_mean,this.state.breakpoint_std)})
       localStorage.setItem(
         "balloonrisk_",
         JSON.stringify({
@@ -116,9 +137,63 @@ class Balloons extends React.Component<{}, AppState> {
           balloonCount: this.state.balloon_count,
           breakpointMean: this.state.breakpoint_mean,
           breakpointStd: this.state.breakpoint_std,
+          breakPointArray:this.state.points.length > 0 ? this.state.points:  this.getRandomGaussianArray(this.state.breakpoint_mean, this.state.breakpoint_std)
         })
       );
     }
+  }
+
+   descriptives = (list: Array<number>) => {
+    // compute mean, sd and the interval range: [min, max]
+    let mean = 0;
+    let sd=0;
+    let i=0;
+    const len = list.length;
+    let  sum=0;
+    let a = 128;
+    let b = 1;
+    for (sum = i = 0; i < len; i++) {
+      sum += list[i];
+      a = Math.min(a, list[i]);
+      b = Math.max(b, list[i]);
+    }
+    mean = sum / len;
+    for (sum = i = 0; i < len; i++) {
+      sum += (list[i] - mean) * (list[i] - mean);
+    }
+    sd = Math.sqrt(sum / (len));
+    return {
+       mean,
+       sd,
+      range: [a, b]
+    };
+  }
+
+  forceDescriptives = (list:Array<number>, mean:number, sd: number) => {
+    // transfom a list to have an exact mean and sd
+    const oldDescriptives = this.descriptives(list);
+    const  oldMean = oldDescriptives.mean;
+    const  oldSD = oldDescriptives.sd;
+    const  newList = [];
+    const  len = list.length;
+    let  i;
+    for (i = 0; i < len; i++) {
+      const val = Math.round( sd * (list[i] - oldMean) / oldSD + mean)
+      newList[i] = val > 128 ? 128 : (val < 1 ? 1 : val);
+    }
+    return newList;
+  }
+
+  getRandomGaussianArray =  (mean: any, std: any): any => {
+    const list = [];
+    let i=0;
+    const len = this.state?.balloon_count ?? 15
+    for (i = 0; i < len; i++) {
+      list[i] = Math.round(Math.random() * (128 - 1) + 1);
+    }
+    const newList = this.forceDescriptives(list, mean, std)
+    this.setState({points: newList})
+    return newList
   }
 
   componentDidMount = () => {
@@ -149,56 +224,7 @@ class Balloons extends React.Component<{}, AppState> {
       false
     );
   };
-
-  getRandom = (mean: any, std: any): any => {
-    const u1 = Math.random();
-    const u2 = Math.random();
-    
-    let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    
-    z0 = (z0 / 10.0) + 0.5;
-
-    if (z0 > 1 || z0 < 0) {
-      return this.getRandom(mean, std);
-    }
-    return Math.round(z0 * std + mean);
-  }
-
-  getRandomGaussian =  (mean: any, std: any): any => {
-     let x = 0
-    try{ 
-        x = this.getRandom( mean, std);
-        if(x > 1 && x <= 128) {
-        const data =  Object.assign([], this.state.points);
-        data.push(x)
-        if(data.length === this.state.balloon_count) {
-          const sum = this.state.points.reduce((total : number, num: number) => {
-            return total+num
-          }, 0)
-    
-          const datasum =  data.reduce((total : number, num: number) => {
-            return total+num
-          }, 0)
-          
-          if(mean !== datasum/this.state.balloon_count){          
-            x = (mean * this.state.balloon_count) - sum
-            data.pop()
-            data.push(x)
-          }
-        }     
-      
-        this.setState((prevState) => ({       
-          points: [...prevState.points, x]
-        })) 
-        } else {
-          return this.getRandomGaussian(mean, std)
-        }
-        return x      
-    } catch(e)  {
-      return this.getRandomGaussian(mean, std)
-    }
-  }
-
+  
   // Pump the balloon
   pumpBalloon = async () => {
     if (this.state.balloon_number > this.state.balloon_count) {
@@ -259,7 +285,6 @@ class Balloons extends React.Component<{}, AppState> {
             localStorage.getItem("balloonrisk_") || "{}"
           );
           const breakPointData = this.getBreakPoinData(participantData);
-         
           this.setState((prevState) => ({
             break_point_array: [...prevState.break_point_array, breakPointData],
             balloon_burst: false,
@@ -283,6 +308,7 @@ class Balloons extends React.Component<{}, AppState> {
                 localStorage.getItem("balloonrisk_") || "{}"
               );
               const breakPointData = this.getBreakPoinData(participantData);
+
               this.setState((prevState) => ({
                 break_point_array: [
                   ...prevState.break_point_array,
@@ -332,22 +358,10 @@ class Balloons extends React.Component<{}, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
-    const currentDate = this.dateFormating();
-    return participantData.currentDate === currentDate &&
-      participantData.hasOwnProperty("breakPointArray") &&
-      this.state.balloon_count === participantData.balloonCount &&
-      this.state.breakpoint_mean === participantData.breakpointMean &&
-      this.state.breakpoint_std === participantData.breakpointStd
-      && (participantData.breakPointArray.length === (flag ? this.state.balloon_number - 1 : this.state.balloon_number))
-      ? participantData.breakPointArray[
-          flag ? this.state.balloon_number - 1 : this.state.balloon_number
-        ]
-      : 
-          Math.round(this.getRandomGaussian(
-            this.state.breakpoint_mean,
-            this.state.breakpoint_std
-          ))
-        ;
+   
+    return  participantData?.breakPointArray[
+          flag ? this.state.balloon_number -1: this.state.balloon_number  
+        ] 
   };
 
  
@@ -429,6 +443,7 @@ class Balloons extends React.Component<{}, AppState> {
       localStorage.getItem("balloonrisk_") || "{}"
     );
     const breakPointData = this.getBreakPoinData(participantData, false);
+
     this.setState((prevState) => ({
       collected_points: [
         ...prevState.collected_points,
