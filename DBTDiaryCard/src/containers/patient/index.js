@@ -14,7 +14,7 @@ import EffortView from './5_effort'
 import NoteView from './7_notes'
 import SkillHelpView from './6_skillhelp'
 import { useTranslation } from "react-i18next"
-
+import ConfirmationDialog from '../../components/ConfirmationDialog'
 import actions from '../home/action'
 
 const { updateReport, createReport } = actions
@@ -71,16 +71,16 @@ function HomeView(props) {
     const [settings, setSettings] = useState(null)
     const [time, setTime] = useState(null)
     const { t, i18n } = useTranslation();
+    const [confirm, setConfirm] = useState(false)
 
     useEffect(() => {
         const initalSettings = () => {
-            const settings = props?.data?.activity?.settings;
             const configuration = props?.data?.configuration;
-            setSettings(settings);
-            createReport(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' &&
-            localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) != null ? 
-            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id)): {}, props?.data?.activity?.id)         
-            i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+            if(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' &&
+            localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) != null ) {
+                setConfirm(true)
+            }
+           i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
             setTime(new Date().getTime());
         }
         initalSettings()        
@@ -99,10 +99,32 @@ function HomeView(props) {
             window.parent.postMessage(JSON.stringify(finalReport), "*");            
         }
     }, [active, time, props.report, props?.data])
+
+    const loadData = (statusVal) => {
+        if(!!statusVal) {
+            createReport(typeof localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) !== 'undefined' &&
+            localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id) != null ? 
+            JSON.parse(localStorage.getItem("activity-dbtdiarycard-"+ props?.data?.activity?.id)): {}, props?.data?.activity?.id)         
+        } else {
+          createReport({}, props.data?.activity?.id )
+          localStorage.setItem('activity-dbtdiarycard-'+(props.data?.activity?.id ?? ""), '{}')
+        }
+        const settings = props?.data?.activity?.settings;
+            setSettings(settings);
+        setConfirm(false)
+      }
+      
+    if(active === -1) {
+        return  (<ConfirmationDialog            
+        onClose={() => setConfirm(false)}
+        open={confirm}
+        confirmAction={loadData} 
+        confirmationMsg={t("Do you want to resume the activity with the locally saved data?")}/>)
     
+    }
     if (active === 0) {
         return ( 
-             <div className={classes.root}>                          
+             <div className={classes.root}>
                 <div className={classes.headerContainer}>
                     {!props.data?.noBack && <IconButton onClick={() => window.parent.postMessage(JSON.stringify({completed: true}), "*") }>
                             <ArrowBack />

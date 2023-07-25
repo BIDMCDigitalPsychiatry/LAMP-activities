@@ -46,7 +46,7 @@ import ReactMarkdown from "react-markdown"
 import emoji from "remark-emoji"
 import gfm from "remark-gfm"
 import { useSnackbar } from "notistack"
-
+import ConfirmationDialog from "./ConfirmationDialog"
 const GreenCheckbox = withStyles({
   root: {
     color: "#2F9D7E",
@@ -1351,6 +1351,7 @@ const updateResponses = (x, response, activityId, responses, idx, startTime, set
 function Section({
   onResponse,
   value,
+  activityVal,
   settings,
   onComplete,
   totalQuestions,
@@ -1358,9 +1359,9 @@ function Section({
   ...props
 }) {
   const activityId = value?.id
-  const values = JSON.parse(localStorage.getItem("activity-survey-"+ activityId) ?? "[]")
-  const base = value.settings.map((x, index) => (    
-    values[index] ?? { item: x.text, value:  null, duration: 0 }))
+  const base = value.settings.map((x, index) => ( 
+    !!activityVal && activityVal[index] ?   
+    activityVal[index] : { item: x.text, value:  null, duration: 0 }))
   const responses = useRef(base)
   const [activeStep, setActiveStep] = useState(0)
   const classes = useStyles()
@@ -1581,9 +1582,12 @@ export default function SurveyQuestions({...props}) {
   const { t } = useTranslation()
   const [responses, setResponses] = useState(null)
   const [activity, setActivity] = useState(null)
+  const [activityVal, setActivityVal] = useState(null)
+
   const [settings, setSettings] = useState(null)
   const [startTime, setStartTime] = useState(new Date().getTime())
   const { enqueueSnackbar } = useSnackbar()
+  const [confirm, setConfirm] = useState(false)
 
   const validator = (response) => {
     let status = true
@@ -1630,11 +1634,28 @@ export default function SurveyQuestions({...props}) {
       "*"
     )
   }
+
+  const loadData = (statusVal: boolean) => {
+    if(!!statusVal) {
+      const val = localStorage.getItem("activity-survey-" +(props.data?.activity?.id ?? "")) 
+      setActivityVal(JSON.parse(val))
+    } else {
+      localStorage.setItem('activity-survey-'+(props.data?.activity?.id ?? ""), "")
+    }
+    const activity = props.data.activity ?? (props.data ?? {});
+    setActivity(activity);
+    setConfirm(false)
+  }
   
   useEffect(() => {
-    const activity = props.data.activity ?? (props.data ?? {});
-    const configuration = props.data.configuration;
-    setActivity(activity);
+    if(typeof localStorage.getItem('activity-survey-'+(props.data?.activity?.id ?? "")) !== 'undefined' &&
+    (localStorage.getItem('activity-survey-'+(props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0) {
+      setConfirm(true)
+    } else {  
+      const activity = props.data.activity ?? (props.data ?? {});
+      setActivity(activity);
+    }
+       const configuration = props.data.configuration;
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, [])
 
@@ -1685,7 +1706,13 @@ export default function SurveyQuestions({...props}) {
   }
 
   return (
-    <Box className={classes.root}>      
+    <Box className={classes.root}> 
+     <ConfirmationDialog            
+        onClose={() => setConfirm(false)}
+        open={confirm}
+        confirmAction={loadData} 
+        confirmationMsg={t("Do you want to resume the activity with the locally saved data?")}/>
+           
       {(activity !== null && settings !== null) ?
         <Section
           onResponse={(response) => 
@@ -1693,6 +1720,8 @@ export default function SurveyQuestions({...props}) {
             setResponses(response)
           }
           value={activity}
+          activityVal={activityVal}
+
           settings={settings}
           totalQuestions={(activity?.settings || []).length}
           noBack= {props.data.noBack}
