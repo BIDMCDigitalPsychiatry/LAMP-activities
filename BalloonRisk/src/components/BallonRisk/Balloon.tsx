@@ -45,23 +45,25 @@ interface AppState {
   points: any;
 }
 
-class Balloons extends React.Component<{}, AppState> {
+interface AppProps{
+  data: any
+}
+
+class Balloons extends React.Component<AppProps, AppState> {
   constructor(props: any) {
     super(props);
-    const eventMethodObj: any = window.addEventListener;
-    const eventMethod = eventMethodObj ? "addEventListener" : "attachEvent";
-    const eventer = window[eventMethod];
-    const messageEvent =
-      eventMethod === "attachEvent" ? "onmessage" : "message";
-    
+
+    const configuration = props.data.configuration;
+    const settings = props.data.activity?.settings ?? (props.data.settings ?? {})
+    const pointsArray = this.getRandomGaussianArray(settings.breakpoint_mean, settings.breakpoint_std)
     this.state = {
       balloon_burst: false,
-      balloon_count: 15,
+      balloon_count: settings.balloon_count,
       balloon_number: 1,
       balloon_width: 100,
       break_point: 0,
-      breakpoint_mean: 64.5,
-      breakpoint_std: 37,
+      breakpoint_mean: settings.breakpoint_mean,
+      breakpoint_std:  settings.breakpoint_std,
       btn_collect_disabled: "disabled",
       btn_pump_disabled: null,
       cls_balloon_burst: null,
@@ -81,43 +83,18 @@ class Balloons extends React.Component<{}, AppState> {
       reset_data: false,
       participant_id: 0,
       break_point_array: [],
-      no_back:false,
-      points:[]
+      no_back:props.data.noBack,
+      points: pointsArray,
     };
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const configuration = e.data.configuration;
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? {})
-        this.setState({
-          points:this.getRandomGaussianArray(settings
-            ? settings.breakpoint_mean
-            : this.state.breakpoint_mean, settings
-            ? settings.breakpoint_std
-            : this.state.breakpoint_std),
-          balloon_count: settings
-            ? settings.balloon_count
-            : this.state.balloon_count,
-          breakpoint_mean: settings
-            ? settings.breakpoint_mean
-            : this.state.breakpoint_mean,
-          breakpoint_std: settings
-            ? settings.breakpoint_std
-            : this.state.breakpoint_std,
-          no_back: e.data.noBack
-        });
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-      },
-      false
-    );
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     const currentDate = this.dateFormating();
     const participantData: any = JSON.parse(
       localStorage.getItem("balloonrisk_") || JSON.stringify({
         currentDate,
-        balloonCount: this.state.balloon_count ?? 15,
-        breakpointMean: this.state.breakpoint_mean ?? 64.5,
-        breakpointStd: this.state.breakpoint_std?? 37,
-        breakPointArray:this.state.points.length > 0 ? this.state.points:  this.getRandomGaussianArray(this.state.breakpoint_mean, this.state.breakpoint_std)
+        balloonCount: settings.balloon_count ?? 15,
+        breakpointMean: settings.breakpoint_mean ?? 64.5,
+        breakpointStd: settings.breakpoint_std?? 37,
+        breakPointArray:pointsArray
       })
     );
 
@@ -128,16 +105,15 @@ class Balloons extends React.Component<{}, AppState> {
       this.state.balloon_count !== participantData.balloonCount ||
       this.state.breakpoint_mean !== participantData.breakpointMean ||
       this.state.breakpoint_std !== participantData.breakpointStd))) {
-      this.setState({
-        points:this.getRandomGaussianArray( this.state.breakpoint_mean,this.state.breakpoint_std)})
+      
       localStorage.setItem(
         "balloonrisk_",
         JSON.stringify({
           currentDate,
-          balloonCount: this.state.balloon_count,
-          breakpointMean: this.state.breakpoint_mean,
-          breakpointStd: this.state.breakpoint_std,
-          breakPointArray:this.state.points.length > 0 ? this.state.points:  this.getRandomGaussianArray(this.state.breakpoint_mean, this.state.breakpoint_std)
+          balloonCount: settings.balloon_count,
+          breakpointMean: settings.breakpoint_mean,
+          breakpointStd: settings.breakpoint_std,
+          breakPointArray: pointsArray
         })
       );
     }
