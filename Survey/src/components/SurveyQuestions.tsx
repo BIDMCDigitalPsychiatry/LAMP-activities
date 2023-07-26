@@ -1711,7 +1711,7 @@ export default function SurveyQuestions({...props}) {
         onClose={() => setConfirm(false)}
         open={confirm}
         confirmAction={loadData} 
-        confirmationMsg={t("Do you want to resume the activity with the locally saved data?")}/>
+        confirmationMsg={t("Would you like to resume this activity where you left off?")}/>
            
       {(activity !== null && settings !== null) ?
         <Section

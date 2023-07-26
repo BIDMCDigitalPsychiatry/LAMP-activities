@@ -202,7 +202,7 @@ export default function JournalEntries({ ...props }) {
         onClose={() => setConfirm(false)}
         open={confirm}
         confirmAction={loadData} 
-        confirmationMsg={t("Do you want to resume the activity with the locally saved data?")}/>
+        confirmationMsg={t("Would you like to resume this activity where you left off?")}/>
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
