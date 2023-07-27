@@ -463,7 +463,20 @@ class Board extends React.Component<BoardProps, BoardState> {
     };
   
     clickBack = () => {
-      this.sendGameResult()
+      const route = {'type': 'manual_exit', 'value': true} 
+      const boxes = [];
+      if (this.state.boxes !== null) {
+        const r = JSON.parse(this.state.boxes);
+        Object.keys(r).forEach((key) => {
+          boxes.push(r[key]);
+        });
+      }    
+      boxes.push(route);    
+      this.setState({
+        boxes: JSON.stringify(boxes),
+      }, () => {
+        this.sendGameResult()
+      });
     }
 
   // Render the game board

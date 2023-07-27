@@ -311,7 +311,18 @@ class Jewels extends React.Component<{}, AppState> {
   };
 
   clickBack = () => {
-    this.sendDataToDashboard(2)
+    const route = {'type': 'manual_exit', 'value': true}  
+    const routeData:any = []
+    if (this.state.routes.length > 0) {
+      const r = JSON.parse(this.state.routes);
+      Object.keys(r).forEach((key) => {
+        routeData.push(r[key]);
+      });
+    }
+    routeData.push(route);
+    this.setState({routes: JSON.stringify(routeData)}, () => {
+      this.sendDataToDashboard(2)
+    })
   }
 
   sendDataToDashboard = (pointVal : number) => {

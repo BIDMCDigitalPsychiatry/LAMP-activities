@@ -710,7 +710,21 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   clickBack = () => {
-    this.sendGameResult()
+    const route = {'type': 'manual_exit', 'value': true} 
+      const states = [];
+      if (this.state.states !== null) {
+        const r = JSON.parse(this.state.states);
+        Object.keys(r).forEach((key) => {
+          states.push(r[key]);
+        });
+      }
+      states.push(route);
+      this.setState({
+        states: JSON.stringify(states),
+      }, () => {
+      this.sendGameResult()
+    })
+  
   }
 
   // To set the game board table size based on screen resolution

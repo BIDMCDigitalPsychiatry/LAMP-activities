@@ -13,7 +13,6 @@ const Layout = ({...props} : any) =>{
     const [gameLevel, setGameLevel] = useState(1)
     const [footerMsg, setFooterMsg] = useState("")
     const [confirmModalShow, setConfirmModalShow] = useState(false)
-    const [exitModalShow, setExitModalShow] = useState(false)
     const [levelCompleted, setLevelCompleted] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
     const time = new Date().getTime()
@@ -79,7 +78,7 @@ const Layout = ({...props} : any) =>{
               temporal_slices: JSON.parse(JSON.stringify(routes)),
               static_data: {},
             }), "*") 
-          }, 5000)
+          }, 3000)
        }
 
        useEffect(() => {
@@ -89,9 +88,17 @@ const Layout = ({...props} : any) =>{
       }, [isGameOver])
 
       
-      
+      const clickBack= () => { 
+        const route = {'type': 'manual_exit', 'value': true} 
+        routes.push(route)
+        parent.postMessage(JSON.stringify({
+          timestamp: new Date().getTime(),
+          duration: new Date().getTime() - time,
+          temporal_slices: JSON.parse(JSON.stringify(routes)),
+          static_data: {},
+        }), "*")        
+      }
 
-      
     return(
         <div className="main-class">
           {confirmModalShow && <ModalPopup
@@ -118,25 +125,9 @@ const Layout = ({...props} : any) =>{
             }}
             action="mindLamp"
           />    }
-
-          {exitModalShow && <ModalPopup
-            show={exitModalShow}
-            onHide={(e : any) =>{
-              setExitModalShow(false)
-              setTimeout(()=>{
-                parent.postMessage(null, "*")
-              }, 5000)    
-            }}
-            message={i18n.t("DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING")}
-            handleConfirm={(e: any) => {
-              setExitModalShow(false)
-              sentResult()   
-                       
-            }}
-            action="mindLamp"
-          />      }   
+ 
           <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={sentResult} />
+              <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
             </nav>            
             <div className="heading">{i18n.t<string>("GAME")}</div>
             
