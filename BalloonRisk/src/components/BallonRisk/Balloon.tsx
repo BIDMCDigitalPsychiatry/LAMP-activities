@@ -342,6 +342,7 @@ class Balloons extends React.Component<AppProps, AppState> {
 
  
   sendGameData = async () => {
+
     const currentDate = this.dateFormating();
    
     localStorage.setItem(
@@ -456,7 +457,12 @@ class Balloons extends React.Component<AppProps, AppState> {
   };
   
   clickBack = () => {
-    this.sendGameData()
+    const route = {'type': 'manual_exit', 'value': true} 
+    this.setState((prevState) => ({
+      route: [...prevState.route, route],
+    }), () => {
+      this.sendGameData()
+    });
   }
 
   // Game render function

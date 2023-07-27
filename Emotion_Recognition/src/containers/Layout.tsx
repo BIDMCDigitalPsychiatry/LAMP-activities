@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
-import ModalPopup from './uielements/ModalPopup';
 import { shuffleArray } from "src/functions";
 
 const Layout = ({...props} : any) =>{  
@@ -16,7 +15,6 @@ const Layout = ({...props} : any) =>{
     const [gameOver, setGameOver] = useState(false)
     const [settings, setSettings] = useState<any>(null) 
     const [totalLevels, setTotalLevels] = useState(0)
-    const [exitModalShow, setExitModalShow] = useState(false)
 
       useEffect(() => {  
         const configuration = props.data.configuration;
@@ -49,7 +47,6 @@ const Layout = ({...props} : any) =>{
       }, [gameOver])
 
       const sentResult = () => {
-        console.log(routes)
         setTimeout(()=>{
           parent.postMessage(routes.length > 0 ? JSON.stringify({
             timestamp: new Date().getTime(),
@@ -90,32 +87,21 @@ const Layout = ({...props} : any) =>{
             }
           
       }
-
+      const clickBack = () => {
+        const route = {'type': 'manual_exit', 'value': true}   
+        routes.push(route)
+        parent.postMessage(routes.length > 0 ? JSON.stringify({
+          timestamp: new Date().getTime(),
+          duration: new Date().getTime() - time,
+          temporal_slices: JSON.parse(JSON.stringify(routes)),
+          static_data: {},
+        }) : null, "*") 
+      }
       return(
         <div className="main-class">   
-        {exitModalShow && 
-          <ModalPopup
-              show={exitModalShow}
-              onHide={(e : any) =>{
-                setExitModalShow(false)
-                setTimeout(()=>{
-                  parent.postMessage(null, "*")
-                }, 5000)    
-              }}
-              message={i18n.t("DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING")+'?'}
-              handleConfirm={(e: any) => {
-                setExitModalShow(false)
-                sentResult()   
-                        
-              }}
-              action="mindLamp"
-            />      
-          }          
+               
           <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={() => {routes.length>0 ? setExitModalShow(true) : 
-              setTimeout(()=>{
-                parent.postMessage(null, "*")
-              }, 5000)  }} />
+              <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
             </nav>             
             <div className="heading">{i18n.t<string>("EMOTIONS")}</div>            
           <Container> 

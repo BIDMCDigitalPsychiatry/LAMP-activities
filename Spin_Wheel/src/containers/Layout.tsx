@@ -107,6 +107,8 @@ const Layout = ({...props}) => {
   }  
   useEffect(() => {
     if(complete) {
+      const route = {'type': 'manual_exit', 'value': true} 
+      routes.push(route)
       setTimeout(()=>{
         parent.postMessage(routes.length > 0 ? JSON.stringify({
           timestamp: new Date().getTime(),
@@ -114,7 +116,7 @@ const Layout = ({...props}) => {
           temporal_slices: JSON.parse(JSON.stringify(routes)),
           static_data: {},
          }) : null, "*") 
-      }, 5000)   
+      }, 2000)   
     }
   }, [complete])
 
@@ -127,7 +129,7 @@ const Layout = ({...props}) => {
           temporal_slices: JSON.parse(JSON.stringify(routes)),
           static_data: {},
          }) : null, "*") 
-      }, 5000)     
+      }, 3000)     
 
     }
   }, [isGameOver])
