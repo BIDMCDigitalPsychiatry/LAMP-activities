@@ -1,6 +1,6 @@
 {
 	"question": "sp\u00f8rgsm\u00e5l",
-	"Question number of total": "Sp\u00f8rgsm\u00e5l {{ number }} of {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "Sp\u00f8rgsm\u00e5l {{ number }} of {{ total }}",
 	"Question": "Sp\u00f8rgsm\u00e5l",
 	"of":"af",
 	"Next" : "N\u00e6ste",

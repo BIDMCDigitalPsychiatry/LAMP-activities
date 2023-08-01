@@ -7,5 +7,20 @@
 	"Leaving so soon?": "Leaving so soon?",
 	"If you leave without submitting, your entry will be lost.": "If you leave without submitting, your entry will be lost.",
 	"No, don’t leave yet": "No, don’t leave yet",
-	"Yes, leave": "Oui, partir"
+	"Yes, leave": "Oui, partir",
+	"Sunday":"Dimanche", "Monday":
+	"Lundi", "Tuesday":"Mardi", "Wednesday":"Mercredi", "Thursday":"Jeudi", "Friday":"Vendredi", "Saturday":"Samedi",
+	"Jan":"Jan",
+ "Feb":"Fév",
+ "Mar":"Mar",
+ "Apr":"Avr", 
+"May":"Peut", 
+"Jun":"Juin", 
+"Jul":"Juil", 
+"Aug":"Août",
+ "Sep":"Sep", 
+"Oct":"Oct", 
+"Nov":"Nov", 
+"Dec":"Déc"
+
 }

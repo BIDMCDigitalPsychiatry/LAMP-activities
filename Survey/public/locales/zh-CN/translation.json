@@ -1,6 +1,6 @@
 {
 	"question": "问题",
-	"Question number of total": "问题 {{ number }} of {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "问题 {{ number }} of {{ total }}",
 	"Question": "问题",
 	"Next": "下一步",
 	"Submit": "提交",

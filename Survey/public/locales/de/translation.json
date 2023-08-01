@@ -1,6 +1,6 @@
 {
 	"question": "frage",
-	"Question number of total": "Frage {{ number }} of {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "Frage {{ number }} of {{ total }}",
 	"Question": "Frage",
 	"of":"von",
 	"Next" : "Weiter",

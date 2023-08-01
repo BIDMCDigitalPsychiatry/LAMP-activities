@@ -7,5 +7,9 @@
 	"Leaving so soon?": "Rejser du s\u00e5 tidligt?",
 	"If you leave without submitting, your entry will be lost.": "Hvis du rejser uden at indsende, vil din indtastning g\u00e5 tabt.",
 	"No, don’t leave yet": "Nej, du m\u00e5 ikke rejse endnu",
-	"Yes, leave": "Ja, g\u00e5"
+	"Yes, leave": "Ja, g\u00e5",
+	"Sunday":"Søndag", "Monday":
+	"Mandag", "Tuesday":"Tirsdag", "Wednesday":"Onsdag", "Thursday":"Torsdag", "Friday":"Fredag", "Saturday":"lørdag",
+	"Jan":"Jan", "Feb":"Feb", "Mar":"Mar", "Apr":"Apr", "May":"Maj", "Jun":"Jun", "Jul":"Jul", "Aug":"Aug",
+	 "Sep":"Sep", "Oct":"Okt", "Nov":"Nov", "Dec":"Dec"
 }

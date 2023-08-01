@@ -7,5 +7,19 @@
 	"Leaving so soon?": "Gehst du schon?",
 	"If you leave without submitting, your entry will be lost.": "Wenn du die Seite verl\u00e4sst, ohne auf Absenden zu tippen, geht dein Eintrag verloren.",
 	"No, don’t leave yet": "Nein, die Seite noch nicht verlassen",
-	"Yes, leave": "Ja, die Seite verlassen"
+	"Yes, leave": "Ja, die Seite verlassen",
+	"Sunday":"Sonntag", "Monday":
+	"Montag", "Tuesday":"Dienstag", "Wednesday":"Mittwoch", "Thursday":"Donnerstag", "Friday":"Freitag", "Saturday":"Samstag",
+	"Jan":"Ene",
+ "Feb":"Feb",
+ "Mar":"Bes",
+ "Apr":"Apr", 
+"May":"Dür", 
+"Jun":"Jun", 
+"Jul":"Jul", 
+"Aug":"Aug",
+ "Sep":"Sep", 
+"Oct":"Okt", 
+"Nov":"Nov", 
+"Dec":"Dez"
 }

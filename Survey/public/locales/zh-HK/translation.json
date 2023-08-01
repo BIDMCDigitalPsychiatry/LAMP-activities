@@ -1,6 +1,6 @@
 {
 	"question": "問題",
-	"Question number of total": "問題 {{ number }} 的 {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "問題 {{ number }} 的 {{ total }}",
 	"of":"的",
 	"Mood": "情緒",
 	"Back":"返回",
