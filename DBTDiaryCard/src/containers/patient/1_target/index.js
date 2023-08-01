@@ -62,12 +62,12 @@ export default function TargetView({ settings, ...props }) {
   useEffect(() => {
     function initialise() {
       const staticItems = [
-        {target: i18n.t("Die"), measure:i18n.t("times")},
+        {target: i18n.t("DIE"), measure:i18n.t("times")},
         // {target: i18n.t("Suicide"),measure: i18n.t("Times") },
         // {target: i18n.t("Use/ Drink"),measure: i18n.t("Times") },
-        {target: i18n.t("Self-Harm"),measure: i18n.t("Times") },
-        {target: i18n.t("Quit therapy"),measure: i18n.t("Times") },
-        {target: i18n.t("Die by suicide"),measure: i18n.t("Times") }
+        {target: i18n.t("SELF_HARM"),measure: i18n.t("Times") },
+        {target: i18n.t("QUIT_THERAPY"),measure: i18n.t("Times") },
+        {target: i18n.t("DIE_BY_SUICIDE"),measure: i18n.t("Times") }
       ]
       const ineffectiveItems = (settings?.targetIneffective || []).concat(staticItems) ?? staticItems
       setIneffectiveItems(ineffectiveItems)

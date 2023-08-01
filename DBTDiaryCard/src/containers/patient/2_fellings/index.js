@@ -67,7 +67,7 @@ export default function FellingView({ settings, ...props }) {
   useEffect(() => {
     function initialise() {
       const emotionItems = settings?.emotions ?? []
-      const extraItems = ["Sadness", "Shame", "Anger", "Fear/Worry", "Joy"]
+      const extraItems = [t("SADNESS"), t("SHAME"), t("ANGER"), t("FEAR_WORRY"), t("JOY")]
       emotionItems.find((i) => extraItems[0])
       extraItems.forEach((item) => {
         if(emotionItems.indexOf(item) === -1) {

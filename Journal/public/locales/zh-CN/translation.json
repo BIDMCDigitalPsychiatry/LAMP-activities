@@ -7,5 +7,20 @@
 	"Leaving so soon?": "这么快就要离开",
 	"If you leave without submitting, your entry will be lost.": "如果不提交就离开，输入的记录将会丢失。",
 	"No, don’t leave yet": "不，先不离开",
-	"Yes, leave": "是，要离开"
+	"Yes, leave": "是，要离开",
+	"Sunday":"星期日", "Monday":
+	"周一", "Tuesday":"周二", "Wednesday":"周三", "Thursday":"周四", "Friday":"星期五", "Saturday":"周六",
+	"Jan":"简",
+ "Feb":"二月",
+ "Mar":"三月",
+ "Apr":"四月", 
+"May":"可能", 
+"Jun":"君", 
+"Jul":"七月", 
+"Aug":"八月",
+ "Sep":"九月", 
+"Oct":"十月", 
+"Nov":"十一月", 
+"Dec":"十二月"
+	
 }

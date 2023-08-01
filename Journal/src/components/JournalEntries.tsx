@@ -117,7 +117,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
   },
 }))
-
 export default function JournalEntries({ ...props }) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
@@ -173,8 +172,9 @@ export default function JournalEntries({ ...props }) {
   }
 
   const getDateString = (date: Date) => {
-    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    const monthname = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    const weekday = [t("Sunday"), t("Monday"), t("Tuesday"), t("Wednesday"), t("Thursday"), t("Friday"), t("Saturday")]
+    const monthname = [t("Jan"), t("Feb"), t("Mar"), t("Apr"), t("May"), t("Jun"), t("Jul"), 
+    t("Aug"), t("Sep"), t("Oct"), t("Nov"), t("Dec")]
     return weekday[date.getDay()] + " " + monthname[date.getMonth()] + ", " + date.getDate()
   }
 
@@ -237,8 +237,8 @@ export default function JournalEntries({ ...props }) {
                   classes={{ root: classes.textArea }}
                   helperText={
                     journalValue
-                      ? `${journalValue.length}/${CHARACTER_LIMIT} max characters`
-                      : `${CHARACTER_LIMIT} max characters`
+                      ? `${journalValue.length}/${CHARACTER_LIMIT} ${t("max characters")}`
+                      : `${CHARACTER_LIMIT} ${t("max characters")}`
                   }
                   inputProps={{
                     maxLength: CHARACTER_LIMIT,

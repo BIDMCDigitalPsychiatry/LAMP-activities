@@ -933,7 +933,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-          {`${t("Question")}  ${(index + 1)}  ${t("of")}  ${settingsQuestions}`}
+        {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settingsQuestions}
         </Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
@@ -1284,7 +1284,7 @@ function Questions({
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-       {`${t("Question")} ${(index + 1)} ${t("of")} ${settings.length}`}
+       {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settings.length}
         </Typography>
       </Box>
 

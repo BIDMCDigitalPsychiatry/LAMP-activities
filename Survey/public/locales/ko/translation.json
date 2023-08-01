@@ -1,6 +1,6 @@
 {
 	"question": "\ubb38\ud56d\ub4e4",
-	"Question number of total": "\ubb38\ud56d\ub4e4 {{ number }} of {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "\ubb38\ud56d\ub4e4 {{ number }} of {{ total }}",
 	"Question": "\ubb38\ud56d\ub4e4",
 	"of":"의",
 	"Next ": "\ub2e4\uc74c ", 

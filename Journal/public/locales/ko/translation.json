@@ -7,5 +7,20 @@
 	"Leaving so soon?": "\ubc8c\uc368 \ub098\uac00\uc2dc\ub098\uc694?",
 	"If you leave without submitting, your entry will be lost.": "\uc81c\ucd9c\ud558\uc9c0 \uc54a\uace0 \ub098\uac00\uc2dc\uba74, \uc785\ub825\ub41c \uc790\ub8cc\uac00 \uc720\uc2e4\ub429\ub2c8\ub2e4.",
 	"No, don’t leave yet": "\uc544\ub2c8\uc624, \uc544\uc9c1 \ub098\uac00\uc9c0 \ub9c8\uc138\uc694",
-	"Yes, leave": "\ub124, \ub098\uac00\uc138\uc694"
+	"Yes, leave": "\ub124, \ub098\uac00\uc138\uc694",
+	"Sunday":"일요일", "Monday":
+	"월요일", "Tuesday":"화요일", "Wednesday":"수요일", "Thursday":"목요일", "Friday":"금요일", "Saturday":"토요일",
+	"Jan":"얀",
+ "Feb":"2월",
+ "Mar":"망치다",
+ "Apr":"4월", 
+"May":"5월", 
+"Jun":"준", 
+"Jul":"줄", 
+"Aug":"8월",
+ "Sep":"9월", 
+"Oct":"10월", 
+"Nov":"11월", 
+"Dec":"12월"
+	
 }

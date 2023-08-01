@@ -1,6 +1,6 @@
 {
 	"question": "question",
-	"Question number of total": "Question {{ number }} of {{ total }}",
+	"QUESTION_NUMBER_OF_TOTAL": "Question {{ number }} of {{ total }}",
 	"Next" : "Next",
 	"Submit": "Submit",
 	"Mood": "Mood",

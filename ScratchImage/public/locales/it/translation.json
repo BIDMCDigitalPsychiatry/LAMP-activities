@@ -5,6 +5,8 @@
 	"Submit": "Invia",
 	"Leaving so soon?": "Gi\u00e0 finito?",
 	"If you leave without submitting, your entry will be lost.": "Se si esce senza premere invio, i dati inseriti andranno persi.",
-	"No, don’t leave yet": "No, aspettare ad uscire.",
-	"Yes, leave": "Ora \u00e8 possibile uscire dall\u2019app"
+	"No, don’t leave yet": "No, aspetta ad uscire",
+	"Yes, leave": "Sì, esci dall’attività",
+	"Do another one":"Ripeti l’esercizio",
+	"Close":"Chiudi"
 }
