@@ -457,7 +457,19 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // Call the API to pass game result
-  sendGameResult = () => {
+  sendGameResult = (status?: boolean) => {
+    const route = {'type': 'manual_exit', 'value': status?? false} 
+      const states = [];
+      if (this.state.states !== null) {
+        const r = JSON.parse(this.state.states);
+        Object.keys(r).forEach((key) => {
+          states.push(r[key]);
+        });
+      }
+      states.push(route);
+      this.setState({
+        states: JSON.stringify(states),
+      }, () => {
     let points = 0
     const gameScore = (this.state.stateSuccessTaps/this.props.seqLength) * 100
     if (gameScore === 100) {
@@ -492,6 +504,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         enableTap: false,
         sendResponse: true,
       });
+    })
   };
 
   // Set game state values
@@ -709,22 +722,8 @@ class Board extends React.Component<BoardProps, BoardState> {
     window.location.reload();
   };
 
-  clickBack = () => {
-    const route = {'type': 'manual_exit', 'value': true} 
-      const states = [];
-      if (this.state.states !== null) {
-        const r = JSON.parse(this.state.states);
-        Object.keys(r).forEach((key) => {
-          states.push(r[key]);
-        });
-      }
-      states.push(route);
-      this.setState({
-        states: JSON.stringify(states),
-      }, () => {
-      this.sendGameResult()
-    })
-  
+  clickBack = () => {    
+      this.sendGameResult(true)  
   }
 
   // To set the game board table size based on screen resolution

@@ -277,7 +277,19 @@ class Board extends React.Component<BoardProps, BoardState> {
   
 
   // Call the API to pass game result
-  sendGameResult = () => {
+  sendGameResult = (status?: boolean) => {
+    const route = {'type': 'manual_exit', 'value': status ?? false} 
+    const boxes = [];
+    if (this.state.boxes !== null) {
+      const r = JSON.parse(this.state.boxes);
+      Object.keys(r).forEach((key) => {
+        boxes.push(r[key]);
+      });
+    }    
+    boxes.push(route);    
+    this.setState({
+      boxes: JSON.stringify(boxes),
+    }, () => {
     const gameScore = Math.round(
       (this.state.stateSuccessTaps / 45) * 100
     );
@@ -305,6 +317,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState({
       sendResponse: true,
     });
+  });
 
   };
 
@@ -437,20 +450,9 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
   
   clickBack = () => {
-    const route = {'type': 'manual_exit', 'value': true} 
-    const boxes = [];
-    if (this.state.boxes !== null) {
-      const r = JSON.parse(this.state.boxes);
-      Object.keys(r).forEach((key) => {
-        boxes.push(r[key]);
-      });
-    }    
-    boxes.push(route);    
-    this.setState({
-      boxes: JSON.stringify(boxes),
-    }, () => {
-      this.sendGameResult()
-    });
+   
+      this.sendGameResult(true)
+    
   }
   // Render the game board
   render() {

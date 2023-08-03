@@ -311,7 +311,13 @@ class Jewels extends React.Component<{}, AppState> {
   };
 
   clickBack = () => {
-    const route = {'type': 'manual_exit', 'value': true}  
+    
+      this.sendDataToDashboard(2, true)
+  
+  }
+
+  sendDataToDashboard = (pointVal : number, status?: boolean) => {
+    const route = {'type': 'manual_exit', 'value': status ?? false}  
     const routeData:any = []
     if (this.state.routes.length > 0) {
       const r = JSON.parse(this.state.routes);
@@ -321,11 +327,6 @@ class Jewels extends React.Component<{}, AppState> {
     }
     routeData.push(route);
     this.setState({routes: JSON.stringify(routeData)}, () => {
-      this.sendDataToDashboard(2)
-    })
-  }
-
-  sendDataToDashboard = (pointVal : number) => {
     const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
       parent.postMessage(
         JSON.stringify({
@@ -342,6 +343,7 @@ class Jewels extends React.Component<{}, AppState> {
         }),
         "*"
       );
+    })
   }
   handleClose = (status:boolean, pointVal: number) => {
     if(status) {
