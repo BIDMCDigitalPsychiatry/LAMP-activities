@@ -119,57 +119,36 @@ class Balloons extends React.Component<AppProps, AppState> {
     }
   }
 
-   descriptives = (list: Array<number>) => {
-    // compute mean, sd and the interval range: [min, max]
-    let mean = 0;
-    let sd=0;
-    let i=0;
-    const len = list.length;
-    let  sum=0;
-    let a = 128;
-    let b = 1;
-    for (sum = i = 0; i < len; i++) {
-      sum += list[i];
-      a = Math.min(a, list[i]);
-      b = Math.max(b, list[i]);
-    }
-    mean = sum / len;
-    for (sum = i = 0; i < len; i++) {
-      sum += (list[i] - mean) * (list[i] - mean);
-    }
-    sd = Math.sqrt(sum / (len));
-    return {
-       mean,
-       sd,
-      range: [a, b]
-    };
-  }
+ 
 
-  forceDescriptives = (list:Array<number>, mean:number, sd: number) => {
-    // transfom a list to have an exact mean and sd
-    const oldDescriptives = this.descriptives(list);
-    const  oldMean = oldDescriptives.mean;
-    const  oldSD = oldDescriptives.sd;
-    const  newList = [];
-    const  len = list.length;
-    let  i;
-    for (i = 0; i < len; i++) {
-      const val = Math.round( sd * (list[i] - oldMean) / oldSD + mean)
-      newList[i] = val > 128 ? 128 : (val < 1 ? 1 : val);
+  getRandomGaussian =  (mean: any, std: any) => {
+    let u = 0;
+    let v = 0;
+    while (u === 0) {
+      u = Math.random();
     }
-    return newList;
-  }
+    while (v === 0) {
+      v = Math.random();
+    }
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    num = num * std + mean;
+    return num
+  };
+
 
   getRandomGaussianArray =  (mean: any, std: any): any => {
     const list = [];
     let i=0;
     const len = this.state?.balloon_count ?? 15
     for (i = 0; i < len; i++) {
-      list[i] = Math.round(Math.random() * (128 - 1) + 1);
+      let num = 0
+      while(num <= 0 || num >= 128) {
+        num = this.getRandomGaussian(mean, std)
+      }
+      list[i] = Math.round(num);
     }
-    const newList = this.forceDescriptives(list, mean, std)
-    this.setState({points: newList})
-    return newList
+    this.setState({points: list})
+    return list
   }
 
   componentDidMount = () => {
