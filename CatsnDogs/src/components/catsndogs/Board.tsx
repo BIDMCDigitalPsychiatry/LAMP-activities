@@ -278,7 +278,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Call the API to pass game result
   sendGameResult = (status?: boolean) => {
-    const route = {'type': 'manual_exit', 'value': true} 
+    const route = {'type': 'manual_exit', 'value': status ?? false} 
     const boxes = [];
     if (this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
