@@ -71,6 +71,8 @@ const Layout = ({...props} : any) =>{
        },[levelCompleted])
        
        const sentResult = () => {
+        const route = {'type': 'manual_exit', 'value': false} 
+        routes.push(route)
           setTimeout(()=>{
             parent.postMessage(JSON.stringify({
               timestamp: new Date().getTime(),

@@ -122,6 +122,8 @@ const Layout = ({...props}) => {
 
   useEffect(() => {
     if(isGameOver) {
+      const route = {'type': 'manual_exit', 'value': false} 
+      routes.push(route)
       setTimeout(()=>{
         parent.postMessage(routes.length > 0 ? JSON.stringify({
           timestamp: new Date().getTime(),

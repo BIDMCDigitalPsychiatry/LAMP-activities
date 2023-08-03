@@ -341,8 +341,11 @@ class Balloons extends React.Component<AppProps, AppState> {
   };
 
  
-  sendGameData = async () => {
-
+  sendGameData = async (status?:boolean) => {
+    const route = {'type': 'manual_exit', 'value': status ?? false} 
+    this.setState((prevState) => ({
+      route: [...prevState.route, route],
+    }), () => {
     const currentDate = this.dateFormating();
    
     localStorage.setItem(
@@ -369,6 +372,7 @@ class Balloons extends React.Component<AppProps, AppState> {
       }),
       "*"
     );
+    })
   };
 
   dateFormating = () => {
@@ -457,12 +461,9 @@ class Balloons extends React.Component<AppProps, AppState> {
   };
   
   clickBack = () => {
-    const route = {'type': 'manual_exit', 'value': true} 
-    this.setState((prevState) => ({
-      route: [...prevState.route, route],
-    }), () => {
-      this.sendGameData()
-    });
+    
+      this.sendGameData(true)
+    
   }
 
   // Game render function

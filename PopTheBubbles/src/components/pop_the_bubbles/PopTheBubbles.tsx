@@ -252,6 +252,9 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       this.setState({ timeDifference: dif });
     }
     if (levelVal === 3) {
+      const route = {'type': 'manual_exit', 'value': false} 
+      const values:any = this.state.route    
+      values[this.state.gameLevel-1].push(route)    
       const temporalSlices = [].concat.apply([], this.state.route);
       setTimeout(() => {
         parent.postMessage(
@@ -486,7 +489,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   clickBack = () => {
     const route = {'type': 'manual_exit', 'value': true} 
     const values:any = this.state.route    
-    console.log(values, this.state)
     values[this.state.gameLevel-1].push(route)    
     const temporalSlices = [].concat.apply([], values);
     parent.postMessage(

@@ -47,7 +47,7 @@ const Layout = ({...props} : any) =>{
       }, [gameOver])
 
       const sentResult = () => {
-        setTimeout(()=>{
+        setTimeout(()=>{        
           parent.postMessage(routes.length > 0 ? JSON.stringify({
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - time,
@@ -80,6 +80,8 @@ const Layout = ({...props} : any) =>{
               setLevel(level-1)
             } 
             else if(text==="save"){
+              const route = {'type': 'manual_exit', 'value': false}   
+              routes.push(route)
               setGameOver(true)
             }  
             else {
