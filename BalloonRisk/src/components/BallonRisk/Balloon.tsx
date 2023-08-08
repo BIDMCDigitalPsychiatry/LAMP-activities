@@ -142,7 +142,7 @@ class Balloons extends React.Component<AppProps, AppState> {
     const len = this.state?.balloon_count ?? 15
     for (i = 0; i < len; i++) {
       let num = 0
-      while(num <= 0 || num >= 128) {
+      while(num < 0.5 || num >= 128) {
         num = this.getRandomGaussian(mean, std)
       }
       list[i] = Math.round(num);
