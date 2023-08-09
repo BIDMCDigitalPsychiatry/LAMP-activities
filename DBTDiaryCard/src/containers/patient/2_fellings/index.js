@@ -78,7 +78,7 @@ export default function FellingView({ settings, ...props }) {
       setInitialised(true)
     }
     initialise()    
-  }, [i18n, settings])
+  }, [t, i18n, settings])
 
   const updateRate = (key, emotion, rate) => {
     let currentFelling = result.felling
