@@ -237,8 +237,8 @@ export default function JournalEntries({ ...props }) {
                   classes={{ root: classes.textArea }}
                   helperText={
                     journalValue
-                      ? `${journalValue.length}/${CHARACTER_LIMIT} ${t("max characters")}`
-                      : `${CHARACTER_LIMIT} ${t("max characters")}`
+                      ? ` ${t("max")} ${journalValue.length}/${CHARACTER_LIMIT} ${t("characters")}`
+                      : ` ${t("max")} ${CHARACTER_LIMIT} ${t("characters")}`
                   }
                   inputProps={{
                     maxLength: CHARACTER_LIMIT,

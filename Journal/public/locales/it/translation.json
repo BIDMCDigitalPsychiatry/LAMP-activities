@@ -8,7 +8,8 @@
 	"If you leave without submitting, your entry will be lost.": "Se si esce senza premere invio, i dati inseriti andranno persi.",
 	"No, don’t leave yet": "No, aspetta ad uscire",
 	"Yes, leave": "Sì, esci dall’attività",
-	"max characters": "Massimo caratteri",
+	"max": "Massimo",
+	"characters": "caratteri",
 	"Sunday":"Domenica", "Monday":
 	"Lunedi", "Tuesday":"Martedì", "Wednesday":"Mercoledì", "Thursday":"Giovedì", "Friday":"Venerdì", "Saturday":"Sabato",
 	"Jan":"Gen", "Feb":"Feb", "Mar":"Mar", "Apr":"Apr", "May":"Mag", "Jun":"Giu", "Jul":"Lug", "Aug":"Ago",
