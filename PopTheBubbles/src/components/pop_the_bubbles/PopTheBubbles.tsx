@@ -253,7 +253,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     }
     if (levelVal === 3) {
       const route = {'type': 'manual_exit', 'value': false} 
-      const values:any = this.state.route    
+      const values:any = this.state.route ?? []
       if(typeof values[this.state.gameLevel-1] === 'undefined') {
         values[this.state.gameLevel-1] = []
       } 
@@ -491,7 +491,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
   clickBack = () => {
     const route = {'type': 'manual_exit', 'value': true} 
-    const values:any = this.state.route   
+    const values:any = this.state.route ?? []  
     if(typeof values[this.state.gameLevel-1] === 'undefined') {
       values[this.state.gameLevel-1] = []
     } 
