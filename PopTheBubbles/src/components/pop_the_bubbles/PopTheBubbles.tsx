@@ -488,7 +488,10 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
   clickBack = () => {
     const route = {'type': 'manual_exit', 'value': true} 
-    const values:any = this.state.route    
+    const values:any = this.state.route   
+    if(typeof values[this.state.gameLevel-1] === 'undefined') {
+      values[this.state.gameLevel-1] = []
+    } 
     values[this.state.gameLevel-1].push(route)    
     const temporalSlices = [].concat.apply([], values);
     parent.postMessage(
