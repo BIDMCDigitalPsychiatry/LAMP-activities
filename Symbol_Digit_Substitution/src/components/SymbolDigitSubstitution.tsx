@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         color: "white",
         borderRadius: 10,
+        [theme.breakpoints.down('md')]: {
+            margin: "5px",
+          },
         "& li": {
             fontSize: 22,
             justifyContent: "center"
@@ -112,10 +115,18 @@ const useStyles = makeStyles((theme) => ({
     timeout: {
         color: "white",
         fontSize: "25px"
-    }
+    },
+boxAlert : {
+        background: "white",
+        padding: "10px",
+        display: "inline-block",
+        fontSize: "14px",
+        color : "#26bcff",
+}
+
 }))
 
-export default function SymbolDigitSubstitution({ ...props }) {
+export default function SymbolDigitSubstitution() {
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const classes = useStyles()
@@ -173,6 +184,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
     const [currentSymbol, setCurrentSymbol] = useState('');
     const [currentNumber, setCurrentNumber] = useState(0);
     const [currentKey, setCurrentKey] = useState('');
+    const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
     const [flag, setFlag] = useState(2)
     const [inputText, setInputText] = useState('');
@@ -181,11 +193,15 @@ export default function SymbolDigitSubstitution({ ...props }) {
     const [noBack, setNoBack] = useState(false)
     const [ temporalSlices, setTemporalSlices]=useState<string | null>(null);
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
+    const [textShow , setTextShow] = useState(true);
+    const [symbolsShown, setSymbolShown] = useState<Array<string>>([])
+
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
         const randomIndex = Math.floor(Math.random() * SYMBOLS.length);
         setCurrentSymbol(symbols[randomIndex]);
+        setSymbolShown(prevArray => [...prevArray, symbols[randomIndex]]);
         setCurrentNumber(randomIndex + 1);
         const currentkey = KEY.find((value) => value.number === randomIndex + 1)
         if (!!currentkey) {
@@ -195,11 +211,19 @@ export default function SymbolDigitSubstitution({ ...props }) {
     const handleUserInput = (event: { target: { value: string; }; }) => {
         const currentTime = new Date().getTime();
         setPreviousClickTime(currentTime);
-        setInputText(event.target.value)
+        const userInput = event.target.value.toUpperCase();
+
+        const matchingItem = KEY.find(
+          item => item.keyvalue === userInput || item.number.toString() === userInput
+        );
+        setInputText(matchingItem ? String(matchingItem.number) : '');
         if (event.target.value === currentNumber.toString() || event.target.value.toUpperCase() === currentKey) {
+            setScore((prevScore: number) => prevScore + 1);
             setFlag(1)
             updateWithTaps(1, symbolDigitMapping[currentSymbol])
-            generateRandomSymbolNumberPair(shuffledSymbols);
+            setTimeout(() => {
+                generateRandomSymbolNumberPair(shuffledSymbols);
+            }, 1500);
         }
         else {
             setFlag(0)
@@ -208,11 +232,12 @@ export default function SymbolDigitSubstitution({ ...props }) {
         clearAfterTimeout()
 
     };
-   
+
     const handleClearText = () => {
         setInputText('');
         inputRef?.current?.focus();
     };
+
     const updateWithTaps = (value: number, symbolvalue: any, ) => {
         const item =[]
         if (temporalSlices !== null) {
@@ -237,6 +262,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
             handleClearText();
         }, 1500);
     };
+
     const startTimer = () => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
             setTimeLeft((prevTime) => prevTime - 1);
@@ -251,12 +277,10 @@ export default function SymbolDigitSubstitution({ ...props }) {
         }
     };
 
-    useEffect(() => {
-        const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
-        return () => stopTimer(timerId);
-    }, [timeLeft]);
-
     const saveScore = (status?: boolean) => {
+            const gameScore = Math.round(
+            (score / symbolsShown.length) * 100
+          );
         const route = {'type': 'manual_exit', 'value': status ??  false} 
         const item =[]
         if (temporalSlices !== null) {
@@ -264,17 +288,35 @@ export default function SymbolDigitSubstitution({ ...props }) {
             Object.keys(r).forEach((key) => {
               item.push(r[key]);
             });
+
           }
-       
         item.push(route)
         parent.postMessage(
             JSON.stringify({
                 timestamp: time,
+                static_data: {
+                    score: gameScore,
+
+                },
                 temporal_slices: item,
             }),
             "*"
         )
     }
+     const clickBack = () => {
+        saveScore(true)
+    }
+
+    const symbolDigitMapping = {};
+    shuffledSymbols.forEach((symbol, index) => {
+      symbolDigitMapping[symbol] = index + 1;
+    });
+
+    useEffect(() => {
+        const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
+        return () => stopTimer(timerId);
+    }, [timeLeft]);
+
     useEffect(() => {
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
@@ -289,6 +331,9 @@ export default function SymbolDigitSubstitution({ ...props }) {
     useEffect(() => {
         if (timeLeft === 0) {
             saveScore();
+        }
+        if(timeLeft===115){
+            setTextShow(false)
         }
     }, [timeLeft]);
 
@@ -312,45 +357,36 @@ export default function SymbolDigitSubstitution({ ...props }) {
             false
         )
     }, [])
-
-    const clickBack = () => {
-        saveScore(true)
-    }
-
-    const symbolDigitMapping = {};
-    shuffledSymbols.forEach((symbol, index) => {
-      symbolDigitMapping[symbol] = index + 1;
-    });
     return (
         <div className={classes.root}>
             <Header data={noBack} clickBackData={clickBack}/>
-
             {timeLeft !== 0 && (
                 <div className={classes.timer}>
                     <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
+                   {!!textShow&& <span className= {classes.boxAlert} >{t("Observe the symbol shown and press the number or letter corresponding to it.")}</span> }
                 </div>
-            )}
+              )}
             <div className={classes.main}>
                 {timeLeft !== 0 ? (
                     <>
                         <Box className = {classes.outer} data ={shuffledSymbols} />
                         <div className={classes.boxdiv}>
                             {
-                                flag !== 2 &&
+                                flag !== 2 && inputText!=='' &&
                                 <div className={classes.result}>
                                     <h5 className={flag ? classes.rightcolor : classes.wrongcolor}>
-                                        {flag === 1 ? t("Right") : flag === 0 ? t("Wrong!") : null}
+                                        {flag === 1 ? t("Right") : flag === 0 && inputText!=='' ? t("Wrong!") : null}
                                     </h5>
                                 </div>
                             }
                             <Grid className={classes.boxdiv} container style={{ marginBottom: "40px" }}>
-                                <Grid className={classes.box} item xs={2} sm={4} md={1}>
+                                <Grid className={classes.box} item xs={2} sm={2} md={1}>
                                     <ListItem>{currentSymbol}</ListItem>
                                     <div className={classes.divider} />
                                     <TextField disabled={timeLeft === 0} value={inputText} inputRef={inputRef} className={classes.inputfield} id="outlined-basic" onChange={handleUserInput} />
-                                </Grid>
                             </Grid>
-                        </div>
+                            </Grid>
+                                   </div>
                         <Box className = {classes.outercontainer} data ={KEY} type={true}/>
                     </>
                 ) : (
@@ -359,6 +395,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
                     </div>
                 )}
             </div>
+
         </div>
     )
 }
