@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     outer: {
         justifyContent: "center",
         [theme.breakpoints.down('sm')]: {
-            marginTop: "120px",
+            marginTop: "200px",
           },
     },
     outercontainer: {
