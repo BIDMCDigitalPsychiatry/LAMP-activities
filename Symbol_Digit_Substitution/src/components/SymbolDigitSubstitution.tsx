@@ -1,6 +1,7 @@
 // Core Imports
 import React, { useEffect, useRef, useState } from "react"
 import {
+    Button,
     makeStyles,
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex"
     },
     main: {
-        width: "80%",
+        width: "85%",
         margin: "auto",
     },
     outer: {
@@ -107,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     result: {
-        height: 75
+        height: 60
     },
     timeout: {
         color: "white",
@@ -127,7 +128,32 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "40px",
     },
 
-}))
+    btncontainer: {
+       textAlign: "center"
+        
+},
+btnstyle: {
+    width: 64,
+    height: 64,
+    border: "#fff solid 2px",
+    borderRadius: 50,
+    margin: "1%",
+    color: "white",
+    minWidth: "auto",
+    [theme.breakpoints.down('sm')]: {
+        width: 50,
+        height: 50,
+    },
+    '&:hover': {
+        color: 'white',
+        background: "#005ea9"
+    },
+    '&:active': {
+        color: 'white',
+        background: "#005ea9"
+    },
+}
+    }))
 
 export default function SymbolDigitSubstitution() {
 
@@ -309,21 +335,28 @@ export default function SymbolDigitSubstitution() {
             <div className={classes.main}>
                 {timeLeft !== 0 ? (
                     <>
-                        <Box className={classes.outer} data={shuffledSymbols} />
+                        <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
                         <div className={classes.boxdiv}>
+                        <div className={classes.result}>
+
                             {
                                 flag !== 2 && inputText !== '' &&
-                                <div className={classes.result}>
                                     <h5 className={flag ? classes.rightcolor : classes.wrongcolor}>
                                         {flag === 1 ? t("Right") : flag === 0 && inputText !== '' ? t("Wrong!") : null}
                                     </h5>
-                                </div>
+                              
                             }
+                              </div>
 
-                            <Box className={classes.griddiv} currentSymbol={currentSymbol} />
+                            <Box className={classes.griddiv} currentSymbol={currentSymbol} boxClass={classes.box} />
 
                         </div>
-                        <Box className={classes.outercontainer} data={shuffledSymbols} type={true} handleClick={handleClick} flag={flag} />
+                        <div className={classes.btncontainer}>
+                        {shuffledSymbols.map((value, index) => (
+                                <Button className={classes.btnstyle} disabled={flag !== 2} onClick={(event) => handleClick(index + 1)}>{index + 1}</Button>
+                            
+                        ))}
+                        </div>
                     </>
                 ) : (
                     <div className={classes.boxdiv} >

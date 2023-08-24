@@ -4,7 +4,6 @@ import {
     makeStyles,
     Grid,
     ListItem,
-    Button,
 } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
@@ -30,30 +29,29 @@ const useStyles = makeStyles((theme) => ({
         margin: "3px 0",
     },
     btnstyle: {
-        padding: "11px 15px",
-        color: "white",
+        width: 50,
+        height: 50,
+        border: "#fff solid 1px",
+        borderRadius: 50,
         '&:hover': {
             color: 'black',
         },
-    }
+    },
+
 }))
 
 export default function Box({ ...props }) {
-    const handleButtonClick = (data: any) => {
-        props.handleClick(data)
-    }
+
     const classes = useStyles()
     return (
-
-
         <Grid container className={props.className}>
             {!!props?.data ? props?.data.map((value: any, index: number) => (
-                <Grid className={classes.box} item xs={2} sm={2} md={1} key={index}>
-                    {props?.type ? <ListItem><Button disabled={props.flag !== 2} onClick={(event) => handleButtonClick(index + 1)} className={classes.btnstyle}>{index + 1}</Button></ListItem> : <ListItem>{value}</ListItem>}
-                    {props?.type ? null : <div className={classes.divider} />}
-                    {props?.type ? null : <ListItem>{index + 1}</ListItem>}
+                <Grid className={props.boxClass} item xs={2} sm={2} md={1} key={index}>
+                 <ListItem>{value}</ListItem>
+                    <div className={classes.divider} />
+                 <ListItem>{index + 1}</ListItem>
                 </Grid>
-            )) : <Grid className={classes.box} item xs={2} sm={2} md={1} > <ListItem>{props?.currentSymbol}</ListItem></Grid>}
+            )) : <Grid className={props.boxClass} item xs={2} sm={2} md={1} > <ListItem>{props?.currentSymbol}</ListItem></Grid>}
         </Grid>
 
     )
