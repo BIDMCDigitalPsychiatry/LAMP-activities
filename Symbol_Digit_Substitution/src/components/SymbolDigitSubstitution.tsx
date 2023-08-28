@@ -171,13 +171,14 @@ export default function SymbolDigitSubstitution() {
     const [temporalSlices, setTemporalSlices] = useState<string | null>(null);
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
     const [textShow, setTextShow] = useState(true);
-
+const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
         const randomIndex = Math.floor(Math.random() * SYMBOLS.length);
         setCurrentSymbol(symbols[randomIndex]);
         setCurrentNumber(randomIndex + 1);
+           setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
     };
 
 
@@ -229,6 +230,7 @@ export default function SymbolDigitSubstitution() {
         const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
         const route = { 'type': 'manual_exit', 'value': status ?? false }
         const item = []
+
         if (temporalSlices !== null) {
             const r = JSON.parse(temporalSlices);
             Object.keys(r).forEach((key) => {
@@ -237,13 +239,33 @@ export default function SymbolDigitSubstitution() {
 
         }
         item.push(route)
-        parent.postMessage(
+        const data = temporalSlices !== null && JSON.parse(temporalSlices)
+        let trueCount = 0;
+        let falseCount = 0;
+        let trueDurationSum = 0;
+        let falseDurationSum = 0;
+        data?.forEach((d: any) => {
+            if (d.value === true) {
+                trueCount++;
+                trueDurationSum += d.duration;
+            } else if (d.value === false) {
+                falseCount++;
+                falseDurationSum += d.duration;
+            }
+        });
+           parent.postMessage(
             JSON.stringify({
                 timestamp: time,
                 static_data: {
                     score: correctResponsesPerMinute,
+                    number_of_symbols: displayedSymbol?.length,
+                    number_of_correct_responses: trueCount,
+                    number_of_incorrect_responses: falseCount,
+                    avg_correct_response_time: Math.round(trueDurationSum / data.length),
+                    avg_incorrect_response_time: Math.round(falseDurationSum / data.length)
 
                 },
+
                 temporal_slices: item,
             }),
             "*"
