@@ -133,6 +133,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     btnstyle: {
+        fontSize: "22px",
         width: 64,
         height: 64,
         border: "#fff solid 3px",
@@ -144,10 +145,19 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             width: 50,
             height: 50,
+
         },
-        '&:hover': {
-            color: 'white',
-            background: "#005ea9"
+        [theme.breakpoints.up('lg')]: {
+            '&:hover, &:active': {
+              color: 'white',
+              background: "#005ea9",
+            },
+        },
+    },
+    disabledButton: {
+        '&.MuiButtonBase-root.Mui-disabled': {
+            opacity: 1,
+            color: "white"
         },
     }
 }))
@@ -171,14 +181,14 @@ export default function SymbolDigitSubstitution() {
     const [temporalSlices, setTemporalSlices] = useState<string | null>(null);
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
     const [textShow, setTextShow] = useState(true);
-const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
+    const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
         const randomIndex = Math.floor(Math.random() * SYMBOLS.length);
         setCurrentSymbol(symbols[randomIndex]);
         setCurrentNumber(randomIndex + 1);
-           setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
+        setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
     };
 
 
@@ -253,7 +263,8 @@ const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
                 falseDurationSum += d.duration;
             }
         });
-           parent.postMessage(
+
+        parent.postMessage(
             JSON.stringify({
                 timestamp: time,
                 static_data: {
@@ -372,7 +383,10 @@ const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
                         </div>
                         <div className={classes.btncontainer}>
                             {shuffledSymbols.map((value, index) => (
-                                <Button className={classes.btnstyle} disabled={flag !== 2} onClick={(event) => handleClick(index + 1)}>{index + 1}</Button>
+                                <Button 
+                                classes={{ disabled: classes.disabledButton }} 
+                                className={classes.btnstyle} disabled={flag !== 2} 
+                                onClick={(event) => handleClick(index + 1)}>{index + 1}</Button>
 
                             ))}
                         </div>
