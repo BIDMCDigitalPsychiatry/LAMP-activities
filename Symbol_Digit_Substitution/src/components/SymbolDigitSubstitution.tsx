@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         background: "#359ffe !important",
         minHeight: "100vh",
         position: "relative",
-        display: "flex"
+        // display: "flex"
     },
     main: {
         width: "85%",
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     outer: {
         justifyContent: "center",
         [theme.breakpoints.down('sm')]: {
-            marginTop: "200px",
+            marginTop: "30px",
         },
     },
     outercontainer: {
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
     },
     timer: {
         textAlign: "center",
-        position: "absolute",
+        // position: "absolute",
         width: "100%",
         top: 80,
         "& h4": {
@@ -120,6 +120,10 @@ const useStyles = makeStyles((theme) => ({
         display: "inline-block",
         fontSize: "14px",
         color: "#26bcff",
+        position: "relative",
+        zIndex: 1,
+        opacity: 1,
+        transition: "opacity 1s ease"
     },
     griddiv: {
 
@@ -149,10 +153,13 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.up('lg')]: {
             '&:hover, &:active': {
-              color: 'white',
-              background: "#005ea9",
+                color: 'white',
+                background: "#005ea9",
             },
         },
+    },
+    container: {
+        paddingTop: 100
     },
     disabledButton: {
         '&.MuiButtonBase-root.Mui-disabled': {
@@ -356,48 +363,49 @@ export default function SymbolDigitSubstitution() {
     return (
         <div className={classes.root}>
             <Header data={noBack} clickBackData={clickBack} />
-            {timeLeft !== 0 && (
-                <div className={classes.timer}>
-                    <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
-                    {!!textShow && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
-                </div>
-            )}
-            <div className={classes.main}>
-                {timeLeft !== 0 ? (
-                    <>
-                        <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
-                        <div className={classes.boxdiv}>
-                            <div className={classes.result}>
-
-                                {
-                                    flag !== 2 && inputText !== '' &&
-                                    <h5 className={flag ? classes.rightcolor : classes.wrongcolor}>
-                                        {flag === 1 ? t("Right") : flag === 0 && inputText !== '' ? t("Wrong!") : null}
-                                    </h5>
-
-                                }
-                            </div>
-
-                            <Box className={classes.griddiv} currentSymbol={currentSymbol} boxClass={classes.box} />
-
-                        </div>
-                        <div className={classes.btncontainer}>
-                            {shuffledSymbols.map((value, index) => (
-                                <Button 
-                                classes={{ disabled: classes.disabledButton }} 
-                                className={classes.btnstyle} disabled={flag !== 2} 
-                                onClick={(event) => handleClick(index + 1)}>{index + 1}</Button>
-
-                            ))}
-                        </div>
-                    </>
-                ) : (
-                    <div className={classes.boxdiv} >
-                        <h5 className={classes.timeout} style={{ color: "white" }}>{t("TIME OUT !!!")}</h5>
+            <div className={classes.container}>
+                {timeLeft !== 0 && (
+                    <div className={classes.timer}>
+                        <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
+                        {!!textShow && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
                     </div>
                 )}
-            </div>
+                <div className={classes.main}>
+                    {timeLeft !== 0 ? (
+                        <>
+                            <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
+                            <div className={classes.boxdiv}>
+                                <div className={classes.result}>
 
+                                    {
+                                        flag !== 2 && inputText !== '' &&
+                                        <h5 className={flag ? classes.rightcolor : classes.wrongcolor}>
+                                            {flag === 1 ? t("Right") : flag === 0 && inputText !== '' ? t("Wrong!") : null}
+                                        </h5>
+
+                                    }
+                                </div>
+
+                                <Box className={classes.griddiv} currentSymbol={currentSymbol} boxClass={classes.box} />
+
+                            </div>
+                            <div className={classes.btncontainer}>
+                                {shuffledSymbols.map((value, index) => (
+                                    <Button
+                                        classes={{ disabled: classes.disabledButton }}
+                                        className={classes.btnstyle} disabled={flag !== 2}
+                                        onClick={(event) => handleClick(index + 1)}>{index + 1}</Button>
+
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className={classes.boxdiv} >
+                            <h5 className={classes.timeout} style={{ color: "white" }}>{t("TIME OUT !!!")}</h5>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
