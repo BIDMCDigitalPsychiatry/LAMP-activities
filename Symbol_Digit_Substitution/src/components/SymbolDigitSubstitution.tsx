@@ -300,7 +300,6 @@ export default function SymbolDigitSubstitution({...props}) {
                 falseDurationSum += d.duration;
             }
         });
-console.log(temporalSlices)
         parent.postMessage(
             JSON.stringify({
                 timestamp: time,
@@ -346,8 +345,6 @@ console.log(temporalSlices)
     });
 
     useEffect(() => {
-        console.log(timeLeft)       
-
         if (timeLeft === 0) {
             saveScore();
         }
