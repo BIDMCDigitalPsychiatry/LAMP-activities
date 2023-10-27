@@ -158,6 +158,22 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
+    startDiv:{
+        width: "100%",
+    textAlign: "center",
+    marginTop: "20px"
+    },
+    startBtn: {
+        background: "#ffffff",
+    color: "#359ffe",
+    fontWeight: "bold",
+    borderRadius: "10px",
+    boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.20)",
+    cursor: "pointer",
+    minWidth: "100px",
+    "&:hover": { background: "#ffffff" },
+
+    },
     container: {
         paddingTop: 100
     },
@@ -169,12 +185,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function SymbolDigitSubstitution() {
+export default function SymbolDigitSubstitution({...props}) {
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const classes = useStyles()
     const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι'];
-    const TIME_LIMIT = 120;
+    const [TIME_LIMIT, setTimeLimit] = useState(props?.data?.duration?? 120);
 
     const [currentSymbol, setCurrentSymbol] = useState('');
     const [currentNumber, setCurrentNumber] = useState(0);
@@ -189,14 +205,29 @@ export default function SymbolDigitSubstitution() {
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
     const [textShow, setTextShow] = useState(true);
     const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
+    const [showMapping, setShowMapping] = useState(props?.data?.show_mapping ?? true)
+    const [startGame, setStartGame] = useState(false)
+    const [random, setRandom] = useState(0)
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
-        const randomIndex = Math.floor(Math.random() * SYMBOLS.length);
+        const randomIndex = getRandomNumber() ?? 0
+        
+        Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
         setCurrentSymbol(symbols[randomIndex]);
         setCurrentNumber(randomIndex + 1);
         setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
     };
+
+    const getRandomNumber = (): number => {
+        const randomIndex = Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
+        if(random !== randomIndex) {
+            setRandom(randomIndex)
+            return randomIndex
+        } 
+        return getRandomNumber()
+    }
+
 
 
     const handleClearText = () => {
@@ -230,7 +261,7 @@ export default function SymbolDigitSubstitution() {
     };
     const startTimer = () => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
-            setTimeLeft((prevTime) => prevTime - 1);
+            setTimeLeft((prevTime: number) => prevTime - 1);
         }, 1000);
 
         return intervalId;
@@ -247,7 +278,6 @@ export default function SymbolDigitSubstitution() {
         const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
         const route = { 'type': 'manual_exit', 'value': status ?? false }
         const item = []
-
         if (temporalSlices !== null) {
             const r = JSON.parse(temporalSlices);
             Object.keys(r).forEach((key) => {
@@ -261,7 +291,7 @@ export default function SymbolDigitSubstitution() {
         let falseCount = 0;
         let trueDurationSum = 0;
         let falseDurationSum = 0;
-        data?.forEach((d: any) => {
+        (data || []).forEach((d: any) => {
             if (d.value === true) {
                 trueCount++;
                 trueDurationSum += d.duration;
@@ -316,50 +346,48 @@ export default function SymbolDigitSubstitution() {
     });
 
     useEffect(() => {
-        const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
-        return () => stopTimer(timerId);
-    }, [timeLeft]);
-
-    useEffect(() => {
-        inputRef?.current?.focus();
-        const symbolsCopy = [...SYMBOLS];
-        for (let i = symbolsCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
+        if(!!startGame) {
+            const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
+            return () => stopTimer(timerId);
         }
-        setShuffledSymbols(symbolsCopy);
-        generateRandomSymbolNumberPair(symbolsCopy);
-    }, []);
-
-    useEffect(() => {
         if (timeLeft === 0) {
             saveScore();
         }
-        if (timeLeft === 115) {
+        if (timeLeft === TIME_LIMIT-5) {
             setTextShow(false)
         }
-    }, [timeLeft]);
+        return 
+    }, [timeLeft, startGame]);
 
     useEffect(() => {
-        const eventMethod = typeof window.addEventListener === "function" ? "addEventListener" : "attachEvent";
-        const eventer = window[eventMethod]
-        const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-        eventer(
-            messageEvent,
-            (e: any) => {
-                const configuration = e.data?.configuration ?? null
-                const langugae = !!configuration
-                    ? configuration.hasOwnProperty("language")
-                        ? configuration.language
-                        : "en-US"
-                    : "en-US"
-                i18n.changeLanguage(langugae)
-                setNoBack(e.data.noBack)
-                setTime(new Date().getTime())
-            },
-            false
-        )
-    }, [])
+        const configuration = props.data?.configuration ?? null
+        const langugae = !!configuration
+            ? configuration.hasOwnProperty("language")
+                ? configuration.language
+                : "en-US"
+            : "en-US"
+        i18n.changeLanguage(langugae)
+        setNoBack(props.data.noBack)
+        setTime(new Date().getTime())
+        setShowMapping(props?.data?.activity?.settings?.show_mapping)
+        setTimeLimit(props?.data?.activity?.settings?.duration)
+        setTimeLeft(props?.data?.activity?.settings?.duration)
+        if(props?.data?.activity?.settings?.show_mapping !== "before") {
+            startTimer()
+        }
+        setStartGame(props?.data?.activity?.settings?.show_mapping === "before" ? false : true)
+        inputRef?.current?.focus();
+        const symbolsCopy = [...SYMBOLS];
+        for (let i = props?.data?.activity?.settings?.count_of_symbols; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
+        }
+        setShuffledSymbols(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
+        generateRandomSymbolNumberPair(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
+    }, []);
+
+
+  
     return (
         <div className={classes.root}>
             <Header data={noBack} clickBackData={clickBack} />
@@ -367,14 +395,20 @@ export default function SymbolDigitSubstitution() {
                 {timeLeft !== 0 && (
                     <div className={classes.timer}>
                         <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
-                        {!!textShow && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
+                        {(!!textShow && ((!startGame && showMapping === "before") || (timeLeft !== 0 && showMapping === "during")))  && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
                     </div>
                 )}
                 <div className={classes.main}>
                     {timeLeft !== 0 ? (
                         <>
-                            <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
-                            <div className={classes.boxdiv}>
+                            {((!startGame && showMapping === "before") || (timeLeft !== 0 && showMapping === "during")) && (
+                                <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
+                            )}
+
+                            {showMapping === "before" && !startGame ? 
+                                                            <div className={classes.startDiv}>
+                                                            <Button className={classes.startBtn} onClick={() => setStartGame(true)}>Start</Button></div> : (
+                             <>   <div className={classes.boxdiv}>
                                 <div className={classes.result}>
 
                                     {
@@ -398,6 +432,10 @@ export default function SymbolDigitSubstitution() {
 
                                 ))}
                             </div>
+                            </>
+                            )}
+                            
+                            
                         </>
                     ) : (
                         <div className={classes.boxdiv} >
