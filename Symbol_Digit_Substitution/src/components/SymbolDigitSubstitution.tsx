@@ -213,14 +213,14 @@ export default function SymbolDigitSubstitution({...props}) {
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
         const randomIndex = getRandomNumber() ?? 0
         
-        Math.floor(Math.random() * props?.data?.count_of_symbols);
+        Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
         setCurrentSymbol(symbols[randomIndex]);
         setCurrentNumber(randomIndex + 1);
         setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
     };
 
     const getRandomNumber = (): number => {
-        const randomIndex = Math.floor(Math.random() * props?.data?.count_of_symbols);
+        const randomIndex = Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
         if(random !== randomIndex) {
             setRandom(randomIndex)
             return randomIndex
@@ -278,7 +278,6 @@ export default function SymbolDigitSubstitution({...props}) {
         const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
         const route = { 'type': 'manual_exit', 'value': status ?? false }
         const item = []
-
         if (temporalSlices !== null) {
             const r = JSON.parse(temporalSlices);
             Object.keys(r).forEach((key) => {
@@ -292,7 +291,7 @@ export default function SymbolDigitSubstitution({...props}) {
         let falseCount = 0;
         let trueDurationSum = 0;
         let falseDurationSum = 0;
-        data?.forEach((d: any) => {
+        (data || []).forEach((d: any) => {
             if (d.value === true) {
                 trueCount++;
                 trueDurationSum += d.duration;
@@ -370,21 +369,21 @@ export default function SymbolDigitSubstitution({...props}) {
         i18n.changeLanguage(langugae)
         setNoBack(props.data.noBack)
         setTime(new Date().getTime())
-        setShowMapping(props?.data?.show_mapping)
-        setTimeLimit(props?.data?.duration)
-        setTimeLeft(props?.data?.duration)
-        if(props?.data?.show_mapping !== "before") {
+        setShowMapping(props?.data?.activity?.settings?.show_mapping)
+        setTimeLimit(props?.data?.activity?.settings?.duration)
+        setTimeLeft(props?.data?.activity?.settings?.duration)
+        if(props?.data?.activity?.settings?.show_mapping !== "before") {
             startTimer()
         }
-        setStartGame(props?.data?.show_mapping === "before" ? false : true)
+        setStartGame(props?.data?.activity?.settings?.show_mapping === "before" ? false : true)
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
-        for (let i = props?.data?.count_of_symbols; i > 0; i--) {
+        for (let i = props?.data?.activity?.settings?.count_of_symbols; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
         }
-        setShuffledSymbols(symbolsCopy.slice(0, props?.data?.count_of_symbols));
-        generateRandomSymbolNumberPair(symbolsCopy.slice(0, props?.data?.count_of_symbols));
+        setShuffledSymbols(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
+        generateRandomSymbolNumberPair(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
     }, []);
 
 
