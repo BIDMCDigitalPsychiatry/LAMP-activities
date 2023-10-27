@@ -300,7 +300,6 @@ export default function SymbolDigitSubstitution({...props}) {
                 falseDurationSum += d.duration;
             }
         });
-
         parent.postMessage(
             JSON.stringify({
                 timestamp: time,
@@ -346,15 +345,15 @@ export default function SymbolDigitSubstitution({...props}) {
     });
 
     useEffect(() => {
-        if(!!startGame) {
-            const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
-            return () => stopTimer(timerId);
-        }
         if (timeLeft === 0) {
             saveScore();
         }
         if (timeLeft === TIME_LIMIT-5) {
             setTextShow(false)
+        }
+        if(!!startGame) {
+            const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
+            return () => stopTimer(timerId);
         }
         return 
     }, [timeLeft, startGame]);
