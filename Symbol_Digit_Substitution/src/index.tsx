@@ -14,6 +14,7 @@ import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
 const eventMethod = window?.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+
 eventer(
   messageEvent, (e: any) => {    
 		ReactDOM.render(
