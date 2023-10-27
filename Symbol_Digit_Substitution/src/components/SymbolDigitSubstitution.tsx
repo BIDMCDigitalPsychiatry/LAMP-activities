@@ -189,7 +189,7 @@ export default function SymbolDigitSubstitution({...props}) {
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const classes = useStyles()
-    const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι'];
+    const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'σ'] ;
     const [TIME_LIMIT, setTimeLimit] = useState(props?.data?.duration?? 120);
 
     const [currentSymbol, setCurrentSymbol] = useState('');
@@ -377,16 +377,13 @@ export default function SymbolDigitSubstitution({...props}) {
         setStartGame(props?.data?.activity?.settings?.show_mapping === "before" ? false : true)
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
-        for (let i = props?.data?.activity?.settings?.count_of_symbols; i > 0; i--) {
+        for (let i = props?.data?.activity?.settings?.count_of_symbols -1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
         }
-        setShuffledSymbols(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
-        generateRandomSymbolNumberPair(symbolsCopy.slice(0, props?.data?.activity?.settings?.count_of_symbols));
+        setShuffledSymbols(symbolsCopy)
+        generateRandomSymbolNumberPair(symbolsCopy);
     }, []);
-
-
-  
     return (
         <div className={classes.root}>
             <Header data={noBack} clickBackData={clickBack} />
