@@ -11,10 +11,18 @@ import { AppContainer } from "react-hot-loader"
 import './index.css'
 import "material-icons"
 import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
+const eventMethod = window?.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+eventer(
+  messageEvent, (e: any) => {    
+		ReactDOM.render(
 
-ReactDOM.render(
   <AppContainer>
-    <SymbolDigitSubstitution />
-  </AppContainer>,  
-  document.getElementById('root') as HTMLElement
-);
+    <SymbolDigitSubstitution data={e.data}/>
+  </AppContainer>     , 		  
+		  document.getElementById("root")
+		);
+  },
+  false
+ )
