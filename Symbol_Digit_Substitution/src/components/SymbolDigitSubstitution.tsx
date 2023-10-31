@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
     main: {
         width: "85%",
         margin: "auto",
+        textAlign:"center",
+        marginTop: "20px"
     },
     outer: {
         justifyContent: "center",
@@ -88,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 15,
         fontWeight: 600,
         border: 0,
+    },
+    comment: {
+        color: "#ffffff"
     },
     boxdiv: {
         display: 'flex',
@@ -190,7 +195,7 @@ export default function SymbolDigitSubstitution({...props}) {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const classes = useStyles()
     const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'σ'] ;
-    const [TIME_LIMIT, setTimeLimit] = useState(props?.data?.duration?? 120);
+    const [TIME_LIMIT, setTimeLimit] = useState(props?.data?.activity?.settings?.duration?? 120);
 
     const [currentSymbol, setCurrentSymbol] = useState('');
     const [currentNumber, setCurrentNumber] = useState(0);
@@ -203,9 +208,9 @@ export default function SymbolDigitSubstitution({...props}) {
     const [noBack, setNoBack] = useState(false)
     const [temporalSlices, setTemporalSlices] = useState<string | null>(null);
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
-    const [textShow, setTextShow] = useState(true);
+    const [textShow, setTextShow] = useState(false);
     const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
-    const [showMapping, setShowMapping] = useState(props?.data?.show_mapping ?? true)
+    const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? true)
     const [startGame, setStartGame] = useState(false)
     const [random, setRandom] = useState(0)
     const { t } = useTranslation()
@@ -348,10 +353,9 @@ export default function SymbolDigitSubstitution({...props}) {
         if (timeLeft === 0) {
             saveScore();
         }
-        if (timeLeft === TIME_LIMIT-5) {
-            setTextShow(false)
-        }
+       
         if(!!startGame) {
+            setTextShow(true)
             const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
             return () => stopTimer(timerId);
         }
@@ -370,11 +374,7 @@ export default function SymbolDigitSubstitution({...props}) {
         setTime(new Date().getTime())
         setShowMapping(props?.data?.activity?.settings?.show_mapping)
         setTimeLimit(props?.data?.activity?.settings?.duration)
-        setTimeLeft(props?.data?.activity?.settings?.duration)
-        if(props?.data?.activity?.settings?.show_mapping !== "before") {
-            startTimer()
-        }
-        setStartGame(props?.data?.activity?.settings?.show_mapping === "before" ? false : true)
+        setTimeLeft(props?.data?.activity?.settings?.duration)        
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
         for (let i = props?.data?.activity?.settings?.count_of_symbols -1; i > 0; i--) {
@@ -391,20 +391,23 @@ export default function SymbolDigitSubstitution({...props}) {
                 {timeLeft !== 0 && (
                     <div className={classes.timer}>
                         <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
-                        {(!!textShow && ((!startGame && showMapping === "before") || (timeLeft !== 0 && showMapping === "during")))  && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
+                        {!!textShow && !!startGame   && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
                     </div>
                 )}
                 <div className={classes.main}>
                     {timeLeft !== 0 ? (
                         <>
+                            {(!startGame && showMapping !== "not_at_all" )&&<span className={classes.comment} > {showMapping === "not_at_all" ? <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit.</> : 
+                            <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can.</>}</span>}
+                            {(showMapping === "before" && !startGame ) && <span className={classes.comment}>In this game mode, try to memorize the key. Once you press start, it will disappear!</span>}
                             {((!startGame && showMapping === "before") || (timeLeft !== 0 && showMapping === "during")) && (
                                 <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
                             )}
-
-                            {showMapping === "before" && !startGame ? 
+                            {!startGame ? 
                                                             <div className={classes.startDiv}>
                                                             <Button className={classes.startBtn} onClick={() => setStartGame(true)}>Start</Button></div> : (
-                             <>   <div className={classes.boxdiv}>
+                             <>   
+                             <div className={classes.boxdiv}>
                                 <div className={classes.result}>
 
                                     {
