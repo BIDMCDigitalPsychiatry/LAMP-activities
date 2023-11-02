@@ -35,9 +35,10 @@ p {
   pointer-events: stroke;
   font-weight: 600;
   background: #f4f4f4 !important;
-  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
--webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
--moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
+  box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.19);
+-webkit-box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.19);
+-moz-box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.19);
+line-height: 10px;
 }
 .button-class.btn-primary{
   color: #333 !important;
@@ -82,7 +83,8 @@ h1.wheel-score{
     margin-top: -30px;
   }
   .button-class{
-    width: 70px;
+    width: 45px;
+    height: 45px;
   }
   .button-class svg{
     width: 40px;
@@ -103,14 +105,14 @@ h1.wheel-score{
     font-size: 1.1rem;
   }
   .button-class{
-    width: 60px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     padding: 0;
   }
-  .button-class svg{
+  /* .button-class svg{
     width: 35px;
     height: 35px;
-  }
+  } */
 }
 .MuiSvgIcon-root {
   color: white;
