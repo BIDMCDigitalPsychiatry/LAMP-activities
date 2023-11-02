@@ -25,15 +25,30 @@ p {
 }
 .button-class {
   background: white !important;
-  border: none !important;
-  width: 65px;
-  height: 60px;
-  pointer-events: none;
-}
-.button-class svg{
   width: 50px;
+  height: 50px;
+  pointer-events: none;
+  color: #333;
+  border: #333 solid 1px;
+  border-radius: 50%;
+  margin: 0 5px;
   pointer-events: stroke;
+  font-weight: 600;
+  background: #f4f4f4 !important;
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
+-webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
+-moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.19);
 }
+.button-class.btn-primary{
+  color: #333 !important;
+}
+.button-class:active, .button-class:focus, .button-class:hover{
+  color: #333 !important;
+}
+/* .button-class svg{
+  width: 50px;
+  
+} */
 
 .btn:focus {
   box-shadow: none !important;
