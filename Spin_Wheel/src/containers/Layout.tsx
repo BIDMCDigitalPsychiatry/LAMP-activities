@@ -2,10 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import BluebuttonSVG from 'src/components/ImageComponents/blueButtonSVG';
-import  GreenButtonSVG from "../components/ImageComponents/greenButtonSVG";
-import  RedButtonSVG from "../components/ImageComponents/redButtonSVG";
-import  YellowButtonSVG from "../components/ImageComponents/yellowButtonSVG";
 import SpinWheel from '../components/spinwheel/SpinWheel';
 import { convertObjtoArray , shuffleArray} from '../helper/helper';
 import i18n from "../i18n";
@@ -18,7 +14,6 @@ import {
 } from "@material-ui/core"
 import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import './layout.css';
-
 
 const useStyles = makeStyles((theme) => ({
   toolbardashboard: {
@@ -234,13 +229,12 @@ const Layout = ({...props}) => {
               <Button className='button-class'
                type="button"
                disabled={disableButtons}               
-               onClick={()=>{                 
+               onClick={()=>{     
                 setDisableButtons(true) 
                 setButtonIndex(1);
                 setConditions(conditionsForRed)
                }}>
-                <RedButtonSVG/>
-              </Button>
+ 1              </Button>
               <Button
                className='button-class'
                disabled={disableButtons}   
@@ -249,7 +243,7 @@ const Layout = ({...props}) => {
                 setDisableButtons(true) 
                 setButtonIndex(2);
                setConditions(conditionsForYellow)}}>
-                <YellowButtonSVG/>
+                2
               </Button>
               <Button
                className='button-class' 
@@ -259,7 +253,7 @@ const Layout = ({...props}) => {
                 setDisableButtons(true) 
                 setButtonIndex(3);
                 setConditions(conditionsForGreen)}}>
-                <GreenButtonSVG/>
+                3
               </Button>
               <Button 
                 className='button-class' 
@@ -270,7 +264,7 @@ const Layout = ({...props}) => {
                   setButtonIndex(4);                   
                   setConditions(conditionsForBlue)
                   }}>
-                <BluebuttonSVG/>
+                4
               </Button>
             </Col>
           </Row>
