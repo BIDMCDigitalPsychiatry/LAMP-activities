@@ -203,7 +203,7 @@ const Layout = ({...props}) => {
               totalSpins={totalSpins}
               setIsGameOver={setIsGameOver}
               />            
-              {spinIndex > 0 ? (<p>{i18n.t<string>("YOU_WON")} : {showResult && selectedItem2 !=null ? `${selectedItem1}` : ""}</p>) : <p/>}
+              <div className='h-35px'>{spinIndex > 0 ? (<p>{i18n.t<string>("YOU_WON")} : {showResult && selectedItem2 !=null ? `${selectedItem1}` : ""}</p>) : <p/>}</div>
             </Col>
             <Col xs = {12} lg={6}>
               <SpinWheel
@@ -221,7 +221,7 @@ const Layout = ({...props}) => {
               setIsGameOver={setIsGameOver}
               />
             
-              {spinIndex > 0 ? <p>{i18n.t<string>("YOU_LOSE")} : {showResult && selectedItem2 !=null ? `${selectedItem2}` : ""}</p> : <p/>}
+            <div className='h-35px'>{spinIndex > 0 ? <p>{i18n.t<string>("YOU_LOSE")} : {showResult && selectedItem2 !=null ? `${selectedItem2}` : ""}</p> : <p/>}</div>
             </Col>
           </Row> 
           <Row>
