@@ -75,6 +75,12 @@ h1.wheel-score{
   font-size: 2rem;
   margin-top: 10px;
 } 
+.h-35px{
+  height: 35px;
+}
+.h-35px p{
+  margin-bottom: 0;
+}
 @media only screen and (max-width: 500px) {
   .wheel canvas{
     width: 300px !important;
