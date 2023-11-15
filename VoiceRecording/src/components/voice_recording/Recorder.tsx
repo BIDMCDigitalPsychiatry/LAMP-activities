@@ -130,10 +130,18 @@ class Recorder extends Component<AppProps, AppState> {
     };
     return obj;
   }
+  getRootWindow(window) {
+    if (window.parent === window) {
+        return window;
+    }
+
+    return this.getRootWindow(window.parent);
+}
 
   async componentDidMount() {
-    if (navigator.mediaDevices) {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (this.getRootWindow(window).navigator.mediaDevices) {
+      const stream = await this.getRootWindow(window).navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+
       if(this.props.mimeTypeToUseWhenRecording) {
         this.mediaRecorder = new MediaRecorder(stream, { mimeType: this.props.mimeTypeToUseWhenRecording });
       } else {
