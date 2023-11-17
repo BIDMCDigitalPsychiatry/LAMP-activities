@@ -210,22 +210,20 @@ export default function SymbolDigitSubstitution({...props}) {
     const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
     const [textShow, setTextShow] = useState(false);
     const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
-    const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? true)
+    const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? 'during')
     const [startGame, setStartGame] = useState(false)
     const [random, setRandom] = useState(0)
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
-        const randomIndex = getRandomNumber() ?? 0
-        
-        Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
+        const randomIndex = getRandomNumber() ?? 0        
         setCurrentSymbol(symbols[randomIndex]);
         setCurrentNumber(randomIndex + 1);
         setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
     };
 
     const getRandomNumber = (): number => {
-        const randomIndex = Math.floor(Math.random() * props?.data?.activity?.settings?.count_of_symbols);
+        const randomIndex = Math.floor(Math.random() * (props?.data?.activity?.settings?.count_of_symbols ?? 9));
         if(random !== randomIndex) {
             setRandom(randomIndex)
             return randomIndex
@@ -370,14 +368,14 @@ export default function SymbolDigitSubstitution({...props}) {
                 : "en-US"
             : "en-US"
         i18n.changeLanguage(langugae)
-        setNoBack(props.data.noBack)
+        setNoBack(props?.data?.noBack ?? false)
         setTime(new Date().getTime())
-        setShowMapping(props?.data?.activity?.settings?.show_mapping)
-        setTimeLimit(props?.data?.activity?.settings?.duration)
-        setTimeLeft(props?.data?.activity?.settings?.duration)        
+        setShowMapping(props?.data?.activity?.settings?.show_mapping ?? 'during')
+        setTimeLimit(props?.data?.activity?.settings?.duration ?? 120)
+        setTimeLeft(props?.data?.activity?.settings?.duration?? 120)        
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
-        for (let i = props?.data?.activity?.settings?.count_of_symbols -1; i > 0; i--) {
+        for (let i = (props?.data?.activity?.settings?.count_of_symbols ?? 9) -1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
         }
