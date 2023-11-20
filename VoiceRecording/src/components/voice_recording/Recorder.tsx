@@ -10,7 +10,7 @@ import emoji from "remark-emoji"
 import gfm from "remark-gfm"
 
 const audioType = "audio/*";
-const maximumRecordTime = 240;
+const maximumRecordTime = 120;
 
 declare let MediaRecorder;
 
