@@ -3,6 +3,11 @@ import React, { useEffect, useRef, useState } from "react"
 import {
     Button,
     makeStyles,
+    DialogTitle,
+    DialogContentText,
+    DialogActions,
+    Dialog,
+    DialogContent,
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
 import i18n from "../i18n"
@@ -91,9 +96,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 600,
         border: 0,
     },
-    comment: {
-        color: "#ffffff"
-    },
+   
     boxdiv: {
         display: 'flex',
         flexDirection: 'column',
@@ -118,6 +121,10 @@ const useStyles = makeStyles((theme) => ({
     timeout: {
         color: "white",
         fontSize: "25px"
+    },
+    comment : {
+        color: "#000",
+        textAlign: "justify"
     },
     boxAlert: {
         background: "white",
@@ -164,6 +171,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     startDiv:{
+        '& p' : {
+            color: '#fff'
+        },
         width: "100%",
     textAlign: "center",
     marginTop: "20px"
@@ -173,11 +183,28 @@ const useStyles = makeStyles((theme) => ({
     color: "#359ffe",
     fontWeight: "bold",
     borderRadius: "10px",
+    marginTop: "15px",
     boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.20)",
     cursor: "pointer",
     minWidth: "100px",
     "&:hover": { background: "#ffffff" },
 
+    },
+
+    popupstartBtn: {
+        background: "#359ffe",
+    color: "#ffffff",
+    fontWeight: "bold",
+    borderRadius: "10px",
+    boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.20)",
+    cursor: "pointer",
+    minWidth: "100px",
+    "&:hover": { background: "#359ffe" },
+
+    },
+    startbtnDiv : { 
+        width: "59%",
+        marginBottom: "10px"
     },
     container: {
         paddingTop: 100
@@ -213,6 +240,7 @@ export default function SymbolDigitSubstitution({...props}) {
     const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? 'during')
     const [startGame, setStartGame] = useState(false)
     const [random, setRandom] = useState(0)
+    const [open, setOpen] = useState(true)
     const { t } = useTranslation()
 
     const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
@@ -375,36 +403,43 @@ export default function SymbolDigitSubstitution({...props}) {
         setTimeLeft(props?.data?.activity?.settings?.duration?? 120)        
         inputRef?.current?.focus();
         const symbolsCopy = [...SYMBOLS];
-        for (let i = (props?.data?.activity?.settings?.count_of_symbols ?? 9) -1; i > 0; i--) {
+        for (let i = (props?.data?.activity?.settings?.count_of_symbols ?? 10) -1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
         }
-        setShuffledSymbols(symbolsCopy)
+        setShuffledSymbols(symbolsCopy.splice(0, (props?.data?.activity?.settings?.count_of_symbols ?? 10)))
         generateRandomSymbolNumberPair(symbolsCopy);
     }, []);
+
     return (
         <div className={classes.root}>
             <Header data={noBack} clickBackData={clickBack} />
-            <div className={classes.container}>
+           {!open  && (<div className={classes.container}>
                 {timeLeft !== 0 && (
                     <div className={classes.timer}>
                         <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
                         {!!textShow && !!startGame   && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
                     </div>
                 )}
+
+
                 <div className={classes.main}>
-                    {timeLeft !== 0 ? (
+                    {timeLeft !== 0  ? (
                         <>
-                            {(!startGame && showMapping !== "not_at_all" )&&<span className={classes.comment} > {showMapping === "not_at_all" ? <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit.</> : 
-                            <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can.</>}</span>}
-                            {(showMapping === "before" && !startGame ) && <span className={classes.comment}>In this game mode, try to memorize the key. Once you press start, it will disappear!</span>}
-                            {((!startGame && showMapping === "before") || (timeLeft !== 0 && showMapping === "during")) && (
+
+
+                                                            <div className={classes.startDiv}>
+                                                                                        {(!startGame && showMapping === "before" ) && <span ><p><b>In this game mode, try to memorize the key. Once you press start, it will disappear!</b></p></span>}
+
+                                                                {((showMapping === "before" && !startGame) || (timeLeft !== 0 && showMapping === "during")) && (
                                 <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
                             )}
-                            {!startGame ? 
-                                                            <div className={classes.startDiv}>
-                                                            <Button className={classes.startBtn} onClick={() => setStartGame(true)}>Start</Button></div> : (
-                             <>   
+                                                            
+                                                            
+                                                            
+                                                            {!startGame && <Button className={classes.startBtn} onClick={() => setStartGame(true)}>Start</Button>}</div> 
+                            
+                            {!!startGame && ( <>   
                              <div className={classes.boxdiv}>
                                 <div className={classes.result}>
 
@@ -430,9 +465,9 @@ export default function SymbolDigitSubstitution({...props}) {
                                 ))}
                             </div>
                             </>
+                            
+                            
                             )}
-                            
-                            
                         </>
                     ) : (
                         <div className={classes.boxdiv} >
@@ -441,6 +476,28 @@ export default function SymbolDigitSubstitution({...props}) {
                     )}
                 </div>
             </div>
+)} 
+            <Dialog open={open} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+      <DialogTitle id="alert-dialog-title">{`${t("")}`}</DialogTitle>
+      <DialogContent>
+        <DialogContentText  className={classes.comment} id="alert-dialog-description">
+        {<span > {showMapping === "not_at_all" ? <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit.</> : 
+                            <>In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can.</>}</span>}
+                            
+                            
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions className={showMapping !== "before" ? classes.startbtnDiv: ""}>
+        <Button className={showMapping !== "before" ? classes.popupstartBtn : ""} onClick={() =>  {
+            setOpen(false)
+            if(showMapping !== "before") { setStartGame(true) }
+        }                                                               
+} color="primary">
+          {`${t(showMapping !== "before" ? "Start Game" : "Ok")}`}
+        </Button>
+       
+      </DialogActions>
+    </Dialog>
         </div>
     )
 }
