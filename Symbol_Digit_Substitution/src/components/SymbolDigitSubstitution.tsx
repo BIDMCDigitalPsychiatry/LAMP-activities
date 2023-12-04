@@ -407,8 +407,9 @@ export default function SymbolDigitSubstitution({...props}) {
             const j = Math.floor(Math.random() * (i + 1));
             [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
         }
-        setShuffledSymbols(symbolsCopy.splice(0, (props?.data?.activity?.settings?.count_of_symbols ?? 10)))
-        generateRandomSymbolNumberPair(symbolsCopy);
+        const symbols = symbolsCopy.splice(0, (props?.data?.activity?.settings?.count_of_symbols ?? 10))
+        setShuffledSymbols(symbols)
+        generateRandomSymbolNumberPair(symbols);
     }, []);
 
     return (
