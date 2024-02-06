@@ -10,6 +10,7 @@ jobs:
       - run: |
           git config --global user.name gh-actions
           git config --global user.email actions@github.com
+          git fetch
           git checkout dist
           git tag -a -f latest -m 'latest' `git rev-parse --short HEAD`
           git push --force origin latest
