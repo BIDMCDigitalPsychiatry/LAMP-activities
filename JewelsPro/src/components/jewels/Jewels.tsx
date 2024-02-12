@@ -17,6 +17,7 @@ import "./jewels.css";
 import * as React from "react";
 import { isUndefined } from "util";
 import Board from "./Board";
+/* eslint-disable no-restricted-globals */
 const colors = [
   "pink",
   "green",

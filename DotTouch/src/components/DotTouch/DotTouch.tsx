@@ -14,6 +14,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Timer } from '../common/Timer';
 import './DotTouch.css';
 
+/* eslint-disable no-restricted-globals */
 interface DotState { 
  correctTaps:number;
  dotSpots:Array<number>;

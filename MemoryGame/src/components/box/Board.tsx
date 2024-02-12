@@ -28,6 +28,8 @@ import { InfoModal } from "../common/InfoModal";
 
 import "./box.css";
 
+/* eslint-disable no-restricted-globals */
+
 interface BoardState {
   activeCell: number;
   animate: boolean;
