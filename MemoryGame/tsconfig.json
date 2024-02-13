@@ -18,6 +18,7 @@
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "ignoreDeprecations": "5.0",
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
@@ -35,9 +36,15 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "src/*.d.ts"
   ],
   "include": [
-    "src"
-  ]
+    "src",
+    "node_modules/react-scripts",
+    "images.d.ts"
+  ],
+  // "files": [
+  //   "./src/react-app-env.d.ts"
+  // ]
 }

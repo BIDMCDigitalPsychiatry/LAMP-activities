@@ -22,12 +22,25 @@ interface AppState {
 class CatsNDogs extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
-    const eventMethod = window.addEventListener
-      ? "addEventListener"
-      : "attachEvent";
-    const eventer = window[eventMethod];
-    const messageEvent =
-      eventMethod === "attachEvent" ? "onmessage" : "message";
+    // const eventMethod = window.addEventListener
+    //   ? "addEventListener"
+    //   : "attachEvent";
+    // const eventer = window[eventMethod];
+    // const messageEvent =
+    //   eventMethod === "attachEvent" ? "onmessage" : "message";
+    let eventMethod;
+    let eventer;
+    let messageEvent;
+
+    if (typeof window.addEventListener === 'function') {
+      eventMethod = "addEventListener";
+      eventer = window[eventMethod];
+      messageEvent = "message";
+    } else {
+      eventMethod = "attachEvent";
+      eventer = window[eventMethod];
+      messageEvent = "onmessage";
+    }
     eventer(
       messageEvent,
       (e: any) => {
