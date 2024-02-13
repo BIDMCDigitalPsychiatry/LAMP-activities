@@ -14,7 +14,7 @@ for dir in $UNIT_LIST; do (
 		echo "Building $name..."
 
 		# Install & Build
-		npm install || exit 1
+		npm install --legacy-peer-deps || exit 1
 		npm run build || exit 1
 
 		# Compress for distribution and move to /dist/ directory.
