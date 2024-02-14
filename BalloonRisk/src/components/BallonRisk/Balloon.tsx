@@ -189,7 +189,7 @@ class Balloons extends React.Component<AppProps, AppState> {
     }
     const balloonPumpLimit =
       typeof process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT === "undefined"
-        ? ""
+        ? 0
         : Number(process.env.REACT_APP_MAX_PUMP_BALLOON_LIMIT);
 
     this.setState({

@@ -333,13 +333,12 @@ class Recorder extends Component<AppProps, AppState> {
                   </div>
                   {!recording && !this.state.clickStop ? (
                     <p className="help tACenter">
-                      <ReactMarkdown source={this.props?.settings?.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: this.LinkRenderer}} /> 
+                      <ReactMarkdown  remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: this.LinkRenderer}} >{this.props?.settings?.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")}</ReactMarkdown> 
                     </p>
                   ) : 
                   (this.state.clickStop ? (
                     <p className="help tACenter">
-                      <ReactMarkdown source={this.props?.settings?.rerecord_label ?? i18n.t("CLICK_TO_CLEAR_MSG")} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: this.LinkRenderer}} /> 
-                    </p>
+                        <ReactMarkdown  remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: this.LinkRenderer}} >{this.props?.settings?.record_label ?? i18n.t("CLICK_TO_CLEAR_MSG")}</ReactMarkdown>                     </p>
                   ) :
                   null)}
                 </div>

@@ -1,7 +1,4 @@
 import React from 'react'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// import WheelComponent from 'react-wheel-of-prizes'
 import WheelComponent from '../WheelComponent'
 
 const SpinWheel = ({...props}: any) => {

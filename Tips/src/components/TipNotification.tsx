@@ -152,7 +152,7 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown source={props.details} escapeHtml={false}/>
+              <ReactMarkdown skipHtml={false}>{props.details}</ReactMarkdown>
             : ""}
             </Typography>
             <Box mt={4} mb={2}>

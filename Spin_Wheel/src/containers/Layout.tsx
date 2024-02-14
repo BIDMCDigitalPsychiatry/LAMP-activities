@@ -178,13 +178,13 @@ const Layout = ({...props}) => {
             <IconButton onClick={() => setComplete(true)} color="default" aria-label="Menu">
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h5">{i18n.t<string>("GAME")}</Typography>
+            <Typography variant="h5">{i18n.t("GAME")}</Typography>
           </Toolbar>
         </AppBar>
         <Container>          
           <Row>
             <Col>
-              <h1 className='wheel-score'>{i18n.t<string>("TOTAL_BALANCE")} : {displayTotal()}</h1>
+              <h1 className='wheel-score'>{i18n.t("TOTAL_BALANCE")} : {displayTotal()}</h1>
             </Col>
           </Row>
           <Row>
@@ -203,7 +203,7 @@ const Layout = ({...props}) => {
               totalSpins={totalSpins}
               setIsGameOver={setIsGameOver}
               />            
-              <div className='h-35px'>{spinIndex > 0 ? (<p>{i18n.t<string>("YOU_WON")} : {showResult && selectedItem2 !=null ? `${selectedItem1}` : ""}</p>) : <p/>}</div>
+              <div className='h-35px'>{spinIndex > 0 ? (<p>{i18n.t("YOU_WON")} : {showResult && selectedItem2 !=null ? `${selectedItem1}` : ""}</p>) : <p/>}</div>
             </Col>
             <Col xs = {12} lg={6}>
               <SpinWheel
@@ -221,7 +221,7 @@ const Layout = ({...props}) => {
               setIsGameOver={setIsGameOver}
               />
             
-            <div className='h-35px'>{spinIndex > 0 ? <p>{i18n.t<string>("YOU_LOSE")} : {showResult && selectedItem2 !=null ? `${selectedItem2}` : ""}</p> : <p/>}</div>
+            <div className='h-35px'>{spinIndex > 0 ? <p>{i18n.t("YOU_LOSE")} : {showResult && selectedItem2 !=null ? `${selectedItem2}` : ""}</p> : <p/>}</div>
             </Col>
           </Row> 
           <Row>
@@ -270,12 +270,12 @@ const Layout = ({...props}) => {
           </Row>
           <Row>
             <Col>
-              <h3 className='wheel-score'>{i18n.t<string>("TOTAL_SPINS")} : {totalSpins}</h3>   
+              <h3 className='wheel-score'>{i18n.t("TOTAL_SPINS")} : {totalSpins}</h3>   
             </Col>
           </Row> 
           {isGameOver && <Row>
               <Col>
-                <p className='error-class'>{i18n.t<string>("GAME_OVER")}</p>   
+                <p className='error-class'>{i18n.t("GAME_OVER")}</p>   
               </Col>
             </Row>}         
         </Container> 

@@ -14,6 +14,7 @@ module.exports = {
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
+    fallback: { "util": false }
   },
   module: {
     rules: [
