@@ -472,7 +472,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
     // To refresh the game
     clickHome = () => {
-      window.location.reload(false);
+      window.location.reload();
     };
   
     clickBack = () => {

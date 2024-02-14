@@ -11,10 +11,8 @@ import { AppContainer } from "react-hot-loader"
 import './index.css'
 import "material-icons"
 import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
-const eventMethod = window?.addEventListener ? "addEventListener" : "attachEvent"
-const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-
+const eventer = window.addEventListener
+const messageEvent = "message"
 eventer(
   messageEvent, (e: any) => {    
 		ReactDOM.render(

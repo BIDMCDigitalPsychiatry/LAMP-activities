@@ -11,9 +11,9 @@ import { AppContainer } from "react-hot-loader"
 import JournalEntries from './components/JournalEntries'
 import './index.css'
 import "material-icons"
-const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+const eventer = window.addEventListener
+const messageEvent = "message"
+
 eventer(
   messageEvent, (e: any) => {   
 ReactDOM.render(

@@ -24,7 +24,7 @@ const Layout = ({...props} : any) =>{
       useEffect(() => {  
         const configuration = props?.data?.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
-        setFooterMsg(i18n.t<string>("LEVEL")+" "+gameLevel)
+        setFooterMsg(i18n.t("LEVEL")+" "+gameLevel)
         if(gameLevel === 1) {
           if (
             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -52,7 +52,7 @@ const Layout = ({...props} : any) =>{
 
        useEffect(()=>{
         if(levelCompleted){
-          setFooterMsg(i18n.t<string>("YOU_WON"))
+          setFooterMsg(i18n.t("YOU_WON"))
           const route = {
             "duration": timeTaken/1000,
             "item": circles,
@@ -109,12 +109,12 @@ const Layout = ({...props} : any) =>{
               hideModal()
               sentResult()        
             }}
-            message={i18n.t<string>("CONTINUE")}
+            message={i18n.t("CONTINUE")}
             handleConfirm={(e: any) => {
               hideModal()
 
             if(gameLevel < 12) { 
-              setFooterMsg(i18n.t<string>("LEVEL")+" "+(gameLevel+1).toString())
+              setFooterMsg(i18n.t("LEVEL")+" "+(gameLevel+1).toString())
               setGameLevel(gameLevel+1)
               if(gameLevel=== 6){
                 setCircles(2)
@@ -131,12 +131,12 @@ const Layout = ({...props} : any) =>{
           <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
             </nav>            
-            <div className="heading">{i18n.t<string>("GAME")}</div>
+            <div className="heading">{i18n.t("GAME")}</div>
             
           <Container>  
            {isGameOver && <Row>
               <Col>
-                  <p className='error-class'>{i18n.t<string>("GAME_OVER")}</p>
+                  <p className='error-class'>{i18n.t("GAME_OVER")}</p>
               </Col>
             </Row> }       
             <Row>
@@ -155,7 +155,7 @@ const Layout = ({...props} : any) =>{
            {showStartButton && <Row>
               <Col className="mt-80">               
               <Button variant="primary" className="start-button" size="sm" onClick={()=>{setStartGame(true); setShowStartButton(false)}}>
-                {i18n.t<string>("START_GAME")}
+                {i18n.t("START_GAME")}
              </Button>
               </Col>
             </Row>}
