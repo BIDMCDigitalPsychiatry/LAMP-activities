@@ -188,7 +188,7 @@ export default function Goals({ ...props }) {
           <CardContent className={classes.tipscontentarea}>
             <Typography variant="h2">{(activity?.settings?.value ?? "") + " " + (activity.settings?.unit ?? "")}</Typography>
             <Typography variant="h5" color="textSecondary" className={classes.activityDesc} >
-              <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
+              <ReactMarkdown remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: LinkRenderer}}>
                  {activity?.description ?? ""}
               </ReactMarkdown>
             
