@@ -105,11 +105,11 @@ const Layout = ({...props} : any) =>{
           <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
             </nav>             
-            <div className="heading">{i18n.t<string>("EMOTIONS")}</div>            
+            <div className="heading">{i18n.t("EMOTIONS")}</div>            
           <Container> 
             <Row>
                 <Col>
-                    <p className='error-class'>{gameOver ? i18n.t<string>("GAME_OVER") : ""}</p>
+                    <p className='error-class'>{gameOver ? i18n.t("GAME_OVER") : ""}</p>
                 </Col>
               </Row>                          
               <Row>

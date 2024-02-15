@@ -136,7 +136,7 @@ export default function MedicationTracker({ ...props }) {
       : "en-US"
     i18n.changeLanguage(langugae)
     setStartTime(new Date().getTime())
-    setActivity(props.data.activity)
+    setActivity(props.data?.activity ?? null)
   }, [])
 
   const completeMarking = () => {
@@ -157,7 +157,6 @@ export default function MedicationTracker({ ...props }) {
   
   return (
     <React.Fragment>
-
     {!!activity && (
       <Box>
     <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
@@ -188,7 +187,7 @@ export default function MedicationTracker({ ...props }) {
           <CardContent className={classes.tipscontentarea}>
             <Typography variant="h2">{(activity?.settings?.value ?? "") + " " + (activity.settings?.unit ?? "")}</Typography>
             <Typography variant="h5" color="textSecondary" className={classes.activityDesc} >
-              <ReactMarkdown plugins={[gfm, emoji]} escapeHtml={false} renderers={{link: LinkRenderer}}>
+              <ReactMarkdown remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: LinkRenderer}}>
                  {activity?.description ?? ""}
               </ReactMarkdown>
             

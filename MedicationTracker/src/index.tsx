@@ -5,6 +5,8 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
+require("react-hot-loader/patch")
+
 import React from "react"
 import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
@@ -12,9 +14,9 @@ import MedicationTracker from './components/MedicationTracker'
 import './index.css';
 import "material-icons";
 
-const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventMethod ="addEventListener"
 const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+const messageEvent = "message"
 eventer(
   messageEvent, (e:any) => {    
 		ReactDOM.render(
