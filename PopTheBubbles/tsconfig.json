@@ -39,6 +39,7 @@
     "src/setupTests.ts"
   ],
   "include": [
-    "src"
+    "src",
+    "images.d.ts"
   ]
 }

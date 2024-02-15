@@ -315,7 +315,9 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           this.state.gameLevel === 1 ? (
             <div className="pop-the-bubble-board">
               <div className="mt-30">
-              <Animated animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
+             
+
+              <Animated  animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
                 <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
                 </Animated>
                 <Animated animationIn="bounceInUp" animationInDuration={1500} className="bubble-blue-large size-l" animationOut="fadeOut" isVisible={true}>
