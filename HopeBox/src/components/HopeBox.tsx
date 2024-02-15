@@ -216,7 +216,7 @@ export default function HopeBox({ ...props }) {
         <Box display="flex" justifyContent="flex-end">
           <Box>
             <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpenPreview(false)}>
-              <Icon>close</Icon>>
+              <Icon>close</Icon>
             </IconButton>
           </Box>
         </Box>
