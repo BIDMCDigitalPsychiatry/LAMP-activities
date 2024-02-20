@@ -60,9 +60,9 @@ class Jewels extends React.Component<{}, AppState> {
   }
 
   messageEvent = () => {
-    const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
+    const eventMethod ="addEventListener"
     const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+    const messageEvent =  "onmessage"
     // Listen to message from child window
     eventer(
       messageEvent,
