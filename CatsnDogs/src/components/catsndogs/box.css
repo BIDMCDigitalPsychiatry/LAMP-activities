@@ -26,11 +26,13 @@ nav a{color: rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .home-link{
 	position: absolute;
 	right: 0;
+	margin: 15px;
 }
 
 .back-link{
 	position: absolute;
 	left: 0;
+	margin: 15px;
 }
 .App-header {
 	height:90px;
