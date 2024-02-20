@@ -5,6 +5,8 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
+require("react-hot-loader/patch") 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import * as React from 'react';
