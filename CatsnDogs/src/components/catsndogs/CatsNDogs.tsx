@@ -11,7 +11,6 @@ import Board from "./Board";
 
 import i18n from "./../../i18n";
 
-import { isUndefined } from "util";
 
 interface AppState {
   loaded: boolean;
@@ -19,57 +18,14 @@ interface AppState {
   noBack: false;
 }
 
-class CatsNDogs extends React.Component<{}, AppState> {
-  constructor(props: {}) {
+class CatsNDogs extends React.Component<any, AppState> {
+  constructor(props: any) {
     super(props);
-    // const eventMethod = window.addEventListener
-    //   ? "addEventListener"
-    //   : "attachEvent";
-    // const eventer = window[eventMethod];
-    // const messageEvent =
-    //   eventMethod === "attachEvent" ? "onmessage" : "message";
-    let eventMethod;
-    let eventer;
-    let messageEvent;
-
-    if (typeof window.addEventListener === 'function') {
-      eventMethod = "addEventListener";
-      eventer = window[eventMethod];
-      messageEvent = "message";
-    } else {
-      eventMethod = "attachEvent";
-      eventer = window[eventMethod];
-      messageEvent = "onmessage";
-    }
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const configuration = e.data.configuration;
+        const configuration = props.data.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        console.log(e.data)
-        this.setState({ loaded: false, noBack: e.data.noBack, time: new Date().getTime() }, () => {
-          this.reset(true);
-        });
-      },
-      false
-    );
+          this.state = { loaded: true, noBack: props.data.noBack, time: new Date().getTime() };
+       
   }
-    
-  // Reset game board
-  reset = (loadedVal: boolean) => {
-    const state = {
-      loaded: loadedVal,
-      noBack: this.state.noBack,
-      time: this.state.time
-    };
-
-    if (isUndefined(this.state)) {
-      this.state = state;
-    } else {
-      this.setState(state);
-    }
-  };
-
 
   // Game render function
   render() {

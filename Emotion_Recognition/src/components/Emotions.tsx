@@ -45,7 +45,7 @@ const Emotions = ({...props} : any) => {
     setEmotions(newArray)
   }
   useEffect(()=>{
-    setImage(props.data.image)
+    setImage(props.data?.image)
     setNum(props.level)  
     initialize(props.data)  
   },[props.data, props.level])

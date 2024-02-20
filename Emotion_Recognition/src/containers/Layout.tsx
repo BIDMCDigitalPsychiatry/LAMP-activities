@@ -18,11 +18,10 @@ const Layout = ({...props} : any) =>{
 
       useEffect(() => {  
         const configuration = props.data.configuration;
-        const data = props.data.activity?.settings ? props.data.activity?.settings : null ;
-        shuffleArray(data)
+        let data = props.data.activity?.settings ? props.data.activity?.settings : null ;
+        data = shuffleArray(data ?? [])
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");    
-        const newArray = data?.map ((em: any)=>{
-
+        const newArray = data?.map ((em: any) => {
           return {
             ...em,
             "selected" : ""

@@ -103,6 +103,7 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .home-link{
 	position: absolute;
 	right: 0;
+	margin: 15px;
 	z-index: 9999;
 	cursor: pointer;
 }
