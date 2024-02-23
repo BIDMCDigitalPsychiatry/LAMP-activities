@@ -18,31 +18,16 @@ interface AppState {
   noBack: boolean;
 }
 
-class Box extends React.Component<{}, AppState> {
-  constructor(props: {}) {
+class Box extends React.Component<any, AppState> {
+  constructor(props: any) {
     super(props);
-    const state = {
-      loaded: false,
-      noBack:false,
-      reverse: false,
-      time: new Date().getTime(),
-    };
+    const settings = props.data.activity?.settings ?? (props.data.settings ?? {});
+    const configuration = props.data.configuration;
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+    const state = { reverse: settings ? (settings.reverse_tapping ? settings.reverse_tapping : false) : false,       time: new Date().getTime(),
+      noBack: props.data.noBack, loaded: true };
     this.state = state;
-    const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent";
-    const eventer = window[eventMethod];
-    const messageEvent =
-      eventMethod === "attachEvent" ? "onmessage" : "message";
-    // Listen to message from child window
-    eventer(
-      messageEvent,
-      (e: any) => {
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
-        const configuration = e.data.configuration;
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-        this.setState({ reverse: settings ? (settings.reverse_tapping ? settings.reverse_tapping : false) : false, noBack: e.data.noBack, loaded: true });
-      },
-      false
-    );
+
   }
 
 

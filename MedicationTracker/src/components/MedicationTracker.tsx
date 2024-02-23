@@ -187,7 +187,8 @@ export default function MedicationTracker({ ...props }) {
           <CardContent className={classes.tipscontentarea}>
             <Typography variant="h2">{(activity?.settings?.value ?? "") + " " + (activity.settings?.unit ?? "")}</Typography>
             <Typography variant="h5" color="textSecondary" className={classes.activityDesc} >
-              <ReactMarkdown remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: LinkRenderer}}>
+              <ReactMarkdown remarkPlugins={[emoji, remarkGfm]}  skipHtml={false} components={{link: LinkRenderer, sub: 'sub',
+      sup: 'sup'}}>
                  {activity?.description ?? ""}
               </ReactMarkdown>
             
