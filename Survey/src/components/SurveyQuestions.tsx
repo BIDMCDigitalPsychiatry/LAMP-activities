@@ -448,7 +448,9 @@ function RateAnswer({ checked, onChange, value }) {
   return (
     <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
       {checked && <Typography className={classes.checkText}>
-        <ReactMarkdown source={value?.toString()} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />
+        <ReactMarkdown source={value?.toString()} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />
       </Typography>}
     </div>
   )
@@ -501,10 +503,14 @@ function RadioOption({ onChange, options, value, ...props }) {
                   variant="body2"
                   style={{ color: selectedValue === `${x.value}` ? "black" : "rgba(0, 0, 0, 0.7)" }}
                 >
-                  <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />
+                  <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />
                 </Typography>
                 <Typography component="span" variant="caption" className={classes.lightGray}>
-                  <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />                  
+                  <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />                  
                 </Typography>
               </Box>
             }
@@ -779,7 +785,9 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
             />
             {type !== "matrix" && (
               <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown source={t(option.description?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}}/>
+                <ReactMarkdown source={t(option.description?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}}/>
               </Typography>
             )}            
           </Box>
@@ -870,7 +878,9 @@ function Rating({ onChange, options, value, ...props }) {
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
           <ReactMarkdown source={!!options[0].description && options[0].description.trim().length === 0
               ? options[0].value
-              : options[0].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />            
+              : options[0].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />            
           </Typography>
         </Grid>
         <Grid item>
@@ -879,7 +889,9 @@ function Rating({ onChange, options, value, ...props }) {
               <ReactMarkdown source={!!options[Math.ceil(options.length / 2) - 1].description &&
               options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
                 ? options[Math.ceil(options.length / 2) - 1].value
-                : options[Math.ceil(options.length / 2) - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />              
+                : options[Math.ceil(options.length / 2) - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />              
             </Typography>
           )}
         </Grid>
@@ -887,7 +899,9 @@ function Rating({ onChange, options, value, ...props }) {
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
           <ReactMarkdown source={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
               ? options[options.length - 1].value
-              : options[options.length - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />
+              : options[options.length - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />
             
           </Typography>
         </Grid>
@@ -897,7 +911,9 @@ function Rating({ onChange, options, value, ...props }) {
           {t("Your response")}<span>:</span>
         </Typography>
         <Typography variant="h4">
-          <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />          
+          <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />          
         </Typography>
       </Box>
     </Box>
@@ -941,7 +957,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown source={`${t(x.description?.toString() ?? "" )}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} /> 
+          <ReactMarkdown source={`${t(x.description?.toString() ?? "" )}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} /> 
         </Typography>
       </Box>
         <Box className={classes.questionScroll}>
@@ -952,7 +970,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            {(x.description || "").length > 0  && <ReactMarkdown source={` ${t(x.description?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />}  
+            {(x.description || "").length > 0  && <ReactMarkdown source={` ${t(x.description?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />}  
              </TableCell>
         ))}
       </TableRow>)}
@@ -961,7 +981,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />   
+            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />   
           </TableCell>
         ))}
       </TableRow>)}
@@ -1159,10 +1181,14 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                 variant="body2"
                 style={{ color: selection.includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
               >
-                <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />                
+                <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />                
               </Typography>
               <Box className={classes.lightGray}>
-                <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />                
+                <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />                
               </Box>
             </Box>
           }
@@ -1259,7 +1285,9 @@ function Question({ onResponse, text, desc, required, type, options, value, star
                     : options[options.length - 1].value
                 }`
               )
-            : !!desc && t(`${desc}`) } escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />           
+            : !!desc && t(`${desc}`) } escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />           
         </Typography>
       </Box>
       <Box className={classes.questionScroll}>{component}</Box>
@@ -1513,7 +1541,9 @@ function Section({
             <Icon>arrow_back</Icon>
           </IconButton>}
           <Typography variant="h5">
-            <ReactMarkdown source={t(value?.name?.toString().replace(/_/g, " "))} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: 'sup'}} />   
+            <ReactMarkdown source={t(value?.name?.toString().replace(/_/g, " "))} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+    return <sup>{props.children}</sup>;
+  }}} />   
           </Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
