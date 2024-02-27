@@ -46,7 +46,6 @@ import ReactMarkdown from "react-markdown"
 import emoji from "remark-emoji"
 import gfm from "remark-gfm"
 import { useSnackbar } from "notistack"
-import remarkSubSuper from 'remark-sub-super'
 import ConfirmationDialog from "./ConfirmationDialog"
 const GreenCheckbox = withStyles({
   root: {
@@ -305,6 +304,7 @@ const useStyles = makeStyles((theme) => ({
     "& fieldset": { borderWidth: 0 },
   },
   required : {
+    "& span" : { color: "red"},
     "& sup" : { color: "red"}
   },
   sliderResponse: {
@@ -448,7 +448,9 @@ function RateAnswer({ checked, onChange, value }) {
   return (
     <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
       {checked && <Typography className={classes.checkText}>
-        <ReactMarkdown source={value?.toString()} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+        <ReactMarkdown children={value?.toString()} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />
       </Typography>}
@@ -503,12 +505,16 @@ function RadioOption({ onChange, options, value, ...props }) {
                   variant="body2"
                   style={{ color: selectedValue === `${x.value}` ? "black" : "rgba(0, 0, 0, 0.7)" }}
                 >
-                  <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                  <ReactMarkdown children={t(x.label?.toString())} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />
                 </Typography>
                 <Typography component="span" variant="caption" className={classes.lightGray}>
-                  <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                  <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false}  plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />                  
                 </Typography>
@@ -785,7 +791,9 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
             />
             {type !== "matrix" && (
               <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown source={t(option.description?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                <ReactMarkdown children={t(option.description?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}}/>
               </Typography>
@@ -876,20 +884,24 @@ function Rating({ onChange, options, value, ...props }) {
       <Grid container className={classes.sliderValueLabel} direction="row" justify="space-between" alignItems="center">
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-          <ReactMarkdown source={!!options[0].description && options[0].description.trim().length === 0
+          <ReactMarkdown children={!!options[0].description && options[0].description.trim().length === 0
               ? options[0].value
-              : options[0].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
-    return <sup>{props.children}</sup>;
+              : options[0].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
+    return <sup>{props?.children}</sup>;
   }}} />            
           </Typography>
         </Grid>
         <Grid item>
           {options.length > 2 && (
             <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-              <ReactMarkdown source={!!options[Math.ceil(options.length / 2) - 1].description &&
+              <ReactMarkdown children={!!options[Math.ceil(options.length / 2) - 1].description &&
               options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
                 ? options[Math.ceil(options.length / 2) - 1].value
-                : options[Math.ceil(options.length / 2) - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                : options[Math.ceil(options.length / 2) - 1].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />              
             </Typography>
@@ -897,9 +909,11 @@ function Rating({ onChange, options, value, ...props }) {
         </Grid>
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-          <ReactMarkdown source={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
+          <ReactMarkdown children={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
               ? options[options.length - 1].value
-              : options[options.length - 1].description} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+              : options[options.length - 1].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />
             
@@ -911,7 +925,9 @@ function Rating({ onChange, options, value, ...props }) {
           {t("Your response")}<span>:</span>
         </Typography>
         <Typography variant="h4">
-          <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+          <ReactMarkdown children={t(valueText?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />          
         </Typography>
@@ -957,7 +973,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown source={`${t(x.description?.toString() ?? "" )}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+          <ReactMarkdown children={`${t(x.description?.toString() ?? "" )}`} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} /> 
         </Typography>
@@ -970,7 +988,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            {(x.description || "").length > 0  && <ReactMarkdown source={` ${t(x.description?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+            {(x.description || "").length > 0  && <ReactMarkdown children={` ${t(x.description?.toString())}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />}  
              </TableCell>
@@ -981,7 +1001,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+            <ReactMarkdown children={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />   
           </TableCell>
@@ -990,7 +1012,9 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
       {(x.questions || []).map((question, qindex) => (
         <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
-            <ReactMarkdown source={t(question.text) +  (!!question.required ? "`^*^`" : "")} escapeHtml={false}    plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+            <ReactMarkdown children={t(question.text) +  (!!question.required ? "<span> *</span>" : "")} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />   
           </TableCell>
@@ -1181,12 +1205,16 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                 variant="body2"
                 style={{ color: selection.includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
               >
-                <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                <ReactMarkdown children={t(x.label?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />                
               </Typography>
               <Box className={classes.lightGray}>
-                <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+                <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />                
               </Box>
@@ -1265,14 +1293,16 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     <Grid>
       <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown source={t(text + (!!required ? "`^*^`" : ""))} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup:  (props) => {
+          <ReactMarkdown children={t(text + (!!required ? "<span> *</span>" : ""))} allowDangerousHtml={true}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, span:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup:  (props) => {
     return <sup>{props.children}</sup>;
   }}} /> 
         </Typography>
       </Box>
       <Box className={classes.questionhead}>
         <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>                 
-          <ReactMarkdown source={type === "slider"
+          <ReactMarkdown children={type === "slider"
             ? t(
                 `${options[0].value} being ${
                   !!options[0].description && options[0].description.trim().length > 0
@@ -1285,7 +1315,9 @@ function Question({ onResponse, text, desc, required, type, options, value, star
                     : options[options.length - 1].value
                 }`
               )
-            : !!desc && t(`${desc}`) } escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]}  renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+            : !!desc && t(`${desc}`) } skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />           
         </Typography>
@@ -1541,7 +1573,9 @@ function Section({
             <Icon>arrow_back</Icon>
           </IconButton>}
           <Typography variant="h5">
-            <ReactMarkdown source={t(value?.name?.toString().replace(/_/g, " "))} escapeHtml={false}   plugins={[gfm, emoji, remarkSubSuper]} renderers={{ link: LinkRenderer, sub: 'sub', sup: (props) => {
+            <ReactMarkdown children={t(value?.name?.toString().replace(/_/g, " "))} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
+    return <sub>{props?.children}</sub>;
+  }, sup: (props) => {
     return <sup>{props.children}</sup>;
   }}} />   
           </Typography>
