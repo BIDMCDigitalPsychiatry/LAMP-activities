@@ -48,11 +48,27 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 }
 .home-link{
 	position: absolute;
-	right: 0;
+    right: 10px;
+    /* padding: 15px; */
+    top: 8px;
+    background: #f4f4f4;
+    width: 40px;
+    height: 40px;
+    padding: 11px;
+    box-sizing: border-box;
+    border-radius: 50%;
 }
 .back-link{
 	position: absolute;
-	left: 0;
+    left: 10px;
+    top: 8px;
+    background: #f4f4f4;
+    width: 40px;
+    height: 40px;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border-radius: 50%;
+
 }
 .box-white{
 	height: 100%;	

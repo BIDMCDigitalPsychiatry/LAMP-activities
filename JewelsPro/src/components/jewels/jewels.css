@@ -102,15 +102,27 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 }
 .home-link{
 	position: absolute;
-	right: 0;
-	margin: 15px;
+    right: 10px;
+    top: 5px;
+    background: #f4f4f4;
+    width: 40px;
+    height: 40px;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border-radius: 50%;
 	z-index: 9999;
 	cursor: pointer;
 }
 .back-link{
 	position: absolute;
-	left: 0;
-	padding: 16px 15px 15px 15px;
+    left: 10px;
+    top: 5px;
+    background: #f4f4f4;
+    width: 40px;
+    height: 40px;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border-radius: 50%;
     z-index: 9999;
     cursor: pointer;
 }
@@ -473,16 +485,26 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
  svg.svg-inline--fa.fa-arrow-left.fa-w-14 {  
 	color: rgba(53,159,254,1);
 } 
-.countdown-timer{background-color: #fff; display: flex; align-items: center; justify-content: center; height: 15px;}
+.countdown-timer{ display: flex; align-items: center; justify-content: center; position: absolute;right: 60px; top: 11px;}
 .countdown-timer__text{color: rgba(53,159,254,1) !important;
-
+	display: flex;
 	text-align: center;
 	color: #fff;
 	font-size: 14px;
 	min-height: 25px;
+	align-items: center;
+	padding: 5px 15px;
   }
   @media only screen and (min-width: 1000px) {
 	.modal-content{
 	  margin-left: 20%;
 	 }    
   }
+  .level{
+	background-color: #f4f4f4;
+	color:rgba(53,159,254,1);
+	padding: 5px 10px;
+	border-radius: 15px;
+	white-space: nowrap;
+	font-size: 16px;
+}
