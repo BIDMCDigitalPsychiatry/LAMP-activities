@@ -546,9 +546,10 @@ class Board extends React.Component<BoardProps, BoardState> {
           <span>{i18n.t("PLEASE_REMEMBER_THE_SEQUENCE")}</span>
         ) : null;
       // Game state
+      const total_level = 6;
       level =
         this.state.gameState > 0 ? (
-          <span>{i18n.t("LEVEL")} {this.state.gameState}</span>
+          <span>{i18n.t("LEVEL")} {this.state.gameState}/{total_level}</span>
         ) : null;
       // Show the alert on bottom of game board
       alertText = this.state.gameSequence ? (
