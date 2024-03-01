@@ -24,7 +24,7 @@ const Layout = ({...props} : any) =>{
       useEffect(() => {  
         const configuration = props?.data?.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
-        setFooterMsg(i18n.t("LEVEL")+" "+gameLevel)
+        setFooterMsg(i18n.t("LEVEL")+" "+gameLevel+"/"+(props.data.activity?.settings?.level ?? 12))
         if(gameLevel === 1) {
           if (
             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -113,8 +113,8 @@ const Layout = ({...props} : any) =>{
             handleConfirm={(e: any) => {
               hideModal()
 
-            if(gameLevel < 12) { 
-              setFooterMsg(i18n.t("LEVEL")+" "+(gameLevel+1).toString())
+            if(props.data.activity?.settings?.level ?? 12) { 
+              setFooterMsg(i18n.t("LEVEL")+" "+(gameLevel+1).toString()+"/"+(props.data.activity?.settings?.level ?? 12).toString())
               setGameLevel(gameLevel+1)
               if(gameLevel=== 6){
                 setCircles(2)

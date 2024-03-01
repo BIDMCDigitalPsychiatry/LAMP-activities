@@ -447,6 +447,7 @@ class Jewels extends React.Component<any, AppState> {
                 updateLevel={this.updateLevel}
                 handleClose={this.handleClose}
                 sendDataToDashboard={this.sendDataToDashboard}
+                settings={this.state.settings}
               />
             </div>
           </div>

@@ -27,7 +27,8 @@ export interface BoardProps {
   level: number;
   language: string;
   updateLevel: any;
-  updateRoutes: any
+  updateRoutes: any;
+  settings: any;
 }
 
 interface DiamondState {
@@ -46,7 +47,7 @@ interface DiamondState {
   tapCount: number;
   timeout: boolean;  
   showConfirmModal: boolean;
-
+  totalLevels: number; 
 }
 
 class Board extends React.Component<BoardProps, DiamondState> {
@@ -68,8 +69,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
       stepNumber: 0,
       tapCount: 0,
       timeout: false,
-      showConfirmModal: false
-
+      showConfirmModal: false,
+      totalLevels: this.getTotalLevels()
     };
     i18n.changeLanguage(props.language);
   }
@@ -298,6 +299,17 @@ class Board extends React.Component<BoardProps, DiamondState> {
     }
     this.setState({showConfirmModal: false})
   }
+
+  getTotalLevels = () => {
+    const maxBonusPoints = 1000; 
+    const bonusPointsPerLevel = this.props.settings?.bonus_point_count ?? 40; // Default value 
+    if (!bonusPointsPerLevel || bonusPointsPerLevel <= 0) {
+      console.error("Invalid or missing bonus_point_count in settings");
+      return 0; 
+    }
+    const totalLevels = Math.ceil(maxBonusPoints / bonusPointsPerLevel);
+    return totalLevels;
+  };
   // Render the game board
   render() {
     let board;
@@ -362,6 +374,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           {timer}
           {negSection}
           {confirmModal}
+          {this.props.level}/{this.state.totalLevels.toString()}
           <br/>
         </div>
         {board}
