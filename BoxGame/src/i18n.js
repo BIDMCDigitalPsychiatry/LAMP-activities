@@ -114,6 +114,12 @@ const resources = {
       REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
         "आपने हाइलाइट किए गए बॉक्सों को जिस क्रम में देखा है उन्हें याद रखे l",
       TIME_OUT: "समय समाप्त",
+      SPATIAL_SPAN: "स्थानिक विस्तार",
+      YOU_WILL_SEE_A_GRID_OF_BOXES_THE_BOXES_IN_A_GRID_WILL_LIGHT_UP_IN_A_CERTAIN_ORDER_REMEMBER_THE_ORDER_AND_THEN_TAP_THE_BOXES_IN_THE_ORDER_IN_WHICH_THEY_LIT_UP_EACH_LEVEL_WILL_HAVE_MORE_BOXES_LIGHT_UP_IN_SEQUENCE_SEE_HOW_FAR_YOU_CAN_GET:
+        "आप एक बक्सों का क्रम देखेंगे, क्रम में बक्से एक निश्चित क्रम में चमकेंगे. क्रम याद रखें, और फिर उन बक्सों को उसी क्रम में टैप करें जिस क्रम में वे चमके थे। प्रत्येक स्तर में क्रम में और बक्से चमकेंगे, देखें कि आप कितना आगे बढ़ सकते हैं!",
+      BEGIN: "खेल शुरू करें।",
+      GO: "खेलें",
+
     },
   },
   "it-IT": {
