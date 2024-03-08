@@ -133,7 +133,18 @@ const resources = {
       TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP:"एक ही पंक्ति में समान रंग के दो बुलबुलों को पॉप नही करें",
       TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM:"केवल पीला और नीले रंग के बुलबुलों को पॉप करें l",
       TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM:"केवल गुलाबी, पीला और नीला बुलबुले पॉप करें l",
-      YOU_GOT_PERCENT: "आपको मिला {{ percentage }}"      
+      YOU_GOT_PERCENT: "आपको मिला {{ percentage }}"    ,
+      TAP_TO_POP_ALL_PINK_BLUE_AND_YELLOW_BUBBLES_ONLY:  "केवल गुलाबी, नीला और पीले बुलबुलों को दबाकर फोड़े।",
+      POPPING_CORRECT_BALLOON_WILL_EARN_YOU_POINTS: "सही बुलबुलों को फोड़ने पर आपको पॉइंट्स मिलेंगे" ,
+      RESULTS: "परिणाम",
+      LEVEL_1_COMPLETED: "स्तर 1 पूरा हुआ",
+      DONT_POP_TWO_BUBBLES_OF_THE_SAME_COLOR_IN_A_ROW: "एक साथ दो उसी रंग के बुलबुलों को न फोड़े",
+      ONLY_POP_YELLOW_AND_BLUE_BUBBLES: "केवल पीले और नीले बुलबुलों को फोड़ें|",
+      LEVEL_2_COMPLETED: "स्तर 2  पूरा हुआ",
+      ONLY_POP_PINK_AND_BLUE_BUBBLES: "केवल गुलाबी और नीले बुलबुलों को फोड़े",
+      LEVEL_3_COMPLETED: "स्तर 3  पूरा हुआ",
+      IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE:
+        "इस खेल में, आप बहुत से विभिन्न रंगों के बुलबुल देखेंगे, एक बार में एक। आपका कार्य है सही रंग के बुलबुलों को 'फोड़ना’ है एवं गलत रंगों को बुलबुले को नजरअंदाज करना। (आपका कार्य है की गलत रंगों के बुलबुलों को बिना दबाए, सही रंग के बुलबुलों को चुने) प्रत्येक स्तर के लिए निर्देशों पर ध्यान दें ताकि आप जान सकें कौन सी रंग के बुलबुलों को आपको दबाना चाहिए, और किसको आपको नजरअंदाज करना चाहिए।",
     },
   }, "it-IT": {
     translation: {

@@ -75,6 +75,12 @@ const resources = {
       OK: "ठीक है",     
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
         "उन बॉक्सों को दबाए जिनके पीछे एक कुत्ता है।",
+      IN_THIS_GAME_YOU_WILL_SEE_A_SCREEN_WITH_MANY_BOXES_THESE_BOXES_WILL_LIFT_REVEALING_EITHER_A_DOG_CAT_OR_NOTHING_BEHIND_THEM_A_TASK_IS_TO_TAP_THE_CORRECT_BOXES_BASED_ON_WHAT_IS_BEHIND_EACH_BOX_THE_INSTRUCTIONS_FOR_WHICH_BOXES_ARE_CORRECT_WILL_CHANGE_DEPENDING_ON_THE_LEVEL_SO_PAY_ATTENTION_TO_THE_ANIMALS:
+        "इस खेल में, आपको एक स्क्रीन दिखाई देगी जिसमें कई बक्से होंगे। ये बक्से 'सरक जाएंगे ' और उनके पीछे कुत्ता, बिल्ली या कुछ भी नहीं दिखाई देगा। किस बक्से के पीछे क्या है यह दिए जाने वाले निर्देशों को देख कर सही बक्सों का चयन करना है। स्तर के आधार पर कौन-कौन से बक्से सही हैंं, उसके लिए निर्देश बदल जाएंगे, इसलिए जानवरों पर ध्यान दें!",
+      DONT_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
+        "उन बक्सों को ना दबाए जिनके पीछे बिल्ली है।",
+      DONT_TAP_THE_BOXES_WITH_A_DOG_BEHIND_THEM:
+        "उन बक्सो को ना दबाएं जिनके पीछे कुत्ता है।",
     },
   }, "it-IT":{
     translation: {

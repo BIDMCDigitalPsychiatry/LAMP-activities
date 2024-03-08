@@ -74,7 +74,9 @@ const resources = {
       TOTAL_SPINS: "कुल घुमाव",
       YOU_LOSE: "आप खोया",
       YOU_WON: "आप जीता",
-      
+      SPIN_THE_WHEEL: "पहिया घुमाएं",
+      BEGIN: "खेल शुरू करें!",
+      TOTAL_SPIN: "कुल घूमाव",
     },
   },
   "it-IT":{
