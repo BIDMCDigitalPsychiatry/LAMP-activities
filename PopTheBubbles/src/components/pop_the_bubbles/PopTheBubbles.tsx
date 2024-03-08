@@ -132,7 +132,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           : this.state.intertrial_duration,
         noBack: this.props.noBack    
       });    
-      i18n.changeLanguage(!!configuration ? configuration.language : "hi-IN");
+      i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     }
     if (this.state.isGameStarted) {
       if (!this.state.completed) {
