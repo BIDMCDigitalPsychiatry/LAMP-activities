@@ -372,7 +372,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
       <div>
         <div className="countdown-timer">
           <div>{timer}</div>
-          <div className="level">{i18n.t("LEVEL ")}{this.props.level}/{this.state.totalLevels.toString()}</div>
+          <div className="level">{i18n.t("LEVEL")}{this.props.level}/{this.state.totalLevels.toString()}</div>
         </div>
         {negSection}
           {confirmModal}
