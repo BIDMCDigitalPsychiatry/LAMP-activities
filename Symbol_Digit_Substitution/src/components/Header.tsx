@@ -45,7 +45,7 @@ props?.clickBackData()
                     {!props?.data && <IconButton onClick={() => clickBack()} color="default" aria-label="Menu">
                         <Icon>arrow_back</Icon>
                     </IconButton>}
-                    <Typography variant="h5">{t("Symbol-Digit Substitution")}</Typography>
+                    <Typography variant="h5">{`${t("Symbol-Digit Substitution")}`}</Typography>
                 </Toolbar>
             </AppBar>
         

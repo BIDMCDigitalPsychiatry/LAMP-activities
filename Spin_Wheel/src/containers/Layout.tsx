@@ -178,7 +178,7 @@ const Layout = ({...props}) => {
             <IconButton onClick={() => setComplete(true)} color="default" aria-label="Menu">
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h5">{i18n.t("GAME")}</Typography>
+            <Typography variant="h5">{i18n.t("SPIN_THE_WHEEL")}</Typography>
           </Toolbar>
         </AppBar>
         <Container>          
