@@ -187,8 +187,8 @@ export default function ScratchImage({ ...props }) {
     const langugae = configuration
       ? configuration.hasOwnProperty("language")
         ? configuration.language
-        : "zh-HK"
-      : "zh-HK"
+        : "en-US"
+      : "en-US"
     i18n.changeLanguage(langugae)
     setSettings(settingsData)   
     setNoBack(props.data.noBack)    

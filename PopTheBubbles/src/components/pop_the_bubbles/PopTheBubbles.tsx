@@ -111,8 +111,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     };
     this.bubbleCount = this.state.bubble_count[0];
   }
-
-  componentDidUpdate = (previousProps: any, prevState: any) => {
+  componentDidMount(): void {
     if (!!this.props.configuration && !this.state.eventRecieved) {
       const configuration = this.props.configuration;
       const settings = this.props.activity?.settings ?? undefined;
@@ -143,7 +142,40 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         return;
       }
     }
-  };
+  }
+
+  // componentDidUpdate = (previousProps: any, prevState: any) => {
+  //   if (!!this.props.configuration && !this.state.eventRecieved) {
+  //     const configuration = this.props.configuration;
+  //     const settings = this.props.activity?.settings ?? undefined;
+  //     this.setState({
+  //       bubble_count: settings
+  //         ? settings.bubble_count
+  //         : this.state.bubble_count,
+  //       bubble_duration: settings
+  //         ? settings.bubble_duration
+  //         : this.state.bubble_duration,
+  //       bubble_speed: settings
+  //         ? settings.bubble_speed
+  //         : this.state.bubble_speed,
+  //       eventRecieved:true,
+  //       intertrial_duration: settings
+  //         ? settings.intertrial_duration
+  //         : this.state.intertrial_duration,
+  //       noBack: this.props.noBack    
+  //     });    
+  //     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+  //   }
+  //   if (this.state.isGameStarted) {
+  //     if (!this.state.completed) {
+  //       if (this.state.levelStartTime === 0) {
+  //         const newDateTime = new Date().getTime();
+  //         this.setState({ levelStartTime: newDateTime });
+  //       }
+  //       return;
+  //     }
+  //   }
+  // };
 
   // Get random coordinates for bubbles
   getCoords = (size: number, type: number) => {
