@@ -1375,16 +1375,6 @@ function Questions({
 }
 
 const updateResponses = (x, response, activityId, responses, idx, startTime, setActiveStep, total) => {
-  const lastEndTime =
-    responses.current
-      .filter((item) => item.value != null)
-      .sort((a, b) => {
-        return a.endTime > b.endTime ? 1 : a.endTime < b.endTime ? -1 : 0
-      })
-      .pop()?.endTime ?? startTime
-    const currentItem = responses.current.filter((item) => item.item === x.text && item.duration !== x.duration).pop()
-    const prevItem = responses.current.filter((item) => item.item === x.text)
-
     responses.current[idx] = response
     if (x.type !== "multiselect") {
       setActiveStep((prev) => prev + 1)
