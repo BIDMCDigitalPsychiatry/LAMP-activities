@@ -543,13 +543,6 @@ function TimeSelection({ onChange, options, value, ...props }) {
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
       (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
-      (Array.isArray(options) && !!options[0] &&  !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
-  }, [])
-
-  useEffect(() => {
-    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
-      (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
        ((!!options?.timePattern && options?.timePattern === "standard") ||
        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
    }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
@@ -1389,14 +1382,15 @@ const updateResponses = (x, response, activityId, responses, idx, startTime, set
         return a.endTime > b.endTime ? 1 : a.endTime < b.endTime ? -1 : 0
       })
       .pop()?.endTime ?? startTime
-    const currentItem = responses.current.filter((item) => item.item === x.text).pop()
+    const currentItem = responses.current.filter((item) => item.item === x.text && item.duration !== x.duration).pop()
+    const prevItem = responses.current.filter((item) => item.item === x.text)
+
     responses.current[idx] = response
     if (x.type !== "multiselect") {
       setActiveStep((prev) => prev + 1)
     }
-    response.duration =
-      (x.type !== "text" ? new Date().getTime() - startTime : new Date().getTime() - lastEndTime) +
-        (currentItem?.duration ?? 0)
+    response.duration = new Date().getTime() - startTime 
+
     response.endTime = new Date().getTime()
     response.type = null
     response.level = null
