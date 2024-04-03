@@ -6,7 +6,6 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .use(Backend)
   .init({
-    initImmediate: false,
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",
       preload: true,      
@@ -14,7 +13,7 @@ i18n
     keySeparator: false,
     nsSeparator: false,
     react: {
-      useSuspense: false
+      useSuspense: false,
     },    
   })
 

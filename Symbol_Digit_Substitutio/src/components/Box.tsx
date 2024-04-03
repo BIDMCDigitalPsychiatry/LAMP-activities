@@ -47,15 +47,11 @@ export default function Box({ ...props }) {
         <Grid container className={props.className}>
             {!!props?.data ? props?.data.map((value: any, index: number) => (
                 <Grid className={props.boxClass} item xs={2} sm={2} md={1} key={index}>
-                    <ListItem>{value}</ListItem>
+                 <ListItem>{value}</ListItem>
                     <div className={classes.divider} />
-                    <ListItem>{index + 1}</ListItem>
+                 <ListItem>{index + 1}</ListItem>
                 </Grid>
-            )) : (
-            <Grid className={props.boxClass} item xs={2} sm={2} md={1} >
-                <ListItem>{props?.currentSymbol}</ListItem>
-            </Grid>
-            )}
+            )) : <Grid className={props.boxClass} item xs={2} sm={2} md={1} > <ListItem>{props?.currentSymbol}</ListItem></Grid>}
         </Grid>
 
     )
