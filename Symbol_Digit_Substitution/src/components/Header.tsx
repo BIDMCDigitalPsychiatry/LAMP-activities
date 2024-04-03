@@ -43,7 +43,6 @@ export default function Header({ ...props }) {
                     <Icon>arrow_back</Icon>
                 </IconButton>}
                 <Typography variant="h5">{`${t("Symbol-Digit Substitution")}`}</Typography>
-                <Typography variant="h5">{`${t("Observe the symbol shown and press the number corresponding to it.")}`}</Typography>
             </Toolbar>
         </AppBar>
 
