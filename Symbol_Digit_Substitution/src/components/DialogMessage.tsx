@@ -51,13 +51,8 @@ export default function DialogMessage({ ...props }) {
             <DialogContent>
                 <DialogContentText className={classes.comment} id="alert-dialog-description">
                     {<span> {!!props.showMapping && props.showMapping === "not_at_all" ?
-                        `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. " +
-                            "This symbol will correspond to a numerical digit.")}` :
-                        !!props.showMapping ? `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter." +
-                            "This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. " +
-                            "Use the legend to identify the digit which corresponds to your symbol. " +
-                            "Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, " +
-                            "you will move on to a new symbol. Try to get as many symbols as you can.")}` : ""}</span>}
+                        `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit.")}` :
+                        !!props.showMapping ? `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can.")}` : ""}</span>}
                 </DialogContentText>
             </DialogContent>
             <DialogActions className={props.showMapping !== "before" ? classes.startbtnDiv : ""}>
