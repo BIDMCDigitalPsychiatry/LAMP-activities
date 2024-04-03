@@ -8,20 +8,20 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
+import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
 import './index.css'
 import "material-icons"
-import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
-const eventer = window.addEventListener
-const messageEvent = "message"
+const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
+const eventer = window[eventMethod]
+const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 eventer(
-  messageEvent, (e: any) => {    
-		ReactDOM.render(
-
-  <AppContainer>
-    <SymbolDigitSubstitution data={e.data}/>
-  </AppContainer>     , 		  
-		  document.getElementById("root")
-		);
-  },
-  false
- )
+  messageEvent, (e) => {  
+    ReactDOM.render(
+      <AppContainer>
+        <SymbolDigitSubstitution data={e.data}/>
+      </AppContainer>,  
+      document.getElementById('root') 
+    ) 
+},
+false
+)

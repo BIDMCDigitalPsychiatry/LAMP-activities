@@ -2,12 +2,16 @@
 import React, { useEffect, useRef, useState } from "react"
 import {
     Button,
-    makeStyles       
+    makeStyles,
+    DialogTitle,
+    DialogContentText,
+    DialogActions,
+    Dialog,
+    DialogContent,
 } from "@material-ui/core"
-import i18n from "../i18n"
 import { useTranslation } from "react-i18next"
-import Header from "./Header"
 import Box from "./Box"
+import Header from "./Header"
 import DialogMessage from "./DialogMessage"
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -215,200 +219,193 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SymbolDigitSubstitution({ ...props }) {
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const classes = useStyles()
-  const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'σ'];
-  const [timeLimit, setTimeLimit] = useState(props?.data?.activity?.settings?.duration ?? 120);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const classes = useStyles()
+    const SYMBOLS: Array<string> = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'σ'];
+    const [TIME_LIMIT, setTimeLimit] = useState(props?.data?.activity?.settings?.duration ?? 120);
 
-  const [currentSymbol, setCurrentSymbol] = useState('');
-  const [currentNumber, setCurrentNumber] = useState(0);
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(timeLimit);
-  const [flag, setFlag] = useState(2)
-  const [inputText, setInputText] = useState('');
-  const [time, setTime] = useState(new Date().getTime())
-  const [shuffledSymbols, setShuffledSymbols] = useState<Array<string>>([]);
-  const [noBack, setNoBack] = useState(false)
-  const [temporalSlices, setTemporalSlices] = useState<string | null>(null);
-  const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
-  const [textShow, setTextShow] = useState(false);
-  const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
-  const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? 'during')
-  const [startGame, setStartGame] = useState(false)
-  const [random, setRandom] = useState(0)
-  const [open, setOpen] = useState(false)
-  const { t } = useTranslation()
-  
-  const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
-      const randomIndex = getRandomNumber() ?? 0
-      setCurrentSymbol(symbols[randomIndex]);
-      setCurrentNumber(randomIndex + 1);
-      setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
-  };
+    const [currentSymbol, setCurrentSymbol] = useState('');
+    const [currentNumber, setCurrentNumber] = useState(0);
+    const [score, setScore] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
+    const [flag, setFlag] = useState(2)
+    const [inputText, setInputText] = useState('');
+    const [time, setTime] = useState(new Date().getTime())
+    const [shuffledSymbols, setShuffledSymbols] = useState<Array<string>>([]);
+    const [noBack, setNoBack] = useState(false)
+    const [temporalSlices, setTemporalSlices] = useState<string | null>(null);
+    const [previousClickTime, setPreviousClickTime] = useState(new Date().getTime())
+    const [textShow, setTextShow] = useState(false);
+    const [displayedSymbol, setDisplayedSymbol] = useState<Array<string>>([]);
+    const [showMapping, setShowMapping] = useState(props?.data?.activity?.settings?.show_mapping ?? 'during')
+    const [startGame, setStartGame] = useState(false)
+    const [random, setRandom] = useState(0)
+    const [open, setOpen] = useState(false)
+    const { t } = useTranslation()
 
-  const getRandomNumber = (): number => {
-      const randomIndex = Math.floor(Math.random() * (props?.data?.activity?.settings?.count_of_symbols ?? 9));
-      if (random !== randomIndex) {
-          setRandom(randomIndex)
-          return randomIndex
-      }
-      return getRandomNumber()
-  }
+    const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
+        const randomIndex = getRandomNumber() ?? 0
+        setCurrentSymbol(symbols[randomIndex]);
+        setCurrentNumber(randomIndex + 1);
+        setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
+    };
 
-  const handleClearText = () => {
-      setInputText('');
-      inputRef?.current?.focus();
-  };
+    const getRandomNumber = (): number => {
+        const randomIndex = Math.floor(Math.random() * (props?.data?.activity?.settings?.count_of_symbols ?? 9));
+        if (random !== randomIndex) {
+            setRandom(randomIndex)
+            return randomIndex
+        }
+        return getRandomNumber()
+    }
 
-  const updateWithTaps = (value: number, symbolvalue: any,) => {
-      const item = []
-      if (temporalSlices !== null) {
-          const r = JSON.parse(temporalSlices);
-          Object.keys(r).forEach((key) => {
-              item.push(r[key]);
-          });
-      }
-      const data = {
-          duration: (new Date().getTime() - previousClickTime) / 1000,
-          level: null,
-          value: value === 1 ? true : false,
-          type: symbolvalue
-      }
-      item.push(data)
-      setTemporalSlices(JSON.stringify(item))
-  };
-  const clearAfterTimeout = () => {
-      setTimeout(() => {
-          setFlag(2)
-          handleClearText();
-      }, 1500);
-  };
-  const startTimer = () => {
-      const intervalId: NodeJS.Timeout = setInterval(() => {
-          setTimeLeft((prevTime: number) => prevTime - 1);
-      }, 1000);
+    const handleClearText = () => {
+        setInputText('');
+        inputRef?.current?.focus();
+    };
 
-      return intervalId;
-  };
+    const updateWithTaps = (value: number, symbolvalue: any,) => {
+        const item = []
+        if (temporalSlices !== null) {
+            const r = JSON.parse(temporalSlices);
+            Object.keys(r).forEach((key) => {
+                item.push(r[key]);
+            });
+        }
+        const data = {
+            duration: (new Date().getTime() - previousClickTime) / 1000,
+            level: null,
+            value: value === 1 ? true : false,
+            type: symbolvalue
+        }
+        item.push(data)
+        setTemporalSlices(JSON.stringify(item))
 
-  const stopTimer = (timer: NodeJS.Timeout | null) => {
-      if (timer) {
-          clearInterval(timer);
-      }
-  };
+    };
+    const clearAfterTimeout = () => {
+        setTimeout(() => {
+            setFlag(2)
+            handleClearText();
+        }, 1500);
+    };
+    const startTimer = () => {
+        const intervalId: NodeJS.Timeout = setInterval(() => {
+            setTimeLeft((prevTime: number) => prevTime - 1);
+        }, 1000);
 
-  const saveScore = (status?: boolean) => {
-      const timeTakenMinutes = (timeLimit - timeLeft) / 60
-      const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
-      const route = { 'type': 'manual_exit', 'value': status ?? false }
-      const item = []
-      if (temporalSlices !== null) {
-          const r = JSON.parse(temporalSlices);
-          Object.keys(r).forEach((key) => {
-              item.push(r[key]);
-          });
+        return intervalId;
+    };
 
-      }
-      item.push(route)
-      const data = temporalSlices !== null && JSON.parse(temporalSlices)
-      let trueCount = 0;
-      let falseCount = 0;
-      let trueDurationSum = 0;
-      let falseDurationSum = 0;
-      (data || []).forEach((d: any) => {
-          if (d.value === true) {
-              trueCount++;
-              trueDurationSum += d.duration;
-          } else if (d.value === false) {
-              falseCount++;
-              falseDurationSum += d.duration;
-          }
-      });
-      parent.postMessage(
-          JSON.stringify({
-              timestamp: time,
-              static_data: {
-                  score: correctResponsesPerMinute,
-                  number_of_symbols: displayedSymbol?.length,
-                  number_of_correct_responses: trueCount,
-                  number_of_incorrect_responses: falseCount,
-                  avg_correct_response_time: Math.round(trueDurationSum / data.length),
-                  avg_incorrect_response_time: Math.round(falseDurationSum / data.length)
+    const stopTimer = (timer: NodeJS.Timeout | null) => {
+        if (timer) {
+            clearInterval(timer);
+        }
+    };
 
-              },
+    const saveScore = (status?: boolean) => {
+        const timeTakenMinutes = (TIME_LIMIT - timeLeft) / 60
+        const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
+        const route = { 'type': 'manual_exit', 'value': status ?? false }
+        const item = []
+        if (temporalSlices !== null) {
+            const r = JSON.parse(temporalSlices);
+            Object.keys(r).forEach((key) => {
+                item.push(r[key]);
+            });
 
-              temporal_slices: item,
-          }),
-          "*"
-      )
-  }
-  const clickBack = () => {
-      saveScore(true)
-  }
-  const handleClick = (data: any) => {
-      setInputText(data);
-      const currentTime = new Date().getTime();
-      setPreviousClickTime(currentTime);
-      if (data === currentNumber) {
-          setScore((prevScore: number) => prevScore + 1);
-          setFlag(1)
-          updateWithTaps(1, symbolDigitMapping[currentSymbol])
-          setTimeout(() => {
-              generateRandomSymbolNumberPair(shuffledSymbols);
-          }, 1500);
-      }
-      else {
-          setFlag(0)
-          updateWithTaps(0, symbolDigitMapping[currentSymbol])
-      }
-      clearAfterTimeout()
-  }
-  const symbolDigitMapping = {};
-  shuffledSymbols.forEach((symbol, index) => {
-      symbolDigitMapping[symbol] = index + 1;
-  });
+        }
+        item.push(route)
+        const data = temporalSlices !== null && JSON.parse(temporalSlices)
+        let trueCount = 0;
+        let falseCount = 0;
+        let trueDurationSum = 0;
+        let falseDurationSum = 0;
+        (data || []).forEach((d: any) => {
+            if (d.value === true) {
+                trueCount++;
+                trueDurationSum += d.duration;
+            } else if (d.value === false) {
+                falseCount++;
+                falseDurationSum += d.duration;
+            }
+        });
+        parent.postMessage(
+            JSON.stringify({
+                timestamp: time,
+                static_data: {
+                    score: correctResponsesPerMinute,
+                    number_of_symbols: displayedSymbol?.length,
+                    number_of_correct_responses: trueCount,
+                    number_of_incorrect_responses: falseCount,
+                    avg_correct_response_time: Math.round(trueDurationSum / data.length),
+                    avg_incorrect_response_time: Math.round(falseDurationSum / data.length)
 
-  useEffect(() => {
-      if (timeLeft === 0) {
-          saveScore();
-      }
+                },
 
-      if (!!startGame) {
-          setTextShow(true)
-          const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
-          return () => stopTimer(timerId);
-      }
-      return
-  }, [timeLeft, startGame]);
+                temporal_slices: item,
+            }),
+            "*"
+        )
+    }
+    const clickBack = () => {
+        saveScore(true)
+    }
+    const handleClick = (data: any) => {
+        setInputText(data);
+        const currentTime = new Date().getTime();
+        setPreviousClickTime(currentTime);
+        if (data === currentNumber) {
+            setScore((prevScore: number) => prevScore + 1);
+            setFlag(1)
+            updateWithTaps(1, symbolDigitMapping[currentSymbol])
+            setTimeout(() => {
+                generateRandomSymbolNumberPair(shuffledSymbols);
+            }, 1500);
+        }
+        else {
+            setFlag(0)
+            updateWithTaps(0, symbolDigitMapping[currentSymbol])
+        }
+        clearAfterTimeout()
+    }
+    const symbolDigitMapping = {};
+    shuffledSymbols.forEach((symbol, index) => {
+        symbolDigitMapping[symbol] = index + 1;
+    });
 
-  useEffect(() => {    
-       const configuration = props.data.configuration
-        const langugae = configuration
-          ? configuration.hasOwnProperty("language")
-            ? configuration.language
-            : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)
+    useEffect(() => {
+        if (timeLeft === 0) {
+            saveScore();
+        }
+
+        if (!!startGame) {
+            setTextShow(true)
+            const timerId: NodeJS.Timeout | null = timeLeft > 0 ? startTimer() : null;
+            return () => stopTimer(timerId);
+        }
+        return
+    }, [timeLeft, startGame]);
+
+    useEffect(() => {
         setNoBack(props?.data?.noBack ?? false)
-      setTime(new Date().getTime())
-      setShowMapping(props?.data?.activity?.settings?.show_mapping ?? 'during')
-      setTimeLimit(props?.data?.activity?.settings?.duration ?? 120)
-      setTimeLeft(props?.data?.activity?.settings?.duration ?? 120)
-     
-      inputRef?.current?.focus();
-      const symbolsCopy = [...SYMBOLS];
-      for (let i = (props?.data?.activity?.settings?.count_of_symbols ?? 10) - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
-      }
-      const symbols = symbolsCopy.splice(0, (props?.data?.activity?.settings?.count_of_symbols ?? 10))
-      setShuffledSymbols(symbols)
-      generateRandomSymbolNumberPair(symbols);
-      setOpen(true)
-  }, []);
+        setTime(new Date().getTime())
+        setShowMapping(props?.data?.activity?.settings?.show_mapping ?? 'during')
+        setTimeLimit(props?.data?.activity?.settings?.duration ?? 120)
+        setTimeLeft(props?.data?.activity?.settings?.duration ?? 120)
+        inputRef?.current?.focus();
+        const symbolsCopy = [...SYMBOLS];
+        for (let i = (props?.data?.activity?.settings?.count_of_symbols ?? 10) - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [symbolsCopy[i], symbolsCopy[j]] = [symbolsCopy[j], symbolsCopy[i]];
+        }
+        const symbols = symbolsCopy.splice(0, (props?.data?.activity?.settings?.count_of_symbols ?? 10))
+        setShuffledSymbols(symbols)
+        generateRandomSymbolNumberPair(symbols);
+        setOpen(true)
+    }, [props.data]);
 
-  return (
-     <>
+    return (
+        <>
             {(shuffledSymbols.length > 0) && (
                 <div className={classes.root}>
                     <Header data={noBack} clickBackData={clickBack} />
@@ -418,30 +415,44 @@ export default function SymbolDigitSubstitution({ ...props }) {
                                 <div className={classes.timer}>
                                     {<span> {!!showMapping && showMapping === "not_at_all" ? `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit.")}` :
                                         !!showMapping ? `${t("In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can.")}` : ""}</span>}
+
                                     <h4>{t("Time left:")} {timeLeft} {t("seconds")}</h4>
-                                    {!!textShow && !!startGame && <span className={classes.boxAlert} >{`${t("Observe the symbol shown and press the number corresponding to it.")}`}</span>}
+                                    {!!textShow && !!startGame && <span className={classes.boxAlert} >{t("Observe the symbol shown and press the number corresponding to it.")}</span>}
                                 </div>
                             )}
+
+
                             <div className={classes.main}>
                                 {timeLeft !== 0 ? (
                                     <>
+
+
                                         <div className={classes.startDiv}>
                                             {(!startGame && showMapping === "before") && <span ><p><b>In this game mode, try to memorize the key. Once you press start, it will disappear!</b></p></span>}
+
                                             {((showMapping === "before" && !startGame) || (timeLeft !== 0 && showMapping === "during")) && (
                                                 <Box className={classes.outer} data={shuffledSymbols} boxClass={classes.box} />
                                             )}
+
+
+
                                             {!startGame && <Button className={classes.startBtn} onClick={() => setStartGame(true)}>Start</Button>}</div>
+
                                         {!!startGame && (<>
                                             <div className={classes.boxdiv}>
                                                 <div className={classes.result}>
+
                                                     {
                                                         flag !== 2 && inputText !== '' &&
                                                         <h5 className={flag ? classes.rightcolor : classes.wrongcolor}>
                                                             {flag === 1 ? t("Right") : flag === 0 && inputText !== '' ? t("Wrong!") : null}
                                                         </h5>
+
                                                     }
                                                 </div>
+
                                                 <Box className={classes.griddiv} currentSymbol={currentSymbol} boxClass={classes.box} />
+
                                             </div>
                                             <div className={classes.btncontainer}>
                                                 {shuffledSymbols.map((value, index) => (
@@ -453,6 +464,8 @@ export default function SymbolDigitSubstitution({ ...props }) {
                                                 ))}
                                             </div>
                                         </>
+
+
                                         )}
                                     </>
                                 ) : (
@@ -463,8 +476,10 @@ export default function SymbolDigitSubstitution({ ...props }) {
                             </div>
                         </div>
                     )}
-                  <DialogMessage open={open} setStartGame={setStartGame} setOpen={setOpen} showMapping={showMapping} />
+<DialogMessage open={open} setStartGame={setStartGame} setOpen={setOpen} showMapping={showMapping} />
                 </div>
             )}
-     </>
-)}
+        </>
+
+    )
+}

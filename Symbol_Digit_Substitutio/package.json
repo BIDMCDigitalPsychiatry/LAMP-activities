@@ -1,5 +1,5 @@
 {
-  "name": "SymbolDigitSubstitution",
+  "name": "symbol_digit_substitution",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +15,6 @@
     "material-icons": "^1.13.12",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.0",
-    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-hot-loader": "^3.1.1",
     "react-i18next": "^14.0.3",
