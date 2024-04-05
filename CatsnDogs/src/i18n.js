@@ -81,6 +81,8 @@ const resources = {
         "उन बक्सों को ना दबाए जिनके पीछे बिल्ली है।",
       DONT_TAP_THE_BOXES_WITH_A_DOG_BEHIND_THEM:
         "उन बक्सो को ना दबाएं जिनके पीछे कुत्ता है।",
+      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM_OK:
+        "उन बॉक्सों को दबाए जिनके पीछे एक कुत्ता है। ठीक है",
     },
   }, "it-IT":{
     translation: {
