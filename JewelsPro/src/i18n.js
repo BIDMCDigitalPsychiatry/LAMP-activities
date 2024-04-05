@@ -71,7 +71,8 @@ const resources = {
       LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED: 
         "स्क्रीन के नीचे देखें कि सबसे पहले कौन सा जवाहरात जमा करना है। उस आकार के नंबर 1 को दबाए  और फिर  दूसरे आकार  के नंबर 1 को दबाए । इसी क्रम में जवाहरात पैटर्न को संख्या  एक से जमा करना शुरू करें और तब तक जमा करें जब तक उस संख्या के सारे जावाहरात जमा न हो ।",
       DO_YOU_WANT_TO_MOVE_TO_THE_NEXT_LEVEL: "क्या आप अगले स्तर पर जाना चाहते हैं?",
-      LEVEL: "स्तर"
+      LEVEL: "स्तर",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "संख्या 1 से शुरू करके, संख्यात्मक क्रम में गहनों पर टैप करें" 
     },
   },"it-IT": {
     translation: {

@@ -77,6 +77,8 @@ const resources = {
       SPIN_THE_WHEEL: "पहिया घुमाएं",
       BEGIN: "खेल शुरू करें!",
       TOTAL_SPIN: "कुल घूमाव",
+      LOTTERY: "लॉटरी",
+      TOTAL_SPIN_20: "कुल घूमाव 20"
     },
   },
   "it-IT":{
