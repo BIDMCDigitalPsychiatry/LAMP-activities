@@ -29,6 +29,7 @@ export interface BoardProps {
   updateLevel: any;
   updateRoutes: any;
   settings: any;
+  variant: any;
 }
 
 interface DiamondState {
@@ -48,6 +49,7 @@ interface DiamondState {
   timeout: boolean;  
   showConfirmModal: boolean;
   totalLevels: number; 
+  showInstruction: boolean;
 }
 
 class Board extends React.Component<BoardProps, DiamondState> {
@@ -70,7 +72,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
       tapCount: 0,
       timeout: false,
       showConfirmModal: false,
-      totalLevels: this.getTotalLevels()
+      totalLevels: this.getTotalLevels(),
+      showInstruction: true
     };
     i18n.changeLanguage(props.language);
   }
@@ -104,6 +107,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           {
             // startTime: new Date(),
             startTimer: timerVal,
+            showInstruction: false
           },
           () => {
             this.updateStateWithTaps(i, true, diamondStyle);
@@ -316,6 +320,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     let negSection = null;
     let jewelInfo = null;
     let timer;
+    const { showInstruction } = this.state;
     if (this.state.gameOver === false && this.state.timeout === false) {
       // loading game
       board = (
@@ -374,10 +379,19 @@ class Board extends React.Component<BoardProps, DiamondState> {
           <div>{timer}</div>
           <div className="level">{i18n.t("LEVEL")}{this.props.level}/{this.state.totalLevels.toString()}</div>
         </div>
+        {showInstruction && this.props.variant==='a' && (
+          <div className="instruction1">{i18n.t("TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1")}</div>
+        )}
+        {showInstruction && this.props.variant==='b' &&  (
+          <div className="instruction2">
+            <p>
+            {i18n.t("LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED")}</p></div>
+        )}
         {negSection}
           {confirmModal}
         {board}
         {jewelInfo}
+        
       </div>
     );
   }

@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
         // position: "absolute",
         width: "100%",
         top: 80,
+        color: "white",
         "& h4": {
             color: "white"
         }

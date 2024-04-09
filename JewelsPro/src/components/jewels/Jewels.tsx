@@ -51,6 +51,7 @@ interface AppState {
   totalAttempts: number;
   totalJewelsCollected:number;
   winnerLine?: Array<number>;
+  variant: any;
 }
 
 class Jewels extends React.Component<any, AppState> {
@@ -105,6 +106,7 @@ class Jewels extends React.Component<any, AppState> {
         totalAttempts: 0,
         totalJewelsCollected:0,
         winnerLine: undefined,
+        variant:  settingsData.variant === "trails_b" ? "b" : "a"
       };
       this.state=state
       this.reset(true)          
@@ -448,6 +450,7 @@ class Jewels extends React.Component<any, AppState> {
                 handleClose={this.handleClose}
                 sendDataToDashboard={this.sendDataToDashboard}
                 settings={this.state.settings}
+                variant={this.state.variant}
               />
             </div>
           </div>
