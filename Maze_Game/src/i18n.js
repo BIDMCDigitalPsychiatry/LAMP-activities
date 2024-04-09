@@ -85,7 +85,7 @@ const resources = {
       DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?",
       GAME: "भूल भुलैया",      
       GAME_OVER: "खेल खत्म",   
-      LEVEL: "लेवल",
+      LEVEL: "स्तर",
       NO: "नहीं", 
       PERMISSION: "एक्सेलेरोमीटर अनुमति देने के लिए क्लिक करें",
       START_GAME: "खेल प्रारंभ करें",
