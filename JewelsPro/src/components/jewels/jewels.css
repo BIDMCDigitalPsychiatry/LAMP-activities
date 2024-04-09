@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-:root {
+ :root {
 	--square-size:84px;
 	--square-font-size:72px
 }
@@ -73,7 +73,7 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
  .game-table
 {
 	position: fixed; 
-	top: 70px;   
+	top: 100px;   
 	width: 100%;
 	bottom: 110px;
 } 
@@ -507,4 +507,23 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 	border-radius: 15px;
 	white-space: nowrap;
 	font-size: 16px;
+}
+.instruction1{
+	background-color: white;
+	color:rgba(53,159,254,1);
+	margin: 0 auto;
+	padding-bottom: 10px;
+	font-size: 15px;
+	text-align: center;
+}
+.instruction2{
+	background-color: white;
+	text-align: center;
+	font-size: 15px;
+}
+.instruction2 p{
+	color:rgba(53,159,254,1);
+	width: 75%;
+	margin: 0 auto;
+	padding-bottom: 10px;
 }
