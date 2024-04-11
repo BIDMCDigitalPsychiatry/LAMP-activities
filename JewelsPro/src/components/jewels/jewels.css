@@ -73,10 +73,15 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
  .game-table
 {
 	position: fixed; 
-	top: 100px;   
+	top: 200px;   
 	width: 100%;
 	bottom: 110px;
 } 
+@media only screen and (max-width: 460px) {
+	.game-table{
+	  top: 220px;
+	 }    
+  }
 .negative-points{
 	padding: 5px;
     background-color: red;
