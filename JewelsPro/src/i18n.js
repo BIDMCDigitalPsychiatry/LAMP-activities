@@ -11,6 +11,9 @@ const resources = {
       No: "Ingen",
       TIMEOUT: "Tiden er udl\u00f8bet",
       Yes: "Ja",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   },"de-DE": {
     translation: {
@@ -20,7 +23,10 @@ const resources = {
       JEWELS: "Juwelen",
       No: "Nein",
       TIMEOUT: "Zeit abgelaufen",
-      Yes: "Ja"
+      Yes: "Ja",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   },"en-US": {
     translation: {
@@ -30,7 +36,10 @@ const resources = {
       JEWELS: "Jewels",
       No: "No",
       TIMEOUT: "Timeout",
-      Yes: "Yes"
+      Yes: "Yes",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   }, "es-ES": {
     translation: {
@@ -40,7 +49,10 @@ const resources = {
       JEWELS: "Joyas",
       No: "No",
       TIMEOUT: "el tiempo muerto",
-      Yes: "SÌ"
+      Yes: "SÌ",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   }, "fr-FR": {
     translation: {
@@ -50,7 +62,10 @@ const resources = {
       JEWELS: "\u202fBijoux",
       No:"Non",
       TIMEOUT: "Timeout",
-      Yes: "Oui"
+      Yes: "Oui",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
 
     },
   }, "hi-IN": {
@@ -82,7 +97,10 @@ const resources = {
       JEWELS: "Gioielli",
       No : "NO",
       TIMEOUT: "Tempo scaduto",
-      Yes: "SÌ"
+      Yes: "SÌ",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   },"ko-KR": {
     translation: {
@@ -92,8 +110,10 @@ const resources = {
       JEWELS: "\ubcf4\uc11d\ub4e4",
       No: "\uc544\ub2c8\uc694",
       TIMEOUT: "\uc2dc\uac04 \uc885\ub8cc",
-      Yes: "\uc608"
-
+      Yes: "\uc608",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   },  "zh-CN": {
     translation: {
@@ -104,6 +124,9 @@ const resources = {
       No: "否",
       TIMEOUT:  "超时",
       Yes: "是",
+      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
     },
   },
     "zh-HK": {
@@ -115,6 +138,9 @@ const resources = {
         No: "否",
         TIMEOUT: "超時",
         Yes: "是",
+        TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
+        LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
+        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
       },
   },
 
