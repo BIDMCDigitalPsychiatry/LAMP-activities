@@ -9,6 +9,7 @@ import * as React from "react";
 import { Timer } from "../common/Timer";
 import { Diamond } from "./Diamond";
 import { InfoModal } from "./InfoModal";
+import { InstructionModal } from "./InstructionModal";
 
 import i18n from "./../../i18n";
 import { NegativePoints } from "./NegativePoints";
@@ -249,6 +250,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
     );
   };
 
+  handleCloseInstructionModal = () => {
+    this.setState({ showInstruction: false });
+  };
+
   createTable = () => {
     const table = [];
     let k = 0;
@@ -320,7 +325,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     let negSection = null;
     let jewelInfo = null;
     let timer;
-    const { showInstruction } = this.state;
+    // const { showInstruction } = this.state;
     if (this.state.gameOver === false && this.state.timeout === false) {
       // loading game
       board = (
@@ -373,20 +378,33 @@ class Board extends React.Component<BoardProps, DiamondState> {
         msg={i18n.t("CONTINUE")}
         language={i18n.language}
       />) : null
+
+      const instructionModal = this.state.showInstruction ? (
+        <InstructionModal
+          show={true}
+          longTxt={this.props.variant==='a' ? false: true }
+          modalClose={this.handleCloseInstructionModal}
+          msg = {this.props.variant==='a' ? i18n.t('TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1'): 
+          i18n.t('LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED')}
+          language={i18n.language}
+        />
+      ) : null;
+
     return (
       <div>
         <div className="countdown-timer">
           <div>{timer}</div>
           <div className="level">{i18n.t("LEVEL")}{this.props.level}/{this.state.totalLevels.toString()}</div>
         </div>
-        {showInstruction && this.props.variant==='a' && (
-          <div className="instruction1">{i18n.t("TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1")}</div>
-        )}
-        {showInstruction && this.props.variant==='b' &&  (
+        {instructionModal}
+        {/* {showInstruction && this.props.variant==='a' && (
+        //   <div className="instruction1">{i18n.t("TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1")}</div>
+        // )}
+        // {showInstruction && this.props.variant==='b' &&  (
           <div className="instruction2">
             <p>
             {i18n.t("LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED")}</p></div>
-        )}
+        )} */}
         {negSection}
           {confirmModal}
         {board}

@@ -73,7 +73,7 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
  .game-table
 {
 	position: fixed; 
-	top: 200px;   
+	top: 70px;   
 	width: 100%;
 	bottom: 110px;
 } 
@@ -99,6 +99,13 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
     left: 57%; */
     
 }
+.footer-cls {
+	margin-top: 10px;
+}
+.modal-body-section {
+	padding: 15px !important;
+    margin-bottom: 10px;
+}
 .heading{
 	text-align: center;
     color: rgba(53,159,254,1);
@@ -115,7 +122,7 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
     padding: 11px 12px;
     box-sizing: border-box;
     border-radius: 50%;
-	z-index: 9999;
+	z-index: 999;
 	cursor: pointer;
 }
 .back-link{
@@ -128,7 +135,7 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
     padding: 11px 12px;
     box-sizing: border-box;
     border-radius: 50%;
-    z-index: 9999;
+    z-index: 999;
     cursor: pointer;
 }
 @-webkit-keyframes App-logo-spin {
@@ -499,6 +506,17 @@ svg.svg-inline--fa.fa-redo.fa-w-16 {
 	min-height: 25px;
 	align-items: center;
 	padding: 5px 15px;
+  }
+  @media only screen and (max-width: 460px) {
+	.countdown-timer__text{
+	  position: fixed;
+	  left: 50px;
+	  top: 13px;
+	 }  
+	 
+.footer-cls {
+	margin-top: 30px;
+}  
   }
   @media only screen and (min-width: 1000px) {
 	.modal-content{
