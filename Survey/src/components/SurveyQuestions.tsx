@@ -1009,7 +1009,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
     return <sub>{props?.children}</sub>;
   }, sup: (props) => {
     return <sup>{props.children}</sup>;
-  }}} />   {(!!question.required ? "<span> *</span>" : "")}
+  }}} />   {!!question.required && <span> *</span>}
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
   x.type === "list"  ||x.type === "boolean" || x.type === "likert"  ?  (
@@ -1291,7 +1291,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
   }, sup:  (props) => {
     return <sup>{props.children}</sup>;
   }}} />
-        </Typography>{!!required ? "<span> *</span>" : ""}
+        </Typography>{!!required && <span> *</span>}
       </Box>
       <Box className={classes.questionhead}>
         <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>                 
