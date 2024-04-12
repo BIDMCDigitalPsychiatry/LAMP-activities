@@ -1005,7 +1005,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
       {(x.questions || []).map((question, qindex) => (
         <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
-            <ReactMarkdown children={t(question.text) +  (!!question.required ? "<span> *</span>" : "")} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
+            <ReactMarkdown children={`${t(question.text)}`+  (!!question.required ? "<span> *</span>" : "")} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
     return <sub>{props?.children}</sub>;
   }, sup: (props) => {
     return <sup>{props.children}</sup>;
@@ -1286,12 +1286,12 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     <Grid>
       <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown children={t(text + (!!required ? "<span> *</span>" : ""))} allowDangerousHtml={true}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, span:  (props) => {
+          <ReactMarkdown children={t(`${text}`) } allowDangerousHtml={true}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, span:  (props) => {
     return <sub>{props?.children}</sub>;
   }, sup:  (props) => {
     return <sup>{props.children}</sup>;
-  }}} /> 
-        </Typography>
+  }}} />
+        </Typography>{!!required ? "<span> *</span>" : ""}
       </Box>
       <Box className={classes.questionhead}>
         <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>                 
