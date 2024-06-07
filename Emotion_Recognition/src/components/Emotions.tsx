@@ -2,32 +2,9 @@ import React, { useEffect, useState } from "react";
 import {Button, Col, Container, Form,Image, Row } from "react-bootstrap";
 import i18n from "../i18n";
 
-  const ems: any = [
-    {
-      "emotion" : 'Happiness',
-      "index" : 1,
-    }, 
-    {
-      "emotion" : 'Sadness',
-      "index" : 2,
-    },
-    { 
-      "emotion" : 'Fear',
-      "index" : 3,
-    },
-    { 
-      "emotion" : 'Anger',
-      "index" : 4,
-    },
-    {
-      "emotion" : 'Neutral',
-      "index" : 5,
-    }
-  ]
-
 
 const Emotions = ({...props} : any) => {   
-  const [image, setImage] = useState(props.data.image)
+  const [image, setImage] = useState(props?.data?.image)
   const [num, setNum] = useState(props.level)
   const [emotions, setEmotions] = useState<any>([])  
   const [error, setError] = useState("")
@@ -35,8 +12,9 @@ const Emotions = ({...props} : any) => {
   const totalLevels = props.totalLevels
 
 
+
   const initialize = (data: any) => {
-    const newArray = ems.map ((em: any)=>{
+    const newArray = props.emotions.map ((em: any)=>{
         return {
         ...em,
         "selected" : (em.emotion.toLowerCase() === data?.selected?.toLowerCase()) ? true : false
@@ -45,7 +23,7 @@ const Emotions = ({...props} : any) => {
     setEmotions(newArray)
   }
   useEffect(()=>{
-    setImage(props.data?.image)
+    setImage(props?.data?.image)
     setNum(props.level)  
     initialize(props.data)  
   },[props.data, props.level])
@@ -116,7 +94,7 @@ const Emotions = ({...props} : any) => {
                         checked={emotion.selected}
                         onChange={(e: any)=>handleOnCick(e)}
                       />
-                      {i18n.t(emotion.emotion.toUpperCase())}
+                      {i18n.t(emotion?.emotion?.toUpperCase())}
                     </div>
                   })}
                                   

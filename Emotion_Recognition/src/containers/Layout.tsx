@@ -7,6 +7,29 @@ import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import { shuffleArray } from "src/functions";
 
+const ems: any = [
+  {
+    "emotion" : 'Happiness',
+    "index" : 'happiness',
+  }, 
+  {
+    "emotion" : 'Sadness',
+    "index" : 'sadness',
+  },
+  { 
+    "emotion" : 'Fear',
+    "index" : 'fear',
+  },
+  { 
+    "emotion" : 'Anger',
+    "index" : 'anger',
+  },
+  {
+    "emotion" : 'Neutral',
+    "index" : 'neutral',
+  }
+]
+
 const Layout = ({...props} : any) =>{  
     const [level, setLevel] = useState(1)  
     const [currentEmotion, setCurrentEmotion] = useState<any>({})
@@ -15,11 +38,18 @@ const Layout = ({...props} : any) =>{
     const [gameOver, setGameOver] = useState(false)
     const [settings, setSettings] = useState<any>(null) 
     const [totalLevels, setTotalLevels] = useState(0)
-
+    const [emotions, setEmotions] = useState(ems)
       useEffect(() => {  
         const configuration = props.data.configuration;
         let data = props.data.activity?.settings ? props.data.activity?.settings : null ;
-        data = shuffleArray(data ?? [])
+        let settings  = (data || []).map((e: any) => (e.emotion))
+        let defaultEmotions = ems.map((e: any) => e.emotion.toLowerCase().trim())
+        let missing = (settings || []).filter((item: any) => defaultEmotions.indexOf(item.trim().toLowerCase()) < 0);
+        missing.map((m: string) => {
+          ems.push({'emotion': m, 'index': m?.trim()?.toLowerCase()?.replace(/ /g, '')})
+        })
+        setEmotions(ems)
+        data = shuffleArray((props.data.activity?.settings ? props.data.activity?.settings : null) ?? [])
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");    
         const newArray = data?.map ((em: any) => {
           return {
@@ -114,6 +144,7 @@ const Layout = ({...props} : any) =>{
               <Row>
               <Col>  
                    <Emotions 
+                   emotions={emotions}
                    data={currentEmotion}
                    handleLevelCompleted={handleLevelCompleted}
                    totalLevels={totalLevels} 
