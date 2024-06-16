@@ -9,7 +9,7 @@
 	--square-size:84px;
 	--square-font-size:72px
 }
-body{background: rgba(53,159,254,1);}
+body{background: rgba(53,159,254,1) !important;}
 nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .timer-div {
 	margin-top: 10px;
@@ -50,10 +50,14 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .home-link{
 	position: absolute;
 	right: 0;
+	right: 10px;
+    top: 5px;
 }
 .back-link{
 	position: absolute;
 	left: 0;
+	left: 10px;
+    top: 5px;
 }
 .box-white{
 	height: 128px;	
@@ -210,7 +214,7 @@ td{
 	margin: 0;
     border-spacing: 1px;
     padding: 0px;
-	border: #ccc solid 1px;
+	border: #ccc solid 1px !important;
 }
 .green-box-square{
 	background-color:#40bd40 !important;

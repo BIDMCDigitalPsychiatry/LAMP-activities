@@ -5,20 +5,27 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
+require("react-hot-loader/patch") 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import Boxes from './components/box/Boxes';
 import './index.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { createRoot } from "react-dom/client";
 
+const eventMethod = "addEventListener"
+const eventer = window[eventMethod]
+const messageEvent =  "message"
+eventer(
+    messageEvent, (e: any) => { 
+const rootElement = document.getElementById("root") as HTMLElement;
 
-   
-		ReactDOM.render(
-		  <AppContainer>
-		      <Boxes />
-		  </AppContainer>,
-		  document.getElementById("root")
-		);
-
+if(!!rootElement) { 
+	const root = createRoot(rootElement);
+	root.render(<AppContainer>
+		<Boxes data={e.data}/>
+	</AppContainer>);
+}
+},
+false
+) 
