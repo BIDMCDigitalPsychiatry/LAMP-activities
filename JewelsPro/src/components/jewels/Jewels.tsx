@@ -57,7 +57,6 @@ interface AppState {
 class Jewels extends React.Component<any, AppState> {
   constructor(props: any) {
     super(props);
-    console.log(props.data)
     const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {});
     const configuration = props.data.configuration;
       const mode = settingsData ? settingsData.mode : 1

@@ -343,6 +343,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           correct_answers: this.state.stateSuccessTaps,
           point: points,
           score: gameScore,
+          max_score: 100,
           type: 1,
           wrong_answers: this.state.stateWrongTaps,
         },

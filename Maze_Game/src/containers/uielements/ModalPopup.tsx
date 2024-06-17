@@ -31,10 +31,10 @@ const ModalPopup = ({...props}) => {
       </Modal.Body>
       <Modal.Footer>
         <div className="m-0">
-        <Button variant="primary" className="btn-small-size w-87 pe-0 ps-0" onClick={props.handleConfirm}>
+        <Button variant="primary" className="btn-small-size w-87 " onClick={props.handleConfirm}>
             {i18n.t("YES")}
           </Button>
-          <Button variant="outline-secondary" className="btn-small-size w-87 me-4 btn pe-0 ps-0" onClick={props.onHide}>
+          <Button variant="outline-secondary" className="btn-small-size w-87 me-4 btn " onClick={props.onHide}>
           {i18n.t("NO")}
           </Button>          
         </div>
