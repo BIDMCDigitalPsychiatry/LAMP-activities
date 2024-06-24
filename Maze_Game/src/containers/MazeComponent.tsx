@@ -192,7 +192,8 @@ function getAccelerometerPermission(p: any) {
       "Click to grant accelerometer Permission"
     );
     permissionButton.style("font-size", "24px");
-    permissionButton.position(1, 10);
+    permissionButton.style("z-index", "999");
+    permissionButton.position(1, 20);
     permissionButton.mousePressed(requestAccess);
     
 
