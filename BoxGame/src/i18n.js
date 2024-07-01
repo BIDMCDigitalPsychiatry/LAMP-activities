@@ -57,6 +57,8 @@ const resources = {
       REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:
         "Remember the highlighted boxes in the order you see them.",
       TIME_OUT: "Time Out",
+      YOU_WILL_SEE_A_GRID_OF_BOXES_THE_BOXES_IN_A_GRID_WILL_LIGHT_UP_IN_A_CERTAIN_ORDER_REMEMBER_THE_ORDER_AND_THEN_TAP_THE_BOXES_IN_THE_ORDER_IN_WHICH_THEY_LIT_UP_EACH_LEVEL_WILL_HAVE_MORE_BOXES_LIGHT_UP_IN_SEQUENCE_SEE_HOW_FAR_YOU_CAN_GET:
+        "YOU WILL SEE A GRID OF BOXES. THE BOXES IN A GRID WILL LIGHT UP IN A CERTAIN ORDER. REMEMBER THE ORDER, AND THEN TAP THE BOXES IN THE ORDER IN WHICH THEY LIT UP. EACH LEVEL WILL HAVE MORE BOXES LIGHT UP IN SEQUENCE. SEE HOW FAR YOU CAN GET!"
     },
   },
   "es-ES": {
@@ -108,7 +110,7 @@ const resources = {
       NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED:
         "अब बॉक्सों को उसी क्रम में दबाए जिस क्रम में वे हाइलाइट किए गए थे |",
       NOW_TAP_ON_THE_BOXES_IN_THE_REVERSE_ORDER_THEY_WERE_HIGHLIGHTED:
-        "Now tap on the boxes in the reverse order they were highlighted.",
+        "अब बक्सों पर उल्टे क्रम में टैप करें, जिस क्रम में उन्हें हाइलाइट किया गया था।",
       PLEASE_REMEMBER_THE_SEQUENCE: "कृपया क्रम/परिणाम को याद रखें",
       PLEASE_WAIT_AND_WATCH: "कृपया प्रतीक्षा करें और देखें",
       REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM:

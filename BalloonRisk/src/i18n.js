@@ -12,6 +12,8 @@ const resources = {
       CURRENT_POINTS: "Current Points",
       COLLECT_POINTS: "COLLECT POINTS",
       BALLOON_BURSTED: "Balloon Burst",
+      TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS_WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS_THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET_IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS:
+        "TAP THE BUTTON TO 'PUMP UP A BALLOON' TO INFLATE IT AS LARGE AS YOU CAN, BEFORE THE BALLOON BURSTS. WHEN YOU FEEL LIKE YOU CANT INFLATE IT ANYMORE WITHOUT IT BURSTING TAP THE BUTTON TO 'COLLECT POINTS'. THE NUMBER OF TIMES YOU PUMPED UP THE BALLOON WILL BE EQUAL TO THE NUMBER OF POINTS YOU GET. IF THE BALLOON BURSTS, YOU GET NO POINTS!"
     },
   },"de-DE": {
     translation: {
@@ -106,17 +108,24 @@ const resources = {
   },
   "hi-IN": {
     translation: {
-      BALLOON_RISK: "गुब्बारा जोखिम",
+      BALLOON_RISK: "गुब्बारे का जोखिम",
       GAME_OVER: "खेल खत्म",
       OK: "ठीक है",
       PUMP_UP_BALLOON: "गुब्बारे में हवा भरो",
       TOTAL_POINTS: "कुल_अंक",
       CURRENT_POINTS: "वर्तमान_अंक",
-      COLLECT_POINTS: "बिंदु एकत्रित करें ",
-      BALLOON_BURSTED: "गुब्बारा_फट गए",
+      COLLECT_POINTS: "अंक एकत्रित करें ",
+      BALLOON_BURSTED: "गुब्बारा फट गय",
       BALLOON_BURST: "गुब्बारा फट गया",
+      TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS: 
+        "गुब्बारे को फुलाने के लिए ‘गुब्बारा फुलाये’ बटन को दबाए ताकि यह जितना हो सके बिना फटे बड़ा हो जाए।",
+      WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS: 
+        "जब आप महसूस करें कि आप इसे और नहीं फुला सकते, तो 'पॉइंट्स इकट्ठा करें’ बटन को दबाएं।",
+      THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET: 
+        "जितनी बार आपने गुब्बारे को फुलाया होगा, उतने ही अंक आपको मिलेंगे।",
+      IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS: "अगर गुब्बारा फट जाए, तो आपको कोई भी अंक नहीं मिलेंगे!",
       TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS_WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS_THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET_IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS:
-        "गुब्बारे को फुलाने के लिए ‘गुब्बारा फुलाये’ बटन को दबाए ताकि यह जितना हो सके बिना फटे बड़ा हो जाए। जब आप महसूस करें कि आप इसे और नहीं फुला सकते, तो 'पॉइंट्स इकट्ठा करें’ बटन को दबाएं। जितनी बार आपने गुब्बारे को फुलाया होगा, उतने ही अंक आपको मिलेंगे। अगर गुब्बारा फट जाए, तो आपको कोई भी अंक नहीं मिलेंगे!"
+        "गुब्बारे को फुलाने के लिए ‘गुब्बारा फुलाये’ बटन को दबाए ताकि यह जितना हो सके बिना फटे बड़ा हो जाए।जब आप महसूस करें कि आप इसे और नहीं फुला सकते, तो 'पॉइंट्स इकट्ठा करें’ बटन को दबाएं। जितनी बार आपने गुब्बारे को फुलाया होगा, उतने ही अंक आपको मिलेंगे। अगर गुब्बारा फट जाए, तो आपको कोई भी अंक नहीं मिलेंगे!"
     },
   },
 };

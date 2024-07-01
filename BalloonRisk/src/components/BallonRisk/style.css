@@ -261,3 +261,9 @@ h4{
     left: 0;
     width: 100%;
 }
+.instruction {
+	position: absolute; 
+	width: 95%; 
+	margin: 0 auto;
+	text-align: center;   background-color: #fff; color: #359ffe; padding: 10px; font-size: 12px;
+}
