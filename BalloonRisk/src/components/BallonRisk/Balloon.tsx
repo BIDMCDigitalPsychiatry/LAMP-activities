@@ -448,6 +448,11 @@ class Balloons extends React.Component<AppProps, AppState> {
   // Game render function
   render() {
     const { start, stop } = this.state;
+    const instruction = (
+      <div className="instruction">
+        {i18n.t("TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS_WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS_THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET_IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS")}
+      </div>
+      )
     return (
       <div>
         <div className="row">
@@ -495,6 +500,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             <div className="col-4 p-value">{this.state.total_points}</div>
           </div>
         </div>
+        {instruction}
         <div className="baloon-container">
         <BallonImageSVG
           balloon_width={this.state.balloon_width}

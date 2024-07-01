@@ -489,6 +489,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     let level = null;
     let infoText = null;
     let alertText = null;
+    let instruction = null;
     if (
       this.state.gameOver ||
       this.state.timeout ||
@@ -552,7 +553,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.state.gameState > 0 ? (
           <span>{i18n.t("LEVEL")} {this.state.gameState}/{total_level}</span>
         ) : null;
-      // Show the alert on bottom of game board
+      // Show the alert on top of game board
       alertText = this.state.gameSequence ? (
         <div className="box-info">
           {i18n.t("REMEMBER_THE_HIGHLIGHTED_BOXES_IN_THE_ORDER_YOU_SEE_THEM")}
@@ -566,6 +567,11 @@ class Board extends React.Component<BoardProps, BoardState> {
             : i18n.t("NOW_TAP_ON_THE_BOXES_IN_THE_ORDER_THEY_WERE_HIGHLIGHTED")}
         </div>
       ) : null;
+      instruction = (
+      <div className="instruction">
+        {i18n.t("YOU_WILL_SEE_A_GRID_OF_BOXES_THE_BOXES_IN_A_GRID_WILL_LIGHT_UP_IN_A_CERTAIN_ORDER_REMEMBER_THE_ORDER_AND_THEN_TAP_THE_BOXES_IN_THE_ORDER_IN_WHICH_THEY_LIT_UP_EACH_LEVEL_WILL_HAVE_MORE_BOXES_LIGHT_UP_IN_SEQUENCE_SEE_HOW_FAR_YOU_CAN_GET")}
+      </div>
+      )
     }
 
     return (
@@ -594,6 +600,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         {alertText}
       </div>
       </div>
+      {instruction}
       </div>
     );
   }

@@ -105,7 +105,13 @@ nav a{color:rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .modal-body-section {
 	padding: 15px !important;
     margin-bottom: 10px;
+	font-size: 18px;
 }
+
+.footer-cls button {
+	font-size: 14px;
+  }
+
 .heading{
 	text-align: center;
     color: rgba(53,159,254,1);

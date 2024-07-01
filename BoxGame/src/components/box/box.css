@@ -13,7 +13,7 @@ body{background: rgba(53,159,254,1);}
 nav a{color:  rgba(53,159,254,1); padding: 10px; display: inline-block;}
 .timer-div {
 	margin-top: 10px;
-	min-height: 100px;
+	min-height: 80px;
 }
 svg.svg-inline--fa.fa-redo.fa-w-16 {
     color: rgba(53,159,254,1);
@@ -193,7 +193,7 @@ ol,ul {
 	margin-bottom:1em
 }
 
-.box-info{position: absolute; width: 100%; text-align: center; bottom: 0; background-color: #fff; color: #359ffe; padding: 10px;}
+.box-info{position: absolute; width: 100%; text-align: center; top: 5; background-color: #359ffe; color: #fff;; padding: 10px;}
 .box-alert{   
 	z-index: 111;
     position: absolute;
@@ -230,7 +230,7 @@ td{
 
 @media only screen and (min-width: 768px) {
 
-	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 24px !important;}
+	.box-info, .heading, .game-board, .countdown-timer__text{font-size: 22px !important;}
 	.next-button{bottom: 7%;}
 }
 
@@ -249,7 +249,13 @@ td{
 		height: 400px !important;
 		margin-top: 20px;
 	}
-		.box-info{font-size: 16px !important;}
+		.box-info{font-size: 18px !important;}
 
 }
 
+.instruction {
+	position: absolute; 
+	width: 95%; 
+	margin: 0 auto;
+	text-align: center; bottom: 0;  background-color: #359ffe; color: #fff;; padding: 10px; font-size: 16px;
+}
