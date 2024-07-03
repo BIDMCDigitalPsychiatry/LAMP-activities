@@ -6,6 +6,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import ModalPopup from './uielements/ModalPopup';
 import { MazeComponent } from "./MazeComponent";
+import DialogMessage from "./DialogMessage";
 
 const Layout = ({...props} : any) =>{
     
@@ -20,6 +21,7 @@ const Layout = ({...props} : any) =>{
     const [routes, setRoutes] = useState<any>([])
     const [startGame, setStartGame] = useState(false)
     const [showStartButton, setShowStartButton] = useState(false)
+    const [open, setOpen] = useState(false)
 
       useEffect(() => {  
         const configuration = props?.data?.configuration;
@@ -36,7 +38,7 @@ const Layout = ({...props} : any) =>{
               setShowStartButton(true)
             }          
         }
-     
+        setOpen(true)
       }, [props.data])
 
       
@@ -163,6 +165,7 @@ const Layout = ({...props} : any) =>{
           <div className="footer fixed_bottom">
                   {footerMsg}
           </div>
+          <DialogMessage open={open} setStartGame={setStartGame} setOpen={setOpen}  />
          </div>
       )
 }

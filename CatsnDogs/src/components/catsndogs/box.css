@@ -317,3 +317,9 @@ ol,ul {
 		opacity:0
 	}
 }
+
+.modal-body-section {
+	padding: 15px !important;
+    margin-bottom: 10px;
+	font-size: 20px;
+}

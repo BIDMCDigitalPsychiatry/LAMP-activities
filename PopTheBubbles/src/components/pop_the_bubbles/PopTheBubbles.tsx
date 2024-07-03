@@ -17,6 +17,7 @@ import i18n from "./../../i18n";
 import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
+import { InstructionModal } from "./InstructionModal";
 
 interface AppProps {
   configuration: any;
@@ -59,6 +60,7 @@ interface AppState {
   wrongNoGoClicks: number;
   time:number;
   noBack: boolean;
+  showDialog: boolean; 
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -108,6 +110,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       xPoints: this.getCoordPoints(xValues),
       yCoords: yValues,
       yPoints: this.getCoordPoints(yValues),
+      showDialog: true,
     };
     this.bubbleCount = this.state.bubble_count[0];
   }
@@ -541,9 +544,21 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       "*"
     );
   }
+
+  handleCloseInstructionModal = () => {
+    this.setState({ showDialog: false });
+  };
   // Game render function
   render() {
     const infoSection = this.getLevelCases();
+    const instructionModal = this.state.showDialog ? (
+      <InstructionModal
+        show={true}
+        modalClose={this.handleCloseInstructionModal}
+        msg ={ `${i18n.t("IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE")}`  }      
+        language={i18n.language}
+      />
+    ) : null;
     return (
       <div id="pop-the-bubble-body">
         {!this.state.noBack && <nav className="back-link">
@@ -554,6 +569,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         </nav>
         <div className="heading">{i18n.t("POP_THE_BUBBLES")}</div>
         {infoSection}
+        {instructionModal}
       </div>
     );
   }

@@ -331,3 +331,15 @@ width: 100%;
 position: relative !important;
 }
 .bubble-result{position: relative !important; margin-top: 15px;}
+.footer-cls {
+	margin-top: 10px;
+}
+.modal-body-section {
+	padding: 15px !important;
+    margin-bottom: 10px;
+	font-size: 18px;
+}
+
+.footer-cls button {
+	font-size: 14px;
+  }
