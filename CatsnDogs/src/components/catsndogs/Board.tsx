@@ -20,6 +20,7 @@ import i18n from "./../../i18n";
 
 import * as React from "react";
 import "./box.css";
+import { InstructionModal } from "./InstructionModal";
 
 export interface BoardProps {
   language: string;
@@ -52,6 +53,7 @@ interface BoardState {
   status:any;
   wrongTaps: number;
   sendResponse: boolean;
+  showInstruction: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -90,6 +92,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       successTaps: 0,
       timeout: false,
       wrongTaps: 0,
+      showInstruction: true,
     };
   }
   // Reset game state for each state
@@ -454,6 +457,11 @@ class Board extends React.Component<BoardProps, BoardState> {
       this.sendGameResult(true)
     
   }
+
+  handleCloseInstructionModal = () => {
+    this.setState({ showInstruction: false });
+  };
+
   // Render the game board
   render() {
     let boxes;
@@ -570,6 +578,15 @@ class Board extends React.Component<BoardProps, BoardState> {
         language={i18n.language}
       />
     ) : null;
+
+    const instructionModal = this.state.showInstruction ? (
+      <InstructionModal
+        show={true}
+        modalClose={this.handleCloseInstructionModal}
+        msg ={ `${i18n.t("IN_THIS_GAME_YOU_WILL_SEE_A_SCREEN_WITH_MANY_BOXES_THESE_BOXES_WILL_LIFT_REVEALING_EITHER_A_DOG_CAT_OR_NOTHING_BEHIND_THEM_A_TASK_IS_TO_TAP_THE_CORRECT_BOXES_BASED_ON_WHAT_IS_BEHIND_EACH_BOX_THE_INSTRUCTIONS_FOR_WHICH_BOXES_ARE_CORRECT_WILL_CHANGE_DEPENDING_ON_THE_LEVEL_SO_PAY_ATTENTION_TO_THE_ANIMALS")}`  }      
+        language={i18n.language}
+      />
+    ) : null;
     return (
       <div>
             {!this.props.noBack && <nav className="back-link">
@@ -585,6 +602,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         <div className="mt-30">{boxes}</div>
         {modal}
       </div>
+      {instructionModal}
       </div>
       </div>
     );

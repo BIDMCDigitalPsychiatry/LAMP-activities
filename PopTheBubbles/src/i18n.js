@@ -67,6 +67,8 @@ const resources = {
       TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM:"ONLY POP YELLOW AND BLUE BUBBLES.",
       TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM:"ONLY POP PINK YELLOW AND BLUE BUBBLES.",
       YOU_GOT_PERCENT: "You got {{ percentage }}",
+      IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE:
+        "In this game, you will see lots of different colored bubbles, one at a time. Your task is to 'pop' the correctly colored bubbles, while ignoring the incorrect ones. Pay attention to the instructions for each level to know which colored bubbles you should tap, and which ones you should ignore."
     },
   },"es-ES": {
     translation: {
@@ -145,6 +147,7 @@ const resources = {
       LEVEL_3_COMPLETED: "स्तर 3  पूरा हुआ",
       IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE:
         "इस खेल में, आप बहुत से विभिन्न रंगों के बुलबुल देखेंगे, एक बार में एक। आपका कार्य है सही रंग के बुलबुलों को 'फोड़ना’ है एवं गलत रंगों को बुलबुले को नजरअंदाज करना। (आपका कार्य है की गलत रंगों के बुलबुलों को बिना दबाए, सही रंग के बुलबुलों को चुने) प्रत्येक स्तर के लिए निर्देशों पर ध्यान दें ताकि आप जान सकें कौन सी रंग के बुलबुलों को आपको दबाना चाहिए, और किसको आपको नजरअंदाज करना चाहिए।",
+      OK: "ठीक है",
     },
   }, "it-IT": {
     translation: {

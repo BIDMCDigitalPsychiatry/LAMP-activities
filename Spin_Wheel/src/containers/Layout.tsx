@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core"
 import  ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import './layout.css';
+import DialogMessage from './DialogMessage';
 
 const useStyles = makeStyles((theme) => ({
   toolbardashboard: {
@@ -58,6 +59,7 @@ const Layout = ({...props}) => {
   const [disableButtons, setDisableButtons] = useState(false)
   
   const [showResult, setShowResult] = useState(false)
+  const [open, setOpen] = useState(false)
 
  
   function getRandomWithProbability(array : any) {
@@ -113,6 +115,7 @@ const Layout = ({...props}) => {
          }) : null, "*") 
       }, 2000)   
     }
+    setOpen(true)
   }, [complete])
 
   useEffect(() => {
@@ -279,6 +282,7 @@ const Layout = ({...props}) => {
               </Col>
             </Row>}         
         </Container> 
+        <DialogMessage open={open}  setOpen={setOpen}  />
       </div>
     );
   

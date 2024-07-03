@@ -45,7 +45,9 @@ const resources = {
       PERMISSION:"Click to grant accelerometer Permission",
       START_GAME: "Start Game",
       YES: "Yes",  
-      YOU_WON: "You Won"
+      YOU_WON: "You Won",
+      IN_THIS_GAME_YOU_CAN_TILT_YOUR_PHONE_TO_CONTROL_A_SMALL_BALL_SEEN_ON_YOUR_SCREEN_TRY_TO_NAVIGATE_THE_BALL_OUT_OF_THE_CENTER_OF_THE_MAZE_AND_INTO_THE_OPEN_SPACE_THE_FASTER_YOU_ESCAPE_THE_MORE_POINTS_YOU_WILL_ACCURE:
+        "In this game, you can tilt your phone to control a small ball seen on your screen. Try to navigate the ball out of the center of the maze and into the open space. The faster you escape, the more points you will accrue."
     },
   },
   "es-ES": {
@@ -97,7 +99,8 @@ const resources = {
       MAZE_GAME: "रास्ता खोजना, खेल",
       IN_THIS_GAME_YOU_CAN_TILT_YOUR_PHONE_TO_CONTROL_A_SMALL_BALL_SEEN_ON_YOUR_SCREEN_TRY_TO_NAVIGATE_THE_BALL_OUT_OF_THE_CENTER_OF_THE_MAZE_AND_INTO_THE_OPEN_SPACE_THE_FASTER_YOU_ESCAPE_THE_MORE_POINTS_YOU_WILL_ACCURE:
         "इस गेम में, आप अपनी स्क्रीन पर दिखाई देने वाली एक छोटी सी गेंद को नियंत्रित करने के लिए अपने फ़ोन को झुका सकते हैं। गेंद को भूलभुलैया के केंद्र से बाहर और खुली जगह में ले जाने का प्रयास करें। आप जितनी तेजी से बचेंगे, उतने अधिक अंक अर्जित करेंगे।",
-      LEVEL_1: "स्तर-1"
+      LEVEL_1: "स्तर-1",
+      OK: "ठीक है",
     },
   },
   "it-IT":{

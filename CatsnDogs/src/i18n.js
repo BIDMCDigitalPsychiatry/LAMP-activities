@@ -38,7 +38,9 @@ const resources = {
         "Now tap the boxes that have a cat behind them. Don't tap the boxes with a dog behind them.",
       OK: "Ok",
       TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tap the boxes that have a dog behind them.",     
+        "Tap the boxes that have a dog behind them.",   
+      IN_THIS_GAME_YOU_WILL_SEE_A_SCREEN_WITH_MANY_BOXES_THESE_BOXES_WILL_LIFT_REVEALING_EITHER_A_DOG_CAT_OR_NOTHING_BEHIND_THEM_A_TASK_IS_TO_TAP_THE_CORRECT_BOXES_BASED_ON_WHAT_IS_BEHIND_EACH_BOX_THE_INSTRUCTIONS_FOR_WHICH_BOXES_ARE_CORRECT_WILL_CHANGE_DEPENDING_ON_THE_LEVEL_SO_PAY_ATTENTION_TO_THE_ANIMALS:
+        "In this game, you will see a screen with many boxes. These boxes will ‘lift’ revealing either a dog, cat or nothing behind them. A task is to tap the correct boxes based on what is behind each box. The instructions for which boxes are correct will change depending on the level, so pay attention to the animals!"
     },
   },"es-ES": {
     translation: {

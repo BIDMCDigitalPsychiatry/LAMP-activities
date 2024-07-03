@@ -36,7 +36,8 @@ const resources = {
       TOTAL_SPINS: "Total Spins",
       YOU_LOSE: "You Lose",
       YOU_WON: "You Won",   
-     
+      THE_GAME_PRESENTS_YOU_WITH_TWO_WHEELS_THAT_CAN_BE_SPUN_BY_SELECTING_ONE_OF_FOUR_BUTTONS_AT_THE_BOTTOM_OF_THE_SCREEN_THE_COLORS_OF_THE_BUTTONS_DO_NOT_CORRESPOND_TO_THE_COLORS_ON_THE_WHEEL_EACH_SPIN_CAN_RESULT_IN_A_WIN_OR_LOSS_OF_MONEY_WITH_THE_WHEEL_AT_THE_TOP_DISPLAYING_THE_MONEY_YOU_WON_AND_THE_BOTTOM_DISPLAYING_THE_MONEY_YOU_LOST_THE_TOTAL_AMOUNT_REMAINING_IS_DISPLAYED_AT_THE_TOP_OF_THE_SCREEN_YOU_START_WITH_$2000_AND_HAVE_20_SPINS_PER_GAME_BY_DEFAULT_POINTS_AT_THE_END_OF_A_SESSION_ARE_REPRESENTED_IN_THE_AMOUNT_OF_MONEY_YOU_HAVE:
+        "The game presents you with two wheels that can be spun by selecting one of four buttons at the bottom of the screen. The colors of the buttons do not correspond to the colors on the wheel. Each spin can result in a win or loss of money, with the wheel at the top displaying the money you won and the bottom displaying the money you lost. The total amount remaining is displayed at the top of the screen. You start with $2000 and have 20 spins per game by default. Points at the end of a session are represented in the amount of money you have.",
     },
   },
   "es-ES": {
@@ -78,7 +79,10 @@ const resources = {
       BEGIN: "खेल शुरू करें!",
       TOTAL_SPIN: "कुल घूमाव",
       LOTTERY: "लॉटरी",
-      TOTAL_SPIN_20: "कुल घूमाव 20"
+      TOTAL_SPIN_20: "कुल घूमाव 20",
+      THE_GAME_PRESENTS_YOU_WITH_TWO_WHEELS_THAT_CAN_BE_SPUN_BY_SELECTING_ONE_OF_FOUR_BUTTONS_AT_THE_BOTTOM_OF_THE_SCREEN_THE_COLORS_OF_THE_BUTTONS_DO_NOT_CORRESPOND_TO_THE_COLORS_ON_THE_WHEEL_EACH_SPIN_CAN_RESULT_IN_A_WIN_OR_LOSS_OF_MONEY_WITH_THE_WHEEL_AT_THE_TOP_DISPLAYING_THE_MONEY_YOU_WON_AND_THE_BOTTOM_DISPLAYING_THE_MONEY_YOU_LOST_THE_TOTAL_AMOUNT_REMAINING_IS_DISPLAYED_AT_THE_TOP_OF_THE_SCREEN_YOU_START_WITH_$2000_AND_HAVE_20_SPINS_PER_GAME_BY_DEFAULT_POINTS_AT_THE_END_OF_A_SESSION_ARE_REPRESENTED_IN_THE_AMOUNT_OF_MONEY_YOU_HAVE:
+        "खेल आपको दो पहियों के साथ प्रस्तुत करता है जो स्क्रीन के नीचे चार बटनों में से एक को चयन करके घूमाया जा सकता हैं। बटनों के रंग पहियों पर रंग के साथ मेल नहीं खाते हैं। प्रत्येक घूमाव पैसे जीतने या हारने का परिणाम हो सकता है, जिसमें ऊपर का पहिया आपकी जीती हुई धनराशि और नीचे आपकी हारी हुई धनराशि को दिखाता है। स्क्रीन के शीर्ष पर शेष राशि दिखाई जाती है। आप 2000  रुपए  के साथ शुरुआत करते हैं और प्रति खेल आपको 20 घूमाव मिलेंगे । सत्र के अंत में आपके पास होने वाले पॉइंट्स आपकी धनराशि के रूप में दिखाई देंगे ।",
+      OK: "ठीक है",
     },
   },
   "it-IT":{
