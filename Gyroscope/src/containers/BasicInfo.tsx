@@ -109,8 +109,9 @@ export default function BasicInfo({ ...props }) {
                     </IconButton>
                 </Toolbar>
             </AppBar> */}
-            <Box px={2}>
             {view === "instruction" && (
+                            <Box px={2}>
+
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item lg={3} sm={10} xs={12}>
                         <Typography variant="h3" align="center" >
@@ -204,11 +205,13 @@ export default function BasicInfo({ ...props }) {
                         </Box>
                     </Grid>
                 </Grid>
+                </Box>
+
             )}
+            
             {view === "continue" && (
                 <GameInstruction />
             )}
-            </Box>
         </div>
     )
 }

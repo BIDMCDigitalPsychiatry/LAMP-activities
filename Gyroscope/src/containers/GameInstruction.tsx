@@ -12,7 +12,7 @@ import {
     Icon
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
-import GameEnd from "./GameEnd"
+import { GameComponent } from "./GameComponent"
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -29,12 +29,12 @@ const useStyles = makeStyles((theme) => ({
         },
         "& p": {
             fontSize: 18,
-            color: "#fff",
+            color: "#7599FF",
             fontWeight: 300
         }
     },
-    btnWhite: {
-        background: "#FFFFFF",
+    btnBlue: {
+        background: "#7599FF",
         padding: "15px 25px 15px 25px",
         borderRadius: "40px",
         minWidth: "200px",
@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
         "& h6": {
             textTransform: "capitalize",
             fontSize: "16px",
-            color: "#7599FF",
+            color: "#FFFFFF",
             fontWeight: "bold",
         },
         "& span": { cursor: "pointer" },
         "&:hover": {
-            background: "#fff",
+            background: "#7599FF",
             boxShadow:
                 "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
         },
@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         height: "calc(100vh - 65px)",
-        background: "#5E92F2"
     },
     innercontainer: {
         display: "flex",
@@ -100,8 +99,9 @@ export default function Instructions({ ...props }) {
                     </IconButton>
                 </Toolbar>
             </AppBar> */}
-            <Box p={0} className={classes.container}>
             {view === "start-game" && (
+                            <Box p={0} className={classes.container}>
+
                 <Grid container justifyContent="center" alignItems="center" className={classes.innercontainer}>
                     <Grid item lg={7} sm={10} xs={12}>
                         <Box p={3}>
@@ -109,18 +109,19 @@ export default function Instructions({ ...props }) {
                                 Move the white dot to the center. The white dot will be visible during your reach. Quickly move your white dot to the target. Press SPACE BAR when you are ready to proceed.
                             </Typography>
                             <Box textAlign="center" pt={3} mt={2}>
-                                <Fab className={classes.btnWhite} onClick={handleNextClick}>
+                                <Fab className={classes.btnBlue} onClick={handleNextClick}>
                                     <Typography variant="h6">{t("Start Game")}</Typography>
                                 </Fab>
                             </Box>
                         </Box>
                     </Grid>
                 </Grid>
+                </Box>
              )} 
+                    
             {view === "start game" && 
-                <GameEnd />
+                <GameComponent />
             }
-            </Box>
         </div>
     )
 }

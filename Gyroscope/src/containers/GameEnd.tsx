@@ -12,8 +12,8 @@ import {
   Icon
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
-import Videoimg from '../Video.png';
-import BasicInfo from "./BasicInfo";
+import GameEndimg from '../NiceWork.svg';
+import Questions from "./Questions";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -60,18 +60,26 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "600",
       fontSize: 18,
       width: "calc(100% - 96px)",
-    }
-  }
+    },
+  },
+  container: {
+    height: "calc(100vh - 65px)",
+},
+innercontainer: {
+    display: "flex",
+    height: "100%"
+}
 }))
-export default function VideoTutorial({ ...props }) {
+export default function GameEnd({ ...props }) {
   const classes = useStyles()
   const [noBack] = useState(false)
   const { t } = useTranslation()
 
-  const [view, setView] = useState("basic-info");
+  
+  const [view, setView] = useState("end-game");
 
   const handleNextClick = () => {
-    setView("nextPage");
+    setView("questions");
   };
 
   return (
@@ -87,21 +95,21 @@ export default function VideoTutorial({ ...props }) {
           </IconButton>
         </Toolbar>
       </AppBar> */}
-      <Box px={2}>
-      {view === "basic-info" && (
-        <Grid container direction="row" justifyContent="center" alignItems="center">
-          <Grid item lg={8} sm={10} xs={12}>
-            <Typography variant="h3" align="center" >
-            There is one simple goal.
-            </Typography>
-            <Typography variant="h4" align="center">
-            Once a target (blue dot) appears, slice through it QUICKLY with your white dot (either hidden or visible). The movie below is an example where your white dot is hidden during movement.
-            </Typography>
+      <Box p={0} className={classes.container}>
+      {view === "end-game" && (
+      <Grid container justifyContent="center" alignItems="center" className={classes.innercontainer}>
+          <Grid item lg={6} sm={10} xs={12}>
+
             <Grid container justifyContent="center">
-            <Grid item lg={6} sm={10} xs={12}>
-              <img src={Videoimg} width="100%" />
+              <Grid item lg={5} md={5} sm={10} xs={10}>
+                <Box textAlign="center">
+                  <img src={GameEndimg} width="100%" />
+                </Box>
+              </Grid>
             </Grid>
-            </Grid>
+            <Typography variant="h3" align="center" >
+              Nice Work!
+            </Typography>
             <Box textAlign="center" pt={4} mt={2}>
               <Fab className={classes.btnblue} onClick={handleNextClick}>
                 <Typography variant="h6">{t("Next")}</Typography>
@@ -110,9 +118,9 @@ export default function VideoTutorial({ ...props }) {
           </Grid>
         </Grid>
       )}
-      {view === "nextPage" && (
-          <BasicInfo />
-      )}
+      {view === "questions" && 
+        <Questions />
+      }
       </Box>
     </div>
   )

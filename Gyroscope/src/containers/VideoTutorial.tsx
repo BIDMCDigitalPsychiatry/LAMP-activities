@@ -12,8 +12,8 @@ import {
   Icon
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
-import Cognitiveimg from '../Cognitive.svg';
-import VideoTutorial from "./VideoTutorial";
+import Videoimg from '../Video.png';
+import BasicInfo from "./BasicInfo";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -60,22 +60,23 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "600",
       fontSize: 18,
       width: "calc(100% - 96px)",
-    },
-  },
+    }
+  }
 }))
-export default function JournalEntries({ ...props }) {
+export default function VideoTutorial({ ...props }) {
   const classes = useStyles()
   const [noBack] = useState(false)
   const { t } = useTranslation()
-  const [view, setView] = useState("intro");
+
+  const [view, setView] = useState("basic-info");
 
   const handleNextClick = () => {
-    setView("next");
+    setView("nextPage");
   };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}>
+      {/* <AppBar position="static" style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}>
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && <IconButton color="default" aria-label="Menu">
             <Icon>arrow_back</Icon>
@@ -85,23 +86,22 @@ export default function JournalEntries({ ...props }) {
             <Icon>refresh</Icon>
           </IconButton>
         </Toolbar>
-      </AppBar>
-      <Box px={2}>
-      {view === "intro" && (
+      </AppBar> */}
+      {view === "basic-info" && (
+              <Box px={2}>
+
         <Grid container direction="row" justifyContent="center" alignItems="center">
-          <Grid item lg={6} sm={10} xs={12}>
+          <Grid item lg={8} sm={10} xs={12}>
             <Typography variant="h3" align="center" >
-              Target Practice: Your Accuracy and Ability to Adapt
+            There is one simple goal.
             </Typography>
             <Typography variant="h4" align="center">
-              Please kindly turn off all computer notifications during this experiment.
+            Once a target (blue dot) appears, slice through it QUICKLY with your white dot (either hidden or visible). The movie below is an example where your white dot is hidden during movement.
             </Typography>
             <Grid container justifyContent="center">
-              <Grid item lg={5} md={5} sm={10} xs={10}>
-                <Box textAlign="center">
-                  <img src={Cognitiveimg} width="100%" />
-                </Box>
-              </Grid>
+            <Grid item lg={6} sm={10} xs={12}>
+              <img src={Videoimg} width="100%" />
+            </Grid>
             </Grid>
             <Box textAlign="center" pt={4} mt={2}>
               <Fab className={classes.btnblue} onClick={handleNextClick}>
@@ -110,11 +110,13 @@ export default function JournalEntries({ ...props }) {
             </Box>
           </Grid>
         </Grid>
-        )}
-        {view === "next" && (
-          <VideoTutorial />
-        )}
-      </Box>
+        </Box>
+
+      )}
+      
+      {view === "nextPage" && (
+          <BasicInfo />
+      )}
     </div>
   )
 }

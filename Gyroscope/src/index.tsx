@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
-import  JournalEntries from "./components/JournalEntries";
+import  Instructions from "./containers/Instructions";
 
 const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
@@ -18,7 +18,7 @@ eventer(
     messageEvent, (e : any) => {    
 		ReactDOM.render(
         <AppContainer>
-        <JournalEntries 
+        <Instructions 
         data={e.data}
           />
       </AppContainer>,

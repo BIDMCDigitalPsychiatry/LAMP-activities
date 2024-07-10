@@ -12,7 +12,8 @@ import {
   Icon
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
-import GameEndimg from '../NiceWork.svg';
+import Cognitiveimg from '../Cognitive.svg';
+import VideoTutorial from "./VideoTutorial";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -61,22 +62,20 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(100% - 96px)",
     },
   },
-  container: {
-    height: "calc(100vh - 65px)",
-},
-innercontainer: {
-    display: "flex",
-    height: "100%"
-}
 }))
-export default function GameEnd({ ...props }) {
+export default function Instructions({ ...props }) {
   const classes = useStyles()
   const [noBack] = useState(false)
   const { t } = useTranslation()
+  const [view, setView] = useState("intro");
+
+  const handleNextClick = () => {
+    setView("next");
+  };
 
   return (
     <div className={classes.root}>
-      {/* <AppBar position="static" style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}>
+      <AppBar position="static" style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}>
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && <IconButton color="default" aria-label="Menu">
             <Icon>arrow_back</Icon>
@@ -86,29 +85,39 @@ export default function GameEnd({ ...props }) {
             <Icon>refresh</Icon>
           </IconButton>
         </Toolbar>
-      </AppBar> */}
-      <Box p={0} className={classes.container}>
-      <Grid container justifyContent="center" alignItems="center" className={classes.innercontainer}>
-          <Grid item lg={6} sm={10} xs={12}>
+      </AppBar>
+      {view === "intro" && (
+              <Box px={2}>
 
+        <Grid container direction="row" justifyContent="center" alignItems="center">
+          <Grid item lg={6} sm={10} xs={12}>
+            <Typography variant="h3" align="center" >
+              Target Practice: Your Accuracy and Ability to Adapt
+            </Typography>
+            <Typography variant="h4" align="center">
+              Please kindly turn off all computer notifications during this experiment.
+            </Typography>
             <Grid container justifyContent="center">
               <Grid item lg={5} md={5} sm={10} xs={10}>
                 <Box textAlign="center">
-                  <img src={GameEndimg} width="100%" />
+                  <img src={Cognitiveimg} width="100%" />
                 </Box>
               </Grid>
             </Grid>
-            <Typography variant="h3" align="center" >
-              Nice Work!
-            </Typography>
             <Box textAlign="center" pt={4} mt={2}>
-              <Fab className={classes.btnblue}>
+              <Fab className={classes.btnblue} onClick={handleNextClick}>
                 <Typography variant="h6">{t("Next")}</Typography>
               </Fab>
             </Box>
           </Grid>
         </Grid>
-      </Box>
+        </Box>
+
+        )}
+        
+      {view === "next" && (
+          <VideoTutorial />
+        )}
     </div>
   )
 }
