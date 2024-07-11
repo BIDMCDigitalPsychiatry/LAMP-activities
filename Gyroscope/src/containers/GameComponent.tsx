@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import useMousePosition from "../hooks/useMousePosition";
 import { drawCircle } from "../components/Circle";
-let isPhone = false;
 let permissionButton: any;
-let permissionGranted = false;
+
 import { makeStyles, Theme, createStyles, Fab } from "@material-ui/core"
 import { isMobile } from 'react-device-detect';
 import GameEnd from "./GameEnd";
@@ -36,8 +35,20 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     cursor: {
-      color:"green",
-      width:"20px"
+      width: "22px",
+      height: "22px",
+      background: "red",
+      position: "absolute",
+      top: "25%",
+      left: "25%",
+      borderRadius:"50%"  
+    }
+  ,
+  button:{
+    width:"auto",
+    padding:"5px",
+    borderRadius:"10%",
+    background:"blue"
     }
   }))
 //Up to 30 - same direction
@@ -54,44 +65,15 @@ export function GameComponent({...props}){
   //   setView("end");
   // };
 
-
+  const [iPhone, setiPhone] = useState(false)
+  const [permissionGranted, setPermissionGranted] = useState(false)
   const classes = useStyles()
-  const setup = (p: any) => {
-    alert(navigator.userAgent)
-    return () => {
-      if (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
-      ) {
-        // is mobile..
-        isPhone = true;
-        getAccelerometerPermission(p);
-      } 
-    };
+  const setup = async (p: any) => {   
+    if (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) {
+      setiPhone(true);
+    } 
   }
 
-  function getAccelerometerPermission(p: any) {
-    if (!isPhone) {
-      permissionGranted = true;
-      return;
-    }
-    if(permissionGranted){
-      return
-    }
-    if (typeof (DeviceMotionEvent as any).requestPermission === "function") {
-      permissionButton = p.createButton(
-        "Click to grant accelerometer Permission"
-      );
-      permissionButton.style("font-size", "24px");
-      permissionButton.style("z-index", "999");
-      permissionButton.position(1, 20);
-      permissionButton.mousePressed(requestAccess);    
-  
-    } else {
-      permissionGranted = true;
-    }
-  }
   useEffect(() => { 
     ;(async() => {
       await setup(canvasRef)
@@ -125,26 +107,52 @@ export function GameComponent({...props}){
       .requestPermission()
       .then((permission: string) => {
         if (permission === "granted") {
-          permissionGranted = true;
+          window.addEventListener('devicemotion', handleAcceleration);
+          window.addEventListener('orientationchange', handleOrientation);
+          window.addEventListener('deviceorientation', handleOrientation);
+          setPermissionGranted(true)
         }
-      });
-    if (permissionGranted) {
-      permissionButton.remove();
-    }
+      });    
   }
 
-  const handleOrientation = () => {
+  const handleOrientation = (e) => {
     let orientation = window.orientation;
-    setState({...state, landscape: orientation === 90 || orientation === -90 });
+  //   let x= e.beta
+  //   let y=e.gamma
+  //   // Because we don't want to have the device upside down
+  // // We constrain the x value to the range [-90,90]
+  // if (x > 90) {
+  //   x = 90;
+  // }
+  // if (x < -90) {
+  //   x = -90;
+  // }
+
+  // // To make computation easier we shift the range of
+  // // x and y to [0,180]
+  // x += 90;
+  // y += 90;
+
+  // // 10 is half the size of the ball
+  // // It centers the positioning point to the center of the ball
+  // x = `${(canvasRef.current.width * x) / 180 - 20}px`; // rotating device around the y axis moves the ball horizontally
+  // y = `${(canvasRef.current.height * y) / 180 - 20}px`; // rotating device around the x axis moves the ball vertically
+
+    setState({...state, landscape: orientation === 90 || orientation === -90}) // , x: x, y:y});
   }
   
   const handleAcceleration = (event) => {
     let landscape = state?.landscape;
-    let acceleration = event.accelerationIncludingGravity;
+    // let acceleration = event.accelerationIncludingGravity;
     let rotation = event.rotationRate || 0;
-    let x = acceleration.x;
-    let y = acceleration.y;
-    let z = acceleration.z;
+    var x = event.accelerationIncludingGravity.x;
+    var y = event.accelerationIncludingGravity.y;
+    var z = event.accelerationIncludingGravity.z;
+    x = oneDecimal(x);  y = oneDecimal(y);  z = oneDecimal(z);
+    
+
+
+
     setState({...state, 
       rotation: rotation,
       x: landscape ? y : x,
@@ -154,26 +162,44 @@ export function GameComponent({...props}){
     });
   }
 
-  const [x, setX] = useState(null)
+  function oneDecimal(n) {
+    var number = n;
+    var rounded = Math.round( number * 10 ) / 10;
+    return rounded;
+  }
+
+  function toPercentage(x, n) {
+    var p = 0;
+    if (n) {
+      p = ((x + 10) / 20) * 100;
+    }
+    else {
+      p = ((x + 10) / 20);
+    }
+    return oneDecimal(p);
+  }
+  
+  
+  // const [x, setX] = useState(null)
   const [coords, handleCoords] = useMousePosition();
-  const [centerX, setCenterX] = useState(0)
-  const [centerY, setCenterY] = useState(0)
+
   useEffect(() => {
     console.log(state)
     if(canvasRef?.current && !!state && state.x) { 
-      if(x == null)
-        alert(state.x + "--" + state.y)
-      setX(state.x)
+      // if(x == null)
+        // alert(state.x + "--" + state.y)
+      // setX(state.x)
 
       const ctx: any = canvasRef.current.getContext("2d");
       let centerX = ctx.canvas.width / 2 ;
       let centerY = ctx.canvas.height / 2;
      
       // cons
-      if(x == null)
-        alert(centerX + "--" + centerY)
+      // if(x == null)
+      //   alert(centerX + "--" + centerY)
 
-      handleMovement(ctx, state.x, state.y , centerX, centerY)
+      handleMovement(ctx, ctx.canvas.width / (100 / toPercentage(state.x, 1)), 
+        ctx.canvas.height / (100 / toPercentage(state.y, 1)) , centerX, centerY)
     }
   }, [state])
 
@@ -182,8 +208,10 @@ export function GameComponent({...props}){
   const handleMovement = (ctx, x, y, centerX, centerY) => {
     divRef.current.style.left = x + 'px'
     divRef.current.style.top = y + 'px'
+    console.log(x,y)
     if(Math.abs(x- centerX) < 20 &&
       Math.abs(y- centerY) < 80) {
+        console.log("asd", divRef)
         helpTextRef.current.style.display="none" 
         divRef.current.style.background = "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))"
         drawTarget(ctx, centerX, centerY)    
@@ -205,7 +233,7 @@ export function GameComponent({...props}){
       lineWidth: 0,
       strokeStyle: "#FFFFFF",
       colorFill: "#ADD8E6",
-      startX: centerX + (ctx.canvas.width/10),
+      startX: centerX + (ctx.canvas.width/8),
       startY: centerY
     });
   }
@@ -216,7 +244,7 @@ export function GameComponent({...props}){
       lineWidth: 0,
       strokeStyle: "#FFFFFF",
       colorFill: "#FFFFFF",
-      startX: centerX + (ctx.canvas.width/10),
+      startX: centerX + (ctx.canvas.width/8),
       startY: centerY
     });
   }
@@ -272,7 +300,7 @@ export function GameComponent({...props}){
         }}
         className={classes.canvas}
       />
-      <div ref={divRef} className="cursor"></div>
+      <div ref={divRef} className={classes.cursor}></div>
       <span ref={helpTextRef} className={classes.helpText}>
         To find your cursor, try moving your mouse to the center of the screen
         </span>
@@ -280,7 +308,9 @@ export function GameComponent({...props}){
         <span className={classes.countText}>
         {`${currentCount}/${props?.totalCount ?? 120}`}
         </span>
-        
+        {iPhone && !permissionGranted && (
+        <Fab className={classes.button} onClick={requestAccess}>Grant accelerometer Permission</Fab>
+        )}
         {/* <Fab onClick={handleNextClick}>End Game</Fab> */} {/* Navigation */}
     </>
   )

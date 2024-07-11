@@ -11,20 +11,20 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import  Instructions from "./containers/Instructions";
 
-const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
-const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-eventer(
-    messageEvent, (e : any) => {    
+// const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
+// const eventer = window[eventMethod]
+// const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+// eventer(
+//     messageEvent, (e : any) => {    
 		ReactDOM.render(
         <AppContainer>
         <Instructions 
-        data={e.data}
+        // data={e.data}
           />
       </AppContainer>,
 		  document.getElementById("root")
 		);
-    },
-    false
-)
+//     },
+//     false
+// )
 
