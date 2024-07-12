@@ -57,8 +57,8 @@ export function GameComponent({...props}){
   const divRef = useRef<HTMLDivElement | null>(null);
   const helpTextRef = useRef<HTMLElement | null>(null);
   const [state, setState] = useState(null)
-  const [currentCount, setcurrentCount] = useState(0)
-
+  const [currentCount, setCurrentCount] = useState(0)
+  const [started, setStarted] = useState(false)
   // Navigation
   // const [view, setView] = useState("start");
   // const handleNextClick = () => {
@@ -68,19 +68,24 @@ export function GameComponent({...props}){
   const [iPhone, setiPhone] = useState(false)
   const [permissionGranted, setPermissionGranted] = useState(false)
   const classes = useStyles()
+  const [mobile, setMobile] = useState(false)
+  const [done, setDone] = useState(false)
   const setup = async (p: any) => {   
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent)) { 
+       setMobile(true)
+    }
     if (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) {
       setiPhone(true);
     } 
   }
 
   useEffect(() => { 
-    ;(async() => {
-      await setup(canvasRef)
-      window.addEventListener('devicemotion', handleAcceleration);
-      window.addEventListener('orientationchange', handleOrientation);
-      window.addEventListener('deviceorientation', handleOrientation);
+    ;(async() => {      
       if (canvasRef?.current) {
+        await setup(canvasRef)
+        window.addEventListener('devicemotion', handleAcceleration);
+        window.addEventListener('orientationchange', handleOrientation);
+        window.addEventListener('deviceorientation', handleOrientation);
         const ctx = canvasRef.current.getContext("2d");
         let centerX = 0
         let centerY = 0
@@ -91,13 +96,26 @@ export function GameComponent({...props}){
           centerX = ctx.canvas.width / 2 ;
           centerY = ctx.canvas.height / 2-100;
         }
-        drawCenterCircle(ctx, centerX, centerY)
-
+        if(!started)
+           drawCenterCircle(ctx, centerX, centerY)
+        setStarted(true)
         divRef.current.style.background="transparent"
-        canvasRef.current.onmousemove = (event) => {
-          handleMovement(ctx, event.clientX -5, event.clientY -5 , centerX, centerY)
-          //track mouse position and change for custom cursor                    
-        };
+        if(!!mobile) {
+          canvasRef.current.ontouchend = (event) => {
+            alert("sad")
+            divRef.current.style.left = centerX + 'px'
+            divRef.current.style.top = centerY + 'px'  
+            helpTextRef.current.style.display="none" 
+            divRef.current.style.background = "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))"
+            drawTarget(ctx, centerX, centerY)    
+            clearCenter(ctx, centerX, centerY)                   
+          };
+        } else { 
+          canvasRef.current.onmousemove = (event) => {
+            handleMovement(ctx, event.clientX -5, event.clientY -5 , centerX, centerY)
+            //track mouse position and change for custom cursor                    
+          };
+        }
       } 
     })()      
   }, [])
@@ -117,28 +135,7 @@ export function GameComponent({...props}){
 
   const handleOrientation = (e) => {
     let orientation = window.orientation;
-  //   let x= e.beta
-  //   let y=e.gamma
-  //   // Because we don't want to have the device upside down
-  // // We constrain the x value to the range [-90,90]
-  // if (x > 90) {
-  //   x = 90;
-  // }
-  // if (x < -90) {
-  //   x = -90;
-  // }
-
-  // // To make computation easier we shift the range of
-  // // x and y to [0,180]
-  // x += 90;
-  // y += 90;
-
-  // // 10 is half the size of the ball
-  // // It centers the positioning point to the center of the ball
-  // x = `${(canvasRef.current.width * x) / 180 - 20}px`; // rotating device around the y axis moves the ball horizontally
-  // y = `${(canvasRef.current.height * y) / 180 - 20}px`; // rotating device around the x axis moves the ball vertically
-
-    setState({...state, landscape: orientation === 90 || orientation === -90}) // , x: x, y:y});
+    setState({...state, landscape: orientation === 90 || orientation === -90})
   }
   
   const handleAcceleration = (event) => {
@@ -155,8 +152,8 @@ export function GameComponent({...props}){
 
     setState({...state, 
       rotation: rotation,
-      x: landscape ? y : x,
-      y: landscape ? x : y,
+      x: x, // landscape ? y : x,
+      y: y, //landscape ? x : y,
       z: z,
       landscape: state?.landscape
     });
@@ -180,38 +177,26 @@ export function GameComponent({...props}){
   }
   
   
-  // const [x, setX] = useState(null)
   const [coords, handleCoords] = useMousePosition();
 
   useEffect(() => {
-    console.log(state)
     if(canvasRef?.current && !!state && state.x) { 
-      // if(x == null)
-        // alert(state.x + "--" + state.y)
-      // setX(state.x)
-
       const ctx: any = canvasRef.current.getContext("2d");
       let centerX = ctx.canvas.width / 2 ;
       let centerY = ctx.canvas.height / 2;
-     
-      // cons
-      // if(x == null)
-      //   alert(centerX + "--" + centerY)
-
       handleMovement(ctx, ctx.canvas.width / (100 / toPercentage(state.x, 1)), 
-        ctx.canvas.height / (100 / toPercentage(state.y, 1)) , centerX, centerY)
+      ctx.canvas.height / (100 / toPercentage(state.y, 1)) , centerX, centerY)
     }
   }, [state])
 
 
 
   const handleMovement = (ctx, x, y, centerX, centerY) => {
+    setDone(false)
     divRef.current.style.left = x + 'px'
     divRef.current.style.top = y + 'px'
-    console.log(x,y)
     if(Math.abs(x- centerX) < 20 &&
       Math.abs(y- centerY) < 80) {
-        console.log("asd", divRef)
         helpTextRef.current.style.display="none" 
         divRef.current.style.background = "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))"
         drawTarget(ctx, centerX, centerY)    
@@ -219,13 +204,21 @@ export function GameComponent({...props}){
       } 
     if(Math.abs(x - 5 - (centerX + (ctx.canvas.width/10))) < 10 &&
       Math.abs(y - 5- centerY) < 60) {
-        divRef.current.style.background = "transparent"
-        clearTarget(ctx, centerX, centerY)       
-        drawCenterCircle(ctx, centerX, centerY)               
-        helpTextRef.current.style.display="block"
-        setcurrentCount(currentCount+1)          
+        if(!done) { 
+          divRef.current.style.background = "transparent"
+          clearTarget(ctx, centerX, centerY)       
+          drawCenterCircle(ctx, centerX, centerY)               
+          helpTextRef.current.style.display="block"        
+          setDone(true)  
+        }   
       }
   }
+
+  useEffect(() => {
+    if(!!done) { 
+      setCurrentCount(currentCount+1)          
+    }
+  }, [done])
 
   const drawTarget = (ctx, centerX, centerY) => {
     drawCircle(ctx, {
@@ -268,7 +261,7 @@ export function GameComponent({...props}){
     });
   }
 
-  const drawCenterCircle = (ctx, centerX, centerY) => {
+  const drawCenterCircle = async (ctx, centerX, centerY) => {
     drawCircle(ctx, {
       radius: 16,
       lineWidth:2,
@@ -294,7 +287,6 @@ export function GameComponent({...props}){
         ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
-        // style={{ border: "2px solid black" }}
         onMouseMove={(e) => {
           handleCoords((e as unknown) as MouseEvent);
         }}
@@ -302,7 +294,8 @@ export function GameComponent({...props}){
       />
       <div ref={divRef} className={classes.cursor}></div>
       <span ref={helpTextRef} className={classes.helpText}>
-        To find your cursor, try moving your mouse to the center of the screen
+        {mobile ? 'To find your ball, touch on the center circle' : 
+        'To find your cursor, try moving your mouse to the center of the screen'}
         </span>
 
         <span className={classes.countText}>
