@@ -125,6 +125,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
   
+function LinkRenderer(props: any) {
+  return (
+    <a href={props.href} target="_blank" rel="noreferrer">
+      {props.children}
+    </a>
+  );
+}
+
 export default function TipNotification({ ...props }) {
   const classes = useStyles()
   const [status, setStatus] = useState("Yes")
@@ -152,7 +160,7 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown skipHtml={false}>{props.details}</ReactMarkdown>
+              <ReactMarkdown skipHtml={false} components={{ a: LinkRenderer}}>{props.details}</ReactMarkdown>
             : ""}
             </Typography>
             <Box mt={4} mb={2}>
