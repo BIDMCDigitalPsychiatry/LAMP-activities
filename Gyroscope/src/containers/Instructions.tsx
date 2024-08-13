@@ -12,8 +12,9 @@ import {
   Icon
 } from "@material-ui/core"
 import { useTranslation } from "react-i18next"
-import Cognitiveimg from '../Cognitive.svg';
-import VideoTutorial from "./VideoTutorial";
+// import VideoTutorial from "./VideoTutorial";
+import Cognitive from "./Cognitive";
+import GameInstructions from "./GameInstruction";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -100,7 +101,7 @@ export default function Instructions({ ...props }) {
             <Grid container justifyContent="center">
               <Grid item lg={5} md={5} sm={10} xs={10}>
                 <Box textAlign="center">
-                  <img src={Cognitiveimg} width="100%" />
+                  <Cognitive />
                 </Box>
               </Grid>
             </Grid>
@@ -116,7 +117,7 @@ export default function Instructions({ ...props }) {
         )}
         
       {view === "next" && (
-          <VideoTutorial />
+          <GameInstructions />
         )}
     </div>
   )

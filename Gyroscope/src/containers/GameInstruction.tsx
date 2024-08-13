@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
         height: "100%"
     }
 }))
-export default function Instructions({ ...props }) {
+export default function GameInstructions({ ...props }) {
     const classes = useStyles()
     const [noBack] = useState(false)
     const { t } = useTranslation()

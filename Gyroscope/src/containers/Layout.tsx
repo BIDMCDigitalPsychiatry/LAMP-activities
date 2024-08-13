@@ -133,7 +133,7 @@ const Layout = ({...props} : any) =>{
             </nav>            
             <div className="heading">{i18n.t("GAME")}</div>
             
-          <Container fluid className="asjdghjas">  
+          <Container fluid >  
            {isGameOver && <Row>
               <Col>
                   <p className='error-class'>{i18n.t("GAME_OVER")}</p>

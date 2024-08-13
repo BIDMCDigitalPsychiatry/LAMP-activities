@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="365.363" height="365.363" viewBox="0 0 365.363 365.363">
+// import { Box } from "@material-ui/core";
+import React from "react";
+
+const NiceWork = () => {
+  return (
+    // <Box>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="365.363" height="365.363" viewBox="0 0 365.363 365.363">
   <defs>
     <clipPath id="clip-path">
       <circle id="Ellipse_5" data-name="Ellipse 5" cx="182.682" cy="182.682" r="182.682" fill="none"/>
@@ -47,3 +53,7 @@
     </g>
   </g>
 </svg>
+    // </Box>
+  );
+};
+export default NiceWork;

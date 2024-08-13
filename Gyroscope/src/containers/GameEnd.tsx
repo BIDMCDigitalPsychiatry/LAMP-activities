@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "react-i18next"
 import GameEndimg from '../NiceWork.svg';
 import Questions from "./Questions";
+import NiceWork from "./NiceWork";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -103,7 +104,7 @@ export default function GameEnd({ ...props }) {
             <Grid container justifyContent="center">
               <Grid item lg={5} md={5} sm={10} xs={10}>
                 <Box textAlign="center">
-                  <img src={GameEndimg} width="100%" />
+                  <NiceWork />
                 </Box>
               </Grid>
             </Grid>
