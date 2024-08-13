@@ -24,7 +24,7 @@ const Layout = ({...props} : any) =>{
       useEffect(() => {  
         const configuration = props?.data?.configuration;
         i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
-        setFooterMsg(i18n.t("LEVEL")+" "+gameLevel+"/"+(props.data.activity?.settings?.level ?? 12))
+        setFooterMsg(i18n.t("LEVEL")+" "+gameLevel+"/"+(props?.data?.activity?.settings?.level ?? 12))
         if(gameLevel === 1) {
           if (
             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -133,15 +133,13 @@ const Layout = ({...props} : any) =>{
             </nav>            
             <div className="heading">{i18n.t("GAME")}</div>
             
-          <Container>  
+          <Container fluid >  
            {isGameOver && <Row>
               <Col>
                   <p className='error-class'>{i18n.t("GAME_OVER")}</p>
               </Col>
-            </Row> }       
-            <Row>
-              <Col>               
-                <GameComponent 
+            </Row> }                     
+                {/* <GameComponent 
                   circles ={circles}
                   setFooterMsg={setFooterMsg}
                   gameLevel={gameLevel}
@@ -149,9 +147,7 @@ const Layout = ({...props} : any) =>{
                   setTimeTaken={setTimeTaken}
                   startGame={startGame}
                   setShowStartButton={setShowStartButton}
-                />
-              </Col>
-            </Row>
+                /> */}
            {showStartButton && <Row>
               <Col className="mt-80">               
               <Button variant="primary" className="start-button" size="sm" onClick={()=>{setStartGame(true); setShowStartButton(false)}}>
