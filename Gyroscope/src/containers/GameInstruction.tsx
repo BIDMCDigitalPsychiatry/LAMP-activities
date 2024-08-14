@@ -120,7 +120,7 @@ export default function GameInstructions({ ...props }) {
              )} 
                     
             {view === "start game" && 
-                <GameComponent adventure={1} />
+                <GameComponent adventure={props?.level} setView={setView} />
             }
         </div>
     )
