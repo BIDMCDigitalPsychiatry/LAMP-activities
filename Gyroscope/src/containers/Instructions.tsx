@@ -1,5 +1,5 @@
 ﻿// Core Imports
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Typography,
   makeStyles,
@@ -69,10 +69,16 @@ export default function Instructions({ ...props }) {
   const [noBack] = useState(false)
   const { t } = useTranslation()
   const [view, setView] = useState("intro");
+  const [level, setLevel] = useState("Easy")
 
   const handleNextClick = () => {
     setView("next");
   };
+
+  useEffect(() => {
+    setLevel(props?.data?.activity?.settings?.level ?? "Easy")
+  }, [props])
+
 
   return (
     <div className={classes.root}>
@@ -117,7 +123,7 @@ export default function Instructions({ ...props }) {
         )}
         
       {view === "next" && (
-          <GameInstructions />
+          <GameInstructions level={level}/>
         )}
     </div>
   )
