@@ -346,10 +346,10 @@ export function GameComponent({ ...props }) {
       return 0;
     }
   };
-
   useEffect(() => {
     if (!!done && currentCount <= 100) {
       if (currentCount > 50) {
+        setDone(false);
         setRandom(
           getRandomQuadrant(1, 4) != random
             ? getRandomQuadrant(1, 4)
@@ -357,7 +357,6 @@ export function GameComponent({ ...props }) {
             ? 1
             : random + 1
         );
-        setDone(false);
         const randomOffset = getRandomOffset();
         setOffset(randomOffset);
         setOffsetArray([...offsetArray, randomOffset]);
@@ -369,10 +368,10 @@ export function GameComponent({ ...props }) {
           setWarning(false);
         }, 500);
       }
-      if (currentCount + 1 >= 100) props.setView("end game");
-      else setCurrentCount(currentCount + 1);
+      setTimeout(()=>{if (currentCount + 1 >= 100) props.setView("end game");
+      else setCurrentCount(currentCount + 1)},50)
     }
-  }, [done, offsetLevelArray]);
+  }, [done]);
 
   const getAdv2or3Values = (ctx, centerX, centerY, random) => {
     let startX = 0;
