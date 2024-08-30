@@ -85,10 +85,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
+
 //Up to 30 - same direction
 export function GameComponent({ ...props }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const cursorCanvas = useRef<HTMLCanvasElement | null>(null);
 
   const divRef = useRef<HTMLDivElement | null>(null);
   const helpTextRef = useRef<HTMLElement | null>(null);
@@ -103,25 +104,19 @@ export function GameComponent({ ...props }) {
   const classes = useStyles();
   const [mobile, setMobile] = useState(false);
   const [done, setDone] = useState(false);
-  const [level, setLevel] = useState(1);
   const [offset, setOffset] = useState(0);
-  const [quadrant, setQuadrant] = useState(1);
   const [warning, setWarning] = useState(false);
   const [targetShow, setTargetShow] = useState(false);
   const [time, setTime] = useState(new Date().getTime());
   const [offsetArray, setOffsetArray] = useState([]);
+  const [routes, setRoutes] = useState<any>([]);
+  const [trialStarted, setTrialStarted] = useState(false);
   const getRandomQuadrant = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
   const [random, setRandom] = useState(getRandomQuadrant(1, 4));
-  const penStyle = {
-    color: "#008000",
-    cap: "round",
-    radius: 15,
-    canvas: document.createElement("canvas"),
-    cursor_url: null,
-  };
+
   const easyOffsetArray = [15, -15, 0];
   const mediumOffsetArray = [15, -15, 0, 30, -30];
   const hardOffsetArray = [15, -15, 0, 30, -30, 45, -45];
@@ -150,51 +145,63 @@ export function GameComponent({ ...props }) {
 
   useEffect(() => {
     (async () => {
-      if (canvasRef?.current) {
+      if (canvasRef?.current && !isMobile) {
         await setup(canvasRef);
-        window.addEventListener("devicemotion", handleAcceleration);
-        window.addEventListener("orientationchange", handleOrientation);
-        window.addEventListener("deviceorientation", handleOrientation);
         const ctx = canvasRef.current.getContext("2d");
-        let centerX = 0;
-        let centerY = 0;
-        if (isMobile) {
-          centerX = ctx.canvas.width / 2;
-          centerY = ctx.canvas.height / 2 - 75;
-        } else {
-          centerX = ctx.canvas.width / 2;
-          centerY = ctx.canvas.height / 2 - 100;
-        }
+        let centerX = ctx.canvas.width / 2;
+        let centerY = ctx.canvas.height / 2 - 100;
         setCenterX(centerX);
         setCenterY(centerY);
         if (!started) drawCenterCircle(ctx, centerX, centerY);
         setStarted(true);
         divRef.current.style.background = "transparent";
-        if (!!mobile) {
-          canvasRef.current.ontouchend = (event) => {
-            divRef.current.style.left = centerX + "px";
-            divRef.current.style.top = centerY + "px";
-            helpTextRef.current.style.display = "none";
-            divRef.current.style.background =
-              "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))";
-            drawTarget(ctx, centerX, centerY);
-            clearCenter(ctx, centerX, centerY);
-          };
-        } else {
-          canvasRef.current.onmousemove = (event) => {
-            handleMovement(ctx, event.clientX, event.clientY, centerX, centerY);
-            //track mouse position and change for custom cursor
-          };
-        }
+        canvasRef.current.onmousemove = (event) => {
+          handleMovement(ctx, event.clientX, event.clientY, centerX, centerY);
+          //track mouse position and change for custom cursor
+        };
       }
     })();
   }, [offset, random]);
 
+  useEffect(() => {
+    (async () => {
+      if (canvasRef?.current && isMobile) {
+        await setup(canvasRef);
+        window.addEventListener("devicemotion", handleAcceleration);
+        const ctx = canvasRef.current.getContext("2d");
+        let centerX = ctx.canvas.width / 2;
+        let centerY = ctx.canvas.height / 2 - 75;
+        setCenterX(centerX);
+        setCenterY(centerY);
+        if (!started) drawCenterCircle(ctx, centerX, centerY);
+        setStarted(true);
+        divRef.current.style.background = "transparent";
+        canvasRef.current.ontouchend = (event) => {
+          helpTextRef.current.style.display = "none";
+          divRef.current.style.background =
+            "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))";
+          const targetPosition = getTargetPostion(centerX, centerY);
+          drawTarget(ctx, centerX, centerY);
+          clearCenter(ctx, centerX, centerY);
+          setTrialStarted(true);
+        };
+        return () => {
+          window.removeEventListener("devicemotion", handleAcceleration);
+        };
+      }
+    })();
+  }, [currentCount]);
+
   const getTargetPostion = (centerX, centerY) => {
     const ctx = canvasRef.current.getContext("2d");
-    const values = getAdv2or3Values(ctx, centerX, centerY, random);
-
-    return { startX: values.x, startY: values.y, done: false };
+    if (currentCount < 50) {
+      let startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
+      let startY = centerY;
+      return { startX: startX, startY: startY, done: false };
+    } else {
+      const values = getAdv2or3Values(ctx, centerX, centerY, 1);
+      return { startX: values.x, startY: values.y, done: false };
+    }
   };
 
   const requestAccess = () => {
@@ -203,8 +210,6 @@ export function GameComponent({ ...props }) {
       .then((permission: string) => {
         if (permission === "granted") {
           window.addEventListener("devicemotion", handleAcceleration);
-          window.addEventListener("orientationchange", handleOrientation);
-          window.addEventListener("deviceorientation", handleOrientation);
           setPermissionGranted(true);
         }
       });
@@ -260,27 +265,25 @@ export function GameComponent({ ...props }) {
       const ctx: any = canvasRef.current.getContext("2d");
       let centerX = ctx.canvas.width / 2;
       let centerY = ctx.canvas.height / 2 - 75;
-      handleMovementMobile(
-        ctx,
-        ctx.canvas.width / (100 / toPercentage(stateValues.x, 1)),
-        ctx.canvas.height / (100 / toPercentage(stateValues.y, 1)),
-        centerX,
-        centerY
-      );
+      if (trialStarted) {
+        let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
+        let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
+        if (Math.abs(offset) > 0) {
+          const xy = rotate(centerX, centerY, x1, y1, -offset);
+          const offsetX = xy.x;
+          const offsetY = xy.y;
+          handleMovementMobile(ctx, offsetX, offsetY, centerX, centerY);
+        } else {
+          handleMovementMobile(ctx, x1, y1, centerX, centerY);
+        }
+      }
     }
-  }, [stateValues, offset]);
+  }, [stateValues]);
 
   const handleMovementMobile = (ctx, x, y, centerX, centerY) => {
-    let x1 = x;
-    let y1 = y;
-    if (Math.abs(offset) > 0) {
-      const xy = rotate(centerX, centerY, x, y, -offset);
-      x1 = xy.x;
-      y1 = xy.y;
-    }
-    divRef.current.style.left = x1 + "px";
-    divRef.current.style.top = y1 + "px";
-    manageTarget(ctx, x1, y1, centerX, centerY);
+    divRef.current.style.left = x + "px";
+    divRef.current.style.top = y + "px";
+    manageTarget(ctx, x, y, centerX, centerY);
   };
 
   const manageTarget = (ctx, x, y, centerX, centerY) => {
@@ -294,6 +297,7 @@ export function GameComponent({ ...props }) {
         divRef.current.style.background = "transparent";
         clearTarget(ctx, centerX, centerY);
         drawCenterCircle(ctx, centerX, centerY);
+        setTrialStarted(false);
         if (helpTextRef.current) helpTextRef.current.style.display = "block";
       }
     }
@@ -307,7 +311,6 @@ export function GameComponent({ ...props }) {
       ny = cos * (y - cy) - sin * (x - cx) + cy;
     return { x: Math.round(nx), y: Math.round(ny) };
   };
-
   const handleMovement = (ctx, x, y, centerX, centerY) => {
     let x1 = x;
     let y1 = y;
@@ -328,7 +331,6 @@ export function GameComponent({ ...props }) {
     manageTarget(ctx, x1, y1, centerX, centerY);
   };
 
-  
   const getRandomOffset = () => {
     if (offsetLevelArray.length > 0) {
       const random = Math.floor(Math.random() * offsetLevelArray.length);
@@ -338,7 +340,7 @@ export function GameComponent({ ...props }) {
         return offsetLevelArray[random];
       } else {
         setOffsetLevelArray(
-          offsetLevelArray.filter((off)=>off!=offsetLevelArray[random])
+          offsetLevelArray.filter((off) => off != offsetLevelArray[random])
         );
         return 0;
       }
@@ -346,30 +348,55 @@ export function GameComponent({ ...props }) {
       return 0;
     }
   };
+
+  const sentResult = () => {
+    parent.postMessage(
+      routes.length > 0
+        ? JSON.stringify({
+            timestamp: new Date().getTime(),
+            duration: new Date().getTime() - time,
+            temporal_slices: JSON.parse(JSON.stringify(routes)),
+            static_data: {},
+          })
+        : null,
+      "*"
+    );
+  };
+
   useEffect(() => {
     if (!!done && currentCount <= 100) {
-      if (currentCount > 50) {
+      if (currentCount >= 50 && offsetLevelArray.length > 0) {
         setDone(false);
+        const tempRandom = getRandomQuadrant(1, 4);
         setRandom(
-          getRandomQuadrant(1, 4) != random
-            ? getRandomQuadrant(1, 4)
-            : random + 1 > 4
-            ? 1
-            : random + 1
+          tempRandom != random ? tempRandom : random + 1 > 4 ? 1 : random + 1
         );
         const randomOffset = getRandomOffset();
         setOffset(randomOffset);
         setOffsetArray([...offsetArray, randomOffset]);
+      } else {
+        setOffset(0);
       }
-      
+
       if (Math.floor(new Date().getTime() - time) > 300) {
         setWarning(true);
         setTimeout(() => {
           setWarning(false);
         }, 500);
       }
-      setTimeout(()=>{if (currentCount + 1 >= 100) props.setView("end game");
-      else setCurrentCount(currentCount + 1)},50)
+      setTimeout(() => {
+        const route = {
+          duration: Math.floor(new Date().getTime() - time) / 1000,
+          item: currentCount,
+          level: offset,
+          type: null,
+          value: null,
+        };
+        setRoutes([...routes, route]);
+        if (currentCount + 1 >= 100) {
+          sentResult();
+        } else setCurrentCount(currentCount + 1);
+      }, 100);
     }
   }, [done]);
 
@@ -377,69 +404,29 @@ export function GameComponent({ ...props }) {
     let startX = 0;
     let startY = 0;
     if (random == 1) {
-      startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-      startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
+      startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
+      startY = centerY - ctx.canvas.height / (isMobile ? 5 : 8);
     }
-    if (random == 2) {
-      startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-      startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-    }
-    if (random == 3) {
-      startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-      startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-    }
-    if (random == 4) {
-      startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-      startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
-    }
+    // if (random == 2) {
+    //   startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
+    //   startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
+    // }
+    // if (random == 3) {
+    //   startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
+    //   startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
+    // }
+    // if (random == 4) {
+    //   startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
+    //   startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
+    // }
     return { x: startX, y: startY };
   };
 
-  const getAdv4Values = (ctx) => {
-    let startX = 0;
-    let startY = 0;
-    let random = getRandomQuadrant(1, 8);
-    switch (random) {
-      case 1:
-        startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY;
-        break;
-      case 2:
-        startX = centerX;
-        startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-      case 3:
-        startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY;
-        break;
-      case 4:
-        startX = centerX;
-        startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-      case 5:
-        startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-      case 6:
-        startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-      case 7:
-        startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-      case 8:
-        startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-        startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
-        break;
-    }
-    return { x: startX, y: startY };
-  };
+  
   const drawTarget = async (ctx, centerX, centerY) => {
     if (!targetShow) {
       setTargetShow(true);
       setDone(false);
-
       const targetPosition = getTargetPostion(centerX, centerY);
       drawCircle(ctx, {
         radius: 12,
@@ -517,7 +504,6 @@ export function GameComponent({ ...props }) {
         }}
         className={classes.canvas}
       />
-      <canvas ref={cursorCanvas} />
       <div ref={divRef} className={classes.cursor}></div>
       <span ref={helpTextRef} className={classes.helpText}>
         {mobile
@@ -528,8 +514,25 @@ export function GameComponent({ ...props }) {
         {!!warning && "Move Faster"}
       </span>
       <span className={classes.countText}>
-        {/* {level}-{`${currentCount}/${props?.totalCount ?? 100}`} */}
         {`${currentCount}/${props?.totalCount ?? 100}`}
+      </span>
+      <span style={{ position: "absolute", zIndex: 99999 }}>
+        Offset{" "}
+        <select
+          value={offset.toString()}
+          onChange={(e) => {
+            setOffset(parseInt(e.target.value));
+            setDone(false);
+          }}
+        >
+          <option value="45">45</option>
+          <option value="30">30</option>
+          <option value="15">15</option>
+          <option value="0">0</option>
+          <option value="-45">-45</option>
+          <option value="-30">-30</option>
+          <option value="-15">-15</option>
+        </select>
       </span>
       {iPhone && !permissionGranted && (
         <Box textAlign="center" pb={2} mt={2}>
