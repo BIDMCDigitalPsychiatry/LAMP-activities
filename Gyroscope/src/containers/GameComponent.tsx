@@ -361,6 +361,7 @@ export function GameComponent({ ...props }) {
         : null,
       "*"
     );
+    props.setView("end");
   };
 
   useEffect(() => {
@@ -389,7 +390,7 @@ export function GameComponent({ ...props }) {
           duration: Math.floor(new Date().getTime() - time) / 1000,
           item: currentCount,
           level: offset,
-          type: null,
+          type: offset,
           value: null,
         };
         setRoutes([...routes, route]);
