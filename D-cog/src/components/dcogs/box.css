@@ -57,6 +57,7 @@ nav a{color: rgba(53,159,254,1); padding: 10px; display: inline-block;}
 	z-index: 0;
 	position: absolute;
 	border: 2px solid #fff;
+	box-sizing: border-box;
 }
 .game-board{
 	color: #fff;

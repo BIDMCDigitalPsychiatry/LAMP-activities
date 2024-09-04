@@ -184,7 +184,10 @@ class Board extends React.Component<BoardProps, BoardState> {
   // Each box click is handled here
   handleClick = (e: any, i: number) => {
     let success  = this.state.randomPoints.indexOf(i) > -1 ? true : false;
-    const item = e.target
+    console.log(e.target, e.target?.className, e.target?.parent, e.target?.parent?.children)
+    const item = e.target?.className?.indexOf("box-square") > -1 ? e.target : (
+      e.target?.className?.indexOf("dog") ? 
+      e.target?.parent?.children[0]: e.target?.children[0])
     item.className = success
       ? "box-square green-box-square"
       : "box-square red-box-square";
