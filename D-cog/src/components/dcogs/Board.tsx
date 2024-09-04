@@ -116,9 +116,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   resetState = () => {
     let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount -1 : 1)
     let boxCount =  this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
-   console.log(boxCount,  (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-    navigator.userAgent
-  )) )
+   
     if (
       (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
         navigator.userAgent
@@ -184,10 +182,14 @@ class Board extends React.Component<BoardProps, BoardState> {
   // Each box click is handled here
   handleClick = (e: any, i: number) => {
     let success  = this.state.randomPoints.indexOf(i) > -1 ? true : false;
-    const item = e.target
+    const item = e.target?.className?.indexOf("box-square") > -1 ? e.target : (
+      e.target?.className?.indexOf("dog") > -1 ? 
+      e.target?.parentNode?.children[0]: e.target?.children[0])
+    if(item.className !== "box-square green-box-square" && item.className !== "box-square red-box-square") { 
     item.className = success
       ? "box-square green-box-square"
       : "box-square red-box-square";
+    
     this.setState({
       stateSuccessTaps: success
         ? this.state.stateSuccessTaps + 1
@@ -211,7 +213,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         })
       }
     });
-
+  }
   };
 
   // To track the timer expiring
