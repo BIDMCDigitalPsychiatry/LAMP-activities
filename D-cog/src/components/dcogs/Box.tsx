@@ -15,15 +15,14 @@ interface BoxProps {
   enableTap: boolean;
   img: string;
   index: number;
-  itemType: number;
-  onClick(e: any, index: number, type: number): void;
+  onClick(e: any, index: number): void;
 }
 
 export class Box extends React.Component<BoxProps> {
   // To handle box click which inturn call parent function
   onClick = (e: any): void => {
     if (this.props.enableTap) {
-      this.props.onClick(e, this.props.index, this.props.itemType);
+      this.props.onClick(e, this.props.index);
     }
   };
 
