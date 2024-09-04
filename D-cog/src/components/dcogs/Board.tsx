@@ -52,8 +52,27 @@ interface BoardState {
   showInstruction: boolean;
   successCompletion: boolean;
   boxCount: number
+  numbers: string[]
 }
 
+const numbers = [
+  "first",
+  "second",
+  "third",
+  "fourth",
+  "fifth",
+  "sixth",
+  "seventh",
+  "eightth",
+  "nineth",
+  "tenth",
+  'eleventh',
+  'twelth',
+  'thirteenth',
+  'fourteenth',
+  'fifteenth',
+  'sixteenth'
+];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
 
@@ -70,6 +89,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxClass: ["box-square"],
       boxes: null,
       dogCount: 0,
+      numbers: this.shuffleArray(numbers),
       enableTap: false,
       endTime: null,
       gameOver: false,
@@ -163,7 +183,6 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Each box click is handled here
   handleClick = (e: any, i: number) => {
-    console.log(i, this.state.randomPoints)
     let success  = this.state.randomPoints.indexOf(i) > -1 ? true : false;
     const item = e.target
     item.className = success
@@ -348,6 +367,14 @@ class Board extends React.Component<BoardProps, BoardState> {
     // this.startTimer();  
   };
 
+   shuffleArray(array: string[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+    }
+
   // Render the game board
   render() {
     let boxes;
@@ -358,30 +385,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     ) && this.state.boxCount >= 20) {
       boxes = i18n.t("GAME_OVER") +" !!!" ;
     } else if(this.state.boxCount >= 4){
-      const numbers = [
-        "first",
-        "second",
-        "third",
-        "fourth",
-        "fifth",
-        "sixth",
-        "seventh",
-        "eightth",
-        "nineth",
-        "tenth",
-        'eleventh',
-        'twelth',
-        'thirteenth',
-        'fourteenth',
-        'fifteenth',
-        'sixteenth'
-      ];
+      
       boxes = [];
       let classn = "";
       let dogBoxFlag = false;
       let j = 0;
       
-      for (let i = 1; i <= 16; i++) {
+      for (let i = 1; i <= this.state.boxCount; i++) {
         dogBoxFlag = false;
         // Image to be loaded behind the box
         if (this.state.randomPoints.includes(i)) {
@@ -392,7 +402,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           }
         }
         const boxClass = "box-square";
-        classn = "box " + numbers[i - 1];
+        classn = "box " + this.state.numbers[i - 1];
         const img =
           dogBoxFlag === true ? "dog" : "";
 
