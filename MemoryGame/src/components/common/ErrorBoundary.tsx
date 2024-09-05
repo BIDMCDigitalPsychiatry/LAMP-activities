@@ -1,7 +1,8 @@
 import * as React from "react";
 
 interface ErrorProps {
-    errorFn: any
+    errorFn: any,
+    children: React.ReactNode
   }
   interface ErrorState {
     error:any;
