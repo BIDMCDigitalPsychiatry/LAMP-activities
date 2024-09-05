@@ -46,7 +46,7 @@ import ReactMarkdown from "react-markdown"
 import emoji from "remark-emoji"
 import gfm from "remark-gfm"
 import { useSnackbar } from "notistack"
-import ConfirmationDialog from "./ConfirmationDialog"
+
 const GreenCheckbox = withStyles({
   root: {
     color: "#2F9D7E",
@@ -304,7 +304,6 @@ const useStyles = makeStyles((theme) => ({
     "& fieldset": { borderWidth: 0 },
   },
   required : {
-    "& span" : { color: "red"},
     "& sup" : { color: "red"}
   },
   sliderResponse: {
@@ -448,11 +447,7 @@ function RateAnswer({ checked, onChange, value }) {
   return (
     <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
       {checked && <Typography className={classes.checkText}>
-        <ReactMarkdown children={value?.toString()} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />
+        <ReactMarkdown source={value?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
       </Typography>}
     </div>
   )
@@ -505,18 +500,10 @@ function RadioOption({ onChange, options, value, ...props }) {
                   variant="body2"
                   style={{ color: selectedValue === `${x.value}` ? "black" : "rgba(0, 0, 0, 0.7)" }}
                 >
-                  <ReactMarkdown children={t(x.label?.toString())} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />
+                  <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />
                 </Typography>
                 <Typography component="span" variant="caption" className={classes.lightGray}>
-                  <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false}  plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />                  
+                  <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false} plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />                  
                 </Typography>
               </Box>
             }
@@ -539,6 +526,13 @@ function TimeSelection({ onChange, options, value, ...props }) {
   const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].substr(0,2) : "00")
   const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? (currentValue[1].substr(2,3) ?? "") : "AM")
   const { t } = useTranslation()
+
+  useEffect(() => {
+    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
+      (minuteSelectedIndex.length === 1 ?  "0" + minuteSelectedIndex : minuteSelectedIndex ) + 
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
+      (Array.isArray(options) && !!options[0] &&  !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
+  }, [])
 
   useEffect(() => {
     onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex ) + ":" + 
@@ -766,7 +760,6 @@ function ShortTextSection({ onChange, value, ...props }) {
 
 function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
   const [val, setValue] = useState(value)
-  const { t } = useTranslation()
 
   const classes = useStyles()
   return (
@@ -784,11 +777,7 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
             />
             {type !== "matrix" && (
               <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown children={t(option.description?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}}/>
+                <ReactMarkdown source={option.description?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}}/>
               </Typography>
             )}            
           </Box>
@@ -877,52 +866,36 @@ function Rating({ onChange, options, value, ...props }) {
       <Grid container className={classes.sliderValueLabel} direction="row" justify="space-between" alignItems="center">
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-          <ReactMarkdown children={!!options[0].description && options[0].description.trim().length === 0
+          <ReactMarkdown source={!!options[0].description && options[0].description.trim().length === 0
               ? options[0].value
-              : options[0].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props?.children}</sup>;
-  }}} />            
+              : options[0].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />            
           </Typography>
         </Grid>
         <Grid item>
           {options.length > 2 && (
             <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-              <ReactMarkdown children={!!options[Math.ceil(options.length / 2) - 1].description &&
+              <ReactMarkdown source={!!options[Math.ceil(options.length / 2) - 1].description &&
               options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
                 ? options[Math.ceil(options.length / 2) - 1].value
-                : options[Math.ceil(options.length / 2) - 1].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />              
+                : options[Math.ceil(options.length / 2) - 1].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />              
             </Typography>
           )}
         </Grid>
         <Grid item>
           <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-          <ReactMarkdown children={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
+          <ReactMarkdown source={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
               ? options[options.length - 1].value
-              : options[options.length - 1].description} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />
+              : options[options.length - 1].description} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />
             
           </Typography>
         </Grid>
       </Grid>
       <Box className={classes.sliderResponse}>
         <Typography variant="caption" display="block" gutterBottom>
-          {t("Your response")}<span>:</span>
+          {t("Your response:")}
         </Typography>
         <Typography variant="h4">
-          <ReactMarkdown children={t(valueText?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />          
+          <ReactMarkdown source={t(valueText?.toString())} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />          
         </Typography>
       </Box>
     </Box>
@@ -941,7 +914,7 @@ function Rating({ onChange, options, value, ...props }) {
 const csvParse = (x) => (Array.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
 const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
 
-function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
+function Matrix({ x, responses, onResponse, total,index, idx,startTime, setActiveStep,settingsQuestions, handleBack,
   handleNext, onComplete, ...props }) {
   const classes = useStyles()
   const { t } = useTranslation()
@@ -953,24 +926,19 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
   )
   }
 
-
   return (
     <Grid>
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-        {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settingsQuestions}
+          {t("Question number of total", { number: index + 1, total: settingsQuestions })}
         </Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
         <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown children={`${t(x.description?.toString() ?? "" )}`} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} /> 
+          <ReactMarkdown source={t(x.description?.toString() ?? "" )} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
         </Typography>
       </Box>
         <Box className={classes.questionScroll}>
@@ -981,11 +949,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            {(x.description || "").length > 0  && <ReactMarkdown children={` ${t(x.description?.toString())}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />}  
+            {(x.description || "").length > 0  && <ReactMarkdown source={` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />}  
              </TableCell>
         ))}
       </TableRow>)}
@@ -994,22 +958,14 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
         <TableCell style={{minWidth:"30%"}}>{null}</TableCell>
          {(x.options || []).map((x) => (
           <TableCell className={classes.textCenter}> 
-            <ReactMarkdown children={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />   
+            <ReactMarkdown source={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${x.value?.toString()})` : x.value?.toString()} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
         ))}
       </TableRow>)}
       {(x.questions || []).map((question, qindex) => (
         <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
-            <ReactMarkdown children={`${t(question.text)}`} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />   {!!question.required && <span> *</span>}
+            <ReactMarkdown source={question.text +  (!!question.required ? "<sup>*</sup>" : "")} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
   x.type === "list"  ||x.type === "boolean" || x.type === "likert"  ?  (
@@ -1031,7 +987,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
               onClick={() => {
                 setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([op.value])}})
                 const response = { item: question.text, value: csvStringify([op.value]) }
-                const data = updateResponses(x, response,activityId, responses, idx+qindex, startTime, setActiveStep, total) 
+                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
                 onResponse(data)
               }}
             />
@@ -1067,7 +1023,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
                 }
                 setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text,value:csvStringify(values)}})
                 const response = { item: question.text, value: csvStringify(values) }
-                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
               }}                     
             />
@@ -1082,7 +1038,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
             <Rating options={getSorted(x.options)} onChange={(val) => {
               setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
               const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-              const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total) 
+              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
               onResponse(data)
             }} value={csvParse(selectedValue[idx+qindex]?.value || [])[0]?? null} />
             </TableCell>
@@ -1094,7 +1050,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
                   onChange={(val) => {
                     setSelectedValue({...selectedValue, [idx+qindex]:  {item: question.text, value:csvStringify([val])}})
                     const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-                    const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total) 
+                    const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total) 
                     onResponse(data)
                   }} 
                   value={op.value}
@@ -1105,7 +1061,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
               <Box className={classes.timeMatrix}>
             <TimeSelection onChange={(val) => {
               const response = { item: question.text, value: val }
-          const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
+          const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
           onResponse(data)
             }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
             </Box>) : null ) :
@@ -1117,14 +1073,13 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
                 (
                   <ShortTextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
-                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
-                  }} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
-                  )
+                  }} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />)
                 :x.type === "text"?(
                   <TextSection onChange={(val) => {
                     const response = { item: question.text, value: val }
-                const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
+                const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
                 onResponse(data)
                   }} charLimit={CHARACTER_LIMIT} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                 ):
@@ -1132,7 +1087,7 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
                   <Box className={classes.timeMatrix}>
                 <TimeSelection onChange={(val) => {
                   const response = { item: question.text, value: val }
-              const data = updateResponses(x, response, activityId,responses, idx+qindex, startTime, setActiveStep, total)              
+              const data = updateResponses(x, response, responses, idx+qindex, startTime, setActiveStep, total)              
               onResponse(data)
                 }} options={x.options} value={!!responses?.current[idx+qindex]?.value ? responses?.current[idx+qindex]?.value : undefined} />
                 </Box>):
@@ -1198,18 +1153,10 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                 variant="body2"
                 style={{ color: selection.includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
               >
-                <ReactMarkdown children={t(x.label?.toString())} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />                
+                <ReactMarkdown source={t(x.label?.toString())} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
               </Typography>
               <Box className={classes.lightGray}>
-                <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />                
+                <ReactMarkdown source={!!x.description && ` ${x.description?.toString()}`} escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />                
               </Box>
             </Box>
           }
@@ -1223,8 +1170,8 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
 
 function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
   const { t } = useTranslation()
-  const onChange = (value) => {
 
+  const onChange = (value) => {
     onResponse({ item: text, value })
   }
   const binaryOpts = [
@@ -1286,16 +1233,12 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     <Grid>
       <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown children={t(`${text}`) } allowDangerousHtml={true}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, span:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup:  (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />
-        </Typography>{!!required && <span> *</span>}
+          <ReactMarkdown source={t(text + (!!required ? "<sup>*</sup>" : ""))} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} /> 
+        </Typography>
       </Box>
       <Box className={classes.questionhead}>
         <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>                 
-          <ReactMarkdown children={type === "slider"
+          <ReactMarkdown source={type === "slider"
             ? t(
                 `${options[0].value} being ${
                   !!options[0].description && options[0].description.trim().length > 0
@@ -1308,11 +1251,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
                     : options[options.length - 1].value
                 }`
               )
-            : !!desc && t(`${desc}`) } skipHtml={false}   plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />           
+            : !!desc && t(`${desc}`) } escapeHtml={false}  plugins={[gfm, emoji]}  renderers={{link: LinkRenderer}} />           
         </Typography>
       </Box>
       <Box className={classes.questionScroll}>{component}</Box>
@@ -1324,7 +1263,6 @@ function Questions({
   settings,
   responses,
   x,
-  activityId,
   totalQuestions,
   setActiveStep,
   onResponse,
@@ -1342,7 +1280,7 @@ function Questions({
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
         <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-       {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settings.length}
+          {t("Question number of total", { number: index + 1, total: settings.length })}
         </Typography>
       </Box>
 
@@ -1354,9 +1292,9 @@ function Questions({
             required={x.required}
             desc={x.description ?? null}
             options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
-            value={responses.current[idx] ?? null}
+            value={responses.current[idx]}
             onResponse={(response) => {
-              const data = updateResponses(x, response, activityId,responses, idx, startTime, setActiveStep, totalQuestions)   
+              const data = updateResponses(x, response, responses, idx, startTime, setActiveStep, totalQuestions)              
               onResponse(data)
             }}
             startTime={new Date().getTime()}
@@ -1374,21 +1312,25 @@ function Questions({
   )
 }
 
-const updateResponses = (x, response, activityId, responses, idx, startTime, setActiveStep, total) => {
+const updateResponses = (x, response, responses, idx, startTime, setActiveStep, total) => {
+  const lastEndTime =
+    responses.current
+      .filter((item) => item.value != null)
+      .sort((a, b) => {
+        return a.endTime > b.endTime ? 1 : a.endTime < b.endTime ? -1 : 0
+      })
+      .pop()?.endTime ?? startTime
+    const currentItem = responses.current.filter((item) => item.item === x.text).pop()
     responses.current[idx] = response
     if (x.type !== "multiselect") {
       setActiveStep((prev) => prev + 1)
     }
-    response.duration = new Date().getTime() - startTime 
-
+    response.duration =
+      (x.type !== "text" ? new Date().getTime() - startTime : new Date().getTime() - lastEndTime) +
+        (currentItem?.duration ?? 0)
     response.endTime = new Date().getTime()
     response.type = null
     response.level = null
-    
-    localStorage.setItem("activity-survey-"+ activityId, JSON.stringify(Array.from({
-      ...responses.current,
-      length: total,
-    })))         
     return (
       Array.from({
         ...responses.current,
@@ -1400,17 +1342,13 @@ const updateResponses = (x, response, activityId, responses, idx, startTime, set
 function Section({
   onResponse,
   value,
-  activityVal,
   settings,
   onComplete,
   totalQuestions,
   noBack,
   ...props
 }) {
-  const activityId = value?.id
-  const base = value.settings.map((x, index) => ( 
-    !!activityVal && activityVal[index] ?   
-    activityVal[index] : { item: x.text, value:  null, duration: 0 }))
+  const base = value.settings.map((x) => ({ item: x.text, value: null, duration: 0 }))
   const responses = useRef(base)
   const [activeStep, setActiveStep] = useState(0)
   const classes = useStyles()
@@ -1450,7 +1388,6 @@ function Section({
                 x={x}
                 idx={index}
                 index ={idx}
-                activityId={activityId}
                 total={totalQuestions}
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
@@ -1465,7 +1402,7 @@ function Section({
                 idx={index}
                 x={x}
                 index ={idx}
-                activityId={activityId}
+
                 settings={settings}
                 responses={responses}
                 setActiveStep={setActiveStep}
@@ -1498,7 +1435,7 @@ function Section({
       setTimeout(() => {
         type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length)
         setElementIn(true)
-      }, 100)
+      }, 1000)
     }
     type === 0 ? setTab(tab - 1) : setTab(tab + 1)
     const val = type === 0 ? progressValue - 100 / settings.length : progressValue + 100 / settings.length
@@ -1511,9 +1448,9 @@ function Section({
       let i = 0;
       let status = true
       for (const element of settings[index].questions){
-        if(!(!element.required || (element.required && (responses?.current[actualIndex+i]?.value !== null && typeof responses?.current[actualIndex+i]?.value !== "undefined" &&
-          (typeof responses?.current[actualIndex+i]?.value !== "string" || (typeof responses?.current[actualIndex+i]?.value === "string" &&
-          responses?.current[actualIndex+i]?.value?.trim().length !== 0)))))) {
+        if(!(!element.required || (element.required && (responses.current[actualIndex+i].value !== null && typeof responses.current[actualIndex+i].value !== "undefined" &&
+          (typeof responses.current[actualIndex+i].value !== "string" || (typeof responses.current[actualIndex+i].value === "string" &&
+          responses.current[actualIndex+i].value?.trim().length !== 0)))))) {
           enqueueSnackbar(t("Please enter your response."), {
             variant: "error",
           }) 
@@ -1526,9 +1463,9 @@ function Section({
         slideElementChange(1)
       }
     } else {
-    if(!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses?.current[actualIndex]?.value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
-      (typeof responses?.current[actualIndex]?.value !== "string" || (typeof responses?.current[actualIndex]?.value === "string" &&
-       responses?.current[actualIndex]?.value?.trim().length !== 0))))) {
+    if(!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses.current[actualIndex].value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
+      (typeof responses.current[actualIndex].value !== "string" || (typeof responses.current[actualIndex].value === "string" &&
+       responses.current[actualIndex].value?.trim().length !== 0))))) {
       slideElementChange(1)
     } else {
       enqueueSnackbar(t("Please enter your response."), {
@@ -1557,11 +1494,7 @@ function Section({
             <Icon>arrow_back</Icon>
           </IconButton>}
           <Typography variant="h5">
-            <ReactMarkdown children={t(value?.name?.toString().replace(/_/g, " "))} skipHtml={false}   plugins={[gfm, emoji]} renderers={{ link: LinkRenderer, sub:  (props) => {
-    return <sub>{props?.children}</sub>;
-  }, sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}} />   
+            <ReactMarkdown source={t(value?.name?.toString().replace(/_/g, " "))} escapeHtml={false}  plugins={[gfm, emoji]} renderers={{link: LinkRenderer}} />   
           </Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
@@ -1575,7 +1508,6 @@ function Section({
                 index ={idx}
                 idx={calcIndex(idx)}
                 total={totalQuestions}
-                activityId={activityId}
                 onResponse={onResponse}
                 setActiveStep={setActiveStep}
                 startTime={new Date().getTime()}              
@@ -1588,7 +1520,6 @@ function Section({
             <Questions
               idx={calcIndex(idx)}
               x={x}
-              activityId={activityId}
               index ={idx}
               settings={settings}
               responses={responses}
@@ -1610,7 +1541,7 @@ function Section({
           <Box className={classes.surveyQuestionNav}>
             {!supportsSidebar && index > 0 && (
               <Fab onClick={handleBack} className={classes.btnBack}>
-                {t("Back")}
+                Back
               </Fab>
             )}
             {!supportsSidebar && (
@@ -1635,12 +1566,9 @@ export default function SurveyQuestions({...props}) {
   const { t } = useTranslation()
   const [responses, setResponses] = useState(null)
   const [activity, setActivity] = useState(null)
-  const [activityVal, setActivityVal] = useState(null)
-
   const [settings, setSettings] = useState(null)
   const [startTime, setStartTime] = useState(new Date().getTime())
   const { enqueueSnackbar } = useSnackbar()
-  const [confirm, setConfirm] = useState(false)
 
   const validator = (response) => {
     let status = true
@@ -1687,28 +1615,11 @@ export default function SurveyQuestions({...props}) {
       "*"
     )
   }
-
-  const loadData = (statusVal: boolean) => {
-    if(!!statusVal) {
-      const val = localStorage.getItem("activity-survey-" +(props.data?.activity?.id ?? "")) 
-      setActivityVal(JSON.parse(val))
-    } else {
-      localStorage.setItem('activity-survey-'+(props.data?.activity?.id ?? ""), "")
-    }
-    const activity = props.data.activity ?? (props.data ?? {});
-    setActivity(activity);
-    setConfirm(false)
-  }
   
   useEffect(() => {
-    if(typeof localStorage.getItem('activity-survey-'+(props.data?.activity?.id ?? "")) !== 'undefined' &&
-    (localStorage.getItem('activity-survey-'+(props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0) {
-      setConfirm(true)
-    } else {  
-      const activity = props.data.activity ?? (props.data ?? {});
-      setActivity(activity);
-    }
-       const configuration = props.data.configuration;
+    const activity = props.data.activity ?? (props.data ?? {});
+    const configuration = props.data.configuration;
+    setActivity(activity);
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, [])
 
@@ -1759,13 +1670,7 @@ export default function SurveyQuestions({...props}) {
   }
 
   return (
-    <Box className={classes.root}> 
-     <ConfirmationDialog            
-        onClose={() => setConfirm(false)}
-        open={confirm}
-        confirmAction={loadData} 
-        confirmationMsg={t("Would you like to resume this activity where you left off?")}/>
-           
+    <Box className={classes.root}>      
       {(activity !== null && settings !== null) ?
         <Section
           onResponse={(response) => 
@@ -1773,8 +1678,6 @@ export default function SurveyQuestions({...props}) {
             setResponses(response)
           }
           value={activity}
-          activityVal={activityVal}
-
           settings={settings}
           totalQuestions={(activity?.settings || []).length}
           noBack= {props.data.noBack}

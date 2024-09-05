@@ -16,17 +16,103 @@ import "./i18n"
 const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-eventer(
-  messageEvent, (e) => {    
+
+const activity =  {
+  "activity": {
+      "id": "1e5qmf93rn385tzpycxp",
+      "category": [
+          "assess"
+      ],
+      "spec": "lamp.survey",
+      "name": "Matrix 1",
+      "description": "test",
+      "photo": null,
+      "streak": {
+          "streak": true,
+          "streakTitle": "hai",
+          "streakDesc": ""
+      },
+      "visualSettings": null,
+      "showFeed": true,
+      "schedule": [],
+      "settings": [
+          {
+              "text": "Which number you like?",
+              "type": "matrix",
+              "required": true,
+              "description": "q1",
+              "warnings": []
+          },
+          {
+              "text": "q1",
+              "type": "list",
+              "required": true,
+              "description": "what you select",
+              "options": [
+                  {
+                      "value": "1q",
+                      "description": "1q"
+                  }
+              ],
+              "warnings": []
+          },
+          {
+              "text": "2q",
+              "type": "list",
+              "required": true,
+              "description": "de",
+              "options": [
+                  {
+                      "value": "1",
+                      "description": ""
+                  },
+                  {
+                      "value": "2",
+                      "description": "2"
+                  },
+                  {
+                      "value": "3",
+                      "description": "3"
+                  }
+              ],
+              "warnings": [
+                  {
+                      "answer": "1",
+                      "warningText": "1"
+                  },
+                  {
+                      "answer": "2",
+                      "warningText": "2"
+                  },
+                  {
+                      "answer": "3",
+                      "warningText": "3"
+                  },
+                  {
+                      "answer": "4",
+                      "warningText": "4"
+                  }
+              ]
+          }
+      ]
+  },
+  "configuration": {
+      "language": "en-US"
+  },
+  "autoCorrect": true,
+  "noBack": false
+}
+// eventer(
+//   messageEvent, (e) => {    
 		ReactDOM.render(
       <SnackbarProvider>
         <AppContainer>
-          <SurveyQuestions data={e.data}/> 
+          <SurveyQuestions data={activity}/> 
         </AppContainer>
       </SnackbarProvider>
           , 		  
 		  document.getElementById("root")
 		);
-  },
-  false
- )
+//   },
+//   false
+//  )

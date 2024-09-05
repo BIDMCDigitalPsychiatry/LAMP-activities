@@ -139,7 +139,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         startTime: this.state.gameState === 1 ? new Date() : this.state.startTime,
         successTaps: 0,
         wrongTaps: 0,
-        boxCount: boxCount
+        boxCount: boxCount,
+        numbers: this.shuffleArray(numbers)
       });
        
         setTimeout(() => {
