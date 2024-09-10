@@ -71,7 +71,9 @@ const numbers = [
   'thirteenth',
   'fourteenth',
   'fifteenth',
-  'sixteenth'
+  'sixteenth',
+  'seventeenth',
+  'eighteenth'
 ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
