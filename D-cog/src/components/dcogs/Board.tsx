@@ -71,7 +71,9 @@ const numbers = [
   'thirteenth',
   'fourteenth',
   'fifteenth',
-  'sixteenth'
+  'sixteenth',
+  'seventeenth',
+  'eighteenth'
 ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
@@ -88,7 +90,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       animate: false,
       boxClass: ["box-square"],
       boxes: null,
-      dogCount: 0,
+      dogCount: 8,
       numbers: this.shuffleArray(numbers),
       enableTap: false,
       endTime: null,
@@ -109,7 +111,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       wrongTaps: 0,
       showInstruction: true,
       successCompletion:true,
-      boxCount: 2
+      boxCount: 16
     };
   }
   // Reset game state for each state
