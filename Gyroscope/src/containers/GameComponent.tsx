@@ -209,7 +209,7 @@ export function GameComponent({ ...props }) {
         window.removeEventListener("devicemotion", handleAcceleration);
       };
     }
-  }, [speed]);
+  }, [speed, lastUpdate]);
 
   const getTargetPostion = (centerX, centerY) => {
     const ctx = canvasRef.current.getContext("2d");
@@ -244,7 +244,7 @@ export function GameComponent({ ...props }) {
 
   const handleAcceleration = (event) => {
     const currentTime = Date.now();
-    if (currentTime - lastUpdate > 100) {
+    if (currentTime - lastUpdate > 50) {
       let landscape = stateValues?.landscape;
       let rotation = event.rotationRate || 0;
       var x = event.accelerationIncludingGravity.x;
