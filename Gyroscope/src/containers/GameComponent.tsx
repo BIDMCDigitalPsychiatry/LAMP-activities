@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import GameEnd from "./GameEnd";
+import hoop from "../components/Images/bb-hoop.svg";
+import basketBall from "../components/Images/basketball.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,9 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "22px",
       height: "22px",
       background: "red",
-      position: "absolute",
-      top: "25%",
-      left: "25%",
+      position: "relative",
+      // top: "25%",
+      // left: "25%",
       borderRadius: "50%",
     },
     btnblue: {
@@ -86,7 +88,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-
 //Up to 30 - same direction
 export function GameComponent({ ...props }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -111,6 +112,12 @@ export function GameComponent({ ...props }) {
   const [offsetArray, setOffsetArray] = useState([]);
   const [routes, setRoutes] = useState<any>([]);
   const [trialStarted, setTrialStarted] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+  const [result, setResult] = useState(false);
+  const [speed, setSpeed] = useState<any>("1"); // Control the base speed
+  const [angle, setAngle] = useState(0);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
+
   const getRandomQuadrant = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
@@ -120,6 +127,8 @@ export function GameComponent({ ...props }) {
   const easyOffsetArray = [15, -15, 0];
   const mediumOffsetArray = [15, -15, 0, 30, -30];
   const hardOffsetArray = [15, -15, 0, 30, -30, 45, -45];
+  const min = 1;
+  const max = 5;
   let offArray = [];
   if (props.adventure === "Hard") {
     offArray = hardOffsetArray;
@@ -156,18 +165,20 @@ export function GameComponent({ ...props }) {
         setStarted(true);
         divRef.current.style.background = "transparent";
         canvasRef.current.onmousemove = (event) => {
-          handleMovement(ctx, event.clientX, event.clientY, centerX, centerY);
+          const rect = canvasRef.current.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          handleMovement(ctx, x, y, centerX, centerY);
           //track mouse position and change for custom cursor
         };
       }
     })();
-  }, [offset, random]);
+  }, [offset, random, targetShow, currentCount]);
 
   useEffect(() => {
     (async () => {
       if (canvasRef?.current && isMobile) {
         await setup(canvasRef);
-        window.addEventListener("devicemotion", handleAcceleration);
         const ctx = canvasRef.current.getContext("2d");
         let centerX = ctx.canvas.width / 2;
         let centerY = ctx.canvas.height / 2 - 75;
@@ -178,24 +189,32 @@ export function GameComponent({ ...props }) {
         divRef.current.style.background = "transparent";
         canvasRef.current.ontouchend = (event) => {
           helpTextRef.current.style.display = "none";
-          divRef.current.style.background =
-            "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))";
-          const targetPosition = getTargetPostion(centerX, centerY);
+          divRef.current.style.background = "url(" + basketBall + ") no-repeat";
+          divRef.current.style.left = centerX + "px";
+          divRef.current.style.top = centerY + "px";
           drawTarget(ctx, centerX, centerY);
           clearCenter(ctx, centerX, centerY);
-          setTrialStarted(true);
-        };
-        return () => {
-          window.removeEventListener("devicemotion", handleAcceleration);
+          setTimeout(() => {
+            setTrialStarted(true);
+          }, 300);
         };
       }
     })();
   }, [currentCount]);
 
+  useEffect(() => {
+    if (isMobile) {
+      window.addEventListener("devicemotion", handleAcceleration);
+      return () => {
+        window.removeEventListener("devicemotion", handleAcceleration);
+      };
+    }
+  }, [speed]);
+
   const getTargetPostion = (centerX, centerY) => {
     const ctx = canvasRef.current.getContext("2d");
     if (currentCount < 50) {
-      let startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
+      let startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
       let startY = centerY;
       return { startX: startX, startY: startY, done: false };
     } else {
@@ -224,27 +243,40 @@ export function GameComponent({ ...props }) {
   };
 
   const handleAcceleration = (event) => {
-    let landscape = stateValues?.landscape;
-    let rotation = event.rotationRate || 0;
-    var x = event.accelerationIncludingGravity.x;
-    var y = event.accelerationIncludingGravity.y;
-    var z = event.accelerationIncludingGravity.z;
-    x = oneDecimal(x);
-    y = oneDecimal(y);
-    z = oneDecimal(z);
-    setStateValues({
-      ...stateValues,
-      rotation: rotation,
-      x: x, // landscape ? y : x,
-      y: y, //landscape ? x : y,
-      z: z,
-      landscape: stateValues?.landscape,
-    });
+    const currentTime = Date.now();
+    if (currentTime - lastUpdate > 100) {
+      let landscape = stateValues?.landscape;
+      let rotation = event.rotationRate || 0;
+      var x = event.accelerationIncludingGravity.x;
+      var y = event.accelerationIncludingGravity.y;
+      var z = event.accelerationIncludingGravity.z;
+      const newX = x * parseInt(speed);
+      const newY = y * parseInt(speed); // Invert Y-axis for canvas
+      const newZ = z * parseInt(speed);
+      x = oneDecimal(newX);
+      y = oneDecimal(newY);
+      z = oneDecimal(newZ);
+      setStateValues({
+        ...stateValues,
+        rotation: rotation,
+        x: x, // landscape ? y : x,
+        y: y, //landscape ? x : y,
+        z: z,
+        landscape: stateValues?.landscape,
+      });
+      setLastUpdate(currentTime);
+    }
   };
 
   const oneDecimal = (n) => {
     var number = n;
     var rounded = Math.round(number * 10) / 10;
+    return rounded;
+  };
+
+  const twoDecimal = (n) => {
+    var number = n;
+    var rounded = Math.round(number * 100) / 100;
     return rounded;
   };
 
@@ -266,8 +298,10 @@ export function GameComponent({ ...props }) {
       let centerX = ctx.canvas.width / 2;
       let centerY = ctx.canvas.height / 2 - 75;
       if (trialStarted) {
-        let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
-        let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
+        // let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
+        // let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
+        let x1 = ctx.canvas.width / 2 + stateValues.x * 10; // Adjust position with acceleration
+        let y1 = ctx.canvas.height / 2 + stateValues.y * 10; // Adjust position with acceleration
         if (Math.abs(offset) > 0) {
           const xy = rotate(centerX, centerY, x1, y1, -offset);
           const offsetX = xy.x;
@@ -285,17 +319,61 @@ export function GameComponent({ ...props }) {
     divRef.current.style.top = y + "px";
     manageTarget(ctx, x, y, centerX, centerY);
   };
+  const getDistanceBetweenPoints = (x1, y1, x2, y2) => {
+    const dist = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return dist;
+  };
+
+  const checkPointOutsideCircle = (x, y, centerX, centerY, radius) => {
+    const distance = getDistanceBetweenPoints(x, y, centerX, centerY);
+    if (distance <= radius) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const getAngle = (x, y, targetPosition, centerX, centerY) => {
+    const vector1 = { x: x - centerX, y: y - centerY };
+    const vector2 = {
+      x: targetPosition.startX - centerX,
+      y: targetPosition.startY - centerY,
+    };
+    const angle1 = Math.atan2(vector1.y, vector1.x);
+    const angle2 = Math.atan2(vector2.y, vector2.x);
+    let angleDifference = angle2 - angle1;
+    if (angleDifference > Math.PI) {
+      angleDifference -= 2 * Math.PI;
+    } else if (angleDifference < -Math.PI) {
+      angleDifference += 2 * Math.PI;
+    }
+    return twoDecimal(angleDifference); // in radians
+  };
 
   const manageTarget = (ctx, x, y, centerX, centerY) => {
     let targetPosition = getTargetPostion(centerX, centerY);
-    if (
-      Math.abs(x - 5 - targetPosition?.startX) < 20 &&
-      Math.abs(y - 5 - targetPosition?.startY) > 50 &&
-      Math.abs(y - 5 - targetPosition?.startY) < 60
-    ) {
+    const radius = getDistanceBetweenPoints(
+      targetPosition?.startX,
+      targetPosition?.startY,
+      centerX,
+      centerY
+    );
+    const status = checkPointOutsideCircle(x, y, centerX, centerY, radius);
+    if (status && targetShow) {
       if (!done) {
-        divRef.current.style.background = "transparent";
+        if (
+          Math.abs(x - 5 - targetPosition?.startX) < 20 &&
+          Math.abs(y - 5 - targetPosition?.startY) > 10 &&
+          Math.abs(y - 5 - targetPosition?.startY) < 25
+        ) {
+          setResult(true);
+          setAngle(0);
+        } else {
+          setResult(false);
+          setAngle(getAngle(x, y, targetPosition, centerX, centerY));
+        }
         clearTarget(ctx, centerX, centerY);
+        divRef.current.style.background = "transparent";
         drawCenterCircle(ctx, centerX, centerY);
         setTrialStarted(false);
         if (helpTextRef.current) helpTextRef.current.style.display = "block";
@@ -323,8 +401,7 @@ export function GameComponent({ ...props }) {
     divRef.current.style.top = y1 + "px";
     if (Math.abs(x - centerX) < 20 && Math.abs(y - centerY) < 80) {
       helpTextRef.current.style.display = "none";
-      divRef.current.style.background =
-        "linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147))";
+      divRef.current.style.background = "url(" + basketBall + ") no-repeat";
       drawTarget(ctx, centerX, centerY);
       clearCenter(ctx, centerX, centerY);
     }
@@ -366,7 +443,7 @@ export function GameComponent({ ...props }) {
 
   useEffect(() => {
     if (!!done && currentCount <= 100) {
-      if (currentCount >= 50 && offsetLevelArray.length > 0) {
+      if (currentCount > 50 && offsetLevelArray.length > 0) {
         setDone(false);
         const tempRandom = getRandomQuadrant(1, 4);
         setRandom(
@@ -377,10 +454,21 @@ export function GameComponent({ ...props }) {
         setOffsetArray([...offsetArray, randomOffset]);
       } else {
         setOffset(0);
+        if (!isMobile) {
+          setDone(false);
+        }
       }
 
-      if (Math.floor(new Date().getTime() - time) > 300) {
+      if (Math.floor(new Date().getTime() - time) > 600) {
         setWarning(true);
+        setWarningMessage("Move faster");
+        setTimeout(() => {
+          setWarning(false);
+        }, 500);
+      }
+      if (Math.floor(new Date().getTime() - time) < 300) {
+        setWarning(true);
+        setWarningMessage("Move Slower");
         setTimeout(() => {
           setWarning(false);
         }, 500);
@@ -389,10 +477,11 @@ export function GameComponent({ ...props }) {
         const route = {
           duration: Math.floor(new Date().getTime() - time) / 1000,
           item: currentCount,
-          level: offset,
-          type: offset,
+          level: result,
+          type: angle,
           value: null,
         };
+        console.log("route", route);
         setRoutes([...routes, route]);
         if (currentCount + 1 >= 100) {
           sentResult();
@@ -406,7 +495,7 @@ export function GameComponent({ ...props }) {
     let startY = 0;
     if (random == 1) {
       startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
-      startY = centerY - ctx.canvas.height / (isMobile ? 5 : 8);
+      startY = centerY - ctx.canvas.height / (isMobile ? 7 : 8);
     }
     // if (random == 2) {
     //   startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
@@ -423,20 +512,28 @@ export function GameComponent({ ...props }) {
     return { x: startX, y: startY };
   };
 
-  
   const drawTarget = async (ctx, centerX, centerY) => {
     if (!targetShow) {
       setTargetShow(true);
       setDone(false);
       const targetPosition = getTargetPostion(centerX, centerY);
-      drawCircle(ctx, {
-        radius: 12,
-        lineWidth: 0,
-        strokeStyle: "#FFFFFF",
-        colorFill: "#ADD8E6",
-        startX: targetPosition.startX,
-        startY: targetPosition.startY,
-      });
+      // drawCircle(ctx, {
+      //   radius: getDistanceBetweenPoints(centerX,centerY,targetPosition.startX,targetPosition.startY),
+      //   lineWidth: 0,
+      //   strokeStyle: "#FFFFFF",
+      //   colorFill: "#ADD8E6",
+      //   startX: centerX,
+      //   startY: centerY,
+      // });
+      const image = new Image();
+      image.src = hoop;
+      image.onload = () => {
+        ctx.drawImage(
+          image,
+          targetPosition.startX - 10,
+          targetPosition.startY - 10
+        );
+      };
       setTime(new Date().getTime());
     }
   };
@@ -444,7 +541,7 @@ export function GameComponent({ ...props }) {
   const clearTarget = (ctx, centerX, centerY) => {
     const targetPosition = getTargetPostion(centerX, centerY);
     drawCircle(ctx, {
-      radius: 12,
+      radius: 24,
       lineWidth: 0,
       strokeStyle: "#FFFFFF",
       colorFill: "#FFFFFF",
@@ -493,6 +590,15 @@ export function GameComponent({ ...props }) {
     });
   };
 
+  const handleChange = (event) => {
+    const result = event.target.value;
+    if (parseInt(result) >= min && parseInt(result) <= max) {
+      setSpeed(result);
+    } else {
+      setSpeed("");
+    }
+  };
+
   return (
     <>
       <canvas
@@ -512,18 +618,17 @@ export function GameComponent({ ...props }) {
           : "To find your cursor, try moving your mouse to the center of the screen"}
       </span>
       <span ref={warningRef} className={classes.warningText}>
-        {!!warning && "Move Faster"}
+        {!!warning && warningMessage}
       </span>
       <span className={classes.countText}>
         {`${currentCount}/${props?.totalCount ?? 100}`}
       </span>
-      <span style={{ position: "absolute", zIndex: 99999 }}>
+      {/* <span style={{ position: "absolute", zIndex: 99999 }}>
         Offset{" "}
         <select
           value={offset.toString()}
           onChange={(e) => {
             setOffset(parseInt(e.target.value));
-            setDone(false);
           }}
         >
           <option value="45">45</option>
@@ -534,7 +639,18 @@ export function GameComponent({ ...props }) {
           <option value="-30">-30</option>
           <option value="-15">-15</option>
         </select>
-      </span>
+      </span> */}
+      {isMobile && (
+        <span style={{ position: "absolute", zIndex: 99999 }}>
+          Speed Factor:
+          <input
+            type="text"
+            value={speed}
+            onChange={(e) => handleChange(e)}
+            placeholder="Enter value between 1-5"
+          />
+        </span>
+      )}
       {iPhone && !permissionGranted && (
         <Box textAlign="center" pb={2} mt={2}>
           <Fab className={classes.btnblue} onClick={requestAccess}>
