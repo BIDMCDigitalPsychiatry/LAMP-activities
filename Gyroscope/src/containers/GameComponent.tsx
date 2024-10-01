@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import GameEnd from "./GameEnd";
 import hoop from "../components/Images/bb-hoop.svg";
 import basketBall from "../components/Images/basketball.svg";
+import { Landscape } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -95,7 +96,7 @@ export function GameComponent({ ...props }) {
   const divRef = useRef<HTMLDivElement | null>(null);
   const helpTextRef = useRef<HTMLElement | null>(null);
   const warningRef = useRef<HTMLElement | null>(null);
-  const [stateValues, setStateValues] = useState(null);
+  const [stateValues, setStateValues] = useState({x:0, y:0, z:0, landscape:null, rotation:0});
   const [currentCount, setCurrentCount] = useState(0);
   const [started, setStarted] = useState(false);
   const [centerX, setCenterX] = useState(0);
@@ -242,7 +243,7 @@ export function GameComponent({ ...props }) {
     });
   };
 
-  const handleAcceleration = (event) => {
+  const handleAcceleration = (event) => {    
     const currentTime = Date.now();
     if (currentTime - lastUpdate > 50) {
       let landscape = stateValues?.landscape;
@@ -302,6 +303,7 @@ export function GameComponent({ ...props }) {
         // let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
         let x1 = ctx.canvas.width / 2 + stateValues.x * 10; // Adjust position with acceleration
         let y1 = ctx.canvas.height / 2 + stateValues.y * 10; // Adjust position with acceleration
+        
         if (Math.abs(offset) > 0) {
           const xy = rotate(centerX, centerY, x1, y1, -offset);
           const offsetX = xy.x;
@@ -425,6 +427,25 @@ export function GameComponent({ ...props }) {
       return 0;
     }
   };
+
+  useEffect(()=>{
+    if(props.clickBack===true){
+      clickBack()
+    }
+
+  },[props.clickBack])
+
+  const clickBack= () => { 
+    const route = {'type': 'manual_exit', 'value': true} 
+    routes.push(route)
+    console.log("routes", routes)
+    parent.postMessage(JSON.stringify({
+      timestamp: new Date().getTime(),
+      duration: new Date().getTime() - time,
+      temporal_slices: JSON.parse(JSON.stringify(routes)),
+      static_data: {},
+    }), "*")        
+  }
 
   const sentResult = () => {
     parent.postMessage(

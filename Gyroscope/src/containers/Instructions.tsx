@@ -1,5 +1,5 @@
 ﻿// Core Imports
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   makeStyles,
@@ -9,26 +9,36 @@ import {
   IconButton,
   AppBar,
   Toolbar,
-  Icon
-} from "@material-ui/core"
-import { useTranslation } from "react-i18next"
+  Icon,
+} from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 // import VideoTutorial from "./VideoTutorial";
 import Cognitive from "./Cognitive";
 import GameInstructions from "./GameInstruction";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     "& h3": {
       fontSize: 26,
       fontWeight: "bold",
-      marginTop: 40
+      marginTop: 40,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: 22
+      },
     },
     "& h4": {
       fontSize: 22,
       fontWeight: "normal",
       marginTop: 40,
-      marginBottom: 40
-    }
+      marginBottom: 40,
+      [theme.breakpoints.down("xs")]: {
+        fontSize: 19,
+        marginTop: 20,
+      marginBottom: 20,
+      },
+    },
   },
   btnblue: {
     background: "#7599FF",
@@ -63,68 +73,79 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(100% - 96px)",
     },
   },
-}))
+}));
 export default function Instructions({ ...props }) {
-  const classes = useStyles()
-  const [noBack] = useState(false)
-  const { t } = useTranslation()
+  const classes = useStyles();
+  const [noBack] = useState(false);
+  const { t } = useTranslation();
   const [view, setView] = useState("intro");
-  const [level, setLevel] = useState("Easy")
+  const [level, setLevel] = useState("Easy");
+  const [clickBack, setClickBack] = useState(false);
 
   const handleNextClick = () => {
     setView("next");
   };
 
   useEffect(() => {
-    setLevel(props?.data?.activity?.settings?.level ?? "Easy")
-  }, [props])
+    setLevel(props?.data?.activity?.settings?.level ?? "Easy");
+  }, [props]);
 
+  const reloadPage = () => {
+    window.location.reload();
+  };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}>
+      <AppBar
+        position="static"
+        style={{ background: "#fff", boxShadow: "0px 1px 1px #00000014" }}
+      >
         <Toolbar className={classes.toolbardashboard}>
-          {!noBack && <IconButton color="default" aria-label="Menu">
-            <Icon>arrow_back</Icon>
-          </IconButton>}
+          {!noBack && (
+            <IconButton color="default" aria-label="Menu" onClick={()=>setClickBack(true)}>
+              <ArrowBackIcon />
+            </IconButton>
+          )}
           <Typography variant="h5">{t("Cognitive Test")}</Typography>
-          <IconButton>
-            <Icon>refresh</Icon>
+          <IconButton color="default" aria-label="Menu" onClick={reloadPage}>
+            <div className="refresh" />
           </IconButton>
         </Toolbar>
       </AppBar>
       {view === "intro" && (
-              <Box px={2}>
-
-        <Grid container direction="row" justifyContent="center" alignItems="center">
-          <Grid item lg={6} sm={10} xs={12}>
-            <Typography variant="h3" align="center" >
-              Target Practice: Your Accuracy and Ability to Adapt
-            </Typography>
-            <Typography variant="h4" align="center">
-              Please kindly turn off all computer notifications during this experiment.
-            </Typography>
-            <Grid container justifyContent="center">
-              <Grid item lg={5} md={5} sm={10} xs={10}>
-                <Box textAlign="center">
-                  <Cognitive />
-                </Box>
+        <Box px={2}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item lg={6} sm={10} xs={12}>
+              <Typography variant="h3" align="center">
+                Target Practice: Your Accuracy and Ability to Adapt
+              </Typography>
+              <Typography variant="h4" align="center">
+                Please kindly turn off all computer notifications during this
+                experiment.
+              </Typography>
+              <Grid container justifyContent="center">
+                <Grid item lg={5} md={5} sm={10} xs={10}>
+                  <Box textAlign="center" className="instructions">
+                    <Cognitive />
+                  </Box>
+                </Grid>
               </Grid>
+              <Box textAlign="center" pt={4} mt={2}>
+                <Fab className={classes.btnblue} onClick={handleNextClick}>
+                  <Typography variant="h6">{t("Next")}</Typography>
+                </Fab>
+              </Box>
             </Grid>
-            <Box textAlign="center" pt={4} mt={2}>
-              <Fab className={classes.btnblue} onClick={handleNextClick}>
-                <Typography variant="h6">{t("Next")}</Typography>
-              </Fab>
-            </Box>
           </Grid>
-        </Grid>
         </Box>
+      )}
 
-        )}
-        
-      {view === "next" && (
-          <GameInstructions level={level}/>
-        )}
+      {view === "next" && <GameInstructions clickBack={clickBack} level={level} />}
     </div>
-  )
+  );
 }
