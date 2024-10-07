@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
     warningText: {
       color: "red",
       bottom: "70%",
-      right: "25%",
+      right: "40%",
       position: "absolute",
       textAlign: "center",
       fontSize: 18,
       [theme.breakpoints.down("xs")]: {
-        bottom: "70%",
+        bottom: "65%",
       },
     },
     canvas: {
@@ -118,6 +118,8 @@ export function GameComponent({ ...props }) {
   const [speed, setSpeed] = useState<any>("1"); // Control the base speed
   const [angle, setAngle] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
+  const THRESHOLD = 0.05;  // Minimum value to register movement
+  const smoothingFactor = 0.1;
 
   const getRandomQuadrant = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -130,6 +132,7 @@ export function GameComponent({ ...props }) {
   const hardOffsetArray = [15, -15, 0, 30, -30, 45, -45];
   const min = 1;
   const max = 5;
+  const TIME_THRESHOLD = 100;
   let offArray = [];
   if (props.adventure === "Hard") {
     offArray = hardOffsetArray;
@@ -193,6 +196,7 @@ export function GameComponent({ ...props }) {
           divRef.current.style.background = "url(" + basketBall + ") no-repeat";
           divRef.current.style.left = centerX + "px";
           divRef.current.style.top = centerY + "px";
+          setStateValues({x:0, y:0, z:0, landscape:null, rotation:0})
           drawTarget(ctx, centerX, centerY);
           clearCenter(ctx, centerX, centerY);
           setTimeout(() => {
@@ -241,30 +245,31 @@ export function GameComponent({ ...props }) {
       ...stateValues,
       landscape: orientation === 90 || orientation === -90,
     });
-  };
+  };  
 
   const handleAcceleration = (event) => {    
     const currentTime = Date.now();
-    if (currentTime - lastUpdate > 50) {
+    const ctx: any = canvasRef.current.getContext("2d");
+    const yOffset = ctx.canvas.height * (0.28/100);
+    if (currentTime - lastUpdate > TIME_THRESHOLD) {
       let landscape = stateValues?.landscape;
       let rotation = event.rotationRate || 0;
-      var x = event.accelerationIncludingGravity.x;
-      var y = event.accelerationIncludingGravity.y;
-      var z = event.accelerationIncludingGravity.z;
-      const newX = x * parseInt(speed);
-      const newY = y * parseInt(speed); // Invert Y-axis for canvas
-      const newZ = z * parseInt(speed);
-      x = oneDecimal(newX);
-      y = oneDecimal(newY);
-      z = oneDecimal(newZ);
-      setStateValues({
-        ...stateValues,
+      let { x, y, z } = event.accelerationIncludingGravity;
+      // Ignore small movements (deadzone)
+      x = Math.abs(x) > THRESHOLD ? x : 0;
+      y = Math.abs(y) > THRESHOLD ? y : 0;
+      z = Math.abs(z) > THRESHOLD ? z : 0;
+      // Apply speed multiplier
+      const newX = oneDecimal(x * speed);
+      const newY = oneDecimal(y * speed); // Inverted for canvas Y-axis
+      const newZ = oneDecimal(z * speed);      
+      setStateValues((prev)=>{return{
         rotation: rotation,
-        x: x, // landscape ? y : x,
-        y: y, //landscape ? x : y,
-        z: z,
+        x: prev.x + (newX - prev.x) * smoothingFactor,       
+        y: prev.y + ((newY- prev.y) - yOffset) * smoothingFactor, //landscape ? x : y,
+        z: newZ,
         landscape: stateValues?.landscape,
-      });
+      }});
       setLastUpdate(currentTime);
     }
   };
@@ -299,11 +304,10 @@ export function GameComponent({ ...props }) {
       let centerX = ctx.canvas.width / 2;
       let centerY = ctx.canvas.height / 2 - 75;
       if (trialStarted) {
-        // let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
-        // let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
-        let x1 = ctx.canvas.width / 2 + stateValues.x * 10; // Adjust position with acceleration
-        let y1 = ctx.canvas.height / 2 + stateValues.y * 10; // Adjust position with acceleration
-        
+        let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
+        let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
+        // let x1 = ctx.canvas.width / 2 + stateValues.x * 10; // Adjust position with acceleration
+        // let y1 = ctx.canvas.height / 2 + stateValues.y * 10; // Adjust position with acceleration        
         if (Math.abs(offset) > 0) {
           const xy = rotate(centerX, centerY, x1, y1, -offset);
           const offsetX = xy.x;
@@ -314,7 +318,7 @@ export function GameComponent({ ...props }) {
         }
       }
     }
-  }, [stateValues]);
+  }, [stateValues.x, stateValues.y]);
 
   const handleMovementMobile = (ctx, x, y, centerX, centerY) => {
     divRef.current.style.left = x + "px";
@@ -438,7 +442,6 @@ export function GameComponent({ ...props }) {
   const clickBack= () => { 
     const route = {'type': 'manual_exit', 'value': true} 
     routes.push(route)
-    console.log("routes", routes)
     parent.postMessage(JSON.stringify({
       timestamp: new Date().getTime(),
       duration: new Date().getTime() - time,
@@ -551,8 +554,8 @@ export function GameComponent({ ...props }) {
       image.onload = () => {
         ctx.drawImage(
           image,
-          targetPosition.startX - 10,
-          targetPosition.startY - 10
+          targetPosition.startX - 5,
+          targetPosition.startY - 5
         );
       };
       setTime(new Date().getTime());
