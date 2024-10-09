@@ -150,12 +150,12 @@ const resources = {
       "Mark complete": "पूर्ण को चिन्हित करें ।",
       "Social": "सामाजिक व्यवहार",
       "Mental Health Resources": "मानसिक स्वास्थ्य संसाधन",
-      "Physical Wellness": "शारीरिक स्वास्थ्य",
+      "Physical Wellness": "शारीरिक तंदरुस्ती",
       "Suggested Reading": "पढ़ने का सुझाव",
       "Motivation": "प्रेरणा",
       "Stress Tips": "तनाव के लिए सुझाव",
       "Social Tips": "सामाजिक सुझाव",
-      "Sleep Tips": "नींद सम्बन्धी सुझाव",
+      "Sleep Tips": "अच्छी नींद की आदत बनाए",
       "Resources": "संसाधन",
       "Definitions": "परिभाषाएं",
       "Goals": "लक्ष्य",
@@ -164,7 +164,7 @@ const resources = {
       "National Alliance on Mental Illness (NAMI)":
         "मानसिक बीमारी पर राष्ट्रीय संगठन (NAMI)",
       "NAMI Massachussetts": "मैसाचुसेट्स",
-      "Exercise": "शारीरिक व्यायाम",
+      "Exercise": "व्यायाम",
     },
   },"it-IT": {
     translation: {

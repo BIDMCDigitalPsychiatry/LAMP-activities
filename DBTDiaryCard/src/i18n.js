@@ -1141,7 +1141,7 @@ const resources = {
       CANCEL: "रद्द करें",
       ACTED: "Acted",
       URGE: "Urge",
-      MINDFULNESS: "Mindfulness",
+      MINDFULNESS: "ध्यान",
       WISE_MIND: "Wise Mind",
       OBSERVE_JUST_NOTICE_URGE_SURFING: "Observe: Just notice (Urge Surfing)",
       DESCRIBE_PUT_WORDS_ON: "Describe: Put words on",
