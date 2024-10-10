@@ -42,10 +42,17 @@ const resources = {
       GAME_OVER: "Game Over", 
       LEVEL: "Level",
       NO:"No" , 
-      PERMISSION:"Click to grant accelerometer Permission",
+      PERMISSION:"Grant accelerometer permission",
       START_GAME: "Start Game",
       YES: "Yes",  
-      YOU_WON: "You Won"
+      YOU_WON: "You Won",
+      INSTRUCTION : "Move the white dot to the center. The white dot will be visible during your reach. Quickly move your white dot to the target",
+      INSTRUCTION_MOBILE : "Keep the device horizontal before tapping the center circle.",
+      PORTRAINT_INSTRUCTION : "Please use Portrait  Orientation",
+      MOVE_FASTER : "Move faster",
+      MOVE_SLOWER : "Move Slower",
+      GAME_INSTRUCTION : "To find your cursor, try moving your mouse to the center of the screen",
+      GAME_INSTRUCTION_MOBILE : "To find your ball, touch on the center circle"
     },
   },
   "es-ES": {
