@@ -16,6 +16,7 @@ import { GameComponent } from "./GameComponent";
 import GameEnd from "./GameEnd";
 import { isMobile } from "react-device-detect";
 import InstructionModal from "../components/InstructionModal";
+import i18n from "../i18n";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -88,6 +89,7 @@ export default function Instructions({ ...props }) {
   };
 
   useEffect(() => {
+    i18n.changeLanguage(!props.language ? "en-US" : props.language);
     if (isMobile) setShowModal(true);
     else {
       setView("instruction");
@@ -108,8 +110,8 @@ export default function Instructions({ ...props }) {
               <Box p={3}>
                 <Typography variant="body1" align="center">
                   {isMobile
-                    ? "Keep the device horizontal before tapping the center circle"
-                    : "Move the white dot to the center. The white dot will be visible during your reach. Quickly move your white dot to the target. Press SPACE BAR when you are ready to proceed."}
+                    ? t("INSTRUCTION_MOBILE")
+                    : t("INSTRUCTION")}
                 </Typography>
                 <Box textAlign="center" pt={3} mt={2}>
                   <Fab className={classes.btnBlue} onClick={handleNextClick}>
@@ -127,7 +129,7 @@ export default function Instructions({ ...props }) {
           setShowModal(false);
           setView("instruction");
         }}
-        message={"Please use Portrait  Orientation"}
+        message={t("PORTRAINT_INSTRUCTION")}
       />
 
       {view === "start game" && (
@@ -135,6 +137,7 @@ export default function Instructions({ ...props }) {
           adventure="Medium"
           setView={setView}
           clickBack={props.clickBack}
+          language={i18n.language}
         />
       )}
       {view === "end game" && <GameEnd />}

@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import Cognitive from "./Cognitive";
 import GameInstructions from "./GameInstruction";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import i18n from "../i18n";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,8 +88,10 @@ export default function Instructions({ ...props }) {
   };
 
   useEffect(() => {
+    const configuration = props?.data?.configuration;
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
     setLevel(props?.data?.activity?.settings?.level ?? "Easy");
-  }, [props]);
+  }, [props.data]);
 
   const reloadPage = () => {
     window.location.reload();
@@ -145,7 +148,7 @@ export default function Instructions({ ...props }) {
         </Box>
       )}
 
-      {view === "next" && <GameInstructions clickBack={clickBack} level={level} />}
+      {view === "next" && <GameInstructions language={i18n.language} clickBack={clickBack} level={level} />}
     </div>
   );
 }
