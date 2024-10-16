@@ -10,10 +10,10 @@ import {
   Box,
 } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
-import GameEnd from "./GameEnd";
 import hoop from "../components/Images/bb-hoop.svg";
 import basketBall from "../components/Images/basketball.svg";
-import { Landscape } from "@material-ui/icons";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
     warningText: {
       color: "red",
       bottom: "70%",
-      right: "25%",
+      right: "40%",
       position: "absolute",
       textAlign: "center",
       fontSize: 18,
       [theme.breakpoints.down("xs")]: {
-        bottom: "70%",
+        bottom: "65%",
       },
     },
     canvas: {
@@ -96,7 +96,13 @@ export function GameComponent({ ...props }) {
   const divRef = useRef<HTMLDivElement | null>(null);
   const helpTextRef = useRef<HTMLElement | null>(null);
   const warningRef = useRef<HTMLElement | null>(null);
-  const [stateValues, setStateValues] = useState({x:0, y:0, z:0, landscape:null, rotation:0});
+  const [stateValues, setStateValues] = useState({
+    x: 0,
+    y: 0,
+    z: 0,
+    landscape: null,
+    rotation: 0,
+  });
   const [currentCount, setCurrentCount] = useState(0);
   const [started, setStarted] = useState(false);
   const [centerX, setCenterX] = useState(0);
@@ -118,7 +124,10 @@ export function GameComponent({ ...props }) {
   const [speed, setSpeed] = useState<any>("1"); // Control the base speed
   const [angle, setAngle] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
-  const THRESHOLD = 0.05;  // Minimum value to register movement
+  const THRESHOLD = 0.05; // Minimum value to register movement
+  const smoothingFactor = 0.1;
+  const { t } = useTranslation();
+
   const getRandomQuadrant = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
@@ -130,13 +139,7 @@ export function GameComponent({ ...props }) {
   const hardOffsetArray = [15, -15, 0, 30, -30, 45, -45];
   const min = 1;
   const max = 5;
-  const TIME_THRESHOLD = 75;
-
-  // Velocity variables
-  const [velocity, setVelocity] = useState({x:0,y:0})
-  const friction = 0.98;  // To simulate slowing down, use a friction factor
-
-
+  const TIME_THRESHOLD = 100;
   let offArray = [];
   if (props.adventure === "Hard") {
     offArray = hardOffsetArray;
@@ -159,6 +162,10 @@ export function GameComponent({ ...props }) {
       setiPhone(true);
     }
   };
+
+  useEffect(()=>{
+    i18n.changeLanguage(!props.language ? "en-US" : props.language);
+  },[props.language])
 
   useEffect(() => {
     (async () => {
@@ -200,6 +207,7 @@ export function GameComponent({ ...props }) {
           divRef.current.style.background = "url(" + basketBall + ") no-repeat";
           divRef.current.style.left = centerX + "px";
           divRef.current.style.top = centerY + "px";
+          setStateValues({ x: 0, y: 0, z: 0, landscape: null, rotation: 0 });
           drawTarget(ctx, centerX, centerY);
           clearCenter(ctx, centerX, centerY);
           setTimeout(() => {
@@ -222,8 +230,8 @@ export function GameComponent({ ...props }) {
   const getTargetPostion = (centerX, centerY) => {
     const ctx = canvasRef.current.getContext("2d");
     if (currentCount < 50) {
-      let startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-      let startY = centerY;
+      let startX = centerX;
+      let startY = centerY - ctx.canvas.height / (isMobile ? 7 : 8);
       return { startX: startX, startY: startY, done: false };
     } else {
       const values = getAdv2or3Values(ctx, centerX, centerY, 1);
@@ -250,50 +258,31 @@ export function GameComponent({ ...props }) {
     });
   };
 
-  const handleAcceleration = (event) => {    
+  const handleAcceleration = (event) => {
     const currentTime = Date.now();
     const ctx: any = canvasRef.current.getContext("2d");
-    const yOffset = ctx.canvas.height * (0.25/100);
+    const yOffset = ctx.canvas.height * (0.28 / 100);
     if (currentTime - lastUpdate > TIME_THRESHOLD) {
       let landscape = stateValues?.landscape;
       let rotation = event.rotationRate || 0;
       let { x, y, z } = event.accelerationIncludingGravity;
-      let deltaTime = (currentTime - lastUpdate) / 1000;
-
-      let velX = (velocity.x + (x * deltaTime)) * friction
-      let velY = (velocity.y + (y * deltaTime)) * friction
-      setVelocity({x: velX, y: velY})
-      setStateValues((preStateValues)=>{
-       return { rotation: rotation,
-        x: preStateValues.x + (velX * deltaTime * 100), // landscape ? y : x,
-        y: preStateValues.y + (velY * deltaTime * 100), //landscape ? x : y,
-        z: 0,
-        landscape: stateValues?.landscape
-      }});
-
-
       // Ignore small movements (deadzone)
-      // x = Math.abs(x) > THRESHOLD ? x : 0;
-      // y = Math.abs(y) > THRESHOLD ? y : 0;
-      // z = Math.abs(z) > THRESHOLD ? z : 0;
+      x = Math.abs(x) > THRESHOLD ? x : 0;
+      y = Math.abs(y) > THRESHOLD ? y : 0;
+      z = Math.abs(z) > THRESHOLD ? z : 0;
       // Apply speed multiplier
-      // const newX = oneDecimal(x * speed);
-      // const newY = oneDecimal(y * speed); // Inverted for canvas Y-axis
-      // const newZ = oneDecimal(z * speed);
-      // const newX = x * parseInt(speed);
-      // const newY = y * parseInt(speed); // Invert Y-axis for canvas
-      // const newZ = z * parseInt(speed);
-      // x = oneDecimal(newX);
-      // y = oneDecimal(newY);
-      // z = oneDecimal(newZ);
-      // setStateValues({
-      //   ...stateValues,
-      //   rotation: rotation,
-      //   x: newX, // landscape ? y : x,
-      //   y: newY - yOffset, //landscape ? x : y,
-      //   z: newZ,
-      //   landscape: stateValues?.landscape,
-      // });
+      const newX = oneDecimal(x * speed);
+      const newY = oneDecimal(y * speed); // Inverted for canvas Y-axis
+      const newZ = oneDecimal(z * speed);
+      setStateValues((prev) => {
+        return {
+          rotation: rotation,
+          x: prev.x + (newX - prev.x) * smoothingFactor,
+          y: prev.y + (newY - prev.y - yOffset) * smoothingFactor, //landscape ? x : y,
+          z: newZ,
+          landscape: stateValues?.landscape,
+        };
+      });
       setLastUpdate(currentTime);
     }
   };
@@ -328,12 +317,8 @@ export function GameComponent({ ...props }) {
       let centerX = ctx.canvas.width / 2;
       let centerY = ctx.canvas.height / 2 - 75;
       if (trialStarted) {
-        // let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
-        // let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
-        // let x1 = ctx.canvas.width / 2 + stateValues.x * 10; // Adjust position with acceleration
-        // let y1 = ctx.canvas.height / 2 + stateValues.y * 10; // Adjust position with acceleration
-        let x1 = stateValues.x;
-        let y1 = stateValues.y;
+        let x1 = ctx.canvas.width / (100 / toPercentage(stateValues.x, 1));
+        let y1 = ctx.canvas.height / (100 / toPercentage(stateValues.y, 1));
         if (Math.abs(offset) > 0) {
           const xy = rotate(centerX, centerY, x1, y1, -offset);
           const offsetX = xy.x;
@@ -349,7 +334,7 @@ export function GameComponent({ ...props }) {
   const handleMovementMobile = (ctx, x, y, centerX, centerY) => {
     divRef.current.style.left = x + "px";
     divRef.current.style.top = y + "px";
-    // manageTarget(ctx, x, y, centerX, centerY);
+    manageTarget(ctx, x, y, centerX, centerY);
   };
   const getDistanceBetweenPoints = (x1, y1, x2, y2) => {
     const dist = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -395,7 +380,7 @@ export function GameComponent({ ...props }) {
       if (!done) {
         if (
           Math.abs(x - 5 - targetPosition?.startX) < 20 &&
-          Math.abs(y - 5 - targetPosition?.startY) > 10 &&
+          Math.abs(y - 5 - targetPosition?.startY) > 5 &&
           Math.abs(y - 5 - targetPosition?.startY) < 25
         ) {
           setResult(true);
@@ -458,24 +443,25 @@ export function GameComponent({ ...props }) {
     }
   };
 
-  useEffect(()=>{
-    if(props.clickBack===true){
-      clickBack()
+  useEffect(() => {
+    if (props.clickBack === true) {
+      clickBack();
     }
+  }, [props.clickBack]);
 
-  },[props.clickBack])
-
-  const clickBack= () => { 
-    const route = {'type': 'manual_exit', 'value': true} 
-    routes.push(route)
-    console.log("routes", routes)
-    parent.postMessage(JSON.stringify({
-      timestamp: new Date().getTime(),
-      duration: new Date().getTime() - time,
-      temporal_slices: JSON.parse(JSON.stringify(routes)),
-      static_data: {},
-    }), "*")        
-  }
+  const clickBack = () => {
+    const route = { type: "manual_exit", value: true };
+    routes.push(route);
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - time,
+        temporal_slices: JSON.parse(JSON.stringify(routes)),
+        static_data: {},
+      }),
+      "*"
+    );
+  };
 
   const sentResult = () => {
     parent.postMessage(
@@ -512,14 +498,14 @@ export function GameComponent({ ...props }) {
 
       if (Math.floor(new Date().getTime() - time) > 600) {
         setWarning(true);
-        setWarningMessage("Move faster");
+        setWarningMessage(t("MOVE_FASTER"));
         setTimeout(() => {
           setWarning(false);
         }, 500);
       }
       if (Math.floor(new Date().getTime() - time) < 300) {
         setWarning(true);
-        setWarningMessage("Move Slower");
+        setWarningMessage(t("MOVE_SLOWER"));
         setTimeout(() => {
           setWarning(false);
         }, 500);
@@ -547,19 +533,7 @@ export function GameComponent({ ...props }) {
     if (random == 1) {
       startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
       startY = centerY - ctx.canvas.height / (isMobile ? 7 : 8);
-    }
-    // if (random == 2) {
-    //   startX = centerX + ctx.canvas.width / (isMobile ? 3 : 8);
-    //   startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-    // }
-    // if (random == 3) {
-    //   startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-    //   startY = centerY + ctx.canvas.height / (isMobile ? 3 : 8);
-    // }
-    // if (random == 4) {
-    //   startX = centerX - ctx.canvas.width / (isMobile ? 3 : 8);
-    //   startY = centerY - ctx.canvas.height / (isMobile ? 3 : 8);
-    // }
+    }    
     return { x: startX, y: startY };
   };
 
@@ -567,22 +541,14 @@ export function GameComponent({ ...props }) {
     if (!targetShow) {
       setTargetShow(true);
       setDone(false);
-      const targetPosition = getTargetPostion(centerX, centerY);
-      // drawCircle(ctx, {
-      //   radius: getDistanceBetweenPoints(centerX,centerY,targetPosition.startX,targetPosition.startY),
-      //   lineWidth: 0,
-      //   strokeStyle: "#FFFFFF",
-      //   colorFill: "#ADD8E6",
-      //   startX: centerX,
-      //   startY: centerY,
-      // });
+      const targetPosition = getTargetPostion(centerX, centerY);      
       const image = new Image();
       image.src = hoop;
       image.onload = () => {
         ctx.drawImage(
           image,
-          targetPosition.startX - 10,
-          targetPosition.startY - 10
+          targetPosition.startX - 5,
+          targetPosition.startY - 5
         );
       };
       setTime(new Date().getTime());
@@ -665,8 +631,8 @@ export function GameComponent({ ...props }) {
       <div ref={divRef} className={classes.cursor}></div>
       <span ref={helpTextRef} className={classes.helpText}>
         {mobile
-          ? "To find your ball, touch on the center circle"
-          : "To find your cursor, try moving your mouse to the center of the screen"}
+          ? t("GAME_INSTRUCTION_MOBILE")
+          : t("GAME_INSTRUCTION")}
       </span>
       <span ref={warningRef} className={classes.warningText}>
         {!!warning && warningMessage}
@@ -705,16 +671,10 @@ export function GameComponent({ ...props }) {
       {iPhone && !permissionGranted && (
         <Box textAlign="center" pb={2} mt={2}>
           <Fab className={classes.btnblue} onClick={requestAccess}>
-            <Typography variant="h6">Grant accelerometer Permission</Typography>
+            <Typography variant="h6">{t("PERMISSION")}</Typography>
           </Fab>
         </Box>
       )}
-      {/* <Fab onClick={handleNextClick}>End Game</Fab> */} {/* Navigation */}
     </>
-  );
-
-  // Navigation
-  //    ) : (
-  //     <GameEnd />
-  // );
+  );  
 }
