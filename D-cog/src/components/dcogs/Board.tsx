@@ -82,10 +82,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     super(props);
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
     // Initailise state values
-    const timerValue =
-      typeof process.env.REACT_APP_DNC_TIMOUT_PERIOD === "undefined"
-        ? 360
-        : Number(process.env.REACT_APP_DNC_TIMOUT_PERIOD);
+    const timerValue = 120
     this.state = {
       animate: false,
       boxClass: ["box-square"],
@@ -234,6 +231,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     });
   };
 
+  
   // Update the state values after each game state
   updateStateWithTaps = () => {
     const states = [];
@@ -292,8 +290,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
     });
-
-
   };
 
   
@@ -342,16 +338,6 @@ class Board extends React.Component<BoardProps, BoardState> {
   });
 
   };
-
-  // Interval for dogs  animation
-  startTimer = () => {
-    // let timerValue = this.state.gameState === 0 ? 6000 ;
-    this.timer = setInterval(() => {
-      this.resetBoxClass();
-      this.resetState();
-    }, 2000);
-  };
-
   
   // To refresh the game
   clickHome = () => {
@@ -369,7 +355,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       lastClickTime: new Date().getTime(),
     });
     this.resetState();
-    // this.startTimer();  
   };
 
    shuffleArray(array: string[]) {
@@ -438,12 +423,11 @@ class Board extends React.Component<BoardProps, BoardState> {
     // Timer to be shown or not
     const timer =
       !this.state.timeout &&
-      !this.state.gameOver &&
-      this.state.gameState > 0 ? (
+      !this.state.gameOver  && !this.state.showInstruction ? (
         <Timer
           passTimerUpdate={this.passTimerUpdate}
           startTimeInSeconds={this.state.startTimer}
-          startTimer={this.state.gameState}
+          startTimer={true}
         />
       ) : null;
 

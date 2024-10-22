@@ -9,7 +9,7 @@ import * as React from 'react';
 
 interface Props  {
     startTimeInSeconds: number;
-    startTimer: number;
+    startTimer: boolean;
     passTimerUpdate(i:number): void;
 }
 
@@ -22,6 +22,7 @@ export class Timer extends React.Component<Props, State> {
 
     constructor(props: Props) {
       super(props);
+      console.log(props)
       this.state = {
         timeRemainingInSeconds: props.startTimeInSeconds
       };
@@ -39,7 +40,7 @@ export class Timer extends React.Component<Props, State> {
     };
     // To update the timer value once component is mounted
     componentDidMount() {
-        if(this.props.startTimer > 0) {
+        if(this.state.timeRemainingInSeconds > -1) {
             this.timer = setInterval(() => {
                 this.decrementTimeRemaining();
             }, 1000);
