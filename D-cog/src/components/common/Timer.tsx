@@ -22,7 +22,6 @@ export class Timer extends React.Component<Props, State> {
 
     constructor(props: Props) {
       super(props);
-      console.log(props)
       this.state = {
         timeRemainingInSeconds: props.startTimeInSeconds
       };
