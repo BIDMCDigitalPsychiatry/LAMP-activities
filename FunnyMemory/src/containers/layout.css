@@ -1,0 +1,247 @@
+.col {
+  overflow: hidden;
+  text-align: center;
+}
+
+.main-class {
+  height: calc(100% - 60px);
+}
+
+body {
+  background: rgba(53, 159, 254, 1) !important;
+}
+
+nav a {
+  color: rgba(53, 159, 254, 1);
+  padding: 10px;
+  display: inline-block;  
+}
+
+.App {
+  padding-top: 2em;
+  text-align: center
+}
+
+.App-logo {
+  -webkit-animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px
+}
+
+.App-header {
+  height: 90px;
+  padding: 20px;
+  color: #fff
+}
+
+.App-intro {
+  font-size: large
+}
+
+.heading {
+  text-align: center;
+  color: rgba(53, 159, 254, 1);
+  padding: 15px;
+  background: #fff;
+}
+
+.home-link {
+  position: absolute;
+  right: 0;
+  right: 10px;
+  top: 5px;
+}
+
+.game-board {
+  color: #fff;
+  text-align: center;
+}
+
+.back-link {
+  position: absolute;
+  left: 0;
+  left: 10px;
+  top: 5px;
+}
+
+.btn-primary:hover {
+  background: #007bff !important;
+  border: none;
+}
+
+.box-game {
+  padding: 0 30px;
+  margin: auto;
+  color: #fff;
+  font-size: 20px;  
+}
+.imgOption {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.error-class {
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  top: 15px;
+  position: relative;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+}
+
+.index {
+  color: rgba(53, 159, 254, 1);
+}
+
+.question {
+  color: black;
+  padding-top: 10px;
+  font-size: 30px;
+  font-weight: 450;
+}
+
+.begin {
+  text-align: left;
+  margin-left: 10%;
+}
+
+.start-button {
+  color: white !important;
+  background: rgb(73, 151, 208);
+  border: none;
+  width: 150px;
+  border-radius: 0rem;
+}
+
+.image {
+  height: 40%;
+}
+
+.emotions {
+  padding-bottom: 10px;
+}
+
+input[type=checkbox] {
+  margin-right: 10px;
+  accent-color: black;
+}
+
+.btn-primary:focus {
+  box-shadow: none !important;
+  background: rgb(73, 151, 208) !important;
+}
+
+.btn-primary:hover {
+  background: #007bff !important;
+
+
+}
+
+.btn-outline-secondary {
+  background: none;
+  color: #007bff;
+  border: none;
+}
+
+.timer-div {
+  margin-top: 10px;
+  min-height: 60px;
+  color: rgb(253, 254, 255);
+}
+
+@media only screen and (min-width: 500px) {
+  .modal-content {
+    margin-left: 20%;
+  }
+
+  .begin {
+    text-align: left;
+    margin-left: 35%;
+  }
+
+  .img-thumbnail {
+    height: 280px !important;
+  }
+}
+.memory-outer{
+	background-color: #FFF;
+	padding: 15px 30px 15px 30px;
+	border-radius: 5px;
+	text-align: left;
+	width: 100%;
+	max-width: 650px;
+	margin: 0 auto ;
+}
+.marginTop10{
+	margin-top: 12px;
+}
+.react-datepicker__time-list-item{
+	display: flex;
+	align-items: center;
+}
+.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
+.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
+.react-datepicker__input-container input{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+	font-size: 14px;
+	min-width: 202px;
+}
+.react-datepicker__input-container input:focus-visible, .question-nav select{
+	outline: 0;
+}
+.question-nav select{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+	min-width: 202px;
+	font-size: 14px;
+}
+.react-datepicker--time-only .react-datepicker__triangle{
+	left: -40px !important;
+}
+.img-wrap-main{
+  display: flex;
+  justify-content: center;
+}
+#img-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 500px;
+  svg {
+    max-width: 200px;
+    max-height: 200px;
+    width: 100%;
+    margin-top: 20px;
+  }
+ }
+ 
+ #img-wrapper > div {
+  flex: 0 1 50%;
+  padding: 0 15px;
+ }
+
+@media only screen and (min-width: 1100px) {
+  .modal-content {
+    margin-left: 20%;
+  }
+
+  .begin {
+    text-align: left;
+    margin-left: 37%;
+  }
+}
