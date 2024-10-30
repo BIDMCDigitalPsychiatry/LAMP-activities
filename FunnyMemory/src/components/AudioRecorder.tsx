@@ -88,19 +88,22 @@ const AudioRecorder = ({ ...props }) => {
       <div className="microphone-wrapper">
         <div
           className="mircophone-container"
-          ref={microphoneRef}
+         >
+          <div className="microphone-icon" ref={microphoneRef}
           onClick={(e) => {
             e.stopPropagation();
             handleListing();
           }}
         >
-          <Microphone />
+            <Microphone />
+          </div>
           <div className="microphone-status">
             {isListening ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
           </div>
           {isListening && (
             <Button
               variant="primary"
+              className="btn-stop"
               onClick={(e) => {
                 e.stopPropagation();
                 stopHandle();
