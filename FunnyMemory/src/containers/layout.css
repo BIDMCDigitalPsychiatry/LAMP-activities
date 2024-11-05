@@ -246,6 +246,9 @@ input[type=checkbox] {
   flex: 0 1 50%;
   padding: 0 15px;
  }
+ #img-wrapper div.active svg{
+  border: #359ffe solid 3px;
+}
 
 @media only screen and (min-width: 1100px) {
   .modal-content {
