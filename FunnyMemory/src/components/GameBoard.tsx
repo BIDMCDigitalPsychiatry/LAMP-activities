@@ -52,8 +52,8 @@ const GameBoard = ({ ...props }: any) => {
   useEffect(() => {
     if (trial === 0) {
       setShowModalInfo(true);
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -143,7 +143,6 @@ const GameBoard = ({ ...props }: any) => {
   //   setRoutes(routes.concat(tempRoute));
 
   // };
-  console.log("routes", routes);
 
   const handleRecall = (textArray: string[][]) => {
     let tempRoute: any = [];
@@ -185,27 +184,22 @@ const GameBoard = ({ ...props }: any) => {
   };
 
   const handleRecognition1 = (text: string) => {
-    if (text && text != "") {
-      if (text === Data[randomNumberArray.current[currentIndex]].missingItem) {
-        const route = {
-          duration: (new Date().getTime() - timeTaken) / 1000,
-          item: randomNumberArray.current[currentIndex],
-          level: phase,
-          type:
-            stringCleanUp(text) ===
-            stringCleanUp(
-              Data[randomNumberArray.current[currentIndex]].missingItem
-            )
-              ? true
-              : false,
-          value: null,
-        };
-        if (route.type === true) {
-          setItemRecognized(itemRecognized + 1);
-        }
-        setRoutes([...routes, route]);
-      }
+    const route = {
+      duration: (new Date().getTime() - timeTaken) / 1000,
+      item: randomNumberArray.current[currentIndex],
+      level: phase,
+      type:
+        stringCleanUp(text) ===
+        stringCleanUp(Data[randomNumberArray.current[currentIndex]].missingItem)
+          ? true
+          : false,
+      value: null,
+    };
+    if (route.type === true) {
+      setItemRecognized(itemRecognized + 1);
     }
+    setRoutes([...routes, route]);
+
     setShowAudioRecorder(false);
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -260,24 +254,7 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  const sendGameResult = () => {
-    console.log(
-      "result",
-      JSON.stringify({
-        duration: new Date().getTime() - startTime,
-        static_data: Object.assign(staticdata ?? {}, {
-          image_exposure_time: imageExposureTime,
-          learning_trials: numberOfTrials,
-          delay_time: delayBeforeRecall,
-          number_of_correct_pairs_recalled: pairsIdentified,
-          number_of_correct_items_recalled: itemsIdentified,
-          number_of_correct_recognized: itemRecognized,
-          number_of_correct_force_choice: correctChoice,
-        }),
-        temporal_slices: JSON.parse(JSON.stringify(routes)),
-        timestamp: new Date().getTime(),
-      })
-    );
+  const sendGameResult = () => {    
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,

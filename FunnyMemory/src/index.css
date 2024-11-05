@@ -8,7 +8,6 @@ body {
 .countdown-timer__text{
   text-align: center;
   width: 100%;
-  color: #fff;
   font-size: 14px;
   min-height: 25px;
 }
