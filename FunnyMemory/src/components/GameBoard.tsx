@@ -254,7 +254,23 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  const sendGameResult = () => {    
+  console.log("routes", routes);
+
+  const sendGameResult = () => {   
+    console.log("result", JSON.stringify({
+      duration: new Date().getTime() - startTime,
+      static_data: Object.assign(staticdata ?? {}, {
+        image_exposure_time: imageExposureTime,
+        learning_trials: numberOfTrials,
+        delay_time: delayBeforeRecall,
+        number_of_correct_pairs_recalled: pairsIdentified,
+        number_of_correct_items_recalled: itemsIdentified,
+        number_of_correct_recognized: itemRecognized,
+        number_of_correct_force_choice: correctChoice,
+      }),
+      temporal_slices: JSON.parse(JSON.stringify(routes)),
+      timestamp: new Date().getTime(),
+    })) 
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -388,7 +404,7 @@ const GameBoard = ({ ...props }: any) => {
   return (
     <>
       <div className="game_board">
-        <div className="timer-div">{getPhaseTitle()}</div>
+        {getPhaseTitle() != "" && <div className="timer-div">{getPhaseTitle()}</div>}
         {renderContent()}
       </div>
       <Backdrop className="backdrop" open={loading}>

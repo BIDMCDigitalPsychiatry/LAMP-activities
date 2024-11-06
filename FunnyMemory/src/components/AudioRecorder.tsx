@@ -51,11 +51,17 @@ const AudioRecorder = ({ ...props }) => {
   };
 
   useEffect(() => {
-    console.log("transcript", transcript);
+    console.log("transcript", transcript)
     if (transcript && transcript != "") {
       setRecordedText(transcript);
     }
   }, [transcript]);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      stopHandle();
+    },180000)
+  },[])
 
   const handleListing = () => {
     setIsListening(true);
