@@ -47,6 +47,7 @@ import emoji from "remark-emoji"
 import gfm from "remark-gfm"
 import { useSnackbar } from "notistack"
 import ConfirmationDialog from "./ConfirmationDialog"
+import zIndex from "@material-ui/core/styles/zIndex"
 const GreenCheckbox = withStyles({
   root: {
     color: "#2F9D7E",
@@ -224,14 +225,20 @@ const useStyles = makeStyles((theme) => ({
   },
   matrix : {   
     "& td" :{
-      paddingLeft : "0px !important",
-      paddingRight : "0px !important",  
+      paddingLeft : "3px !important",
+      paddingRight : "3px !important",  
       width: "3%"    
     },
     "& tr" : {
       padding:"25px 0",
     },
-    "& p" : {marginTop : "0px !important", marginBottom : "3px !important"}
+    "& p" : {marginTop : "0px !important", marginBottom : "3px !important"},
+    "& tr td:first-child": {
+      position: "sticky",
+      left: 0,
+      background: "#fff",
+      zIndex: 1
+    }
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -374,7 +381,12 @@ const useStyles = makeStyles((theme) => ({
   listSelected: {
     background: "#E7F8F2 !important",
   },
-  surveyQuestionNav: { textAlign: "center", position: "fixed", width: "100%", bottom: 70 },
+  surveyQuestionNav: { textAlign: "center", position: "fixed", width: "100%", bottom: 75,
+    [`${theme.breakpoints.down('md')} and (orientation: landscape)`]: {
+      position: "relative",
+      bottom: 30,
+    }
+   },
   surveyQuestionAlign: {
     textAlign: "center",
     "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
@@ -408,7 +420,8 @@ const useStyles = makeStyles((theme) => ({
 
   chatDrawerCustom: { minWidth: 411 },
   questionScroll: {
-    marginTop: 30,    
+    marginTop: 30,
+    overflow: "auto",    
     [theme.breakpoints.down("xs")]: {
       overflow: "auto",
     },
@@ -434,6 +447,7 @@ const useStyles = makeStyles((theme) => ({
 
   mrgBtm: { marginBottom: 15 },
   countlabel: { left: "calc(-50% - -8px)" },
+
 }))
 function range(start, stop, step = 1) {
   return [...Array(stop - start).keys()].map((v, i) =>
@@ -1005,11 +1019,12 @@ function Matrix({ x, responses, onResponse, activityId, total,index, idx,startTi
       {(x.questions || []).map((question, qindex) => (
         <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
           <TableCell className={classes.required} style={{minWidth:"30%", maxWidth:"150px"}}>
-            <ReactMarkdown children={`${t(question.text)}`} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
+            <ReactMarkdown children={ question.required
+          ?`${t(question.text)}<span> *</span>`:`${t(question.text)}`} allowDangerousHtml={true}  plugins={[gfm, emoji]}  renderers={{ link: LinkRenderer, span:  (props) => {
     return <sub>{props?.children}</sub>;
   }, sup: (props) => {
     return <sup>{props.children}</sup>;
-  }}} />   {!!question.required && <span> *</span>}
+  }}} />   
           </TableCell>
           {(Array.isArray(x.options) && (x.options || []).length > 0) ?(
   x.type === "list"  ||x.type === "boolean" || x.type === "likert"  ?  (
