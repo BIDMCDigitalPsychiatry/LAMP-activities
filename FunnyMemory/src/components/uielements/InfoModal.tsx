@@ -29,10 +29,7 @@ const InfoModal = ({ ...props }: any) => {
         <Modal.Title>mindLamp</Modal.Title>
       </Modal.Header>
       <Modal.Body>{i18n.t(props.msg)}</Modal.Body>
-      <Modal.Footer>
-        {/* <Button variant="outline-secondary" onClick={props.toggle}>
-          {i18n.t("PLAY AUDIO")}
-        </Button> */}
+      <Modal.Footer>        
         <Button variant="outline-secondary" onClick={handleClose}>
           {i18n.t("OK")}
         </Button>

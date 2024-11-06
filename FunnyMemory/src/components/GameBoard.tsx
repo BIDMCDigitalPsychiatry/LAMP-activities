@@ -15,8 +15,6 @@ import {
 } from "src/functions";
 import i18n from "src/i18n";
 import Data from "./data";
-import { useAudio } from "src/hooks/useAudio";
-import myAudio from "../components/audiofiles/mp3.mp3";
 import AudioRecorder from "./AudioRecorder";
 import Questions from "./Questions";
 import InfoModal from "./uielements/InfoModal";
@@ -32,7 +30,6 @@ const GameBoard = ({ ...props }: any) => {
     getRandomNumbers(number_of_images_in_trial, 1, 5)
   );
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [playing, toggle] = useAudio(myAudio);
   const imageExposureTime = props?.imageExposureTime;
   const [showAudioRecorder, setShowAudioRecorder] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -256,21 +253,24 @@ const GameBoard = ({ ...props }: any) => {
 
   console.log("routes", routes);
 
-  const sendGameResult = () => {   
-    console.log("result", JSON.stringify({
-      duration: new Date().getTime() - startTime,
-      static_data: Object.assign(staticdata ?? {}, {
-        image_exposure_time: imageExposureTime,
-        learning_trials: numberOfTrials,
-        delay_time: delayBeforeRecall,
-        number_of_correct_pairs_recalled: pairsIdentified,
-        number_of_correct_items_recalled: itemsIdentified,
-        number_of_correct_recognized: itemRecognized,
-        number_of_correct_force_choice: correctChoice,
-      }),
-      temporal_slices: JSON.parse(JSON.stringify(routes)),
-      timestamp: new Date().getTime(),
-    })) 
+  const sendGameResult = () => {
+    console.log(
+      "result",
+      JSON.stringify({
+        duration: new Date().getTime() - startTime,
+        static_data: Object.assign(staticdata ?? {}, {
+          image_exposure_time: imageExposureTime,
+          learning_trials: numberOfTrials,
+          delay_time: delayBeforeRecall,
+          number_of_correct_pairs_recalled: pairsIdentified,
+          number_of_correct_items_recalled: itemsIdentified,
+          number_of_correct_recognized: itemRecognized,
+          number_of_correct_force_choice: correctChoice,
+        }),
+        temporal_slices: JSON.parse(JSON.stringify(routes)),
+        timestamp: new Date().getTime(),
+      })
+    );
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -404,7 +404,9 @@ const GameBoard = ({ ...props }: any) => {
   return (
     <>
       <div className="game_board">
-        {getPhaseTitle() != "" && <div className="timer-div">{getPhaseTitle()}</div>}
+        {getPhaseTitle() != "" && (
+          <div className="timer-div">{getPhaseTitle()}</div>
+        )}
         {renderContent()}
       </div>
       <Backdrop className="backdrop" open={loading}>
@@ -413,12 +415,9 @@ const GameBoard = ({ ...props }: any) => {
       <InfoModal
         show={showModalInfo}
         modalClose={() => {
-          if (!playing) {
-            handleClose();
-          }
+          handleClose();
         }}
         msg={i18n.t("INSTRUCTION")}
-        toggle={toggle}
         language={i18n.language}
       />
     </>

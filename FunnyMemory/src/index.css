@@ -10,6 +10,7 @@ body {
   width: 100%;
   font-size: 14px;
   min-height: 25px;
+  color: black;
 }
 .modal-header{border-bottom: 0;}
 .modal-footer{border-top: 0;}

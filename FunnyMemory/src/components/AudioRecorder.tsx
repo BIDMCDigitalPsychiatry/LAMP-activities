@@ -12,6 +12,7 @@ import SpeechRecognition, {
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
+import { Timer } from "./common/Timer";
 
 const AudioRecorder = ({ ...props }) => {
   const { phase } = props;
@@ -19,6 +20,8 @@ const AudioRecorder = ({ ...props }) => {
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
+  const [isTimeOut, setIsTimeOut] = useState(true);
+  const [startTimer, setStartTimer] = useState(180);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -55,16 +58,11 @@ const AudioRecorder = ({ ...props }) => {
     if (transcript && transcript != "") {
       setRecordedText(transcript);
     }
-  }, [transcript]);
-
-  useEffect(()=>{
-    setTimeout(()=>{
-      stopHandle();
-    },180000)
-  },[])
+  }, [transcript]);  
 
   const handleListing = () => {
     setIsListening(true);
+    setIsTimeOut(false);
     SpeechRecognition.startListening({
       continuous: true,
     });
@@ -87,6 +85,16 @@ const AudioRecorder = ({ ...props }) => {
     resetTranscript();
   };
 
+  const passTimerUpdate = (timerValue: number) => {
+    if (timerValue === 1) {
+      setTimeout(() => {
+        stopHandle();
+        setIsTimeOut(true);
+      }, 1000);
+    } else {
+      setStartTimer(timerValue)
+    }
+  };
   return (
     <div className="box-game mt-30">
       <p>{getTextForPhase()}</p>
@@ -103,6 +111,13 @@ const AudioRecorder = ({ ...props }) => {
         >
             <Microphone />
           </div>
+          {!isTimeOut ? (
+          <Timer
+            passTimerUpdate={passTimerUpdate}
+            startTimeInSeconds={startTimer}
+            startTimer={startTimer - 1}
+          />
+        ) : null}
           <div className="microphone-status">
             {isListening ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
           </div>
