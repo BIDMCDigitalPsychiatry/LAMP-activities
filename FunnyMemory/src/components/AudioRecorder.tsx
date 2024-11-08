@@ -54,11 +54,11 @@ const AudioRecorder = ({ ...props }) => {
   };
 
   useEffect(() => {
-    console.log("transcript", transcript)
+    console.log("transcript", transcript);
     if (transcript && transcript != "") {
       setRecordedText(transcript);
     }
-  }, [transcript]);  
+  }, [transcript]);
 
   const handleListing = () => {
     setIsListening(true);
@@ -92,7 +92,7 @@ const AudioRecorder = ({ ...props }) => {
         setIsTimeOut(true);
       }, 1000);
     } else {
-      setStartTimer(timerValue)
+      setStartTimer(timerValue);
     }
   };
   return (
@@ -100,38 +100,53 @@ const AudioRecorder = ({ ...props }) => {
       <p>{getTextForPhase()}</p>
       <h6>{getInstructionText()}</h6>
       <div className="microphone-wrapper">
-        <div
-          className="mircophone-container"
-         >
-          <div className="microphone-icon" ref={microphoneRef}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleListing();
-          }}
-        >
+        <div className="mircophone-container">
+          <div
+            className="microphone-icon"
+            ref={microphoneRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleListing();
+            }}
+          >
             <Microphone />
           </div>
           {!isTimeOut ? (
-          <Timer
-            passTimerUpdate={passTimerUpdate}
-            startTimeInSeconds={startTimer}
-            startTimer={startTimer - 1}
-          />
-        ) : null}
+            <Timer
+              passTimerUpdate={passTimerUpdate}
+              startTimeInSeconds={startTimer}
+              startTimer={startTimer - 1}
+            />
+          ) : null}
           <div className="microphone-status">
             {isListening ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
           </div>
           {isListening && (
-            <Button
-              variant="primary"
-              className="btn-stop"
-              onClick={(e) => {
-                e.stopPropagation();
-                stopHandle();
-              }}
-            >
-              {i18n.t("STOP")}
-            </Button>
+            <>
+              <Button
+                className="btn-cancel"
+                variant="primary"
+                onClick={(e) => {
+                  setIsListening(false);
+                  SpeechRecognition.stopListening();
+                  resetTranscript();
+                  setIsTimeOut(true);
+                  setStartTimer(180);
+                }}
+              >
+                {i18n.t("CANCEL")}
+              </Button>{" "}
+              <Button
+                variant="primary"
+                className="btn-stop"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  stopHandle();
+                }}
+              >
+                {i18n.t("STOP")}
+              </Button>
+            </>
           )}
         </div>
       </div>

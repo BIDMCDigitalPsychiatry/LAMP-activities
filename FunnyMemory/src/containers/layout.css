@@ -292,4 +292,20 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   border-radius: 25px;
   margin-top: 16px;
   font-weight: 600;
+  min-width: 106px;
+}
+.btn-cancel{
+  color: #359ffe;
+  background-color:transparent;
+  padding: 8px 25px;
+  border: #359ffe solid 2px;
+  border-radius: 25px;
+  margin-top: 16px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+.btn-cancel:hover{
+  border: #359ffe solid 2px;
+  background-color: #eee !important;
+  color: #359ffe;
 }
