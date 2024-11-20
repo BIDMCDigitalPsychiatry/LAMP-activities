@@ -512,7 +512,7 @@ export function GameComponent({ ...props }) {
       }
       setTimeout(() => {
         const route = {
-          duration: Math.floor(new Date().getTime() - time) / 1000,
+          duration: new Date().getTime() - time ,
           item: currentCount,
           level: result,
           type: angle,
