@@ -56,7 +56,7 @@ const Layout = ({...props} : any) =>{
         if(levelCompleted){
           setFooterMsg(i18n.t("YOU_WON"))
           const route = {
-            "duration": timeTaken/1000,
+            "duration": timeTaken,
             "item": circles,
             "level": gameLevel, 
             "type": levelCompleted,

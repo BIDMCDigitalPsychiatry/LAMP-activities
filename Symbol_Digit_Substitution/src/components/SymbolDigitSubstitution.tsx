@@ -270,7 +270,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
           });
       }
       const data = {
-          duration: (new Date().getTime() - previousClickTime) / 1000,
+          duration: (new Date().getTime() - previousClickTime),
           level: null,
           value: value === 1 ? true : false,
           type: symbolvalue
