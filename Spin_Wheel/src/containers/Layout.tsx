@@ -138,11 +138,11 @@ const Layout = ({...props}) => {
 
     setTotal(total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10))        
       const route = {
-          "duration": timeTaken/1000+"s",
-          "item": spinIndex,
-          "level": buttonIndex, 
-          "type": total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10),
-          "value": selectedCondition
+          duration: timeTaken,
+          item: spinIndex,
+          level: buttonIndex, 
+          type: total+parseInt(selectedItem1, 10)-parseInt(selectedItem2, 10),
+          value: selectedCondition
       }
       setRoutes([...routes,route])
       setTimeout(()=>{
@@ -237,7 +237,7 @@ const Layout = ({...props}) => {
                 setButtonIndex(1);
                 setConditions(conditionsForRed)
                }}>
- 1              </Button>
+ 1             </Button>
               <Button
                className='button-class'
                disabled={disableButtons}   
