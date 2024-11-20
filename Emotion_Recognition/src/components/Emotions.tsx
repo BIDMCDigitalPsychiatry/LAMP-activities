@@ -50,7 +50,7 @@ const Emotions = ({...props} : any) => {
     }
     else {
       setError("")
-      props.handleLevelCompleted(selected, (new Date().getTime() - duration)/1000, text)
+      props.handleLevelCompleted(selected, (new Date().getTime() - duration), text)
     }
   }
 
