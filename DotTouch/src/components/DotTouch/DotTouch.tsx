@@ -122,8 +122,14 @@ class DotTouch extends React.Component<{}, DotState> {
             if(this.state.gameLevel > 1) {
               routeList = this.updateRouteList();    
             }
-          const routes = [];      
-          routes.push({'Alphabet' : i, 'status' : 1, 'TimeTaken' : 0});
+          const routes = [];  
+             
+          routes.push({
+            duration: new Date().getTime() - this.state.startTime,
+            item: i,
+            level: this.state.gameLevel,
+            type: status,
+            value: null});
           // state updation for dot 1 click
           this.setState({
               lastClickTime:new Date().getTime(),
@@ -136,7 +142,7 @@ class DotTouch extends React.Component<{}, DotState> {
             });          
         } else {
           // Update the state values for each taps other than dot 1
-          this.updateStateWithTaps(i);          
+          this.updateStateWithTaps(i, status);          
         }
         if(this.state.dotValues.length - 1 === this.state.tapCount ) {
               // When all the dots are correctly tapped              
@@ -170,17 +176,21 @@ class DotTouch extends React.Component<{}, DotState> {
    }
    
    // Update the state values for each taps other than dot 1
-   updateStateWithTaps = (i:string) => {
+   updateStateWithTaps = (i:string, status: boolean) => {
      const routes = [];
-     const dif  = new Date().getTime() - this.state.lastClickTime;          
-     const lastclickTime =  (dif / 1000);
+     const lastclickTime  = new Date().getTime() - this.state.lastClickTime;          
      if(this.state.route.length > 0) {
         const r = JSON.parse(this.state.route);
         Object.keys(r).forEach(key => {
           routes.push(r[key]);
         });
      }
-     const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
+     const route = { duration: lastclickTime,
+      item: i,
+      level: this.state.gameLevel,
+      type: status,
+      value: null}
+    //  const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
      routes.push(route);
     
      this.setState({ 
@@ -223,43 +233,40 @@ class DotTouch extends React.Component<{}, DotState> {
     }  
 
    // Call the API to pass game result
-   sendGameResult = () => {
+   sendGameResult = (status?: boolean) => {
+    const route = {'type': 'manual_exit', 'value': status ?? false} 
+    const boxes = [];
+    if (this.state.route !== null) {
+      const r = JSON.parse(this.state.route);
+      Object.keys(r).forEach((key) => {
+        boxes.push(r[key]);
+      });
+    }    
+    boxes.push(route);    
+    this.setState({
+      route: JSON.stringify(boxes),
+    }, () => {
      const totalAttempts=  this.state.totalTaps;
      const gameScore = totalAttempts < 30 ? Math.round((this.state.correctTaps / 30) * 100) :
           Math.round((this.state.correctTaps / totalAttempts) * 100);
      const points = gameScore === 100 ? 2 : 1;
-     const statusType = this.state.gameOver ? 2 :1; 
-     const serverURL = typeof(process.env.REACT_APP_JEWELS_GAME_SERVER_URL) === 'undefined' ? '' : 
-       process.env.REACT_APP_JEWELS_GAME_SERVER_URL;     
-     const routeList = this.updateRouteList();    
-     fetch(serverURL, {   
-       body: JSON.stringify(
-         {
-           "AdminBatchSchID":0,
-           "EndTime": new Date(),
-           "IsNotificationGame":false,
-           "Point":points, 
-           "RoutesList": routeList,
-           "Score":gameScore,
-           "SpinWheelScore":5,   
-           "StartTime": this.state.startTime,
-           "StatusType":statusType,    
-           "TotalAttempts":this.state.totalTaps,   
-           "UserID":"200",
-           "Duration" : new Date().getTime() - this.state.time
-       }),
-       headers: {
-         'Access-Control-Allow-Origin': '*'
-       }, 
-       method: 'POST',
-     })
-     .then(response => response.json())
-     .then(response => {
-       console.log(response);
-     })
-     .catch(error => {
-       console.log(error);
-     });
+
+     parent.postMessage(
+      JSON.stringify({
+        duration: new Date().getTime() - this.state.startTime,
+        static_data: {
+          correct_answers: this.state.correctTaps,
+          point: points,
+          total_questions: this.state.totalTaps,
+          wrong_answers: this.state.totalTaps- this.state.correctTaps,
+          score: gameScore
+        },
+        temporal_slices: JSON.parse(this.state.route),
+        timestamp: new Date().getTime(),
+      }),
+      "*"
+    );
+  })
    }
 
    // Restart button action
@@ -311,7 +318,7 @@ class DotTouch extends React.Component<{}, DotState> {
    }
    
   clickBack = () => {
-    parent.postMessage(null, "*");
+    this.sendGameResult(true)
   }
 
    // Render the game board
