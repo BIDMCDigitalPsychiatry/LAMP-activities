@@ -34,6 +34,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -71,6 +72,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -108,9 +110,10 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair of words"
     },
   },
   "es-ES": {
@@ -145,6 +148,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -182,6 +186,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -218,6 +223,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -255,6 +261,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -292,6 +299,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -329,6 +337,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
@@ -366,6 +375,7 @@ const resources = {
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
       STOP: "Stop",
+      CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
       RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
