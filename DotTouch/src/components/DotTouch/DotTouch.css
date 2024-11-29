@@ -123,6 +123,7 @@ body{background: rgba(53,159,254,1);}
 .back-link{
 	position: absolute;
 	left: 0;
+	top: 10px;
 }
 @-webkit-keyframes App-logo-spin {
 	0% {
