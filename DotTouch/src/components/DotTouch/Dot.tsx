@@ -20,7 +20,7 @@ export class Dot extends React.Component<DotProps> {
     }
     
     render() {
-        const classNameVal = this.props.index === '1' ? 'dot-style dot-selected ' : 'dot-style ';
+        const classNameVal = this.props.index === '1' ? 'dot-style firstclass ' : 'dot-style ';
         return (
             <div onClick={this.onClick} key={this.props.index} className={classNameVal}>
                 <span className="number-text">{this.props.index}</span>
