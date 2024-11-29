@@ -34,15 +34,19 @@ interface DotState {
  time:number;
  timeout:boolean;   
  totalTaps:number;
+ settings: any;
 }
 
-class DotTouch extends React.Component<{}, DotState> {
-   constructor(props:{}) {
+class DotTouch extends React.Component<any, DotState> {
+   constructor(props:any) {
      super(props);
-     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
-     const randomArray = getRandomNumbers(8, 1, maxPlots);  
-     const dotCount = typeof(process.env.REACT_APP_LEVEL1_DOTCOUNT) === 'undefined' ? 8 : Number(process.env.REACT_APP_LEVEL1_DOTCOUNT);        
-    
+     const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {});
+
+     const maxPlots =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) ? 40 : 55 ;
+     const dotCount = settingsData?.level1_dot_count ?? 24 ;        
+     const randomArray = getRandomNumbers(dotCount, 1, maxPlots);  
     const values= getRandomAlphaNumeric(dotCount/2);
     
      // Initailise state values      
@@ -55,6 +59,7 @@ class DotTouch extends React.Component<{}, DotState> {
          lastClickTime:0,  
          lastWrongClick:null,
          route:[],
+         settings:settingsData,
          shuffledValues:shuffle(values),
          startGame:false,
          startTime:null, 
@@ -66,21 +71,18 @@ class DotTouch extends React.Component<{}, DotState> {
          timeout : false,
          totalTaps:0
        };      
+      //  this.resetState()
    }
 
    // Update each game level
    resetState = () => {
      let dotCount = 0;
-     const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
+     const maxPlots = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) ? 40 : 55 ;
      let randomArray;
-     switch(this.state.gameLevel) {
-        case 1:
-         dotCount = typeof(process.env.REACT_APP_LEVEL2_DOTCOUNT) === 'undefined' ? 10 : Number(process.env.REACT_APP_LEVEL1_DOTCOUNT);
-         break;
-       case 2:
-         dotCount = typeof(process.env.REACT_APP_LEVEL3_DOTCOUNT) === 'undefined' ? 12 : Number(process.env.REACT_APP_LEVEL1_DOTCOUNT);
-         break;
-     }
+     dotCount = this.state.settings?.level2_dot_count?? 24;
+       
      randomArray = getRandomNumbers(dotCount, 1, maxPlots);   
      const values = getRandomAlphaNumeric(dotCount/2);
      Array.from(document.getElementsByClassName('dot-style')).forEach(elem => {
@@ -116,8 +118,7 @@ class DotTouch extends React.Component<{}, DotState> {
       });
         let routeList:any;
         if(i === '1') {
-          const timerVal = typeof(process.env.REACT_APP_TIMOUT_PERIOD) === 'undefined' ? 30 :
-            Number(process.env.REACT_APP_TIMOUT_PERIOD);  
+          const timerVal = this.state.gameLevel == 1? this.state.settings.level1_timeout ?? 60 : this.state.settings.level2_timeout ?? 120;  
             routeList = []; 
             if(this.state.gameLevel > 1) {
               routeList = this.updateRouteList();    
@@ -204,8 +205,12 @@ class DotTouch extends React.Component<{}, DotState> {
       const table = []    
       let k = 0;
       let p = 0;
-      const rows = typeof(process.env.REACT_APP_ROWS) === 'undefined' ? 30 : Number(process.env.REACT_APP_ROWS);
-      const cols = typeof(process.env.REACT_APP_COLS) === 'undefined' ? 10 : Number(process.env.REACT_APP_COLS);
+      const rows = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) ? 9 : 6;
+      const cols =/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) ? 5: 10;
       const dotValuesToRender = this.state.shuffledValues;
       // Outer loop to create parent
       for (let i = 0; i < rows; i++) {
@@ -271,7 +276,9 @@ class DotTouch extends React.Component<{}, DotState> {
 
    // Restart button action
    restartState = () => {
-    const maxPlots = typeof(process.env.REACT_APP_MAX_PLOTS) === 'undefined' ? 200 : Number(process.env.REACT_APP_MAX_PLOTS);
+    const maxPlots = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) ? 40 : 55 ;
     const randomArray = getRandomNumbers(this.state.dotSpots.length, 1, maxPlots);
     const routeList = this.updateRouteList();    
                

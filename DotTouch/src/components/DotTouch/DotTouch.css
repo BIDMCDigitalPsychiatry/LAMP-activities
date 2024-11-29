@@ -61,7 +61,7 @@ body{background: rgba(53,159,254,1);}
 }
 
 .number-text{
-	font-size: 15px;
+	font-size: 20px;
     color: rgba(53,159,254,1);
     line-height: 32px;
 }
@@ -81,13 +81,34 @@ body{background: rgba(53,159,254,1);}
 } 
 .game-table td{
 	width: 10%;
+	padding: 5px 0;
 }
 .dot-style {
 	background: white;
     border-radius: 50%;
-    padding: 3px;
     text-align: center;
+	width: 80px;
+	height: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+.dot-style.firstclass{
+	border: #f00 solid 2px;
+	background-color: #fff;
+}
+.dot-style.firstclass span{
+	color: #f00;
+}
+@media only screen and (max-width: 500px) {
+	.dot-style {
+	  width: 60px;
+	  height: 60px;
+	}
+	.game-table td{
+		padding: 5px;
+	}
+  }
 
 .heading{
 	text-align: center;
