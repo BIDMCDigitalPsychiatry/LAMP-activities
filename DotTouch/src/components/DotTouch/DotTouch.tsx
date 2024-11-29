@@ -6,10 +6,10 @@
  * @copyright (c) 2020, ZCO
  */
 import * as React from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import { Dot } from './Dot';
 import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions';
-import UndoIcon from '@material-ui/icons/Undo';
+import RefreshRounded from '@material-ui/icons/RefreshRounded';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Timer } from '../common/Timer';
 import './DotTouch.css';
@@ -309,33 +309,20 @@ class DotTouch extends React.Component<any, DotState> {
     return routeList;
    }
 
-   // Undo button action
-   undoAction = () => {
-     if(this.state.startGame) {
-      const item = this.state.lastWrongClick;
-      if(item !== null) {
-        item.className ='dot-style';
-      }
-      const routeList = this.updateRouteList();     
-      this.setState({  
-        route:[], 
-        stateRoutes:JSON.stringify(routeList)     
-      });  
-     }
-   }
-   
   clickBack = () => {
     this.sendGameResult(true)
   }
+
+  // To refresh the game
+  clickHome = () => {
+    window.location.reload();
+  };
 
    // Render the game board
    render() {     
      const alertMsg = this.state.gameOver ? 'Congrats !!' : (this.state.timeout ? 'Timeout !' : 
        this.state.tapCount === 0 ? (this.state.gameLevel === 1 ? "Tap '1' to start the test": "Tap '1' to begin") :
-         (this.state.tapCount === 1 ? "Pick the matching alphabet" : 
-       <Button variant="outlined" color="primary" onClick={this.restartState}>
-         Restart
-       </Button>));
+         (this.state.tapCount === 1 ? "Pick the matching alphabet" : null));
      
      return (
        <div className="dot-touch-board">
@@ -344,7 +331,7 @@ class DotTouch extends React.Component<any, DotState> {
            {/* <ArrowBackIcon icon={faRedo}  onClick={this.undoAction}/> */}
          </nav>         
          <nav className="home-link">
-           <UndoIcon color="primary" onClick={this.undoAction}/>
+           <RefreshRounded color="primary" onClick={this.clickHome}/>
            {/* <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/> */}
          </nav>
          <div className="heading">Dot touch</div>
