@@ -1,0 +1,59 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "ban-types":false,
+    "object-literal-shorthand": false,
+    "array-type": [true, "generic"],
+    "interface-name":  [true, "never-prefix"],
+    "member-access": false,
+    "one-variable-per-declaration": false,
+    "member-ordering": false,
+    "no-console": false,
+    "jsx-no-lambda": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+	  "no-unused-variable": false,
+    "prefer-const":false,
+    "jsx-boolean-value":false,
+    "jsx-self-close":false,
+    "variable-name": {
+      "options": [
+        "allow-leading-underscore",
+        "allow-pascal-case",
+        "allow-snake-case",
+        "check-format",
+        "allow-trailing-underscore"
+      ]
+    }
+  },
+  "jsRules": {
+    "curly": false,
+    "triple-equals":false,
+    "no-duplicate-variable":false,
+    "no-unused-variable": false,
+    "object-literal-sort-keys": false ,
+    "one-variable-per-declaration": false,
+    "no-bitwise":false,
+    "no-conditional-assignment":false,
+    "no-shadowed-variable": false,
+    "no-empty": false,
+    "no-construct":false,
+    "no-console" : false,
+    "no-string-throw":false,
+    "variable-name": {
+      "options": [
+        "allow-leading-underscore",
+        "allow-pascal-case",
+        "allow-snake-case",
+        "check-format",
+        "allow-trailing-underscore"
+      ]
+    }
+  }
+}

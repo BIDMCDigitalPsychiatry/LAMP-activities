@@ -45,7 +45,7 @@ class DotTouch extends React.Component<any, DotState> {
      const maxPlots =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
         navigator.userAgent
       ) ? 40 : 55 ;
-     const dotCount = settingsData?.level1_dot_count ?? 24 ;        
+     const dotCount = settingsData?.level1_dot_count ?? 12 ;        
      const randomArray = getRandomNumbers(dotCount, 1, maxPlots);  
     const values= getRandomAlphaNumeric(dotCount/2);
     
