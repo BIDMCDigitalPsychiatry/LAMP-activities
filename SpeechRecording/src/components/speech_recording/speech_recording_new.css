@@ -1,0 +1,311 @@
+/* add css module styles here (optional) */
+
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700&display=swap");
+.recorder_library_box {
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif
+}
+.audio_section{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+.recorder_library_box .recorder_box {
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.recorder_library_box .recorder_box_inner {
+    border-radius: 0 0 3px 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recorder_library_box .mic_icon {
+    width: 60px;
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    transition: .5s ease all;
+    background: rgb(245, 0, 87);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 25px;
+    margin: 0 auto;
+}
+
+.recorder_library_box .microphone_icon_sec {
+    width: 25px;
+    height: 25px;
+    display: flex;
+}
+
+.recorder_library_box .mic_icon:hover {
+    background-color: #fff;
+}
+
+.recorder_library_box .mic_icon_svg {
+    fill: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+.recorder_library_box .mic_icon:hover .mic_icon_svg {
+    fill: rgb(245, 0, 87);
+}
+
+.recorder_library_box .reco_header {
+    display: flex;
+    justify-content: space-between;
+    background: #bd9f61;
+    align-items: center;
+    padding: 20px 20px;
+    color: #fff;
+    border-radius: 3px 3px 0 0;
+}
+
+.recorder_library_box .reco_header .h2 {
+    font-weight: 400;
+}
+
+.recorder_library_box .reco_header .close_icons {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    transition: 0.5s ease all;
+}
+
+.recorder_library_box .reco_header .close_icons:hover {
+    background: rgba(123, 118, 106, 0.21);
+}
+
+.recorder_library_box .record_section {
+    position: relative;
+    flex: 1;
+    width: 95%;
+    max-width: 700px;
+    background-color: #fff;
+    border-radius: 16px;
+    margin: 0 auto;
+    padding: 15px 30px 30px;
+}
+
+/* .recorder_library_box .record_section .mic_icon {
+
+}
+
+.recorder_library_box .record_section .duration_section {
+
+} */
+
+.recorder_library_box .btn_wrapper {
+    margin: 20px 30px 0; 
+    text-align: center;
+}
+
+.recorder_library_box .btn_wrapper .btn {
+    border: 0;
+    outline: 0;
+    padding: 8px 20px 10px;
+    border-radius: 25px;
+    background: rgba(53, 159, 254, 1);
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    border: 1px solid rgba(53, 159, 254, 1);
+    transition: .3s ease all;
+    min-width: 120px;
+}
+
+.recorder_library_box .btn_wrapper .btn:hover {
+    background: #fff;
+    color: rgba(53, 159, 254, 1);
+}
+
+.recorder_library_box .btn_wrapper .clear_btn {
+    background: #fff;
+    color: rgba(53, 159, 254, 1);
+    margin-left: 15px;
+}
+
+.recorder_library_box .btn_wrapper .clear_btn[disabled],
+.recorder_library_box .btn_wrapper .upload_btn[disabled] {
+    cursor: not-allowed;
+    color: #d9d9d9;
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+.recorder_library_box .btn_wrapper .clear_btn:hover {
+    background: rgba(53, 159, 254, 1);
+    color: #fff;
+}
+
+.recorder_library_box .duration {
+    text-align: center;
+}
+
+.recorder_library_box .recorder_page_box {
+    min-height: calc(100vh - 128px);
+    background: #fff;
+}
+
+.recorder_library_box .duration * {
+    color: rgba(53, 159, 254, 1);
+    font-size: 45px;
+}
+
+.recorder_library_box .duration_section .help {
+    color: #333;
+}
+
+.recorder_library_box .record_controller {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 0px;
+    padding: 20px 0;
+    display: flex;
+}
+
+.recorder_library_box .record_controller .icons {
+    width: 50px;
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.recorder_library_box .record_controller .stop {
+    background: #940505;
+    position: relative;
+}
+
+.recorder_library_box .record_controller .pause {
+    background: #9c6702;
+    position: relative;
+}
+
+.recorder_library_box .play_icons {
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-width: 10px 0px 10px 17px;
+    border-color: transparent transparent transparent #fff;
+    box-sizing: border-box;
+    position: absolute;
+    left: 56%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+}
+
+.recorder_library_box .pause_icons {
+    width: 17px;
+    height: 17px;
+    border-style: double;
+    border-width: 0px 0px 0px 15px;
+    border-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.recorder_library_box .stop_icon {
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid #fff;
+    border-radius: 2px;
+}
+
+.recorder_library_box .microphone_icon_sec {
+    width: 30px;
+    height: 30px;
+    display: flex;
+}
+
+.navigation-buttons{
+    text-align: center;
+}
+.navigation-buttons .nav-button {
+    background: #fff;
+    color: rgba(53, 159, 254, 1);
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 16px;
+    border: 0;
+    outline: 0;
+    padding: 8px 30px 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    border: 1px solid rgba(53, 159, 254, 1);
+    transition: .3s ease all;
+    min-width: 120px;
+    font-weight: 600;
+}
+
+.navigation-buttons .nav-button:hover {
+    background: rgba(53, 159, 254, 1);
+    color: #fff;
+}
+
+.begin {
+    text-align: left;
+    margin-left: 10%;
+}
+
+.recorder_library_box .question-section .index {
+    color: rgba(53, 159, 254, 1);
+    text-align: center;
+}
+
+.recorder_library_box .question-section .question{
+    text-align: center;
+    color: rgba(53, 159, 254, 1);
+    padding-top: 10px;
+    font-size: 30px;
+    font-weight: 450;
+}
+
+.navigation-buttons-disabled {
+    text-align: center;
+}
+
+.navigation-buttons-disabled .nav-button-disabled {
+    cursor: not-allowed;
+    color: #d9d9d9;
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+    text-shadow: none;
+    box-shadow: none;
+    transition: .3s ease all;
+    padding: 8px 30px 10px;
+    border-radius: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 16px;
+    min-width: 120px;
+    font-weight: 600;
+}
+
+/* .navigation-buttons-disabled {
+    padding-left: 30%;
+} */
+.information{
+    background-color: transparent !important;
+    justify-content: center;
+}
