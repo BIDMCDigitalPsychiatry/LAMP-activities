@@ -8,11 +8,11 @@
 import * as React from "react";
 import "./box.css";
 import { Button, Modal, Row, Col } from "react-bootstrap";
-import FiveStar from "./5Star.svg";
-import FourStar from "./4Star.svg";
-import ThreeStar from "./3Star.svg";
-import TwoStar from "./2Star.svg";
-import OneStar from "./1Star.svg";
+import Star5 from "./5Star.svg";
+import Star4 from "./4Star.svg";
+import Star3 from "./3Star.svg";
+import Star2 from "./2Star.svg";
+import Star1 from "./1Star.svg";
 import i18n from "../../i18n";
 
 interface Props {
@@ -74,21 +74,21 @@ export class Questinnaire extends React.Component<Props, State> {
           <Row className="align-items-center mb-4">
             <Col lg={4} className="fw-bolder">How clear were the instructions?</Col>
             <Col className="smileynav">
-              <Button onClick={(e) => this.setClarity(e, 5)} className={this.state.clarity == 5 ? "active" : ""}><img src={FiveStar}/></Button>
-              <Button onClick={(e) => this.setClarity(e, 4)} className={this.state.clarity == 4 ? "active" : ""}><img src={FourStar}/></Button>
-              <Button onClick={(e) => this.setClarity(e, 3)} className={this.state.clarity == 3 ? "active" : ""}><img src={ThreeStar}/></Button>
-              <Button onClick={(e) => this.setClarity(e, 2)} className={this.state.clarity == 2 ? "active" : ""}><img src={TwoStar}/></Button>
-              <Button onClick={(e) => this.setClarity(e, 1)} className={this.state.clarity == 1 ? "active" : ""}><img src={OneStar}/></Button>
+              <Button onClick={(e) => this.setClarity(e, 5)} className={this.state.clarity == 5 ? "active" : ""}><img src={Star5}/></Button>
+              <Button onClick={(e) => this.setClarity(e, 4)} className={this.state.clarity == 4 ? "active" : ""}><img src={Star4}/></Button>
+              <Button onClick={(e) => this.setClarity(e, 3)} className={this.state.clarity == 3 ? "active" : ""}><img src={Star3}/></Button>
+              <Button onClick={(e) => this.setClarity(e, 2)} className={this.state.clarity == 2 ? "active" : ""}><img src={Star2}/></Button>
+              <Button onClick={(e) => this.setClarity(e, 1)} className={this.state.clarity == 1 ? "active" : ""}><img src={Star1}/></Button>
             </Col>
           </Row>
           <Row className="align-items-center mb-4">
             <Col lg={4} className="fw-bolder">How happy would you be to do this again?</Col>
             <Col className="smileynav">
-              <Button onClick={(e) => this.setHappiness(e, 5)} className={this.state.happiness == 5 ? "active" : ""}><img src={FiveStar}/></Button>
-              <Button onClick={(e) => this.setHappiness(e, 4)} className={this.state.happiness == 4 ? "active" : ""}><img src={FourStar}/></Button>
-              <Button onClick={(e) => this.setHappiness(e, 3)} className={this.state.happiness == 3 ? "active" : ""}><img src={ThreeStar}/></Button>
-              <Button onClick={(e) => this.setHappiness(e, 2)} className={this.state.happiness == 2 ? "active" : ""}><img src={TwoStar}/></Button>
-              <Button onClick={(e) => this.setHappiness(e, 1)} className={this.state.happiness == 1 ? "active" : ""}><img src={OneStar}/></Button>
+              <Button onClick={(e) => this.setHappiness(e, 5)} className={this.state.happiness == 5 ? "active" : ""}><img src={Star5}/></Button>
+              <Button onClick={(e) => this.setHappiness(e, 4)} className={this.state.happiness == 4 ? "active" : ""}><img src={Star4}/></Button>
+              <Button onClick={(e) => this.setHappiness(e, 3)} className={this.state.happiness == 3 ? "active" : ""}><img src={Star3}/></Button>
+              <Button onClick={(e) => this.setHappiness(e, 2)} className={this.state.happiness == 2 ? "active" : ""}><img src={Star2}/></Button>
+              <Button onClick={(e) => this.setHappiness(e, 1)} className={this.state.happiness == 1 ? "active" : ""}><img src={Star1}/></Button>
             </Col>
           </Row>
         </Modal.Body>

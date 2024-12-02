@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="126" height="126" viewBox="0 0 126 126">
+import React from 'react'
+import {
+    Box
+  } from "@material-ui/core"
+
+const Star2 = () => {
+  return (
+    <Box><svg xmlns="http://www.w3.org/2000/svg" width="126" height="126" viewBox="0 0 126 126">
   <g id="_2Star" data-name="2Star" transform="translate(-519 -289)">
     <circle id="Ellipse_1" data-name="Ellipse 1" cx="63" cy="63" r="63" transform="translate(519 289)" fill="#ff8b00"/>
     <g id="Group_2" data-name="Group 2" transform="translate(0 -1)">
@@ -8,3 +15,7 @@
     </g>
   </g>
 </svg>
+</Box>
+  )
+}
+export default Star2
