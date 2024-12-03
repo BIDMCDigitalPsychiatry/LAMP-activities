@@ -244,7 +244,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }, () => {
       setTimeout(() => {
         this.setState({tapType: -1})
-      }, 300)
+      }, 500)
     
       this.updateWithTaps(i, success)
       if(this.state.successTaps + this.state.wrongTaps === this.state.randomPoints.length) { 
