@@ -103,7 +103,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
   }
 
   storeRecordedData = async (data, qn_duration, question) => {
-    if (data) {  
+    if (data && question) {  
       // eslint-disable-next-line no-restricted-globals
       const audioBase64URL = "data:audio/mpeg;base64," + data;
       const temporalSlices = [ 
@@ -127,7 +127,6 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
         }),
         "*"
       ); 
-      console.log(temporalSlices)
     }
   };
 

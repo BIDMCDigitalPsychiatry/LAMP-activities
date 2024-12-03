@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import stopIcon from './images/stop.png';
-import closeIcons from './images/close.png';
-import microphone from './images/microphone.png';
+// import stopIcon from './images/stop.png';
+import Stop from "./images/stop";
+// import closeIcons from './images/close.png';
+import Close from "./images/close";
+// import microphone from './images/microphone.png';
+import Microphone from "./images/microphone";
 import './speech_recording_new.css';
 import Alert from '@material-ui/lab/Alert';
 import i18n from "./../../i18n";
@@ -379,12 +382,13 @@ class Recorder extends Component<AppProps, AppState> {
                 <h2 className="h2">{title}</h2>
                 <span className="close_icons">
                   {
-                    <img
-                      src={closeIcons}
-                      width={20}
-                      height={20}
-                      alt="Close icons"
-                    />
+                    <Close />
+                    // <img
+                    //   src={closeIcons}
+                    //   width={20}
+                    //   height={20}
+                    //   alt="Close icons"
+                    // />
                   }
                 </span>
               </div>
@@ -451,7 +455,11 @@ class Recorder extends Component<AppProps, AppState> {
                 ) : (                    
                    this.state.clickStop  ? (
                     <div className="record_controller">
-                  <a className="mic_icon_disabled"><img src={microphone} width={30} height={30} alt="Microphone icons" /></a>
+                  <a className="mic_icon_disabled">
+                    <Microphone />
+                    
+                    {/* <img src={microphone} width={30} height={30} alt="Microphone icons" /> */}
+                    </a>
                   </div>
                   ) : (
                     <div className="record_controller">
@@ -461,12 +469,13 @@ class Recorder extends Component<AppProps, AppState> {
                         className="icons stop"
                       >
                         {
-                          <img
-                            src={stopIcon}
-                            width={20}
-                            height={20}
-                            alt="Stop icons"
-                          />
+                          <Stop />
+                          // <img
+                          //   src={stopIcon}
+                          //   width={20}
+                          //   height={20}
+                          //   alt="Stop icons"
+                          // />
                         }
                       </a>
                       <a
