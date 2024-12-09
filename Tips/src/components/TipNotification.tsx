@@ -1,6 +1,6 @@
 
 import React from "react"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import {
   Icon,
   Typography,
@@ -18,6 +18,7 @@ import {
 import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
+import ReactPlayer from "react-player"
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -133,6 +134,110 @@ function LinkRenderer(props: any) {
   );
 }
 
+function VideoRenderer({ url }: { url: string }) {
+  if(url.match(/dailymotion\.com\/video\/([^_]+)/)) {
+    const getDailymotionEmbedURL = (url: string) => {
+      const videoId = url.match(/dailymotion\.com\/video\/([^_]+)/);
+      if (videoId) {
+        return `https://www.dailymotion.com/embed/video/${videoId[1]}`;
+      }
+      return null;
+    };
+    const [embedUrl, setEmbedUrl] = useState<string | null>(null);
+    React.useEffect(() => {
+      const embed = getDailymotionEmbedURL(url);
+      setEmbedUrl(embed);  
+    }, [url]);
+  
+    if (embedUrl) {
+      return (
+        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+          <iframe
+            src={embedUrl}
+            title="Dailymotion Video"
+            width="100%"
+            height="100%"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+            }}
+          >
+          </iframe>
+        </div>
+      );
+    }
+  } 
+  else {
+    const [isVideo, setIsVideo] = useState(false);
+    const playerRef = useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+      setIsVideo(ReactPlayer.canPlay(url));
+    }, [url]);
+    if (isVideo) {
+      return (
+        // <div style={{ marginBottom: "15px" }}>
+        //   <ReactPlayer url={url} controls width="100%" height="100%" />
+        // </div>
+        <div
+          ref={playerRef}
+          style={{
+            position: "relative",
+            marginBottom: "15px",
+            backgroundColor: "#000",
+            paddingBottom: "56.25%",
+            height: 0,
+            overflow: "hidden",
+          }}
+        >
+        <ReactPlayer
+          url={url}
+          controls
+          width="100%"
+          height="100%"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        />
+      </div>
+      );
+    }  
+    else {
+      return (
+        <div
+          style={{
+            position: "relative",
+            paddingBottom: "56.25%",
+            height: 0,
+            overflow: "hidden",
+          }}
+        >
+        <iframe
+          src={url}
+          title="Embedded Video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture;display-capture;"
+          allowFullScreen
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        ></iframe>
+      </div>
+      );
+    }
+  } 
+}
+
 export default function TipNotification({ ...props }) {
   const classes = useStyles()
   const [status, setStatus] = useState("Yes")
@@ -160,9 +265,21 @@ export default function TipNotification({ ...props }) {
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
             {!!props.details ?
-              <ReactMarkdown skipHtml={false} components={{ a: LinkRenderer}}>{props.details}</ReactMarkdown>
+              <ReactMarkdown 
+                skipHtml={false} 
+                components={{ 
+                  a: ({ href, children }) =>
+                    // ReactPlayer.canPlay(href) ? (
+                  href ? (
+                      <VideoRenderer url={href} />
+                    ) : (
+                      <LinkRenderer href={href}>{children}</LinkRenderer>
+                    ),
+                }}>
+                {props.details}  
+              </ReactMarkdown>
             : ""}
-            </Typography>
+            </Typography>          
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
                 <Grid container className={classes.colorLine} spacing={0} >
