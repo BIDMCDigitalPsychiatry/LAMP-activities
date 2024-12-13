@@ -229,3 +229,9 @@ ol,ul {
 		opacity:0
 	}
 }
+.modal-body-section {
+	padding: 15px !important;
+	margin-top: 10px;
+    margin-bottom: 10px;
+	font-size: 18px;
+}
