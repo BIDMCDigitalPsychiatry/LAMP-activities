@@ -8,6 +8,7 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import {
+  checkIsStringInArray,
   getRandomNumbers,
   replaceDuplicatesWithEmptyString,
   shuffleArray,
@@ -35,7 +36,7 @@ const GameBoard = ({ ...props }: any) => {
   const [showImage, setShowImage] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [staticdata, setStaticData] = useState(null);
-  const [phase, setPhase] = useState("Trial1");
+  const [phase, setPhase] = useState("Trial");
   const startTime = new Date().getTime();
   const [timeTaken, setTimeTaken] = useState(startTime);
   const numberOfTrials = props?.numberOfTrials;
@@ -72,7 +73,7 @@ const GameBoard = ({ ...props }: any) => {
 
   const clickBack = () => {
     const route = { type: "manual_exit", value: true };
-    routes.push(route);    
+    routes.push(route);
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
@@ -85,7 +86,7 @@ const GameBoard = ({ ...props }: any) => {
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
-          number_of_total_pairs : currentIndex + 1
+          number_of_total_pairs: currentIndex + 1,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -125,10 +126,31 @@ const GameBoard = ({ ...props }: any) => {
     }
   };
 
+  const validateStrings = (array: string[]) => {
+    let found = false;
+    const arr = array.map((str: string) => {
+      if (!found) {
+        if (
+          Data[randomNumberArray.current[currentIndex]].missingItem.find(
+            (itm: string) => stringCleanUp(itm) === stringCleanUp(str)
+          )
+        ) {
+          found = true;
+        }
+        return str;
+      } else {
+        return "";
+      }
+    });
+    return arr;
+  };
+
   const saveResult = (recorededText: any[]) => {
     let tempRoute: any = [];
     if (recorededText && recorededText.length > 0) {
-      recorededText.map((word) => {
+      recorededText.length = 2;
+      const validatedArray = validateStrings(recorededText);
+      validatedArray.map((word) => {
         const route = {
           duration: new Date().getTime() - timeTaken,
           item: currentIndex,
@@ -140,8 +162,11 @@ const GameBoard = ({ ...props }: any) => {
       });
     }
     setRoutes(routes.concat(tempRoute));
+  }; 
 
-  };
+  console.log("routes", routes)
+  console.log("pairsidentified", pairsIdentified)
+  console.log("images identified", itemsIdentified)
 
   const handleRecall = (textArray: string[][]) => {
     let tempRoute: any = [];
@@ -149,25 +174,46 @@ const GameBoard = ({ ...props }: any) => {
     let pairCount = 0;
     if (textArray && textArray.length > 0) {
       textArray.forEach((arr: any[]) => {
-        let p = 0;
         if (arr && arr.length > 0) {
-          replaceDuplicatesWithEmptyString(arr).map((word) => {
+          let firstIndex: number[] = []
+          let secondIndex: number[] = []
+          replaceDuplicatesWithEmptyString(arr).forEach((str: string) => {
+            let imageIdentified = false;
+            for (let i = 0; i < identificationList.length; i++) {
+              for (let j = 0; j < identificationList[i].length; j++) {
+                if (stringCleanUp(identificationList[i][j]) === stringCleanUp(str)) {
+                  if(firstIndex.length > 0){
+                    if(i===firstIndex[0] && (j === 0 || secondIndex[0]===0)){
+                      imageIdentified = true
+                    }
+                    else{
+                      imageIdentified = false
+                    }
+                  }else{
+                    imageIdentified = true
+
+                  }
+                  firstIndex.push(i)
+                  secondIndex.push(j)
+                  break;
+                }          
+              }
+            }
             const route = {
               duration: new Date().getTime() - timeTaken,
               item: null,
               level: phase,
-              type: checkImageIdentified(word),
+              type: imageIdentified,
               value: null,
             };
+            tempRoute.push(route)
             if (route.type === true) {
               itemCount++;
-              p++;
             }
-            tempRoute.push(route);
-            if (p === 2) {
-              pairCount++;
-            }
-          });
+          }) 
+          if(firstIndex[0]===firstIndex[1] && secondIndex.includes(0)){
+            pairCount++;
+          }       
         }
       });
       setPairsIdentified(pairCount);
@@ -181,17 +227,19 @@ const GameBoard = ({ ...props }: any) => {
       setShowImage(true);
     }, 1000);
   };
+  
 
   const handleRecognition1 = (text: string) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
       item: randomNumberArray.current[currentIndex],
       level: phase,
-      type:
-        stringCleanUp(text) ===
-        stringCleanUp(Data[randomNumberArray.current[currentIndex]].missingItem)
-          ? true
-          : false,
+      type: checkIsStringInArray(
+        Data[randomNumberArray.current[currentIndex]].missingItem,
+        text
+      )
+        ? true
+        : false,
       value: null,
     };
     if (route.type === true) {
@@ -211,12 +259,12 @@ const GameBoard = ({ ...props }: any) => {
   };
 
   const handleRecordComplete = (text: any[]) => {
-    saveResult(text);  
+    saveResult(text);
     setTimeTaken(new Date().getTime());
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
       setShowImage(true);
-      setShowAudioRecorder(false);      
+      setShowAudioRecorder(false);
     } else {
       setShowAudioRecorder(false);
       if (trial === numberOfTrials && phase.includes("Trial")) {
@@ -251,8 +299,7 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  
-  const sendGameResult = () => {    
+  const sendGameResult = () => {
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -264,7 +311,7 @@ const GameBoard = ({ ...props }: any) => {
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
-          number_of_total_pairs : currentIndex + 1
+          number_of_total_pairs: currentIndex + 1,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
@@ -305,7 +352,7 @@ const GameBoard = ({ ...props }: any) => {
         <ShowImage
           text={
             phase === "recognition1"
-              ? "What is missing from each of these pictures?"
+              ? Data[randomNumberArray.current[currentIndex]].question
               : ""
           }
           image={
