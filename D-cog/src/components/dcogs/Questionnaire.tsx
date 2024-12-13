@@ -29,7 +29,7 @@ interface State {
   happiness: number
 }
 
-export class Questinnaire extends React.Component<Props, State> {
+export class Questionnaire extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     i18n.changeLanguage(!!props.language ? props.language : "en-US");
@@ -68,7 +68,7 @@ export class Questinnaire extends React.Component<Props, State> {
         centered={true}
       >
         <Modal.Header closeButton={true}>
-          <Modal.Title><h4>Questinnaire</h4></Modal.Title>
+          <Modal.Title><h4>Questionnaire</h4></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row className="align-items-center mb-4">
