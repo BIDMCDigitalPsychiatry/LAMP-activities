@@ -13,6 +13,7 @@ import RefreshRounded from '@material-ui/icons/RefreshRounded';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Timer } from '../common/Timer';
 import './DotTouch.css';
+import { GeneralInstruction } from './GeneralInstruction';
 
 /* eslint-disable no-restricted-globals */
 interface DotState { 
@@ -35,6 +36,7 @@ interface DotState {
  timeout:boolean;   
  totalTaps:number;
  settings: any;
+ showInstruction: boolean;
 }
 
 class DotTouch extends React.Component<any, DotState> {
@@ -69,7 +71,8 @@ class DotTouch extends React.Component<any, DotState> {
          tapCount:0,
          time: new Date().getTime(),
          timeout : false,
-         totalTaps:0
+         totalTaps:0,
+         showInstruction: true,
        };      
       //  this.resetState()
    }
@@ -96,7 +99,8 @@ class DotTouch extends React.Component<any, DotState> {
        shuffledValues:shuffle(values),
        startGame:false,
        stateChange:true,
-       tapCount:0
+       tapCount:0,
+       showInstruction: true,
      });    
    }
 
@@ -139,7 +143,8 @@ class DotTouch extends React.Component<any, DotState> {
               startTime: this.state.gameLevel === 1 ? new Date() : this.state.startTime,                           
               startTimer : timerVal,
               stateChange:false,
-              stateRoutes:JSON.stringify(routeList)
+              stateRoutes:JSON.stringify(routeList),
+              showInstruction: false,
             });          
         } else {
           // Update the state values for each taps other than dot 1
@@ -318,12 +323,23 @@ class DotTouch extends React.Component<any, DotState> {
     window.location.reload();
   };
 
+  handleCloseInstructionModal = () => {
+    this.setState({ showInstruction: false });
+  };
+
    // Render the game board
    render() {     
      const alertMsg = this.state.gameOver ? 'Congrats !!' : (this.state.timeout ? 'Timeout !' : 
        this.state.tapCount === 0 ? (this.state.gameLevel === 1 ? "Tap '1' to start the test": "Tap '1' to begin") :
-         (this.state.tapCount === 1 ? "Pick the matching alphabet" : null));
+         (this.state.tapCount === 1 ? "Tap on the corresponding letter" : null));
      
+         const Instruction = this.state.showInstruction ? (
+          <GeneralInstruction
+            show={true}
+            modalClose={this.handleCloseInstructionModal}
+            msg = { ('For this game, you will alternate between tapping on numbers and letters in increasing order: for instance, 1-A-2-B etc.')}
+          />
+        ) : null;
      return (
        <div className="dot-touch-board">
          <nav className="back-link">
@@ -344,6 +360,7 @@ class DotTouch extends React.Component<any, DotState> {
              </div>
              {this.state.startTimer > 0 && !this.state.gameOver && <div className="level-text">Level {this.state.gameLevel}</div>}
              <br/>
+             {Instruction}
              <table className="game-table" id="game-table">
                <tbody>
                  {this.createTable()}
