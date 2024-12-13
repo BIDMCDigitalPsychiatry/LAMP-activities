@@ -32,6 +32,7 @@ export class Box extends React.Component<BoxProps> {
       this.props.img !== null && this.props.animateStatus === true
         ? this.props.boxSQClass + " dog-cover"
         : this.props.boxSQClass ;
+
     return (
       <div
         key="this.props.index"
