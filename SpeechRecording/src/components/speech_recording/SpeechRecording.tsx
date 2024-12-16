@@ -40,6 +40,8 @@ interface AppState {
   questions: any[];
   index: number;
   qn_duration: any;
+  recordedData: any[];
+  submitEnabled: boolean;
 }
 
 interface AppProps {
@@ -67,11 +69,13 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       audioAllowed: false,
       clickUpload: false,
       clickStop: false,
-      settings: props.data?.activity?.settings,
+      settings: props.data.activity?.settings,
       time: new Date().getTime(),
-      questions: props.data?.activity?.settings,
+      questions: props.data.activity?.settings,
       index: 0,
       qn_duration: 0,
+      recordedData: [],
+      submitEnabled: false,
      };
      i18n.changeLanguage(!!props?.data?.configuration?.language ? props?.data?.configuration?.language : "en-US");
    }
@@ -97,38 +101,64 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
     let file = new File([data], currentDateTime+".mp3");    
     const newFileName = file;
     let audioBase64Url = await this.fileToBase64(newFileName);
-    this.storeRecordedData(audioBase64Url, qn_duration, question);
+    const newRecording = {
+      question: question || this.state.questions[this.state.index]?.question,
+      audioData: audioBase64Url,
+      duration: qn_duration,
+    };
+  
+    this.setState((prevState) => ({
+      recordedData: [...prevState.recordedData, newRecording],
+      loader: false,
+    }));
+    // this.storeRecordedData(audioBase64Url, qn_duration, question);
     this.handleReset();
     this.setState({loader: false})
   }
 
-  storeRecordedData = async (data, qn_duration, question) => {
-    if (data && question) {  
-      // eslint-disable-next-line no-restricted-globals
-      const audioBase64URL = "data:audio/mpeg;base64," + data;
-      const temporalSlices = [ 
-        {
-          value: audioBase64URL,
-          item: question || this.state.questions[this.state.index]?.question,
-          level: null,
-          type: null,
-          duration: qn_duration,
-        },
-      ];
+  handleSubmit = async() => {
+    const submissionPayload = {
+      static_data: {},
+      temporal_slices: this.state.recordedData.map((recording) => ({
+        value: `data:audio/mpeg;base64,${recording.audioData}`,
+        item: recording.question,
+        level: null,
+        type: null,
+        duration: recording.duration,
+      })),
+      timestamp: new Date().getTime(),
+    };
+  
+    parent.postMessage(JSON.stringify(submissionPayload), "*");
+  }
 
-      parent.postMessage(
-        JSON.stringify({
-          static_data: {
-          },
-          temporal_slices: [
-            temporalSlices
-          ],
-          timestamp: new Date().getTime(),
-        }),
-        "*"
-      ); 
-    }
-  };
+  // storeRecordedData = async (data, qn_duration, question) => {
+  //   if (data && question) {  
+  //     // eslint-disable-next-line no-restricted-globals
+  //     const audioBase64URL = "data:audio/mpeg;base64," + data;
+  //     const temporalSlices = [ 
+  //       {
+  //         value: audioBase64URL,
+  //         item: question || this.state.questions[this.state.index]?.question,
+  //         level: null,
+  //         type: null,
+  //         duration: qn_duration,
+  //       },
+  //     ];
+  //     console.log(temporalSlices)
+  //     parent.postMessage(
+  //       JSON.stringify({
+  //         static_data: {
+  //         },
+  //         temporal_slices: [
+  //           temporalSlices
+  //         ],
+  //         timestamp: new Date().getTime(),
+  //       }),
+  //       "*"
+  //     ); 
+  //   }
+  // };
 
   handleReset = async () => {
     const reset = {
@@ -170,6 +200,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
           showUIAudio
           handleAudioStop={(data) => this.handleAudioStop(data)}
           handleAudioUpload={(data, qn_duration, question) => this.handleAudioUpload(data, qn_duration, question)}
+          handleSubmit={()=>this.handleSubmit()}
           handleReset={() => this.handleReset()}
           uploadButtonDisabled={this.state.disableUploadBtn}
           mimeTypeToUseWhenRecording={null}

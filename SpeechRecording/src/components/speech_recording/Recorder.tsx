@@ -33,6 +33,12 @@ interface AppState {
   index: number;
   qn_duration: any;
   startTime: any;
+  recordedData: {
+    audioBase64: string;
+    question: string;
+    duration: number;
+  }[];
+  submitEnabled: boolean;
 }
 
 interface AppProps {
@@ -44,6 +50,7 @@ interface AppProps {
   audioURL: string | null;
   hideHeader: Boolean;
   handleAudioUpload( audioBlob: any, qn_duration: number, question: any): void;
+  handleSubmit(recordedData: any): void;
   uploadButtonDisabled: any;
   clickUpload: Boolean;
   clickStop: Boolean;
@@ -77,6 +84,8 @@ class Recorder extends Component<AppProps, AppState> {
       index: 0,
       startTime: new Date().getTime(),
       qn_duration: 0,
+      recordedData: [],
+      submitEnabled: false,
     };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
@@ -348,13 +357,8 @@ class Recorder extends Component<AppProps, AppState> {
                 <button onClick={this.handleNext} className="nav-button">
                   {i18n.t("NEXT_BTN")}
                 </button>
-              ) : (
-                // <button onClick={this.handleNext} className="nav-button">
-                //   {i18n.t("NEXT_BTN")}
-                // </button>
-                  null
-              )}
-      
+              ) : null
+              }
             </div>
             ): <div className="navigation-buttons-disabled">
                 {this.state.index > 0 &&  (
@@ -366,12 +370,7 @@ class Recorder extends Component<AppProps, AppState> {
                   <button className="nav-button-disabled">
                     {i18n.t("NEXT_BTN")}
                   </button>
-                ) : (
-                  // <button className="nav-button-disabled">
-                  //   {i18n.t("SUBMIT_BTN")}
-                  // </button>
-                  null
-                )}
+                ) : null}
             </div>
           }
         </div>
@@ -401,8 +400,8 @@ class Recorder extends Component<AppProps, AppState> {
                   <div className="audio_section">
                     {audioURL !== null && showUIAudio ? (
                       <audio controls>
-                        <source src={audios[0] ?? null} type="audio/ogg" />
-                        <source src={audios[0] ?? null} type="audio/mpeg" />
+                        <source src={audios[0]} type="audio/ogg" />
+                        <source src={audios[0]} type="audio/mpeg" />
                       </audio>
                     ) : null}
                   </div>
@@ -499,7 +498,7 @@ class Recorder extends Component<AppProps, AppState> {
                 <div className="btn_wrapper">
                   <button
                     onClick={() => {
-                        this.setState({clickUpload: true, clickStop: false, maxRecordLimit: false})  
+                        this.setState({clickUpload: true, clickStop: false, maxRecordLimit: false, submitEnabled: true})  
                         this.props.handleAudioUpload( this.state.audioBlob, this.state.qn_duration, this.props.data.activity?.settings[this.state.index])
                       }
                     }
@@ -513,6 +512,13 @@ class Recorder extends Component<AppProps, AppState> {
                     className="btn clear_btn"
                   >
                     {i18n.t("CLEAR_BTN")}
+                  </button><br></br>
+                  <button
+                    onClick={() => this.props.handleSubmit(this.state.recordedData)}
+                    className="btn submit_btn"
+                    disabled={!this.state.submitEnabled} 
+                  >
+                    {i18n.t("SUBMIT_BTN")}
                   </button>
                 </div>
               </div>
