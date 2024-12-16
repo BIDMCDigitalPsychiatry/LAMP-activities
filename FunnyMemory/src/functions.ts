@@ -33,6 +33,27 @@ export const stringCleanUp = (str : string) =>{
   return str.toLowerCase().replace(/\s+/g, "")
 }
 
+export const checkIsStringInArray = (arr: string[], str : string) =>{
+  const result = arr.findIndex(( item : string )=>  stringCleanUp(str) === stringCleanUp(item));
+  if(result === 1){
+    return true
+  }
+  else{
+    return false
+  }
+
+}
+
+export const getMonthIndex = () =>{
+  const currentMonth = new Date().getMonth();
+  if(currentMonth<=6){
+    return currentMonth
+  }
+  else {
+    return (currentMonth - 6)
+  }
+}
+
 
 
 
