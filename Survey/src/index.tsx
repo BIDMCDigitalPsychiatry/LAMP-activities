@@ -17,60 +17,17 @@ const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 
-const data = {
-  "activity": {
-      "id": "rab6evc0c39fv190cqs0",
-      "category": [
-          "assess",
-          "learn",
-          "manage",
-          "prevent"
-      ],
-      "spec": "lamp.survey",
-      "name": "Survey warning",
-      "description": "test",
-      "photo": null,
-      "streak": {
-          "streak": true,
-          "streakTitle": "test",
-          "streakDesc": "l;"
-      },
-      "visualSettings": null,
-      "showFeed": true,
-      "schedule": [],
-      "settings": [
-          {
-              "text": "Q1",
-              "type": "text",
-              "required": true,
-              "description": "A",
-              "warnings": [
-                  {
-                      "answer": "Help",
-                      "warningText": "Please call 988"
-                  }
-              ]
-          }
-      ]
-  },
-  "configuration": {
-      "language": "en-US"
-  },
-  "autoCorrect": true,
-  "noBack": false
-}
-
-// eventer(
-//   messageEvent, (e) => {    
+ eventer(
+   messageEvent, (e) => {    
 		ReactDOM.render(
       <SnackbarProvider>
         <AppContainer>
-          <SurveyQuestions data={data}/> 
+          <SurveyQuestions data={e.data}/> 
         </AppContainer>
       </SnackbarProvider>
           , 		  
 		  document.getElementById("root")
 		);
-//   },
-//   false
-//  )
+   },
+   false
+  )
