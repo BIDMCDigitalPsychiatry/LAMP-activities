@@ -33,6 +33,12 @@ interface AppState {
   index: number;
   qn_duration: any;
   startTime: any;
+  recordedData: {
+    audioBase64: string;
+    question: string;
+    duration: number;
+  }[];
+  submitEnabled: boolean;
 }
 
 interface AppProps {
@@ -44,6 +50,7 @@ interface AppProps {
   audioURL: string | null;
   hideHeader: Boolean;
   handleAudioUpload( audioBlob: any, qn_duration: number, question: any): void;
+  handleSubmit(recordedData: any): void;
   uploadButtonDisabled: any;
   clickUpload: Boolean;
   clickStop: Boolean;
@@ -77,6 +84,8 @@ class Recorder extends Component<AppProps, AppState> {
       index: 0,
       startTime: new Date().getTime(),
       qn_duration: 0,
+      recordedData: [],
+      submitEnabled: false,
     };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
@@ -291,7 +300,7 @@ class Recorder extends Component<AppProps, AppState> {
   }
 
   handleNext = () => {
-    if (this.state.index < this.props.data?.activity?.settings?.length - 1) { 
+    if (this.state.index < this.props.data?.activity?.questions?.length - 1) { 
        const currentTime = new Date().getTime();
        const duration_time = currentTime - this.state.startTime;
        this.setState({ qn_duration: duration_time, index: this.state.index + 1, startTime: currentTime })
@@ -325,14 +334,14 @@ class Recorder extends Component<AppProps, AppState> {
         <div className="question-section">
           <Container> 
             <Row>
-              <Col> {this.props.data.activity?.settings[this.state.index]?.question ? (
-                <p className="index">{this.state.index + 1} {i18n.t("Of")} {this.props.data.activity?.settings?.length}</p>  
+              <Col> {this.props.data.activity?.questions[this.state.index]?.question ? (
+                <p className="index">{this.state.index + 1} {i18n.t("Of")} {this.props.data.activity?.questions?.length}</p>  
               ): <p className="index">No question available</p>}            
               </Col>
             </Row>          
             <Row className="question">
               <Col>                            
-                <h4>{this.props.data.activity?.settings[this.state.index]?.question}</h4>
+                <h4>{this.props.data.activity?.questions[this.state.index]?.question}</h4>
               </Col>
             </Row> 
           </Container>
@@ -344,17 +353,12 @@ class Recorder extends Component<AppProps, AppState> {
                   {i18n.t("PREV_BTN")} 
                 </button>
               )}
-              {this.state.index < this.props.data.activity?.settings?.length - 1  ? (
+              {this.state.index < this.props.data.activity?.questions?.length - 1  ? (
                 <button onClick={this.handleNext} className="nav-button">
                   {i18n.t("NEXT_BTN")}
                 </button>
-              ) : (
-                // <button onClick={this.handleNext} className="nav-button">
-                //   {i18n.t("NEXT_BTN")}
-                // </button>
-                  null
-              )}
-      
+              ) : null
+              }
             </div>
             ): <div className="navigation-buttons-disabled">
                 {this.state.index > 0 &&  (
@@ -362,16 +366,11 @@ class Recorder extends Component<AppProps, AppState> {
                     {i18n.t("PREV_BTN")} 
                   </button>
                 )}
-                {this.state.index < this.props.data.activity?.settings?.length - 1  ? (
+                {this.state.index < this.props.data.activity?.questions?.length - 1  ? (
                   <button className="nav-button-disabled">
                     {i18n.t("NEXT_BTN")}
                   </button>
-                ) : (
-                  // <button className="nav-button-disabled">
-                  //   {i18n.t("SUBMIT_BTN")}
-                  // </button>
-                  null
-                )}
+                ) : null}
             </div>
           }
         </div>
@@ -401,8 +400,8 @@ class Recorder extends Component<AppProps, AppState> {
                   <div className="audio_section">
                     {audioURL !== null && showUIAudio ? (
                       <audio controls>
-                        <source src={audios[0] ?? null} type="audio/ogg" />
-                        <source src={audios[0] ?? null} type="audio/mpeg" />
+                        <source src={audios[0]} type="audio/ogg" />
+                        <source src={audios[0]} type="audio/mpeg" />
                       </audio>
                     ) : null}
                   </div>
@@ -499,8 +498,8 @@ class Recorder extends Component<AppProps, AppState> {
                 <div className="btn_wrapper">
                   <button
                     onClick={() => {
-                        this.setState({clickUpload: true, clickStop: false, maxRecordLimit: false})  
-                        this.props.handleAudioUpload( this.state.audioBlob, this.state.qn_duration, this.props.data.activity?.settings[this.state.index])
+                        this.setState({clickUpload: true, clickStop: false, maxRecordLimit: false, submitEnabled: true})  
+                        this.props.handleAudioUpload( this.state.audioBlob, this.state.qn_duration, this.props.data.activity?.questions[this.state.index])
                       }
                     }
                     disabled={this.props.uploadButtonDisabled}
@@ -513,6 +512,13 @@ class Recorder extends Component<AppProps, AppState> {
                     className="btn clear_btn"
                   >
                     {i18n.t("CLEAR_BTN")}
+                  </button><br></br>
+                  <button
+                    onClick={() => this.props.handleSubmit(this.state.recordedData)}
+                    className="btn submit_btn"
+                    disabled={!this.state.submitEnabled} 
+                  >
+                    {i18n.t("SUBMIT_BTN")}
                   </button>
                 </div>
               </div>

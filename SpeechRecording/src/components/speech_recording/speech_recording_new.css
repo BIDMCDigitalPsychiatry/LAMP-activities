@@ -309,3 +309,21 @@
     background-color: transparent !important;
     justify-content: center;
 }
+.recorder_library_box .btn_wrapper .submit_btn {
+    background: #fff;
+    color: rgba(53, 159, 254, 1);
+    margin-left: 15px;
+    margin-top: 15px;
+}
+.recorder_library_box .btn_wrapper .submit_btn:hover {
+    background: rgba(53, 159, 254, 1);
+    color: #fff;
+}
+.recorder_library_box .btn_wrapper .submit_btn[disabled] {
+    cursor: not-allowed;
+    color: #d9d9d9;
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+    text-shadow: none;
+    box-shadow: none;
+}

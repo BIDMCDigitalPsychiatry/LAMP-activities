@@ -16,6 +16,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },"de-DE": {
     translation: {
@@ -31,6 +32,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   }, 
   "en-US": {
@@ -47,6 +49,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   }, "es-ES": {
     translation: {
@@ -62,6 +65,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },
   "fr-FR": {
@@ -78,6 +82,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },"hi-IN": {
     translation: {
@@ -93,6 +98,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },"it-IT": {
     translation: {
@@ -108,6 +114,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Fai clic su 'Carica' (Upload), oppure 'Cancella' (Clear) per registrare di nuovo",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },
  "ko-KR": {
@@ -124,6 +131,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "Click upload or clear to record again",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },  "zh-CN": {
     translation: {
@@ -139,6 +147,7 @@ const resources = {
       CLICK_TO_CLEAR_MSG: "\u70b9\u51fb\u4e0a\u4f20\u6216\u6e05\u9664\u91cd\u65b0\u5f55\u5236",
       NEXT_BTN: "Next",
       PREV_BTN: "Previous",
+      SUBMIT_BTN: "Submit",
     },
   },
     "zh-HK": {
@@ -155,6 +164,7 @@ const resources = {
         CLICK_TO_CLEAR_MSG: "\u9ede\u64ca\u4e0a\u50b3\u6216\u6e05\u9664\u91cd\u65b0\u9304\u88fd",
         NEXT_BTN: "Next",
         PREV_BTN: "Previous",
+        SUBMIT_BTN: "Submit",
       },
     },
   }
