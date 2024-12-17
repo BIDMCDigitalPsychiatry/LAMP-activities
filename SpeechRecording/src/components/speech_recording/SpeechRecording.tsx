@@ -11,7 +11,7 @@ import Recorder from "./Recorder";
 
 import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./speech_recording.css";
+import "./SpeechRecordingCSS.css";
 import i18n from "./../../i18n";
 
 interface AudioDuration {
@@ -71,7 +71,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       clickStop: false,
       settings: props.data.activity?.settings,
       time: new Date().getTime(),
-      questions: props.data.activity?.settings,
+      questions: props.data.activity?.questions,
       index: 0,
       qn_duration: 0,
       recordedData: [],
@@ -128,7 +128,6 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       })),
       timestamp: new Date().getTime(),
     };
-  
     parent.postMessage(JSON.stringify(submissionPayload), "*");
   }
 
@@ -208,7 +207,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
           clickStop={this.state.clickStop}
           language={i18n.language}
           settings={this.state.settings}
-          questions={this.props.data.activity?.settings}
+          questions={this.props.data.activity?.questions}
           data={this.props.data}
         />
       </div>
