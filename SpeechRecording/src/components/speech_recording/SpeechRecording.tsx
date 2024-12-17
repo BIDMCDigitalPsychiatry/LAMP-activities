@@ -71,7 +71,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       clickStop: false,
       settings: props.data.activity?.settings,
       time: new Date().getTime(),
-      questions: props.data.activity?.questions,
+      questions: props.data.activity?.settings,
       index: 0,
       qn_duration: 0,
       recordedData: [],
@@ -207,7 +207,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
           clickStop={this.state.clickStop}
           language={i18n.language}
           settings={this.state.settings}
-          questions={this.props.data.activity?.questions}
+          questions={this.props.data.activity?.settings}
           data={this.props.data}
         />
       </div>
