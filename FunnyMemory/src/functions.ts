@@ -45,7 +45,7 @@ export const checkIsStringInArray = (arr: string[], str : string) =>{
 }
 
 export const getMonthIndex = () =>{
-  const currentMonth = new Date().getMonth();
+  const currentMonth = new Date().getMonth() + 1;
   if(currentMonth<=6){
     return currentMonth
   }
