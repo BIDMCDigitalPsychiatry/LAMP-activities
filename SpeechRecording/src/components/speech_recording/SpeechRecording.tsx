@@ -11,7 +11,7 @@ import Recorder from "./Recorder";
 
 import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./speech_recording.css";
+import "./SpeechRecordingCSS.css";
 import i18n from "./../../i18n";
 
 interface AudioDuration {
@@ -128,7 +128,6 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       })),
       timestamp: new Date().getTime(),
     };
-  
     parent.postMessage(JSON.stringify(submissionPayload), "*");
   }
 

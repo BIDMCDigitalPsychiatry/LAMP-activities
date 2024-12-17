@@ -107,7 +107,7 @@
 } */
 
 .recorder_library_box .btn_wrapper {
-    margin: 20px 30px 0; 
+    margin: 20px 0px 0; 
     text-align: center;
 }
 
@@ -170,12 +170,8 @@
 }
 
 .recorder_library_box .record_controller {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
-    bottom: 0px;
-    padding: 20px 0;
     display: flex;
+    justify-content: center;
 }
 
 .recorder_library_box .record_controller .icons {
@@ -194,10 +190,13 @@
     background: #940505;
     position: relative;
 }
-
+.stop svg{
+    max-height: 50%;
+}
 .recorder_library_box .record_controller .pause {
     background: #9c6702;
     position: relative;
+    margin-right: 0;
 }
 
 .recorder_library_box .play_icons {

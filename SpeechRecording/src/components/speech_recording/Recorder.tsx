@@ -5,7 +5,7 @@ import Stop from "./images/stop";
 import Close from "./images/close";
 // import microphone from './images/microphone.png';
 import Microphone from "./images/microphone";
-import './speech_recording_new.css';
+import './SpeechRecordingStyle.css';
 import Alert from '@material-ui/lab/Alert';
 import i18n from "./../../i18n";
 import ReactMarkdown from "react-markdown"
@@ -270,6 +270,7 @@ class Recorder extends Component<AppProps, AppState> {
         clickUpload: false,
         startTime: new Date().getTime(),
         qn_duration: 0,
+        maxRecordLimit: false,
       },
       () => {
         this.props.handleReset();
@@ -346,7 +347,7 @@ class Recorder extends Component<AppProps, AppState> {
             </Row> 
           </Container>
       
-          {!recording && !this.state.clickStop ? (
+          {!recording && !this.state.clickStop && !this.state.maxRecordLimit? (
             <div className="navigation-buttons">
               {this.state.index > 0 &&  (
                 <button onClick={this.handlePrevious} className="nav-button">
@@ -361,7 +362,7 @@ class Recorder extends Component<AppProps, AppState> {
               }
             </div>
             ): <div className="navigation-buttons-disabled">
-                {this.state.index > 0 &&  (
+                {this.state.index < this.props.data.activity?.settings?.length - 1 && (
                   <button className="nav-button-disabled">
                     {i18n.t("PREV_BTN")} 
                   </button>
@@ -429,7 +430,7 @@ class Recorder extends Component<AppProps, AppState> {
                   ) :
                   null)}
                 </div>
-                {!recording && !this.state.clickStop ? (                  
+                {!recording && !this.state.clickStop && !this.state.maxRecordLimit? (                  
                   <a
                     onClick={(e) => this.startRecording(e)}
                     href=" #"
@@ -452,11 +453,10 @@ class Recorder extends Component<AppProps, AppState> {
                     </span>
                   </a>
                 ) : (                    
-                   this.state.clickStop  ? (
+                   this.state.clickStop || this.state.maxRecordLimit  ? (
                     <div className="record_controller">
                   <a className="mic_icon_disabled">
                     <Microphone />
-                    
                     {/* <img src={microphone} width={30} height={30} alt="Microphone icons" /> */}
                     </a>
                   </div>
@@ -510,9 +510,11 @@ class Recorder extends Component<AppProps, AppState> {
                   <button
                     onClick={(e) => this.handleReset(e)}
                     className="btn clear_btn"
+                    disabled={this.props.audioURL===null&&!pauseRecord}
                   >
                     {i18n.t("CLEAR_BTN")}
                   </button><br></br>
+                  {this.state.index+1 === this.props.questions.length ?(
                   <button
                     onClick={() => this.props.handleSubmit(this.state.recordedData)}
                     className="btn submit_btn"
@@ -520,6 +522,8 @@ class Recorder extends Component<AppProps, AppState> {
                   >
                     {i18n.t("SUBMIT_BTN")}
                   </button>
+                  ): null
+                }
                 </div>
               </div>
             ) : (

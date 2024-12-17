@@ -78,7 +78,10 @@ h1 {
   color: #fff;
   font-size: 25px;
 }
-
+.recorder_library_box .mic_icon_disabled svg{
+  width: 80%;
+  max-height: 60%;
+}
 .cursorPointer{
   cursor: pointer
 }
