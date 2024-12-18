@@ -299,11 +299,9 @@
     margin-top: 16px;
     min-width: 120px;
     font-weight: 600;
+    border: 0;
 }
 
-/* .navigation-buttons-disabled {
-    padding-left: 30%;
-} */
 .information{
     background-color: transparent !important;
     justify-content: center;
