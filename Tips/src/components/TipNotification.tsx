@@ -1,6 +1,6 @@
 
 import React from "react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect, Suspense, Component, ReactNode } from "react"
 import {
   Icon,
   Typography,
@@ -19,7 +19,6 @@ import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
 import ReactPlayer from "react-player"
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -125,118 +124,40 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-  
+
 function LinkRenderer(props: any) {
   return (
-    <a href={props.href} target="_blank" rel="noreferrer">
-      {props.children}
-    </a>
+    (props.href) ?
+      ReactPlayer.canPlay(props.href) ? (
+        <VideoRenderer url={props.href} />
+      ) : (
+        <LinkRenderer href={props.href}>{props.children}</LinkRenderer>
+      )
+      : <>{props.children}</>
   );
 }
 
 function VideoRenderer({ url }: { url: string }) {
-  if(url.match(/dailymotion\.com\/video\/([^_]+)/)) {
-    const getDailymotionEmbedURL = (url: string) => {
-      const videoId = url.match(/dailymotion\.com\/video\/([^_]+)/);
-      if (videoId) {
-        return `https://www.dailymotion.com/embed/video/${videoId[1]}`;
-      }
-      return null;
-    };
-    const [embedUrl, setEmbedUrl] = useState<string | null>(null);
-    React.useEffect(() => {
-      const embed = getDailymotionEmbedURL(url);
-      setEmbedUrl(embed);  
-    }, [url]);
-  
-    if (embedUrl) {
-      return (
-        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-          <iframe
-            src={embedUrl}
-            title="Dailymotion Video"
-            width="100%"
-            height="100%"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-            }}
-          >
-          </iframe>
-        </div>
-      );
-    }
-  } 
-  else {
-    const [isVideo, setIsVideo] = useState(false);
-    const playerRef = useRef<HTMLDivElement>(null);
-    React.useEffect(() => {
-      setIsVideo(ReactPlayer.canPlay(url));
-    }, [url]);
-    if (isVideo) {
-      return (
-        // <div style={{ marginBottom: "15px" }}>
-        //   <ReactPlayer url={url} controls width="100%" height="100%" />
-        // </div>
-        <div
-          ref={playerRef}
-          style={{
-            position: "relative",
-            marginBottom: "15px",
-            backgroundColor: "#000",
-            paddingBottom: "56.25%",
-            height: 0,
-            overflow: "hidden",
-          }}
-        >
-        <ReactPlayer
-          url={url}
-          controls
-          width="100%"
-          height="100%"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        />
-      </div>
-      );
-    }  
-    else {
-      return (
-        <div
-          style={{
-            position: "relative",
-            paddingBottom: "56.25%",
-            height: 0,
-            overflow: "hidden",
-          }}
-        >
-        <iframe
-          src={url}
-          title="Embedded Video"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture;display-capture;"
-          allowFullScreen
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        ></iframe>
-      </div>
-      );
-    }
-  } 
+  const [videoUrl, setVideoUrl] = useState<string>()
+
+  useEffect(() => {
+    setVideoUrl(url.indexOf("watch") > 0 ? url.replace("watch?v=", "embed/") : url)
+  }, [url])
+
+  return (
+    <div>
+      <iframe
+        src={videoUrl}
+        width="100%"
+        height="100%"
+        allow="autoplay; encrypted-media; fullscreen;"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
 }
+
+
 
 export default function TipNotification({ ...props }) {
   const classes = useStyles()
@@ -249,7 +170,7 @@ export default function TipNotification({ ...props }) {
   const completeMarkingTips = () => {
     props.onComplete(status)
   }
-  
+
   return (
     <Container maxWidth={false} className={classes.mainContainer}>
       <Box className={classes.header}>
@@ -264,29 +185,23 @@ export default function TipNotification({ ...props }) {
           <CardContent className={classes.tipscontentarea}>
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
             <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
-            {!!props.details ?
-              <ReactMarkdown 
-                skipHtml={false} 
-                components={{ 
-                  a: ({ href, children }) =>
-                    // ReactPlayer.canPlay(href) ? (
-                  href ? (
-                      <VideoRenderer url={href} />
-                    ) : (
-                      <LinkRenderer href={href}>{children}</LinkRenderer>
-                    ),
-                }}>
-                {props.details}  
-              </ReactMarkdown>
-            : ""}
-            </Typography>          
+              {!!props.details ?
+                <ReactMarkdown children={props.details} allowDangerousHtml={true} renderers={{
+                  link: LinkRenderer, span: (props) => {
+                    return <sub>{props?.children}</sub>;
+                  }, sup: (props) => {
+                    return <sup>{props.children}</sup>;
+                  }
+                }} />
+                : ""}
+            </Typography>
             <Box mt={4} mb={2}>
               <Grid container direction="row" justify="center" alignItems="center">
                 <Grid container className={classes.colorLine} spacing={0} >
-                  <Grid item xs={3} lg={3} className={classes.lineyellow}/>
-                  <Grid item xs={3} lg={3} className={classes.linegreen}/>
-                  <Grid item xs={3} lg={3} className={classes.linered}/>
-                  <Grid item xs={3} lg={3} className={classes.lineblue}/>
+                  <Grid item xs={3} lg={3} className={classes.lineyellow} />
+                  <Grid item xs={3} lg={3} className={classes.linegreen} />
+                  <Grid item xs={3} lg={3} className={classes.linered} />
+                  <Grid item xs={3} lg={3} className={classes.lineblue} />
                 </Grid>
               </Grid>
             </Box>
@@ -307,15 +222,15 @@ export default function TipNotification({ ...props }) {
                 <label>{t("No")}</label>
               </IconButton>
             </Box>
-            
-            { !!props.onComplete ?
-            <Box textAlign="center">
-              <Fab variant="extended" color="primary" className={classes.btnyellow} onClick={() => completeMarkingTips()} > {/*  */}
-                {t("Mark complete")}
-              </Fab>
-            </Box>
-            : "" }
-            
+
+            {!!props.onComplete ?
+              <Box textAlign="center">
+                <Fab variant="extended" color="primary" className={classes.btnyellow} onClick={() => completeMarkingTips()} > {/*  */}
+                  {t("Mark complete")}
+                </Fab>
+              </Box>
+              : ""}
+
           </CardContent>
         </Grid>
       </Grid>
