@@ -139,22 +139,23 @@ function LinkRenderer(props: any) {
 
 function VideoRenderer({ url }: { url: string }) {
   const [videoUrl, setVideoUrl] = useState<string>()
-  
+
   useEffect(() => {
     setVideoUrl(url.indexOf("watch") > 0 ? url.replace("watch?v=", "embed/") : url)
   }, [url])
 
-    return (
+  return (
+    <div>
       <iframe
-      src={videoUrl}
-      width="560"
-      height="315"
-      frameBorder="0"
-      allow="autoplay; encrypted-media; fullscreen;"
-      allowFullScreen
-    ></iframe>
-    );
-  }
+        src={videoUrl}
+        width="100%"
+        height="100%"
+        allow="autoplay; encrypted-media; fullscreen;"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+}
 
 
 
