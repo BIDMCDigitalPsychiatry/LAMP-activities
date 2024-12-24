@@ -141,7 +141,10 @@ function VideoRenderer({ url }: { url: string }) {
   const [videoUrl, setVideoUrl] = useState<string>()
 
   useEffect(() => {
-    setVideoUrl(url.indexOf("watch") > 0 ? url.replace("watch?v=", "embed/") : url)
+    setVideoUrl(url.indexOf("vimeo.com") > 0 ? url.replace("vimeo.com", "player.vimeo.com/video") :
+      url.indexOf("youtube") > 0 ? url.replace("watch?v=", "embed/") :
+        url.indexOf("www.dailymotion.com/video") > 0 ? url.replace("video", "embed/video") :
+          url)
   }, [url])
 
   return (
@@ -156,8 +159,6 @@ function VideoRenderer({ url }: { url: string }) {
     </div>
   );
 }
-
-
 
 export default function TipNotification({ ...props }) {
   const classes = useStyles()
