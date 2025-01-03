@@ -8,7 +8,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { AppContainer } from "react-hot-loader"
-import Board from './components/Board.tsx'
+import Board from './components/Board'
 import './index.css';
 import "material-icons"
 const eventer = window.addEventListener
