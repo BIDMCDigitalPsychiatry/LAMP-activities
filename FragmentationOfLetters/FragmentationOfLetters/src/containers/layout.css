@@ -1,0 +1,307 @@
+.col {
+  overflow: hidden;
+  text-align: center;
+}
+
+.main-class {
+  height: calc(100% - 60px);
+}
+
+body {
+  /* background: rgba(53, 159, 254, 1) !important; */
+  background: #f4f4f4 !important;
+}
+
+nav a {
+  color: rgba(53, 159, 254, 1);
+  padding: 10px;
+  display: inline-block;  
+}
+
+.App {
+  padding-top: 2em;
+  text-align: center
+}
+
+.App-logo {
+  -webkit-animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px
+}
+
+.App-header {
+  height: 90px;
+  padding: 20px;
+  color: #fff
+}
+
+.App-intro {
+  font-size: large
+}
+
+.heading {
+  text-align: center;
+  background: rgba(53, 159, 254, 1);
+  padding: 15px;
+  color: #fff;
+}
+
+.home-link {
+  position: absolute;
+  right: 0;
+  right: 15px;
+  top: 15px;
+}
+.home-link svg path{
+  fill:#fff;
+}
+
+.game-board {
+  color: #fff;
+  text-align: center;
+}
+.back-link {
+  position: absolute;
+  left: 0;
+  left: 15px;
+  top: 15px;
+}
+.back-link svg path{
+  fill:#fff;
+}
+
+.btn-primary:hover {
+  background: #007bff !important;
+  border: none;
+}
+
+.box-game {
+  padding: 0 30px;
+  margin: auto;
+  color: #fff;
+  font-size: 20px;  
+}
+.box-game p, .box-game h6{
+  color: #359ffe;
+}
+.box-game p{
+  font-weight: 600;
+}
+.imgOption {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.error-class {
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  top: 15px;
+  position: relative;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+}
+
+.index {
+  color: rgba(53, 159, 254, 1);
+}
+
+.question {
+  color: black;
+  padding-top: 10px;
+  font-size: 30px;
+  font-weight: 450;
+}
+
+.begin {
+  text-align: left;
+  margin-left: 10%;
+}
+
+.start-button {
+  color: white !important;
+  background: rgb(73, 151, 208);
+  border: none;
+  width: 150px;
+  border-radius: 0rem;
+}
+
+.image {
+  height: 40%;
+}
+
+.emotions {
+  padding-bottom: 10px;
+}
+
+input[type=checkbox] {
+  margin-right: 10px;
+  accent-color: black;
+}
+
+.btn-primary:focus {
+  box-shadow: none !important;
+  background: rgb(73, 151, 208) !important;
+}
+
+.btn-primary:hover {
+  background: #007bff !important;
+
+
+}
+
+.btn-outline-secondary {
+  background: none;
+  color: #007bff;
+  border: none;
+}
+
+.timer-div {
+  margin-top: 10px;
+  min-height: 60px;
+  color: #359ffe;
+}
+
+@media only screen and (min-width: 500px) {
+  .modal-content {
+    margin-left: 20%;
+  }
+
+  .begin {
+    text-align: left;
+    margin-left: 35%;
+  }
+
+  .img-thumbnail {
+    height: 280px !important;
+  }
+}
+.memory-outer{
+	background-color: #FFF;
+	padding: 15px 30px 15px 30px;
+	border-radius: 5px;
+	text-align: left;
+	width: 100%;
+	max-width: 650px;
+	margin: 0 auto ;
+}
+.marginTop10{
+	margin-top: 12px;
+}
+.react-datepicker__time-list-item{
+	display: flex;
+	align-items: center;
+}
+.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
+.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
+.react-datepicker__input-container input{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+	font-size: 14px;
+	min-width: 202px;
+}
+.react-datepicker__input-container input:focus-visible, .question-nav select{
+	outline: 0;
+}
+.question-nav select{
+	border: #ccc solid 1px;
+    padding: 10px;
+    border-radius: 3px;
+	min-width: 202px;
+	font-size: 14px;
+}
+.react-datepicker--time-only .react-datepicker__triangle{
+	left: -40px !important;
+}
+.img-wrap-main{
+  display: flex;
+  justify-content: center;
+}
+#img-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 500px;
+  svg {
+    max-width: 200px;
+    max-height: 200px;
+    width: 100%;
+    margin-top: 20px;
+  }
+ }
+ 
+ #img-wrapper > div {
+  flex: 0 1 50%;
+  padding: 0 15px;
+ }
+
+@media only screen and (min-width: 1100px) {
+  .modal-content {
+    margin-left: 20%;
+  }
+
+  .begin {
+    text-align: left;
+    margin-left: 37%;
+  }
+}
+.microphone-icon{
+  background-color: #ff0000;
+  width: 60px;
+  height: 60px;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 50px auto;
+  -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
+-moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
+box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
+}
+.microphone-icon svg{
+  width: 80%;
+}
+.microphone-icon svg path{
+  fill:#fff;
+}
+.microphone-status{
+  font-size: 14px;
+  color: #3b3b3b;
+}
+
+.btn-stop{
+  color: #fff;
+  background-color:#359ffe;
+  padding: 10px 25px;
+  border: 0;
+  border-radius: 25px;
+  margin-top: 16px;
+  font-weight: 600;
+  min-width: 106px;
+}
+.btn-cancel{
+  color: #359ffe;
+  background-color:transparent;
+  padding: 8px 25px;
+  border: #359ffe solid 2px;
+  border-radius: 25px;
+  margin-top: 16px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+.btn-cancel:hover{
+  border: #359ffe solid 2px;
+  background-color: #eee !important;
+  color: #359ffe;
+}
