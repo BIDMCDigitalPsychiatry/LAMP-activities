@@ -8,7 +8,7 @@ export const getStringAfterWord = (text: string) => {
   const word = "letter"
   const index = text.toLowerCase().indexOf(word);
   if (index === -1) {
-    return ''; // Return empty string if the word is not found
+    return text; // Return empty string if the word is not found
   }
   return text.substring(index + word.length).trim(); // Return substring after the word
 };

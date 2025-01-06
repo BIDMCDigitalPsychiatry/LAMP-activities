@@ -149,7 +149,7 @@ const GameBoard = ({ ...props }: any) => {
       {gameStarted ? (
         <div className="game_board">
           <div className="box-game mt-30">
-            <p>What letter is this image?</p>
+            <p>{i18n.t("QUESTION")}</p>
             <div className="imgOption">
               <canvas ref={canvasRef} width={300} height={300} />
             </div>
