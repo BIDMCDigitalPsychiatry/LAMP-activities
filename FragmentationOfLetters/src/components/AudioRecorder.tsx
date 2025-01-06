@@ -14,6 +14,7 @@ import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
 import { Timer } from "./common/Timer";
 import AlertModal from "./uielements/AlertModal";
+import { getStringAfterWord } from "src/functions";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
@@ -54,9 +55,10 @@ const AudioRecorder = ({ ...props }) => {
     setIsTimeOut(true);
     setIsListening(false);
     SpeechRecognition.stopListening();
-    handleRecordComplete(recordedText);
+    handleRecordComplete(getStringAfterWord(recordedText));
     setTimeout(()=>{
-      resetTranscript();  
+      resetTranscript()
+      setStartTimer(180)
     },100)
 
   };
@@ -74,7 +76,6 @@ const AudioRecorder = ({ ...props }) => {
 
   return (
     <div>
-      <h6>Say 'Letter' followed by the alphabet shown</h6>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
@@ -131,7 +132,7 @@ const AudioRecorder = ({ ...props }) => {
       </div>
       <AlertModal
       show = {showAlert}
-      close = {()=>setShowAlert(false)}
+      close = {()=>{setShowAlert(false)}}
       />
     </div>
   );

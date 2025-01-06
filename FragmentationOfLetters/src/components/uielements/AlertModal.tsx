@@ -28,7 +28,7 @@ const AlertModal = ({ ...props }: any) => {
       <Modal.Header closeButton={true}>
         <Modal.Title>mindLamp</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Try again</Modal.Body>
+      <Modal.Body>{i18n.t("NOT_RECORDED_MESSAGE")}</Modal.Body>
       <Modal.Footer>        
         <Button variant="primary" className="btn-stop" onClick={handleClose}>
           {i18n.t("OK")}
