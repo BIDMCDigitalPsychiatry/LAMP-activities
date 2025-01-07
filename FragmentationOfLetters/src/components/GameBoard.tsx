@@ -15,7 +15,7 @@ import { checkTextInArray, getMaxValue } from "src/functions";
 
 const GameBoard = ({ ...props }: any) => {
   const [showModalInfo, setShowModalInfo] = useState(false);
-  const startingFragmentation = props?.startingFragmentation;
+  const startingFragmentation = parseInt(props?.startingFragmentation.split("%")[0]);
   const [gameStarted, setGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
@@ -42,13 +42,13 @@ const GameBoard = ({ ...props }: any) => {
   const clickBack = () => {
     const maxFragmentation = getMaxValue(routes,"level")
     const route = { type: "manual_exit", value: true };
-    routes.push(route);
+    routes.push(route); 
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation
+          best_correct_fragmentation : maxFragmentation+"%"
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -75,7 +75,7 @@ const GameBoard = ({ ...props }: any) => {
     console.log("result", JSON.stringify({
       duration: new Date().getTime() - startTime,
       static_data: Object.assign({
-        best_correct_fragmentation : maxFragmentation
+        best_correct_fragmentation : maxFragmentation+"%"
       }),
       temporal_slices: JSON.parse(JSON.stringify(routes)),
       timestamp: new Date().getTime(),
@@ -84,7 +84,7 @@ const GameBoard = ({ ...props }: any) => {
       JSON.stringify({
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation
+          best_correct_fragmentation : maxFragmentation+"%"
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
