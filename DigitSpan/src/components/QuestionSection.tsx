@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react"
-// import AudioPlayer from "./AudioPlayer";
 import { one, two, three, four, five, six, seven, eight, nine, silent } from "./audioVars";
 import { Box } from "@material-ui/core";
 
@@ -26,12 +25,11 @@ function randomNumber(max: number, min: number, randomArray: Array<number>): num
   return randomArray.indexOf(num) >= 0 || num === 0 ? randomNumber(max, min, randomArray) : num;
 }
 
-
 export default function QuestionSection({ ...props }) {
   const [numberToShow, setNumberToShow] = useState(0)
   const [index, setIndex] = useState(0)
   const indexRef = useRef(0); // Store the current index in a ref
-  // const [audio, setAudio] = useState("")
+
   useEffect(() => {
     const audioContext = new (window.AudioContext)();
     const silentAudio = new Audio();
@@ -49,12 +47,18 @@ export default function QuestionSection({ ...props }) {
   }, []);
 
   useEffect(() => {
+    setNumberToShow(0)
+    setIndex(0)    
+  }, [props.count])
+
+  useEffect(() => {
     if (numberToShow > 0) {
       setIndex(index + 1)
     }
   }, [numberToShow])
 
   useEffect(() => {
+    indexRef.current = 0
     const interval = setInterval(() => {
       if (indexRef.current < props.questionSequence.length) {
         const nextNumber = props.questionSequence[indexRef.current];
