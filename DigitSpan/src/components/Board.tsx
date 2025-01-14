@@ -351,6 +351,7 @@ export default function Board({ ...props }) {
         static_data: {
           correct_answers: successTaps,
           point: points,
+          score: gameScore,
           total_questions: totalQuestions,
           wrong_answers: totalQuestions - successTaps,
         },
