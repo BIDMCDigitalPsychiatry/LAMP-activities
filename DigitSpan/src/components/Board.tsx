@@ -12,7 +12,7 @@ import {
   Grid,
   Button,
   Dialog,
-  DialogTitle,
+  // DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
@@ -231,13 +231,19 @@ export default function Board({ ...props }) {
   const classes = useStyles()
   // const [startTime, setStartTime] = useState(new Date().getTime())
   const [answers, setAnswers] = useState<number[]>([])
-  const [sequenceCount, setSequenceCount] = useState(4)
+  const [sequenceCount, setSequenceCount] = useState(5)
   const [questionSequence, setQuestionSequence] = useState<number[]>([])
   const [routes, setRoutes] = useState(JSON.stringify([]))
   const [level, setLevel] = useState(0)
-  // const [startTime, setStartTime] = useState(new Date().getTime())
+  const [startTime, setStartTime] = useState(new Date().getTime())
   const [lastClickTime, setLastClickTime] = useState(new Date().getTime())
   // const [status, setStatus] = useState(false)
+  const [errorState, setErrorState] = useState(0)
+  const [largeScore, setLargeScore] = useState(0)
+  const [successTaps, setSuccessTaps] = useState(0)
+  const [totalQuestions, setTotal] = useState(5)
+  const [mode, setMode] = useState(0)
+
   useEffect(() => {
     const configuration = props.data?.configuration ?? null
     const langugae = !!configuration
@@ -246,35 +252,113 @@ export default function Board({ ...props }) {
         : "en-US"
       : "en-US"
     i18n.changeLanguage(langugae)
-    gameSetUp()
+    setStartTime(new Date().getTime())
+    setSequenceCount(5)
   }, [])
   const [start, setStart] = useState(false)
 
   const gameSetUp = () => {
-    setLevel(level + 1)
-    setAnswers([])
-    const newCount = JSON.stringify(answers) == JSON.stringify(questionSequence) || level == 0 ? sequenceCount + 1 : sequenceCount - 1
-    setSequenceCount(newCount)
-    const randomPicks: number[] = getRandomNumbers(newCount, 1, 9)
-    setQuestionSequence(randomPicks)
-    setStart(true)
+    if (sequenceCount > 0) {
+      setStartGame(false)
+      setLevel(level + 1)
+      const randomPicks: number[] = getRandomNumbers(sequenceCount, 1, 9)
+      setQuestionSequence(randomPicks)
+    }
   }
 
   useEffect(() => {
-    if (answers.length === questionSequence.length) {
+    if (answers.length > 0 && answers.length === questionSequence.length) {
       setTimeout(() => {
-        setStart(false)
-        gameSetUp()
-      }, 1000)
+      setStartGame(false)
+      if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
+        setLargeScore(questionSequence.length)
+      const rev = [...answers].reverse()
+      let newCount = questionSequence.length ?? 5
+      if ((mode == 0 && JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
+        (mode == 1 && JSON.stringify(rev) != JSON.stringify(questionSequence)))
+        setErrorState(errorState + 1)
+      if (mode == 0) {
+        newCount = JSON.stringify(answers) == JSON.stringify(questionSequence) ? ++newCount : --newCount
+      } else {
+        newCount = JSON.stringify(rev) == JSON.stringify(questionSequence) ? ++newCount : --newCount
+      }
+      if (errorState == 1 || newCount === 10) {
+        if (mode == 0) {
+          setSequenceCount(-1)
+          setMode(1)
+        } else {
+          sendGameResult()
+        }
+      } else {
+        setSequenceCount(newCount)
+      }
+      if (newCount == 0) {
+        sendGameResult()
+      }
+    }, 500)
     }
   }, [answers])
+
+  useEffect(() => {
+    if (mode == 1) {
+      setSequenceCount(largeScore)
+    }
+  }, [mode])
+
+  useEffect(() => {
+    if (level > 1) setTotal(totalQuestions + sequenceCount)
+    gameSetUp()
+    // setTimeout(() => {
+    setAnswers([])
+    setStart(true)
+    // }, 300)
+  }, [sequenceCount])
 
   const updateAnswer = (num: number) => {
     const data = [...answers, num]
     setAnswers(data)
-    const statusVal = questionSequence.indexOf(num) === data.indexOf(num)
+    const statusVal = (mode == 0) ? questionSequence.indexOf(num) === data.indexOf(num) :
+      [...questionSequence].reverse().indexOf(num) === data.indexOf(num)
+    if (!!statusVal) setSuccessTaps(successTaps + 1)
     updateRoute(num, statusVal)
     setLastClickTime(new Date().getTime())
+  }
+
+  // Call the API to pass game result
+  const sendGameResult = (status?: boolean) => {
+    const route = { 'type': 'manual_exit', 'value': status ?? false }
+    const boxes: any[] = [];
+    if (routes !== null) {
+      const r = JSON.parse(routes);
+      Object.keys(r).forEach((key) => {
+        boxes.push(r[key]);
+      });
+    }
+    boxes.push(route);
+
+    const gameScore = Math.round(
+      (successTaps / totalQuestions) * 100
+    );
+    let points = 0;
+    if (gameScore === 100) {
+      points = points + 2;
+    } else {
+      points = points + 1;
+    }
+    parent.postMessage(
+      JSON.stringify({
+        duration: new Date().getTime() - startTime,
+        static_data: {
+          correct_answers: successTaps,
+          point: points,
+          total_questions: totalQuestions,
+          wrong_answers: totalQuestions - successTaps,
+        },
+        temporal_slices: boxes,
+        timestamp: new Date().getTime(),
+      }),
+      "*"
+    );
   }
 
   const updateRoute = (num: number | string, statusVal: boolean) => {
@@ -311,12 +395,11 @@ export default function Board({ ...props }) {
   return (
     <React.Fragment>
       <Dialog open={popup} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{`${t("Confirmation")}`}</DialogTitle>
+        {/* <DialogTitle id="alert-dialog-title">{`${t("Confirmation")}`}</DialogTitle> */}
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{"sample"}</DialogContentText>
+          <DialogContentText id="alert-dialog-description">{"Remember the sequence of digits presented to you. When prompted, repeat the sequence in order."}</DialogContentText>
         </DialogContent>
         <DialogActions>
-
           <Button
             onClick={() => {
               setPopup(false)
@@ -343,7 +426,15 @@ export default function Board({ ...props }) {
                 </IconButton>
                 <Typography variant="h5">Digit Span</Typography>
               </Grid>
+              <IconButton
+                  onClick={() => {
+                    window.location.reload()
+                  }}
+                  color="default"
+                  aria-label="Menu"
+                >
               <Icon>refresh</Icon>
+              </IconButton>
             </Toolbar>
           </AppBar>
           <Typography variant="body1" align="center" className={classes.timer}>Seconds Remaining: 0</Typography>
@@ -358,12 +449,15 @@ export default function Board({ ...props }) {
                 <Grid container key={rowIndex}>
                   {row.map((num) => (
                     <Grid item className={classes.numberColumn + " " +
-                      (answers.length > 0 && answers.includes(num) ? (answers.indexOf(num) === questionSequence.indexOf(num) ? classes.selectedRightItem : classes.selectedWrongItem) : "")} onClick={() => {
+                      (!answers.includes(num) ? "" :
+                        (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
+                          ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
+                          classes.selectedRightItem : classes.selectedWrongItem)}
+                      onClick={() => {
                         if (!!startGame) updateAnswer(num)
                       }}>
                       <Typography variant="h6" align="center">
-                        {num}
-                      </Typography>
+                        {num} </Typography>
                     </Grid>
                   ))}
                 </Grid>
