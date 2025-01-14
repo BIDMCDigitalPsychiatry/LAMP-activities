@@ -13,14 +13,16 @@ export const getStringAfterWord = (text: string) => {
   return text.substring(index + word.length).trim(); // Return substring after the word
 };
 
-export const checkTextInArray = (str : string) =>{
-  const Array = ["see", "ji", "eye", "we"]
-  if(Array.includes(str.toLowerCase())){
-    return true
-  }
-  else{
-    return false
-  }
+export const checkTextInArray = (str : string, letter : string) =>{
+  let res = false
+  const Array = [{letter : "c", text : "see"},{letter : "g", text : "ji"},{letter : "i", text : "eye"}, {letter : "v", text : "we"}]
+  Array.forEach((item: any)=>{
+    if(item.letter === letter.toLowerCase() && str.includes(item.text.toLowerCase())){
+      res = true
+    }
+  })
+  
+  return res;
 }
 
 

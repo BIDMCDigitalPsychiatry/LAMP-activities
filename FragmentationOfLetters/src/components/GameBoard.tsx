@@ -118,7 +118,7 @@ const GameBoard = ({ ...props }: any) => {
   const handleRecordComplete = (text: string) => { 
     console.log("text", text)   
     let res = false;
-    if (text.toLowerCase().includes(currentLetter.toLowerCase()) || checkTextInArray(text)) {
+    if (text.toLowerCase().includes(currentLetter.toLowerCase()) || checkTextInArray(text, currentLetter)) {
       setFragmentation(fragmentation + 10);
       res = true
     } else {

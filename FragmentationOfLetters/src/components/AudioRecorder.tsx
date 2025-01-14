@@ -37,14 +37,14 @@ const AudioRecorder = ({ ...props }) => {
 
   useEffect(() => {
     console.log("transcript", transcript);
-    if (transcript && transcript != "") {
       setRecordedText(transcript);
-    }
   }, [transcript]);
 
   const handleListing = () => {
     setIsListening(true);
     setIsTimeOut(false);
+    resetTranscript();
+    setRecordedText("");
     SpeechRecognition.startListening({
       continuous: true,
       language: 'en-US',
@@ -55,12 +55,8 @@ const AudioRecorder = ({ ...props }) => {
     setIsTimeOut(true);
     setIsListening(false);
     SpeechRecognition.stopListening();
+    setStartTimer(180);
     handleRecordComplete(getStringAfterWord(recordedText));
-    setTimeout(()=>{
-      resetTranscript()
-      setStartTimer(180)
-    },100)
-
   };
 
   const passTimerUpdate = (timerValue: number) => {
