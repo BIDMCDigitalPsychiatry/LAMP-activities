@@ -4,6 +4,20 @@ export const getMaxValue = (arr : any[], key : string) =>{
   return maxScore;
 }
 
+export const getSequence = (arr : any[]) => {
+  let text = "";  
+  arr.map((item: any, i)=>{
+    const res = item["type"]===true ? "correct" : "incorrect"
+    if(i==0){
+      text = item["level"]+"% "+res
+    }
+    else{
+      text = text +", "+item["level"]+"% "+res
+    }    
+  })
+  return text
+}
+
 export const getStringAfterWord = (text: string) => {
   const word = "letter"
   const index = text.toLowerCase().indexOf(word);

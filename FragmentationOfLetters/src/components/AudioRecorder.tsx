@@ -75,7 +75,7 @@ const AudioRecorder = ({ ...props }) => {
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
-            className="microphone-icon"
+            className={isListening ? "microphone-icon" : "microphone-icon cursor-pointer"}
             ref={microphoneRef}
             onClick={(e) => {
               e.stopPropagation();
