@@ -11,7 +11,7 @@ import i18n from "src/i18n";
 import AudioRecorder from "./AudioRecorder";
 import InfoModal from "./uielements/InfoModal";
 import { createLetterImage, fragmentImage } from "src/utils/FragmentationUtils";
-import { checkTextInArray, getMaxValue } from "src/functions";
+import { checkTextInArray, getMaxValue, getSequence } from "src/functions";
 
 const GameBoard = ({ ...props }: any) => {
   const [showModalInfo, setShowModalInfo] = useState(false);
@@ -41,6 +41,7 @@ const GameBoard = ({ ...props }: any) => {
 
   const clickBack = () => {
     const maxFragmentation = getMaxValue(routes,"level")
+    const sequence = getSequence(routes)
     const route = { type: "manual_exit", value: true };
     routes.push(route); 
     parent.postMessage(
@@ -48,7 +49,8 @@ const GameBoard = ({ ...props }: any) => {
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation+"%"
+          best_correct_fragmentation : maxFragmentation+"%",
+          sequence : sequence
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -72,10 +74,12 @@ const GameBoard = ({ ...props }: any) => {
 
   const sendGameResult = () => {
     const maxFragmentation = getMaxValue(routes,"level")
+    const sequence = getSequence(routes)
     console.log("result", JSON.stringify({
       duration: new Date().getTime() - startTime,
       static_data: Object.assign({
-        best_correct_fragmentation : maxFragmentation+"%"
+        best_correct_fragmentation : maxFragmentation+"%",
+        sequence : sequence
       }),
       temporal_slices: JSON.parse(JSON.stringify(routes)),
       timestamp: new Date().getTime(),
@@ -84,7 +88,8 @@ const GameBoard = ({ ...props }: any) => {
       JSON.stringify({
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation+"%"
+          best_correct_fragmentation : maxFragmentation+"%",
+          sequence : sequence
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),

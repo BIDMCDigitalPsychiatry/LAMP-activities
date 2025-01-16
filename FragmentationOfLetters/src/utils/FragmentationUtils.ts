@@ -41,8 +41,8 @@ export const fragmentImage = (
       for (let i = 0; i < numberOfSections; i++) {
         const x = Math.floor(Math.random() * canvasWidth);
         const y = Math.floor(Math.random() * canvasHeight);
-        const width = 15;
-        const height = 15;
+        const width = 10;
+        const height = 10;
 
         // Make sure we don't go out of bounds
         const startX = Math.max(0, x);
