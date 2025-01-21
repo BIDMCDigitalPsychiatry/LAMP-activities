@@ -326,7 +326,6 @@ export default function Board({ ...props }) {
 
   // Call the API to pass game result
   const sendGameResult = (status?: boolean) => {
-    console.log("routes", routes);
     const route = { 'type': 'manual_exit', 'value': status ?? false }
     const boxes: any[] = [];
     if (routes !== null) {
