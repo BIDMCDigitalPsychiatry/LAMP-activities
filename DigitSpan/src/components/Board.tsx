@@ -396,7 +396,6 @@ export default function Board({ ...props }) {
   return (
     <React.Fragment>
       <Dialog open={popup} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        {/* <DialogTitle id="alert-dialog-title">{`${t("Confirmation")}`}</DialogTitle> */}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">{"Remember the sequence of digits presented to you. When prompted, repeat the sequence in order."}</DialogContentText>
         </DialogContent>
@@ -407,7 +406,6 @@ export default function Board({ ...props }) {
               setStart(true)
             }}
             color="primary"
-            autoFocus
           >{`${t("Ok")}`}</Button>
         </DialogActions>
       </Dialog>
@@ -438,7 +436,6 @@ export default function Board({ ...props }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <Typography variant="body1" align="center" className={classes.timer}>Seconds Remaining: 0</Typography>
           <Box textAlign="center" className={classes.levelMode} justifyContent="center">
             <Typography>Level: {level}</Typography>
           </Box>
@@ -472,7 +469,7 @@ export default function Board({ ...props }) {
             </Box>
           </Grid>
           <Grid justifyContent="center" container>
-            <Button variant="contained" className={classes.btnDone}>Done</Button>
+            <Button variant="contained" className={classes.btnDone} onClick={()=>sendGameResult()}>Done</Button>
           </Grid>
         </Box>
       )}
