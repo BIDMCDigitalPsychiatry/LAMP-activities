@@ -13,7 +13,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "de-DE": {
@@ -27,7 +28,9 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
+
     },
   },
   "en-US": {
@@ -41,7 +44,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "es-ES": {
@@ -55,7 +59,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "fr-FR": {
@@ -69,7 +74,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "hi-IN": {
@@ -83,7 +89,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "it-IT": {
@@ -97,7 +104,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "ko-KR": {
@@ -111,7 +119,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "zh-CN": {
@@ -125,7 +134,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
   "zh-HK": {
@@ -139,7 +149,8 @@ const resources = {
       STOP: "Stop",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Say ‘Letter’ before the actual letter you are trying to identify.",
-      QUESTION : "What letter is this image?"
+      QUESTION : "What letter is this image?",
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before the actual letter you are trying to identify."
     },
   },
 };

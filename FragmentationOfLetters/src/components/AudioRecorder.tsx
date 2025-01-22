@@ -13,18 +13,16 @@ import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
 import { Timer } from "./common/Timer";
-import AlertModal from "./uielements/AlertModal";
 import { getStringAfterWord } from "src/functions";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  const { transcript, resetTranscript, interimTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(180);
-  const [showAlert, setShowAlert] = useState(false);
 
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -36,9 +34,8 @@ const AudioRecorder = ({ ...props }) => {
   }
 
   useEffect(() => {
-    console.log("transcript", transcript);
       setRecordedText(transcript);
-  }, [transcript]);
+  }, [transcript, interimTranscript]);
 
   const handleListing = () => {
     setIsListening(true);
@@ -46,9 +43,9 @@ const AudioRecorder = ({ ...props }) => {
     resetTranscript();
     setRecordedText("");
     SpeechRecognition.startListening({
-      continuous: true,
+      continuous: false,
       language: 'en-US',
-      interimResults: true
+      interimResults: false
     });
   };
   const stopHandle = () => {
@@ -72,6 +69,7 @@ const AudioRecorder = ({ ...props }) => {
 
   return (
     <div>
+      <h6>{i18n.t("INSTRUCTION_TEXT")}</h6>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
@@ -113,11 +111,8 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 className="btn-stop"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  if(transcript===""){
-                    setShowAlert(true)
-                  }
-                  else {stopHandle();}
+                  e.stopPropagation();                  
+                  stopHandle()
                 }}
               >
                 {i18n.t("STOP")}
@@ -125,11 +120,7 @@ const AudioRecorder = ({ ...props }) => {
             </>
           )}
         </div>
-      </div>
-      <AlertModal
-      show = {showAlert}
-      close = {()=>{setShowAlert(false)}}
-      />
+      </div>      
     </div>
   );
 };
