@@ -14,6 +14,7 @@ import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
 import { Timer } from "./common/Timer";
 import { getStringAfterWord } from "src/functions";
+import AlertModal from "./uielements/AlertModal";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
@@ -23,7 +24,7 @@ const AudioRecorder = ({ ...props }) => {
   const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(180);
-
+  const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -111,8 +112,11 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 className="btn-stop"
                 onClick={(e) => {
-                  e.stopPropagation();                  
-                  stopHandle()
+                  e.stopPropagation();  
+                  if(recordedText==''){
+                    setShowAlert(true)
+                  }           
+                  else {stopHandle()}
                 }}
               >
                 {i18n.t("STOP")}
@@ -120,7 +124,11 @@ const AudioRecorder = ({ ...props }) => {
             </>
           )}
         </div>
-      </div>      
+      </div>  
+      <AlertModal
+      show={showAlert}
+      close={()=>setShowAlert(false)}
+      />    
     </div>
   );
 };
