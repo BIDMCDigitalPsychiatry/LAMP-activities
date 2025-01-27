@@ -112,7 +112,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     super(props);
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
     // Initailise state values
-    const timerValue = 14
+    const timerValue = 120
     this.state = {
       animate: false,
       boxClass: ["box-square"],
