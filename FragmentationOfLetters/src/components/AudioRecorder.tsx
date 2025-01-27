@@ -6,9 +6,9 @@
  * @copyright (c) 2024, ZCO
  */
 import React, { useEffect, useRef, useState } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+// import SpeechRecognition, {
+//   useSpeechRecognition,
+// } from "react-speech-recognition";
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
@@ -18,49 +18,120 @@ import AlertModal from "./uielements/AlertModal";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
-  const { transcript, resetTranscript, interimTranscript } = useSpeechRecognition();
+  // const { transcript, resetTranscript } = useSpeechRecognition();
+  const [transcript, setTranscript] = useState('');
+
   const [isListening, setIsListening] = useState(false);
-  const microphoneRef = useRef(null);
+  // const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(180);
   const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState(null);
+
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return (
-      <div className="mircophone-container">
-        {i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED")}
-      </div>
-    );
-  }
+
+  // useEffect(()=>{
+  //   navigator.mediaDevices.getUserMedia({ audio: true });
+  // },[])
+  
+  // if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+  //   return (
+  //     <div className="mircophone-container">
+  //       {i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED")}
+  //     </div>
+  //   );
+  // }
+
+  const recognitionRef: any = useRef(null);
 
   useEffect(() => {
-      setRecordedText(transcript);
-  }, [transcript, interimTranscript]);
+    if (!('webkitSpeechRecognition' in window)) {
+      alert('Speech recognition is not supported in this browser. Please use Chrome.');
+      return;
+    }
 
-  const handleListing = () => {
-    setIsListening(true);
-    setIsTimeOut(false);
-    resetTranscript();
-    setRecordedText("");
-    SpeechRecognition.startListening({
-      continuous: false,
-      language: 'en-US',
-      interimResults: false
-    });
+    // eslint-disable-next-line new-cap
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.continuous = true; // Allow continuous speech
+    recognition.interimResults = true; // Display interim results
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      // let finalTranscript = '';
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          // finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+
+      setTranscript(interimTranscript);
+    };
+
+    recognition.onerror = (event: any) => {
+      setError(event?.error);
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
+
+  console.log("Error", error)
+
+  useEffect(() => {
+    if(transcript && transcript != ""){
+      setRecordedText(transcript);
+    }
+  }, [transcript]);
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.start();
+    }
   };
-  const stopHandle = () => {
-    setIsTimeOut(true);
-    setIsListening(false);
-    SpeechRecognition.stopListening();
-    setStartTimer(180);
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
     handleRecordComplete(getStringAfterWord(recordedText));
   };
+
+  // const handleListing = () => {
+  //   setIsListening(true);
+  //   setIsTimeOut(false);
+  //   // resetTranscript();
+  //   setRecordedText("");
+  //   SpeechRecognition.startListening({
+  //     continuous: false,
+  //     language: 'en-US',
+  //     interimResults: false
+  //   });
+  // };
+  // const stopHandle = () => {
+  //   setIsTimeOut(true);
+  //   setIsListening(false);
+  //   SpeechRecognition.stopListening();
+  //   setStartTimer(180);
+  //   handleRecordComplete(getStringAfterWord(recordedText));
+  // };
 
   const passTimerUpdate = (timerValue: number) => {
     if (timerValue === 1) {
       setTimeout(() => {
-        stopHandle();
+        stopListening();
         setIsTimeOut(true);
       }, 1000);
     } else {
@@ -71,15 +142,19 @@ const AudioRecorder = ({ ...props }) => {
   return (
     <div>
       <h6>{i18n.t("INSTRUCTION_TEXT")}</h6>
+      <div style={{ marginTop: '20px' }}>
+        <p style={{ backgroundColor: '#f0f0f0', padding: '10px' }}>Transcript:{recordedText}</p>
+      </div>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
             className={isListening ? "microphone-icon" : "microphone-icon cursor-pointer"}
-            ref={microphoneRef}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleListing();
-            }}
+            ref={recognitionRef}
+            onClick={isListening ? stopListening : startListening}
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   handleListing();
+            // }}
           >
             <Microphone />
           </div>
@@ -100,8 +175,11 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 onClick={(e) => {
                   setIsListening(false);
-                  SpeechRecognition.stopListening();
-                  resetTranscript();
+                  // SpeechRecognition.stopListening();
+                  // resetTranscript();
+                  if (recognitionRef.current) {
+                    recognitionRef.current.stop();
+                  }
                   setIsTimeOut(true);
                   setStartTimer(180);
                 }}
@@ -116,7 +194,7 @@ const AudioRecorder = ({ ...props }) => {
                   if(recordedText==''){
                     setShowAlert(true)
                   }           
-                  else {stopHandle()}
+                  else {stopListening()}
                 }}
               >
                 {i18n.t("STOP")}
