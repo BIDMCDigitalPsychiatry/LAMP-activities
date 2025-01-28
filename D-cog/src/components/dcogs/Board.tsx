@@ -198,10 +198,8 @@ class Board extends React.Component<BoardProps, BoardState> {
               refreshIntervalId = setInterval(() => {
                 if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
                   clearInterval(refreshIntervalId)
-                  // setTimeout(() => {
                     this.resetBoxClass();
                     this.resetState()
-                  // }, 1000)
                 }
               }, 1000)
             })
@@ -290,9 +288,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     if (timerValue === 0) {
       if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000) {
-        // setTimeout(() => {
           this.finishGame()
-        // }, 1000)
       }
       else {
         setInterval(() => {
