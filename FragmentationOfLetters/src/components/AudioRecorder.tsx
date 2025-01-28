@@ -18,7 +18,7 @@ import AlertModal from "./uielements/AlertModal";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  const { transcript, resetTranscript, interimTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
@@ -36,23 +36,13 @@ const AudioRecorder = ({ ...props }) => {
 
   useEffect(() => {
       setRecordedText(transcript);
-  }, [transcript]);
-  
-  function getRootWindow(window: any) {
-    if (window.parent === window) {
-        return window;
-    }
+  }, [transcript, interimTranscript]);
 
-    return getRootWindow(window.parent);
-  }
-  
-
-  const handleListing = async () => {
+  const handleListing = () => {
     setIsListening(true);
     setIsTimeOut(false);
     resetTranscript();
     setRecordedText("");
-    await getRootWindow(window).navigator.mediaDevices.getUserMedia({ audio: true});
     SpeechRecognition.startListening({
       continuous: false,
       language: 'en-US',
