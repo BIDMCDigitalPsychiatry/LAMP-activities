@@ -38,6 +38,10 @@ const AudioRecorder = ({ ...props }) => {
       setRecordedText(transcript);
   }, [transcript, interimTranscript]);
 
+  useEffect(()=>{
+    ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.("")
+  },[])
+
   const handleListing = () => {
     setIsListening(true);
     setIsTimeOut(false);
