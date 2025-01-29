@@ -11,7 +11,7 @@ import { Dot } from './Dot';
 import { getRandomAlphaNumeric,getRandomNumbers , shuffle} from '../../functions';
 import RefreshRounded from '@material-ui/icons/RefreshRounded';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Timer } from '../common/Timer';
+// import { Timer } from '../common/Timer';
 import './DotTouch.css';
 import { GeneralInstruction } from './GeneralInstruction';
 
@@ -159,7 +159,7 @@ class DotTouch extends React.Component<any, DotState> {
                   });
                   this.sendGameResult();  
                 }, 1000);
-              } else {
+              } else {                
                 this.resetState();         
               }
           }
@@ -170,15 +170,15 @@ class DotTouch extends React.Component<any, DotState> {
 
    // To track the timer expiring
    passTimerUpdate = (timerVal:number) => {     
-     if(timerVal === 0) {
-       this.setState({
-         timeout : true
-       });     
-      this.sendGameResult();  
-     } 
-     this.setState({
-         startTimer : timerVal
-     });
+    //  if(timerVal === 0) {
+    //    this.setState({
+    //      timeout : true
+    //    });     
+    //   this.sendGameResult();  
+    //  } 
+    //  this.setState({
+    //      startTimer : timerVal
+    //  });
    }
    
    // Update the state values for each taps other than dot 1
@@ -353,11 +353,11 @@ class DotTouch extends React.Component<any, DotState> {
          <div className="heading">Dot touch</div>
          <div className="game-board">
            <div> 
-             <div className="countdown-timer mt-10"> 
+             {/* <div className="countdown-timer mt-10"> 
              { this.state.startTimer > 0 && !this.state.gameOver &&
                <Timer passTimerUpdate = {this.passTimerUpdate} stateChange={this.state.stateChange} startTimeInSeconds={this.state.startTimer} startTimer={1}/> 
              }
-             </div>
+             </div> */}
              {this.state.startTimer > 0 && !this.state.gameOver && <div className="level-text">Level {this.state.gameLevel}</div>}
              <br/>
              {Instruction}

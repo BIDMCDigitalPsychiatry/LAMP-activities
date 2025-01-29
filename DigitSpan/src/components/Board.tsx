@@ -231,7 +231,7 @@ export default function Board({ ...props }) {
   const classes = useStyles()
   // const [startTime, setStartTime] = useState(new Date().getTime())
   const [answers, setAnswers] = useState<number[]>([])
-  const [sequenceCount, setSequenceCount] = useState(5)
+  const [sequenceCount, setSequenceCount] = useState(3)
   const [questionSequence, setQuestionSequence] = useState<number[]>([])
   const [routes, setRoutes] = useState(JSON.stringify([]))
   const [level, setLevel] = useState(0)
@@ -241,7 +241,7 @@ export default function Board({ ...props }) {
   const [errorState, setErrorState] = useState(0)
   const [largeScore, setLargeScore] = useState(0)
   const [successTaps, setSuccessTaps] = useState(0)
-  const [totalQuestions, setTotal] = useState(5)
+  const [totalQuestions, setTotal] = useState(3)
   const [mode, setMode] = useState(0)
 
   useEffect(() => {
@@ -253,8 +253,9 @@ export default function Board({ ...props }) {
       : "en-US"
     i18n.changeLanguage(langugae)
     setStartTime(new Date().getTime())
-    setSequenceCount(5)
+    setSequenceCount(3)
   }, [])
+
   const [start, setStart] = useState(false)
 
   const gameSetUp = () => {
@@ -268,6 +269,7 @@ export default function Board({ ...props }) {
 
   useEffect(() => {
     if (answers.length > 0 && answers.length === questionSequence.length) {
+      setSequenceCount(0)
       setTimeout(() => {
       setStartGame(false)
       if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
@@ -277,14 +279,14 @@ export default function Board({ ...props }) {
       if ((mode == 0 && JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
         (mode == 1 && JSON.stringify(rev) != JSON.stringify(questionSequence)))
         setErrorState(errorState + 1)
-      if (mode == 0) {
-        newCount = JSON.stringify(answers) == JSON.stringify(questionSequence) ? ++newCount : --newCount
-      } else {
-        newCount = JSON.stringify(rev) == JSON.stringify(questionSequence) ? ++newCount : --newCount
-      }
-      if (errorState == 1 || newCount === 10) {
+      if ((mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence)) || 
+      (mode == 1 && JSON.stringify(rev) == JSON.stringify(questionSequence))) {
+        newCount =  ++newCount
+      } 
+      if (errorState >= 1 || newCount === 10) {
         if (mode == 0) {
           setSequenceCount(-1)
+          setErrorState(0)
           setMode(1)
         } else {
           sendGameResult()
@@ -306,12 +308,14 @@ export default function Board({ ...props }) {
   }, [mode])
 
   useEffect(() => {
-    if (level > 1) setTotal(totalQuestions + sequenceCount)
-    gameSetUp()
-    // setTimeout(() => {
-    setAnswers([])
-    setStart(true)
-    // }, 300)
+    if(sequenceCount > 0) {
+      if (level > 1) setTotal(totalQuestions + sequenceCount)
+      gameSetUp()
+      setTimeout(() => {
+      setAnswers([])
+      setStart(true)
+      }, 300)
+    }
   }, [sequenceCount])
 
   const updateAnswer = (num: number) => {
@@ -439,18 +443,19 @@ export default function Board({ ...props }) {
           <Box textAlign="center" className={classes.levelMode} justifyContent="center">
             <Typography>Level: {level}</Typography>
           </Box>
-          <Typography variant="h6" align="center" className={classes.questionh6}>Enter the digits in order: <span className={classes.questiontext}>
+          <Typography variant="h6" align="center" className={classes.questionh6}>Enter the digits in {mode == 1 && " reverse "}order: <span className={classes.questiontext}>
             <QuestionSection complete={() => setStartGame(true)} count={sequenceCount} questionSequence={questionSequence} /></span></Typography>
           <Box className={classes.numberMain} my={3}>
             <Box className={classes.numberOuter}>
               {rows.map((row, rowIndex) => (
                 <Grid container key={rowIndex}>
                   {row.map((num) => (
-                    <Grid item className={classes.numberColumn + " " +
-                      (!answers.includes(num) ? "" :
-                        (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
-                          ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
-                          classes.selectedRightItem : classes.selectedWrongItem)}
+                    <Grid item className={classes.numberColumn}
+                    // className={classes.numberColumn + " " +
+                    //   (!answers.includes(num) ? "" :
+                    //     (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
+                    //       ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
+                    //       classes.selectedRightItem : classes.selectedWrongItem)}
                       onClick={() => {
                         if (!!startGame) updateAnswer(num)
                       }}>

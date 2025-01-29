@@ -159,7 +159,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       if (
         (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
           navigator.userAgent
-        ) && boxCount >= 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+        ) && boxCount > 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
           navigator.userAgent
         ) && boxCount >= 20
       ) {
@@ -201,7 +201,7 @@ class Board extends React.Component<BoardProps, BoardState> {
                     this.resetBoxClass();
                     this.resetState()
                 }
-              }, 1000)
+              }, 4000)
             })
           }, 2500);
         }, 2000)
@@ -266,7 +266,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               setTimeout(() => {
                 this.resetBoxClass();
                 this.resetState()
-              }, 2000)
+              }, 1000)
             })
         }
       });
@@ -369,7 +369,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             this.resetState()
           }, 500)
         }
-      }, 2000)
+      }, 4000)
     });
   };
 
