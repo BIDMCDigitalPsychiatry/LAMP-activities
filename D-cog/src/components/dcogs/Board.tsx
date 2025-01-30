@@ -151,7 +151,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
   // Reset game state for each state
   resetState = () => {
-    var refreshIntervalId: any = undefined
+    // var refreshIntervalId: any = undefined
     if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) { 
       let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
       let boxCount = this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
@@ -195,11 +195,12 @@ class Board extends React.Component<BoardProps, BoardState> {
               tapTime: new Date().getTime(),
               enableTap: true
             }, () => {
-              refreshIntervalId = setInterval(() => {
+              setTimeout(() => {
                 if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-                  clearInterval(refreshIntervalId)
+                  setTimeout(() => {
                     this.resetBoxClass();
                     this.resetState()
+                  }, 500)
                 }
               }, 4000)
             })
@@ -266,7 +267,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               setTimeout(() => {
                 this.resetBoxClass();
                 this.resetState()
-              }, 1000)
+              }, 500)
             })
         }
       });
@@ -362,6 +363,13 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
     }, () => {
+      // let refreshIntervalId = setInterval(() => {
+      //   if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+      //     clearInterval(refreshIntervalId)
+      //       this.resetBoxClass();
+      //       this.resetState()
+      //   }
+      // }, 4000)
       setTimeout(() => {
         if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
           setTimeout(() => {
