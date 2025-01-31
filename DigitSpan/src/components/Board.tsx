@@ -425,7 +425,7 @@ export default function Board({ ...props }) {
                   color="default"
                   aria-label="Menu"
                 >
-                  <Icon>arrow_back</Icon>
+                  <Icon style={{color:"white"}}>arrow_back</Icon>
                 </IconButton>
                 <Typography variant="h5">Digit Span</Typography>
               </Grid>
@@ -436,7 +436,7 @@ export default function Board({ ...props }) {
                   color="default"
                   aria-label="Menu"
                 >
-              <Icon>refresh</Icon>
+              <Icon style={{color:"white"}}>refresh</Icon>
               </IconButton>
             </Toolbar>
           </AppBar>
