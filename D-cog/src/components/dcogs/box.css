@@ -27,12 +27,14 @@ nav a{color: rgba(53,159,254,1); padding: 10px; display: inline-block;}
 	position: absolute;
 	right: 0;
 	margin: 15px;
+	color: white;
 }
 
 .back-link{
 	position: absolute;
 	left: 0;
 	margin: 15px;
+	color: white;
 }
 .App-header {
 	height:90px;

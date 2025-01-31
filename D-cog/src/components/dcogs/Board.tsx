@@ -197,10 +197,8 @@ class Board extends React.Component<BoardProps, BoardState> {
             }, () => {
               setTimeout(() => {
                 if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-                  setTimeout(() => {
                     this.resetBoxClass();
                     this.resetState()
-                  }, 500)
                 }
               }, 4000)
             })
@@ -363,19 +361,10 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
     }, () => {
-      // let refreshIntervalId = setInterval(() => {
-      //   if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-      //     clearInterval(refreshIntervalId)
-      //       this.resetBoxClass();
-      //       this.resetState()
-      //   }
-      // }, 4000)
       setTimeout(() => {
         if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-          setTimeout(() => {
             this.resetBoxClass();
             this.resetState()
-          }, 500)
         }
       }, 4000)
     });
@@ -514,7 +503,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         !this.state.gameOver && !this.state.showInstruction ? (
         <Timer
           passTimerUpdate={this.passTimerUpdate}
-          startTimeInSeconds={this.state.startTimer - 4}
+          startTimeInSeconds={this.state.startTimer}
           startTimer={true}
         />
       ) : null;
