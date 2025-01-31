@@ -66,6 +66,7 @@ export class Questionnaire extends React.Component<Props, State> {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered={true}
+        backdrop={"static"}
       >
         <Modal.Header closeButton={true}>
           <Modal.Title><h4>Questionnaire</h4></Modal.Title>
