@@ -25,7 +25,6 @@ const AudioRecorder = ({ ...props }) => {
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(180);
   const [showAlert, setShowAlert] = useState(false);
-  const [permissionlist, setPermissionList] = useState("")
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -35,71 +34,12 @@ const AudioRecorder = ({ ...props }) => {
     );
   }
 
-
-
-
-  // Array of permissions
-const permissions = [
-  "accelerometer",
-  "accessibility-events",
-  "ambient-light-sensor",
-  "background-sync",
-  "camera",
-  "clipboard-read",
-  "clipboard-write",
-  "geolocation",
-  "gyroscope",
-  "local-fonts",
-  "magnetometer",
-  "microphone",
-  "midi",
-  "notifications",
-  "payment-handler",
-  "persistent-storage",
-  "push",
-  "screen-wake-lock",
-  "storage-access",
-  "top-level-storage-access",
-  "window-management",
-];
-
-
-// Iterate through the permissions and log the result
-async function processPermissions() {
-  let text = ""
-  for (const permission of permissions) {
-    const result = await getPermission(permission);
-    text = text+" , "+result
-  }
-  setPermissionList(text)
-}
-
-console.log("processpermisiions", processPermissions())
-
-// Query a single permission in a try...catch block and return result
-async function getPermission(permission: any) {
-  try {
-    let result;
-    if (permission === "top-level-storage-access") {
-      result = await navigator.permissions.query({
-        name: permission
-      });
-    } else {
-      result = await navigator.permissions.query({ name: permission });
-    }
-    return `${permission}: ${result.state}`;
-  } catch (error) {
-    return `${permission} (not supported)`;
-  }
-}
-
   useEffect(() => {
       setRecordedText(transcript);
   }, [transcript, interimTranscript]);
 
   useEffect(()=>{
-    processPermissions()
-    ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.("")
+    ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({})
   },[])
 
   const handleListing = () => {
@@ -135,7 +75,6 @@ async function getPermission(permission: any) {
   return (
     <div>
       <h6>{i18n.t("INSTRUCTION_TEXT")}</h6>
-      <span style={{color: "black"}}>{permissionlist}</span>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
