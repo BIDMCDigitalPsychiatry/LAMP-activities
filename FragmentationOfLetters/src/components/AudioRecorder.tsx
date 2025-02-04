@@ -6,9 +6,6 @@
  * @copyright (c) 2024, ZCO
  */
 import React, { useEffect, useRef, useState } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
@@ -18,7 +15,6 @@ import AlertModal from "./uielements/AlertModal";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
-  const { transcript, resetTranscript, interimTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
@@ -26,51 +22,85 @@ const AudioRecorder = ({ ...props }) => {
   const [startTimer, setStartTimer] = useState(180);
   const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return (
-      <div className="mircophone-container">
-        {i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED")}
-      </div>
-    );
-  }
+  const [error, setError] = useState('');
+  const [transcript, setTranscript] = useState('');
 
-  useEffect(() => {
-      setRecordedText(transcript);
-  }, [transcript, interimTranscript]);
 
   useEffect(()=>{
     ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({})
   },[])
+  // Initialize speech recognition
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || (window as any).webkitSpeechRecognition || (window as any).mozSpeechRecognition ||
+      (window as any).msSpeechRecognition || (window as any).oSpeechRecognition;
 
-  const handleListing = () => {
-    setIsListening(true);
-    setIsTimeOut(false);
-    resetTranscript();
-    setRecordedText("");
-    SpeechRecognition.startListening({
-      continuous: false,
-      language: 'en-US',
-      interimResults: false
-    });
+    if (!SpeechRecognition) {
+      setError("Speech Recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US"; // Set language to English
+    recognition.continuous = true; // Keep recognition going even after pauses
+    recognition.interimResults = true; // Capture interim results
+
+    // When speech recognition returns a result
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const latestTranscript = Array.from(event.results)
+        .map((result: SpeechRecognitionResult) => result[0].transcript)
+        .join(" ");
+      setTranscript(latestTranscript);
+    };
+
+    // Handle errors
+    recognition.onerror = (event) => {
+      setError(`Error: ${event.error}`);
+    };
+
+    // Start/stop listening based on `isListening` state
+    if (isListening) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+
+    return () => {
+      // Cleanup when component unmounts
+      recognition.stop();
+    };
+  }, [isListening]);
+
+  console.log("error", error)
+
+  const startListening = () => {
+      setIsListening(true);
+      setTranscript("")
+      setIsTimeOut(false);    
   };
-  const stopHandle = () => {
-    setIsTimeOut(true);
-    setIsListening(false);
-    SpeechRecognition.stopListening();
-    setStartTimer(180);
-    handleRecordComplete(getStringAfterWord(recordedText));
+
+  const stopListening = () => {
+      setIsListening(false);
+      setIsTimeOut(true);
+      setStartTimer(180);
+      handleRecordComplete(getStringAfterWord(recordedText));
   };
 
   const passTimerUpdate = (timerValue: number) => {
     if (timerValue === 1) {
       setTimeout(() => {
-        stopHandle();
+        stopListening();
         setIsTimeOut(true);
       }, 1000);
     } else {
       setStartTimer(timerValue);
     }
   };
+
+  useEffect(()=>{
+    console.log("transcript", transcript)
+    setRecordedText(transcript);
+  },[transcript])
 
   return (
     <div>
@@ -81,8 +111,7 @@ const AudioRecorder = ({ ...props }) => {
             className={isListening ? "microphone-icon" : "microphone-icon cursor-pointer"}
             ref={microphoneRef}
             onClick={(e) => {
-              e.stopPropagation();
-              handleListing();
+              startListening();
             }}
           >
             <Microphone />
@@ -104,8 +133,8 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 onClick={(e) => {
                   setIsListening(false);
-                  SpeechRecognition.stopListening();
-                  resetTranscript();
+                  stopListening();
+                  setTranscript("");
                   setIsTimeOut(true);
                   setStartTimer(180);
                 }}
@@ -120,7 +149,7 @@ const AudioRecorder = ({ ...props }) => {
                   if(recordedText==''){
                     setShowAlert(true)
                   }           
-                  else {stopHandle()}
+                  else {stopListening()}
                 }}
               >
                 {i18n.t("STOP")}
