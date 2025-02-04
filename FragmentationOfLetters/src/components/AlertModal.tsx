@@ -7,7 +7,7 @@
  */
 import * as React from "react";
 import { Button, Modal } from "react-bootstrap";
-import i18n from "../../i18n";
+import i18n from "src/i18n";
 
 const AlertModal = ({ ...props }: any) => {
   // Handles modal close
