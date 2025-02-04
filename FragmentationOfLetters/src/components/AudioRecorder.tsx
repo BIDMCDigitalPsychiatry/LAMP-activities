@@ -22,7 +22,6 @@ const AudioRecorder = ({ ...props }) => {
   const [startTimer, setStartTimer] = useState(180);
   const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  const [error, setError] = useState('');
   const [transcript, setTranscript] = useState('');
 
 
@@ -36,7 +35,7 @@ const AudioRecorder = ({ ...props }) => {
       (window as any).msSpeechRecognition || (window as any).oSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setError("Speech Recognition is not supported in this browser.");
+      alert("Speech Recognition is not supported in this browser.");
       return;
     }
 
@@ -55,7 +54,7 @@ const AudioRecorder = ({ ...props }) => {
 
     // Handle errors
     recognition.onerror = (event) => {
-      setError(`Error: ${event.error}`);
+      alert(`Error: ${event.error}`);
     };
 
     // Start/stop listening based on `isListening` state
@@ -70,8 +69,6 @@ const AudioRecorder = ({ ...props }) => {
       recognition.stop();
     };
   }, [isListening]);
-
-  console.log("error", error)
 
   const startListening = () => {
       setIsListening(true);
@@ -98,7 +95,6 @@ const AudioRecorder = ({ ...props }) => {
   };
 
   useEffect(()=>{
-    console.log("transcript", transcript)
     setRecordedText(transcript);
   },[transcript])
 
@@ -133,7 +129,6 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 onClick={(e) => {
                   setIsListening(false);
-                  stopListening();
                   setTranscript("");
                   setIsTimeOut(true);
                   setStartTimer(180);
