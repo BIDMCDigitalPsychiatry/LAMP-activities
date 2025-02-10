@@ -69,6 +69,8 @@ interface BoardState {
   qModel: boolean,
   responses: any,
   lastTapTime: number,
+  outComes: number[]
+  levels: number[]
 }
 
 const numbers = [
@@ -147,76 +149,78 @@ class Board extends React.Component<BoardProps, BoardState> {
       tapType: -1,
       qModel: false,
       responses: {},
+      outComes: [],
+      levels: []
     };
   }
   // Reset game state for each state
   resetState = () => {
     // var refreshIntervalId: any = undefined
-    if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) { 
-      let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
-      let boxCount = this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
+    // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+    let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
+    let boxCount = this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
 
-      if (
-        (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+    if (
+      (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+        navigator.userAgent
+      ) && boxCount > 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+        navigator.userAgent
+      ) && boxCount >= 20
+    ) {
+      this.sendGameResult();
+    }
+    else {
+      const rP = getRandomNumbers(dogTempCount, 1, boxCount);
+      this.setState({
+        animate: true,
+        boxClass: ["box-square"],
+        dogCount: dogTempCount,
+        enableTap: false,
+        lastClickTime: new Date().getTime(),
+        randomPoints: rP,
+        showModalInfo: false,
+        startTime: this.state.gameState === 1 ? new Date() : this.state.startTime,
+        successTaps: 0,
+        wrongTaps: 0,
+        boxCount: boxCount,
+        questionCount: this.state.questionCount + rP.length,
+        numbers: this.shuffleArray(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
           navigator.userAgent
-        ) && boxCount > 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
-          navigator.userAgent
-        ) && boxCount >= 20
-      ) {
-        this.sendGameResult();
-      }
-      else {
-        const rP = getRandomNumbers(dogTempCount, 1, boxCount);
+        ) ? numbersSmall : numbers),
+      });
+      setTimeout(() => {
         this.setState({
-          animate: true,
-          boxClass: ["box-square"],
-          dogCount: dogTempCount,
+          animate: false,
           enableTap: false,
-          lastClickTime: new Date().getTime(),
-          randomPoints: rP,
-          showModalInfo: false,
-          startTime: this.state.gameState === 1 ? new Date() : this.state.startTime,
-          successTaps: 0,
-          wrongTaps: 0,
-          boxCount: boxCount,
-          questionCount: this.state.questionCount + rP.length,
-          numbers: this.shuffleArray(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-            navigator.userAgent
-          ) ? numbersSmall : numbers),
-        });
+        })
         setTimeout(() => {
           this.setState({
-            animate: false,
-            enableTap: false,
+            animate: true,
+            tapTime: new Date().getTime(),
+            enableTap: true
+          }, () => {
+            setTimeout(() => {
+              if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+                this.resetBoxClass();
+                this.resetState()
+              }
+            }, 4000)
           })
-          setTimeout(() => {
-            this.setState({
-              animate: true,
-              tapTime: new Date().getTime(),
-              enableTap: true
-            }, () => {
-              setTimeout(() => {
-                if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-                    this.resetBoxClass();
-                    this.resetState()
-                }
-              }, 4000)
-            })
-          }, 2500);
-        }, 2000)
-        this.checkStatus();
-      }
+        }, 2500);
+      }, 2000)
+      this.checkStatus();
     }
+    // }
   };
   // Rest box styles after each load
   resetBoxClass = () => {
-    if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) { 
-      Array.from(document.getElementsByClassName("box-square")).forEach(
-        (elem) => {
-          elem.className = "box-square dog-cover";
-        }
-      );
-    }
+    // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+    Array.from(document.getElementsByClassName("box-square")).forEach(
+      (elem) => {
+        elem.className = "box-square dog-cover";
+      }
+    );
+    // }
   };
 
   // Check the status of intervals for loading dogs and cats
@@ -253,21 +257,12 @@ class Board extends React.Component<BoardProps, BoardState> {
         wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
         tapType: success ? 1 : 2
       }, () => {
+        this.updateWithTaps(i, success)
+
         setTimeout(() => {
           this.setState({ tapType: -1 })
         }, 500)
 
-        this.updateWithTaps(i, success)
-
-        if (this.state.successTaps + this.state.wrongTaps === this.state.randomPoints.length) {
-          this.setState({ successCompletion: this.state.successTaps === this.state.randomPoints.length },
-            () => {
-              setTimeout(() => {
-                this.resetBoxClass();
-                this.resetState()
-              }, 500)
-            })
-        }
       });
     }
   };
@@ -287,7 +282,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
     if (timerValue === 0) {
       if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000) {
-          this.finishGame()
+        this.finishGame()
       }
       else {
         setInterval(() => {
@@ -361,12 +356,36 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxes: JSON.stringify(boxes),
       lastClickTime: new Date().getTime(),
     }, () => {
-      setTimeout(() => {
-        if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+      let statusOutComes = this.state.outComes
+        !statusVal ? statusOutComes.push(0) : statusOutComes.push(1)
+      let levels = this.state.levels 
+      levels.push(this.state.randomPoints.length)
+      if (!statusVal || (this.state.successTaps === this.state.randomPoints.length)) {
+        this.setState({
+          successCompletion: this.state.successTaps === this.state.randomPoints.length,
+          outComes: statusOutComes,
+          levels: levels
+        },
+          () => {
+            setTimeout(() => {
+              this.resetBoxClass();
+              this.resetState()
+            }, 500)
+          })
+      } else {
+        setTimeout(() => {
+          if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
+            this.setState({
+              successCompletion: this.state.successTaps === this.state.randomPoints.length,
+              outComes: statusOutComes,
+              levels: levels
+            }, () => {
             this.resetBoxClass();
             this.resetState()
-        }
-      }, 4000)
+            })
+          }
+        }, 4000)
+      }
     });
   };
 
@@ -418,9 +437,29 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   submitResponse = (response: any) => {
     this.setState({ responses: response }, () => {
-      const gameScore = Math.round(
-        (this.state.stateSuccessTaps / this.state.questionCount) * 100
-      );
+
+      const range = (start: number, stop: number, step: number) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
+      const theta = range(0, 10, 0.1)
+      const k = 2.00
+      const actualScore = this.state.outComes.reduce((a, b) => a + b, 0)
+
+      // item response theory computation (no partial credit)
+      //MLE approach: find maximum likelihood ability theta, given the round outcomes
+      let irf = 0.00;
+      let expectedScores = Array(theta.length).fill(0) 
+          //expectedScores[j] = expected score (# correct) of a person with true ability theta[j] 
+      for (let i = 0; i < this.state.outComes.length; i++) {
+          for (let j = 0; j < theta.length; j++) {
+              irf = Math.exp(k * (theta[j] - this.state.levels[i])) / 
+              (1 + Math.exp(k * (theta[j] - this.state.levels[i]))) 
+                  //= probability of getting an item of difficulty b[i] correct at an ability level of theta[j]
+              expectedScores[j] += irf
+          }
+      }
+      let deviations = expectedScores.map( function(value) {return Math.abs(value - actualScore)} )
+      let index = deviations.indexOf(Math.min(...deviations))
+      let score = Math.round(theta[index]*10)/10
+      const gameScore = score;
       let points = 0;
       if (gameScore === 100) {
         points = points + 2;
