@@ -126,15 +126,25 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 function LinkRenderer(props: any) {
-  return (
-    (props.href) ?
-      ReactPlayer.canPlay(props.href) ? (
-        <VideoRenderer url={props.href} />
-      ) : (
-        <LinkRenderer href={props.href}>{props.children}</LinkRenderer>
-      )
-      : <>{props.children}</>
-  );
+  // return (
+  //   (props.href) ?
+  //     ReactPlayer.canPlay(props.href) ? (
+  //       <VideoRenderer url={props.href} />
+  //     ) : (
+  //       <LinkRenderer href={props.href}>{props.children}</LinkRenderer>
+  //     )
+  //     : <>{props.children}</>
+  // );
+  if (props.href) {
+    return ReactPlayer.canPlay(props.href) ? (
+      <VideoRenderer url={props.href} />
+    ) : (
+      <a href={props.href} target="_blank" rel="noopener noreferrer">
+        {props.children}
+      </a>
+    );
+  }
+  return <>{props.children}</>;
 }
 
 function VideoRenderer({ url }: { url: string }) {
