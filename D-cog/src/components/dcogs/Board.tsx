@@ -105,7 +105,6 @@ const numbersSmall = [
   "eightth",
   "nineth",
   "tenth",
-
 ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
@@ -159,11 +158,10 @@ class Board extends React.Component<BoardProps, BoardState> {
     // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
     let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
     let boxCount = this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
-
     if (
       (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
         navigator.userAgent
-      ) && boxCount > 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+      ) && boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
         navigator.userAgent
       ) && boxCount >= 20
     ) {
@@ -491,7 +489,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     let boxes;
     if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
       navigator.userAgent
-    ) && this.state.boxCount >= 10) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+    ) && this.state.boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
       navigator.userAgent
     ) && this.state.boxCount >= 20) {
       boxes = i18n.t("GAME_OVER") + " !!!";
