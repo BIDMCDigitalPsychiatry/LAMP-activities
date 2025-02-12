@@ -318,6 +318,25 @@ button.primary{
 }
 button.primary:hover{background-color: #197ed8}
 .text-right{text-align: right;}
+.btn-submit{
+	color: #fff;
+	background-color:#359ffe !important;
+	padding: 10px 25px 12px !important;
+	border: 0 !important;
+	border-radius: 25px;
+	font-weight: 600;
+	min-width: 106px;
+  }
+  
+  .btn-submit-disabled{
+	color: #999;
+	background-color:#b6b6b6 !important;
+	padding: 10px 25px 12px !important;
+	border: 0 !important;
+	border-radius: 25px;
+	font-weight: 600;
+	min-width: 106px;
+  }
 @media only screen and (max-width: 769px){
 	.box-white{width: 115px; height: 115px;}
 	.box-table tr{height: 115px;}

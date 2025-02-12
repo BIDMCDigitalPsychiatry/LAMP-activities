@@ -37,11 +37,12 @@ class Box extends React.Component<any, AppState> {
                 animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
                 animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 1000}
                 foils={this.state.settings?.foils ?? 2}
-                encodingTrials={this.state.settings?.encoding_trials ?? 3}
+                encodingTrials={this.state.settings?.encoding_trials ? this.state.settings?.encoding_trials : 3}
                 language={i18n.language}
                 seqLength={!!this.state.settings?.foils ? (this.state.settings?.foils === 1 ? 3 : 4) : 4}
                 time={this.state.time} 
                 autoCorrect={this.state.autoCorrect}
+                retrievalDelay={this.state.settings?.retrieval_delay ? this.state.settings?.retrieval_delay * 60 : 60}
               />            
         )}
       </div>
