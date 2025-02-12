@@ -10,11 +10,11 @@ import {
   IconButton,
   CardContent,
   Grid,
-  Box,
+  // Box,
   Fab,
   Container,
 } from "@material-ui/core"
-
+import { Box } from "@mui/material";
 import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
@@ -122,6 +122,12 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: "4px",
       },
     },
+    // iframeVideo: {
+    //   height: 350,
+    //   [theme.breakpoints.down("md")]: {
+    //     height: 250,
+    //   }
+    // }
   })
 )
 
@@ -157,16 +163,36 @@ function VideoRenderer({ url }: { url: string }) {
           url)
   }, [url])
 
+  // return (
+  //   <div>
+  //     <iframe
+  //       src={videoUrl}
+  //       width="100%"
+  //       height="350px"
+  //       allow="autoplay; encrypted-media; fullscreen;"
+  //       allowFullScreen
+  //       className={classes.iframeVideo}
+  //     ></iframe>
+  //   </div>
+  // );
   return (
-    <div>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        height: { xs: "250px", md: "350px" },
+        borderRadius: "8px",
+      }}
+    >
       <iframe
         src={videoUrl}
         width="100%"
         height="100%"
-        allow="autoplay; encrypted-media; fullscreen;"
+        allow="autoplay; encrypted-media; fullscreen"
         allowFullScreen
-      ></iframe>
-    </div>
+        referrerPolicy="no-referrer"
+      />
+    </Box>
   );
 }
 
