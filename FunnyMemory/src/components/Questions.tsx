@@ -11,6 +11,7 @@ import "../containers/layout.css";
 import "react-datepicker/dist/react-datepicker.css";
 import i18n from "src/i18n";
 import { Timer } from "./common/Timer";
+import { Button } from "react-bootstrap";
 
 function getDaysInCurrentMonth() {
   const date = new Date();
@@ -32,6 +33,7 @@ interface State {
   data: any;
   timeout: boolean;
   startTimer: number;
+  dataSubmitted : boolean;
 }
 export default class Questions extends React.Component<Props, State> {
   private months = [
@@ -70,6 +72,7 @@ export default class Questions extends React.Component<Props, State> {
       data: {},
       startTimer: props.timeLimit,
       timeout: false,
+      dataSubmitted: false
     };
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
   }
@@ -86,6 +89,21 @@ export default class Questions extends React.Component<Props, State> {
     }
   };
 
+  checkDataReadyToSubmit = () => {
+    if (
+      !this.state.data.start_time ||
+      !this.state.data.today_date || this.state.data.today_date === "Select date" ||
+      !this.state.data.month || this.state.data.month === "Select month" ||
+      !this.state.data.year || this.state.data.year === "Select year" ||
+      !this.state.data.day || this.state.data.day === "Select day" ||
+      !this.state.data.season || this.state.data.season === "Select season"
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   render() {
     return (
       <div className="marginTop10">
@@ -99,7 +117,7 @@ export default class Questions extends React.Component<Props, State> {
 
         <div className="memory-outer">
           <div className="question-nav">
-            <p>{i18n.t("ABOUT_TIME")}</p>
+            <p>{i18n.t("ABOUT_TIME")} *</p>
             <div>
               <DatePicker
                 selected={this.state.data?.start_time}
@@ -114,20 +132,22 @@ export default class Questions extends React.Component<Props, State> {
                 timeIntervals={15}
                 timeCaption="Time"
                 dateFormat="h:mm aa"
+                disabled={this.state.dataSubmitted===true}
               />
             </div>
           </div>
           <div className="question-nav">
-            <p>{i18n.t("TODAY")}</p>
+            <p>{i18n.t("TODAY")} *</p>
             <select
               onChange={(evt) => {
                 const details = this.state.data;
                 details.today_date =
-                  this.state.data?.today_date ?? evt.target.value;
+                evt.target.value === "Select date" ? null : evt.target.value;
                 this.setState({ data: details }, () => {
                   this.props.onStateChange(details);
                 });
               }}
+              disabled={this.state.dataSubmitted===true}
             >
               <option>{i18n.t("SELECT_DATE")}</option>
               {this.monthDates.map((i: number) => (
@@ -136,15 +156,16 @@ export default class Questions extends React.Component<Props, State> {
             </select>
           </div>
           <div className="question-nav">
-            <p>{i18n.t("CURRENT_MONTH")}</p>
+            <p>{i18n.t("CURRENT_MONTH")} *</p>
             <select
               onChange={(evt) => {
                 const details = this.state.data;
-                details.month = this.state.data?.month ?? evt.target.value;
+                details.month = evt.target.value === "Select month" ? null : evt.target.value;
                 this.setState({ data: details }, () => {
                   this.props.onStateChange(details);
                 });
               }}
+              disabled={this.state.dataSubmitted===true}
             >
               <option>{i18n.t("SELECT_MONTH")}</option>
               {this.months.map((month: string) => (
@@ -153,15 +174,16 @@ export default class Questions extends React.Component<Props, State> {
             </select>
           </div>
           <div className="question-nav">
-            <p>{i18n.t("CURRENT_YEAR")}</p>
+            <p>{i18n.t("CURRENT_YEAR")} *</p>
             <select
               onChange={(evt) => {
                 const details = this.state.data;
-                details.year = this.state.data?.year ?? evt.target.value;
+                details.year = evt.target.value === "Select year" ? null : evt.target.value;
                 this.setState({ data: details }, () => {
                   this.props.onStateChange(details);
                 });
               }}
+              disabled={this.state.dataSubmitted===true}
             >
               <option>{i18n.t("SELECT_YEAR")}</option>
               {this.years.map((year: number) => (
@@ -170,15 +192,16 @@ export default class Questions extends React.Component<Props, State> {
             </select>
           </div>
           <div className="question-nav">
-            <p>{i18n.t("CURRENT_DAY")}</p>
+            <p>{i18n.t("CURRENT_DAY")} *</p>
             <select
               onChange={(evt) => {
                 const details = this.state.data;
-                details.day = this.state.data?.day ?? evt.target.value;
+                details.day = evt.target.value === "Select day" ? null : evt.target.value;
                 this.setState({ data: details }, () => {
                   this.props.onStateChange(details);
                 });
               }}
+              disabled={this.state.dataSubmitted===true}
             >
               <option>{i18n.t("SELECT_DAY")}</option>
               {this.days.map((day: string) => (
@@ -187,15 +210,16 @@ export default class Questions extends React.Component<Props, State> {
             </select>
           </div>
           <div className="question-nav">
-            <p>{i18n.t("CURRENT_SEASON")}</p>
+            <p>{i18n.t("CURRENT_SEASON")} *</p>
             <select
               onChange={(evt) => {
                 const details = this.state.data;
-                details.season = this.state.data?.season ?? evt.target.value;
+                details.season = evt.target.value === "Select season" ? null : evt.target.value;
                 this.setState({ data: details }, () => {
                   this.props.onStateChange(details);
                 });
               }}
+              disabled={this.state.dataSubmitted===true}
             >
               <option>{i18n.t("SELECT_SEASON")}</option>
               {this.seasons.map((season: string) => (
@@ -203,7 +227,16 @@ export default class Questions extends React.Component<Props, State> {
               ))}
             </select>
           </div>
+          <div className="d-flex justify-content-end">
+          <Button className={this.checkDataReadyToSubmit()===false ? "btn-submit-disabled" : "btn-submit"} variant="primary"
+          disabled={this.checkDataReadyToSubmit()===false}
+           onClick={()=>{
+            this.setState({
+              dataSubmitted: true,
+            });
+          }}>Submit</Button>
         </div>
+        </div>        
       </div>
     );
   }

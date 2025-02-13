@@ -294,6 +294,26 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   font-weight: 600;
   min-width: 106px;
 }
+
+.btn-submit{
+	color: #fff;
+	background-color:#359ffe !important;
+	padding: 10px 25px 12px !important;
+	border: 0 !important;
+	border-radius: 25px;
+	font-weight: 600;
+	min-width: 106px;
+  }
+  
+  .btn-submit-disabled{
+	color: #999;
+	background-color:#b6b6b6 !important;
+	padding: 10px 25px 12px !important;
+	border: 0 !important;
+	border-radius: 25px;
+	font-weight: 600;
+	min-width: 106px;
+  }
 .btn-cancel{
   color: #359ffe;
   background-color:transparent;
