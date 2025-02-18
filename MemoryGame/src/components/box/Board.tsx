@@ -773,9 +773,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.setState(
           {
             locationIndex: this.state.resultClickIndex,
-            successTapImage: true,
-            completedIndex: this.state.completedIndex + 1,
-          },
+            successTapImage: true          },
           () => {
             this.updateAutoLocation();
 
@@ -803,6 +801,8 @@ class Board extends React.Component<BoardProps, BoardState> {
           {
             locationIndex: this.state.resultClickIndex + 1,
             resultClickIndex: this.state.resultClickIndex + 1,
+            completedIndex: this.state.completedIndex + 1
+
           },
           () => {
             if (this.state.completedIndex === this.props.seqLength) {

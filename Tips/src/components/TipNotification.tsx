@@ -10,11 +10,10 @@ import {
   IconButton,
   CardContent,
   Grid,
-  // Box,
+  Box,
   Fab,
   Container,
 } from "@material-ui/core"
-import { Box } from "@mui/material";
 import classnames from "classnames"
 import { useTranslation } from "react-i18next"
 import ReactMarkdown from "react-markdown"
@@ -122,12 +121,12 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: "4px",
       },
     },
-    // iframeVideo: {
-    //   height: 350,
-    //   [theme.breakpoints.down("md")]: {
-    //     height: 250,
-    //   }
-    // }
+    iframeVideo: {
+      height: 350,
+      // [theme.breakpoints.down("md")]: {
+      //   height: 250,
+      // }
+    }
   })
 )
 
@@ -155,7 +154,7 @@ function LinkRenderer(props: any) {
 
 function VideoRenderer({ url }: { url: string }) {
   const [videoUrl, setVideoUrl] = useState<string>()
-
+  const classes = useStyles()
   useEffect(() => {
     setVideoUrl(url.indexOf("vimeo.com") > 0 ? url.replace("vimeo.com", "player.vimeo.com/video") :
       url.indexOf("youtube") > 0 ? url.replace("watch?v=", "embed/") :
@@ -163,36 +162,17 @@ function VideoRenderer({ url }: { url: string }) {
           url)
   }, [url])
 
-  // return (
-  //   <div>
-  //     <iframe
-  //       src={videoUrl}
-  //       width="100%"
-  //       height="350px"
-  //       allow="autoplay; encrypted-media; fullscreen;"
-  //       allowFullScreen
-  //       className={classes.iframeVideo}
-  //     ></iframe>
-  //   </div>
-  // );
   return (
-    <Box
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: { xs: "250px", md: "350px" },
-        borderRadius: "8px",
-      }}
-    >
+    <div>
       <iframe
         src={videoUrl}
         width="100%"
         height="100%"
-        allow="autoplay; encrypted-media; fullscreen"
+        allow="autoplay; encrypted-media; fullscreen;"
         allowFullScreen
-        referrerPolicy="no-referrer"
-      />
-    </Box>
+        className={classes.iframeVideo}
+      ></iframe>
+    </div>
   );
 }
 
