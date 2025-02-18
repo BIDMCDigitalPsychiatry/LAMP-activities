@@ -239,7 +239,7 @@ export default function Board({ ...props }) {
   const [lastClickTime, setLastClickTime] = useState(new Date().getTime())
   // const [status, setStatus] = useState(false)
   const [errorState, setErrorState] = useState(0)
-  const [largeScore, setLargeScore] = useState(0)
+  // const [largeScore, setLargeScore] = useState(0)
   const [successTaps, setSuccessTaps] = useState(0)
   const [totalQuestions, setTotal] = useState(3)
   const [mode, setMode] = useState(0)
@@ -272,8 +272,8 @@ export default function Board({ ...props }) {
       setSequenceCount(0)
       setTimeout(() => {
       setStartGame(false)
-      if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
-        setLargeScore(questionSequence.length)
+      // if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
+      //   setLargeScore(questionSequence.length)
       const rev = [...answers].reverse()
       let newCount = questionSequence.length ?? 5
       if ((mode == 0 && JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
@@ -303,7 +303,7 @@ export default function Board({ ...props }) {
 
   useEffect(() => {
     if (mode == 1) {
-      setSequenceCount(largeScore)
+      setSequenceCount(2)
     }
   }, [mode])
 
