@@ -271,33 +271,38 @@ export default function Board({ ...props }) {
     if (answers.length > 0 && answers.length === questionSequence.length) {
       setSequenceCount(0)
       setTimeout(() => {
-      setStartGame(false)
-      // if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
-      //   setLargeScore(questionSequence.length)
-      const rev = [...answers].reverse()
-      let newCount = questionSequence.length ?? 5
-      if ((mode == 0 && JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
-        (mode == 1 && JSON.stringify(rev) != JSON.stringify(questionSequence)))
-        setErrorState(errorState + 1)
-      if ((mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence)) || 
-      (mode == 1 && JSON.stringify(rev) == JSON.stringify(questionSequence))) {
-        newCount =  ++newCount
-      } 
-      if (errorState >= 1 || newCount === 10) {
-        if (mode == 0) {
-          setSequenceCount(-1)
+        setStartGame(false)
+        // if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
+        //   setLargeScore(questionSequence.length)
+        const rev = [...answers].reverse()
+        let error = errorState
+        let newCount = questionSequence.length ?? 5
+        if ((mode == 0 && JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
+          (mode == 1 && JSON.stringify(rev) != JSON.stringify(questionSequence))) {
+          setErrorState(errorState + 1)
+          error= errorState + 1
+        }
+        if ((mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence)) ||
+          (mode == 1 && JSON.stringify(rev) == JSON.stringify(questionSequence))) {
           setErrorState(0)
-          setMode(1)
+          error = 0
+          newCount = ++newCount
+        }
+        if (error > 1 || newCount === 10) {
+          if (mode == 0) {
+            setSequenceCount(-1)
+            setErrorState(0)
+            setMode(1)
+          } else {
+            sendGameResult()
+          }
         } else {
+          setSequenceCount(newCount)
+        }
+        if (newCount == 0) {
           sendGameResult()
         }
-      } else {
-        setSequenceCount(newCount)
-      }
-      if (newCount == 0) {
-        sendGameResult()
-      }
-    }, 500)
+      }, 500)
     }
   }, [answers])
 
@@ -308,12 +313,12 @@ export default function Board({ ...props }) {
   }, [mode])
 
   useEffect(() => {
-    if(sequenceCount > 0) {
+    if (sequenceCount > 0) {
       if (level > 1) setTotal(totalQuestions + sequenceCount)
       gameSetUp()
       setTimeout(() => {
-      setAnswers([])
-      setStart(true)
+        setAnswers([])
+        setStart(true)
       }, 300)
     }
   }, [sequenceCount])
@@ -425,18 +430,18 @@ export default function Board({ ...props }) {
                   color="default"
                   aria-label="Menu"
                 >
-                  <Icon style={{color:"white"}}>arrow_back</Icon>
+                  <Icon style={{ color: "white" }}>arrow_back</Icon>
                 </IconButton>
                 <Typography variant="h5">Digit Span</Typography>
               </Grid>
               <IconButton
-                  onClick={() => {
-                    window.location.reload()
-                  }}
-                  color="default"
-                  aria-label="Menu"
-                >
-              <Icon style={{color:"white"}}>refresh</Icon>
+                onClick={() => {
+                  window.location.reload()
+                }}
+                color="default"
+                aria-label="Menu"
+              >
+                <Icon style={{ color: "white" }}>refresh</Icon>
               </IconButton>
             </Toolbar>
           </AppBar>
@@ -451,11 +456,11 @@ export default function Board({ ...props }) {
                 <Grid container key={rowIndex}>
                   {row.map((num) => (
                     <Grid item className={classes.numberColumn}
-                    // className={classes.numberColumn + " " +
-                    //   (!answers.includes(num) ? "" :
-                    //     (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
-                    //       ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
-                    //       classes.selectedRightItem : classes.selectedWrongItem)}
+                      // className={classes.numberColumn + " " +
+                      //   (!answers.includes(num) ? "" :
+                      //     (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
+                      //       ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
+                      //       classes.selectedRightItem : classes.selectedWrongItem)}
                       onClick={() => {
                         if (!!startGame) updateAnswer(num)
                       }}>
@@ -474,7 +479,7 @@ export default function Board({ ...props }) {
             </Box>
           </Grid>
           <Grid justifyContent="center" container>
-            <Button variant="contained" className={classes.btnDone} onClick={()=>sendGameResult()}>Done</Button>
+            <Button variant="contained" className={classes.btnDone} onClick={() => sendGameResult()}>Done</Button>
           </Grid>
         </Box>
       )}

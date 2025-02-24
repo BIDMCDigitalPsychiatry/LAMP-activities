@@ -204,7 +204,7 @@ input[type=checkbox] {
 	align-items: center;
 }
 .question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
-.question-nav p{color: #333; font-size: 16px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
+.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
 .react-datepicker__input-container input{
 	border: #ccc solid 1px;
     padding: 10px;
@@ -220,7 +220,15 @@ input[type=checkbox] {
     padding: 10px;
     border-radius: 3px;
 	min-width: 202px;
-	font-size: 16px;
+	font-size: 14px;
+}
+.question-nav button{
+	border: #ccc solid 1px;
+    padding: 10px; 
+    border-radius: 3px;
+	min-width: 202px;
+	font-size: 14px;
+  text-align: left;
 }
 .react-datepicker--time-only .react-datepicker__triangle{
 	left: -40px !important;
@@ -328,4 +336,9 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   border: #359ffe solid 2px;
   background-color: #eee !important;
   color: #359ffe;
+}
+.lamp-datepicker{
+  background-color: #fff;
+  height: 40.8px;
+  padding: 8px 10px !important;
 }

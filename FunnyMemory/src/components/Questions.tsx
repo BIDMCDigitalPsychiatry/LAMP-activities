@@ -37,6 +37,24 @@ interface State {
   dataSubmitted : boolean;
   showMiniGame : boolean;
 }
+
+interface ExampleCustomInputProps {
+  value: string;
+  onClick: () => void;
+  className?: string;
+}
+
+class ExampleCustomInput extends React.Component<ExampleCustomInputProps> {
+  render() {
+    const { value, onClick, className } = this.props;
+    return (
+      <button className={className} onClick={onClick}>
+        {value} 
+      </button>
+    );
+  }
+}
+
 export default class Questions extends React.Component<Props, State> {
   private months = [
     "January",
@@ -129,18 +147,18 @@ export default class Questions extends React.Component<Props, State> {
                 selected={this.state.data?.start_time}
                 onChange={(date: any) => {
                   const details = Object.assign({}, this.state?.data) ?? {};
-                  details.start_time = details.start_time ?? date;
+                  details.start_time = date;
                   this.props.onStateChange(Object.assign({}, details));
                   this.setState({ data: details });
                 }}
                 showTimeSelect={true}
                 showTimeSelectOnly={true}
-                onFocus={e => e.target.blur()}
-                onInputKeyDown={(e: any) => e.preventDefault()}
+                customInput={<ExampleCustomInput value="Select Date" onClick={() => {}} className="example-custom-input" />}
                 timeIntervals={15}
                 timeCaption="Time"
                 dateFormat="h:mm aa"
                 disabled={this.state.dataSubmitted===true}
+                className="lamp-datepicker"
               />
             </div>
           </div>
