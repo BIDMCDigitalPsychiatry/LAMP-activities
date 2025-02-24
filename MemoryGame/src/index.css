@@ -15,3 +15,10 @@ body {
 .modal-header{border-bottom: 0;}
 .modal-footer{border-top: 0;}
 .modal-body{padding: 0 1rem; font-size: 15px;}
+
+.body-white {
+  background: #fff !important;
+}
+.black-text {
+  color: black !important;
+}
