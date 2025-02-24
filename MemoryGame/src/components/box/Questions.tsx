@@ -14,6 +14,7 @@ import "./box.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
+import ColourMemo from "src/minigame/ColourMemo";
 
 function getDaysInCurrentMonth() {
   const date = new Date();
@@ -36,6 +37,7 @@ interface State {
   timeout: boolean;
   startTimer: number;
   dataSubmitted: boolean;
+  showMiniGame: boolean;
 }
 export default class Questions extends React.Component<Props, State> {
   private months = [
@@ -75,6 +77,7 @@ export default class Questions extends React.Component<Props, State> {
       startTimer: props.timeLimit,
       timeout: false,
       dataSubmitted: false,
+      showMiniGame: false,
     };
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
   }
@@ -94,11 +97,16 @@ export default class Questions extends React.Component<Props, State> {
   checkDataReadyToSubmit = () => {
     if (
       !this.state.data.start_time ||
-      !this.state.data.today_date || this.state.data.today_date === "Select date" ||
-      !this.state.data.month || this.state.data.month === "Select month" ||
-      !this.state.data.year || this.state.data.year === "Select year" ||
-      !this.state.data.day || this.state.data.day === "Select day" ||
-      !this.state.data.season || this.state.data.season === "Select season"
+      !this.state.data.today_date ||
+      this.state.data.today_date === "Select date" ||
+      !this.state.data.month ||
+      this.state.data.month === "Select month" ||
+      !this.state.data.year ||
+      this.state.data.year === "Select year" ||
+      !this.state.data.day ||
+      this.state.data.day === "Select day" ||
+      !this.state.data.season ||
+      this.state.data.season === "Select season"
     ) {
       return false;
     } else {
@@ -114,139 +122,159 @@ export default class Questions extends React.Component<Props, State> {
             passTimerUpdate={this.passTimerUpdate}
             startTimeInSeconds={this.state.startTimer}
             startTimer={this.state.startTimer - 1}
+            showMiniGame={this.state.showMiniGame}
           />
         ) : null}
 
-        <div className="memory-outer">
-          <div className="question-nav">
-            <p>{i18n.t("ABOUT_TIME")} *</p>
-            <div>
-              <DatePicker
-                selected={this.state.data?.start_time}
-                onChange={(date) => {
-                  const details = Object.assign({}, this.state?.data) ?? {};
-                  details.start_time = details.start_time ?? date;
-                  this.props.onStateChange(Object.assign({}, details));
-                  this.setState({ data: details });
+        {this.state.showMiniGame ? (
+          <ColourMemo />
+        ) : (
+          <div className="memory-outer">
+            <div className="question-nav">
+              <p>{i18n.t("ABOUT_TIME")} *</p>
+              <div>
+                <DatePicker
+                  selected={this.state.data?.start_time}
+                  onChange={(date) => {
+                    const details = Object.assign({}, this.state?.data) ?? {};
+                    details.start_time = details.start_time ?? date;
+                    this.props.onStateChange(Object.assign({}, details));
+                    this.setState({ data: details });
+                  }}
+                  showTimeSelect={true}
+                  showTimeSelectOnly={true}
+                  onFocus={e => e.target.blur()}
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                  disabled={this.state.dataSubmitted === true}
+                />
+              </div>
+            </div>
+            <div className="question-nav">
+              <p>{i18n.t("TODAY")} *</p>
+              <select
+                onChange={(evt) => {
+                  const details = this.state.data;
+                  details.today_date =
+                    evt.target.value === "Select date"
+                      ? null
+                      : evt.target.value;
+                  this.setState({ data: details }, () => {
+                    this.props.onStateChange(details);
+                  });
                 }}
-                showTimeSelect={true}
-                showTimeSelectOnly={true}
-                timeIntervals={15}
-                timeCaption="Time"
-                dateFormat="h:mm aa"
                 disabled={this.state.dataSubmitted === true}
-              />
+              >
+                <option>{i18n.t("SELECT_DATE")}</option>
+                {this.monthDates.map((i: number) => (
+                  <option value={i + 1}>{i + 1}</option>
+                ))}
+              </select>
+            </div>
+            <div className="question-nav">
+              <p>{i18n.t("CURRENT_MONTH")} *</p>
+              <select
+                onChange={(evt) => {
+                  const details = this.state.data;
+                  details.month =
+                    evt.target.value === "Select month"
+                      ? null
+                      : evt.target.value;
+                  this.setState({ data: details }, () => {
+                    this.props.onStateChange(details);
+                  });
+                }}
+                disabled={this.state.dataSubmitted === true}
+              >
+                <option>{i18n.t("SELECT_MONTH")}</option>
+                {this.months.map((month: string) => (
+                  <option value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
+            <div className="question-nav">
+              <p>{i18n.t("CURRENT_YEAR")} *</p>
+              <select
+                onChange={(evt) => {
+                  const details = this.state.data;
+                  details.year =
+                    evt.target.value === "Select year"
+                      ? null
+                      : evt.target.value;
+                  this.setState({ data: details }, () => {
+                    this.props.onStateChange(details);
+                  });
+                }}
+                disabled={this.state.dataSubmitted === true}
+              >
+                <option>{i18n.t("SELECT_YEAR")}</option>
+                {this.years.map((year: number) => (
+                  <option value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+            <div className="question-nav">
+              <p>{i18n.t("CURRENT_DAY")} *</p>
+              <select
+                onChange={(evt) => {
+                  const details = this.state.data;
+                  details.day =
+                    evt.target.value === "Select day" ? null : evt.target.value;
+                  this.setState({ data: details }, () => {
+                    this.props.onStateChange(details);
+                  });
+                }}
+                disabled={this.state.dataSubmitted === true}
+              >
+                <option>{i18n.t("SELECT_DAY")}</option>
+                {this.days.map((day: string) => (
+                  <option value={day}>{day}</option>
+                ))}
+              </select>
+            </div>
+            <div className="question-nav">
+              <p>{i18n.t("CURRENT_SEASON")} *</p>
+              <select
+                onChange={(evt) => {
+                  const details = this.state.data;
+                  details.season =
+                    evt.target.value === "Select season"
+                      ? null
+                      : evt.target.value;
+                  this.setState({ data: details }, () => {
+                    this.props.onStateChange(details);
+                  });
+                }}
+                disabled={this.state.dataSubmitted === true}
+              >
+                <option>{i18n.t("SELECT_SEASON")}</option>
+                {this.seasons.map((season: string) => (
+                  <option value={season}>{season}</option>
+                ))}
+              </select>
+            </div>
+            <div className="d-flex justify-content-end">
+              <Button
+                className={
+                  this.checkDataReadyToSubmit() === false || this.state.dataSubmitted
+                    ? "btn-submit-disabled"
+                    : "btn-submit"
+                }
+                variant="primary"
+                disabled={this.checkDataReadyToSubmit() === false}
+                onClick={() => {
+                  this.setState({
+                    dataSubmitted: true,
+                    showMiniGame: true,
+                  });
+                }}
+              >
+                Submit
+              </Button>
             </div>
           </div>
-          <div className="question-nav">
-            <p>{i18n.t("TODAY")} *</p>
-            <select
-              onChange={(evt) => {
-                const details = this.state.data;                
-                details.today_date = evt.target.value === "Select date" ? null : evt.target.value;
-                this.setState({ data: details }, () => {
-                  this.props.onStateChange(details);
-                });
-              }}
-              disabled={this.state.dataSubmitted === true}
-            >
-              <option>{i18n.t("SELECT_DATE")}</option>
-              {this.monthDates.map((i: number) => (
-                <option value={i + 1}>{i + 1}</option>
-              ))}
-            </select>
-          </div>
-          <div className="question-nav">
-            <p>{i18n.t("CURRENT_MONTH")} *</p>
-            <select
-              onChange={(evt) => {
-                const details = this.state.data;
-                details.month = evt.target.value === "Select month" ? null : evt.target.value;
-                this.setState({ data: details }, () => {
-                  this.props.onStateChange(details);
-                });
-              }}
-              disabled={this.state.dataSubmitted === true}
-            >
-              <option>{i18n.t("SELECT_MONTH")}</option>
-              {this.months.map((month: string) => (
-                <option value={month}>{month}</option>
-              ))}
-            </select>
-          </div>
-          <div className="question-nav">
-            <p>{i18n.t("CURRENT_YEAR")} *</p>
-            <select
-              onChange={(evt) => {
-                const details = this.state.data;
-                details.year = evt.target.value === "Select year" ? null : evt.target.value;
-                this.setState({ data: details }, () => {
-                  this.props.onStateChange(details);
-                });
-              }}
-              disabled={this.state.dataSubmitted === true}
-            >
-              <option>{i18n.t("SELECT_YEAR")}</option>
-              {this.years.map((year: number) => (
-                <option value={year}>{year}</option>
-              ))}
-            </select>
-          </div>
-          <div className="question-nav">
-            <p>{i18n.t("CURRENT_DAY")} *</p>
-            <select
-              onChange={(evt) => {
-                const details = this.state.data;
-                details.day = evt.target.value === "Select day" ? null : evt.target.value;
-                this.setState({ data: details }, () => {
-                  this.props.onStateChange(details);
-                });
-              }}
-              disabled={this.state.dataSubmitted === true}
-            >
-              <option>{i18n.t("SELECT_DAY")}</option>
-              {this.days.map((day: string) => (
-                <option value={day}>{day}</option>
-              ))}
-            </select>
-          </div>
-          <div className="question-nav">
-            <p>{i18n.t("CURRENT_SEASON")} *</p>
-            <select
-              onChange={(evt) => {
-                const details = this.state.data;
-                details.season = evt.target.value === "Select season" ? null : evt.target.value;
-                this.setState({ data: details }, () => {
-                  this.props.onStateChange(details);
-                });
-              }}
-              disabled={this.state.dataSubmitted === true}
-            >
-              <option>{i18n.t("SELECT_SEASON")}</option>
-              {this.seasons.map((season: string) => (
-                <option value={season}>{season}</option>
-              ))}
-            </select>
-          </div>
-          <div className="d-flex justify-content-end">
-          <Button
-            className={
-              this.checkDataReadyToSubmit() === false
-                ? "btn-submit-disabled"
-                : "btn-submit"
-            }
-            variant="primary"
-            disabled={this.checkDataReadyToSubmit() === false}
-            onClick={() => {
-              this.setState({
-                dataSubmitted: true,
-              });
-            }}
-          >
-            Submit
-          </Button>
-        </div>
-        </div>        
+        )}
       </div>
     );
   }

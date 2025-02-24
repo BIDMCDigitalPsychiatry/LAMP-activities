@@ -278,7 +278,7 @@ td{
 	align-items: center;
 }
 .question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
-.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
+.question-nav p{color: #333; font-size: 16px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
 .react-datepicker__input-container input{
 	border: #ccc solid 1px;
     padding: 10px;
@@ -294,7 +294,7 @@ td{
     padding: 10px;
     border-radius: 3px;
 	min-width: 202px;
-	font-size: 14px;
+	font-size: 16px;
 }
 .react-datepicker--time-only .react-datepicker__triangle{
 	left: -40px !important;

@@ -11,6 +11,7 @@ interface Props  {
     startTimeInSeconds: number;
     startTimer: number;
     passTimerUpdate(i:number): void;
+    showMiniGame : boolean;
 }
 
 interface State  {
@@ -68,7 +69,7 @@ export class Timer extends React.Component<Props, State> {
     
     render() {   
          return (            
-            <div className="countdown-timer__text">
+            <div className={this.props.showMiniGame ? "countdown-timer__text black-text" : "countdown-timer__text"}>
                {this.getTimeInMinutesAndSeconds(this.state.timeRemainingInSeconds)}
             </div>        
         );
