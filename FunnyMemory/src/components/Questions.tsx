@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import i18n from "src/i18n";
 import { Timer } from "./common/Timer";
 import { Button } from "react-bootstrap";
+import ColourMemo from "src/minigame/ColourMemo";
 
 function getDaysInCurrentMonth() {
   const date = new Date();
@@ -34,6 +35,7 @@ interface State {
   timeout: boolean;
   startTimer: number;
   dataSubmitted : boolean;
+  showMiniGame : boolean;
 }
 export default class Questions extends React.Component<Props, State> {
   private months = [
@@ -72,7 +74,8 @@ export default class Questions extends React.Component<Props, State> {
       data: {},
       startTimer: props.timeLimit,
       timeout: false,
-      dataSubmitted: false
+      dataSubmitted: false,
+      showMiniGame : false
     };
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
   }
@@ -115,6 +118,9 @@ export default class Questions extends React.Component<Props, State> {
           />
         ) : null}
 
+        {this.state.showMiniGame ? 
+        <ColourMemo/>
+        :
         <div className="memory-outer">
           <div className="question-nav">
             <p>{i18n.t("ABOUT_TIME")} *</p>
@@ -129,6 +135,8 @@ export default class Questions extends React.Component<Props, State> {
                 }}
                 showTimeSelect={true}
                 showTimeSelectOnly={true}
+                onFocus={e => e.target.blur()}
+                onInputKeyDown={(e: any) => e.preventDefault()}
                 timeIntervals={15}
                 timeCaption="Time"
                 dateFormat="h:mm aa"
@@ -229,14 +237,15 @@ export default class Questions extends React.Component<Props, State> {
           </div>
           <div className="d-flex justify-content-end">
           <Button className={this.checkDataReadyToSubmit()===false ? "btn-submit-disabled" : "btn-submit"} variant="primary"
-          disabled={this.checkDataReadyToSubmit()===false}
+          disabled={this.checkDataReadyToSubmit()===false || this.state.dataSubmitted}
            onClick={()=>{
             this.setState({
               dataSubmitted: true,
+              showMiniGame : true
             });
           }}>Submit</Button>
         </div>
-        </div>        
+        </div>}        
       </div>
     );
   }
