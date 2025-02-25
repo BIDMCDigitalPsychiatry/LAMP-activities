@@ -23,12 +23,13 @@ function ColourMemo() {
   const [highestScore, setHighestScore] = useState(0);
 
   useEffect(() => {
-    (gameState === 'next level') && setLevel(level + 1);
+    (gameState === 'next level' && level < 5) && setLevel(level + 1);
+    (gameState === 'next level' && level >= 5) && resetGame();
 
     return () => {
-      setGameState('');
+      setGameState("");
     }
-  }, [gameState, level])
+  }, [gameState])
 
   useEffect(() => {
     if (gameState === 'game over') {
@@ -57,7 +58,7 @@ function ColourMemo() {
 
   useEffect(() => {
     (score > highestScore) && setHighestScore(score);
-  }, [score, highestScore])
+  }, [score])
 
   const resetGame = () => {
     setGameState('new game');
