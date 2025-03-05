@@ -13,7 +13,7 @@ const resources = {
       INSTRUCTION:
         "You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.",
       LEVEL: "Niveau",
-      FUNNY_MEMORY_GAME: "Hukommelsesspil",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "N\u00e6ste",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -37,7 +37,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "de-DE": {
@@ -75,7 +82,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "en-US": {
@@ -113,7 +127,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair of words"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair of words",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "es-ES": {
@@ -127,7 +148,7 @@ const resources = {
       INSTRUCTION:
         "Verá aparecer una breve secuencia de imágenes en los cuadros grises. Recuerde las imágenes y sus ubicaciones en orden.",
       LEVEL: "Level",
-      FUNNY_MEMORY_GAME: "JUEGO DE MEMORIA",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "Next",
       SELECT_DATE: "Seleccione fecha",
       SELECT_DAY: "Seleccione día",
@@ -151,7 +172,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "fr-FR": {
@@ -164,8 +192,8 @@ const resources = {
       GO: "Go",
       INSTRUCTION:
         "You will see a series of pictures. Please say out loud the 2 items in each picture.",
-      LEVEL: "Niveau",
-      FUNNY_MEMORY_GAME: "\u202fJeu de m\u00e9moire\u202f",
+      LEVEL: "Level",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "Suivant",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -189,7 +217,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "hi-IN": {
@@ -203,7 +238,7 @@ const resources = {
       INSTRUCTION:
         "आप ग्रे बॉक्स में चित्रों का एक छोटा क्रम देखेंगे। कृपया चित्रों और उनके स्थानों को क्रम से याद रखें",
       LEVEL: "Level",
-      FUNNY_MEMORY_GAME: "स्मृति खेल",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "Next",
       SELECT_DATE: "तारीख़ चुनिए",
       SELECT_DAY: "दिन चुनिए",
@@ -226,7 +261,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "it-IT": {
@@ -240,7 +282,7 @@ const resources = {
       INSTRUCTION:
         "You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.",
       LEVEL: "Livello",
-      FUNNY_MEMORY_GAME: "Memory Game",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "Successiva",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -264,7 +306,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "ko-KR": {
@@ -277,8 +326,8 @@ const resources = {
       GO: "\uac00\uae30",
       INSTRUCTION:
         "You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.",
-      LEVEL: "\ub808\ubca8",
-      FUNNY_MEMORY_GAME: "\uae30\uc5b5\ub825 \uac8c\uc784",
+      LEVEL: "Level",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "\ub2e4\uc74c",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -302,7 +351,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "zh-CN": {
@@ -315,8 +371,8 @@ const resources = {
       GO: "开始",
       INSTRUCTION:
         "You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.",
-      LEVEL: "级别",
-      FUNNY_MEMORY_GAME: "记忆游戏",
+      LEVEL: "Level",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "下一步",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -340,7 +396,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "zh-HK": {
@@ -353,8 +416,8 @@ const resources = {
       GO: "開始",
       INSTRUCTION:
         "You will see a short sequence of pictures appear in the gray boxes. Please remember the pictures and their locations in order.",
-      LEVEL: "級別",
-      FUNNY_MEMORY_GAME: "記憶遊戲",
+      LEVEL: "Level",
+      FUNNY_MEMORY_GAME: "Funny Memory Game",
       NEXT: "下一步",
       SELECT_DATE: "Select date",
       SELECT_DAY: "Select day",
@@ -378,7 +441,14 @@ const resources = {
       CANCEL : "Cancel",
       RECOGNITION4_TEXT: "Which picture had you seen before?",
       TRIAL_INSTRUCTION_TEXT : "Say 'AND' between the words",
-      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair"
+      RECALL_INSTRUCTION_TEXT : " Say 'AND' between the words and 'NEXT' between each pair",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
 };

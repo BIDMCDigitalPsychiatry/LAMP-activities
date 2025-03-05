@@ -137,7 +137,7 @@ export default class Questions extends React.Component<Props, State> {
         ) : null}
 
         {this.state.showMiniGame ? 
-        <ColourMemo/>
+        <ColourMemo language={this.props.language}/>
         :
         <div className="memory-outer">
           <div className="question-nav">

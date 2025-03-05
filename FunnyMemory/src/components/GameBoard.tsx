@@ -15,7 +15,7 @@ import {
   stringCleanUp,
 } from "src/functions";
 import i18n from "src/i18n";
-import Data from "./data";
+import { getDataForIndex, getIdentificationList } from "./data";
 import AudioRecorder from "./AudioRecorder";
 import Questions from "./Questions";
 import InfoModal from "./uielements/InfoModal";
@@ -47,6 +47,7 @@ const GameBoard = ({ ...props }: any) => {
   const [itemsIdentified, setItemsIdentified] = useState(0);
   const [itemRecognized, setItemRecognized] = useState(0);
   const [correctChoice, setCorrectChoice] = useState(0);
+  const [data, setData] = useState<any>({});
 
   useEffect(() => {
     if (trial === 0) {
@@ -55,13 +56,15 @@ const GameBoard = ({ ...props }: any) => {
     }
   }, []);
 
+  useEffect(() =>{
+    if(currentIndex != -1){
+      setData(getDataForIndex(randomNumberArray.current[currentIndex]))
+    }
+  },[currentIndex])
+
   useEffect(() => {
-    if (randomNumberArray && randomNumberArray.current.length > 0) {
-      let tempArray: string[][] = [];
-      randomNumberArray.current.forEach((num: number) => {
-        tempArray.push(Data[num].images);
-      });
-      setIdentificationList(tempArray);
+    if (randomNumberArray && randomNumberArray.current.length > 0) {      
+      setIdentificationList(getIdentificationList(randomNumberArray.current));
     }
   }, [randomNumberArray]);
 
@@ -115,8 +118,8 @@ const GameBoard = ({ ...props }: any) => {
       }
       return valueExists;
     } else {
-      const isEqual = Data[randomNumberArray.current[currentIndex]].images.find(
-        (word) => stringCleanUp(word) === stringCleanUp(text)
+      const isEqual = data.images.find(
+        (word: string) => stringCleanUp(word) === stringCleanUp(text)
       );
       if (isEqual) {
         return true;
@@ -131,7 +134,7 @@ const GameBoard = ({ ...props }: any) => {
     const arr = array.map((str: string) => {
       if (!found) {
         if (
-          Data[randomNumberArray.current[currentIndex]].missingItem.find(
+          data.missingItem.find(
             (itm: string) => stringCleanUp(itm) === stringCleanUp(str)
           )
         ) {
@@ -153,20 +156,16 @@ const GameBoard = ({ ...props }: any) => {
       validatedArray.map((word) => {
         const route = {
           duration: new Date().getTime() - timeTaken,
-          item: currentIndex,
+          item: randomNumberArray.current[currentIndex],
           level: phase,
           type: checkImageIdentified(word),
-          value: word,
+          value: null,
         };
         tempRoute.push(route);
       });
     }
     setRoutes(routes.concat(tempRoute));
-  }; 
-
-  console.log("routes", routes)
-  console.log("pairsidentified", pairsIdentified)
-  console.log("images identified", itemsIdentified)
+  };
 
   const handleRecall = (textArray: string[][]) => {
     let tempRoute: any = [];
@@ -235,7 +234,7 @@ const GameBoard = ({ ...props }: any) => {
       item: randomNumberArray.current[currentIndex],
       level: phase,
       type: checkIsStringInArray(
-        Data[randomNumberArray.current[currentIndex]].missingItem,
+        data.missingItem,
         text
       )
         ? true
@@ -249,6 +248,7 @@ const GameBoard = ({ ...props }: any) => {
 
     setShowAudioRecorder(false);
     if (currentIndex < number_of_images_in_trial - 1) {
+      setData({});
       setCurrentIndex(currentIndex + 1);
       setShowImage(true);
     } else {
@@ -263,6 +263,7 @@ const GameBoard = ({ ...props }: any) => {
     setTimeTaken(new Date().getTime());
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
+      setData({})
       setShowImage(true);
       setShowAudioRecorder(false);
     } else {
@@ -327,7 +328,7 @@ const GameBoard = ({ ...props }: any) => {
       item: randomNumberArray.current[currentIndex],
       level: phase,
       type:
-        img === Data[randomNumberArray.current[currentIndex]].img
+        img === data.img
           ? true
           : false,
       value: null,
@@ -338,6 +339,7 @@ const GameBoard = ({ ...props }: any) => {
     }
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
+      setData({});
       setTimeTaken(new Date().getTime());
     } else {
       setTimeout(() => {
@@ -352,13 +354,13 @@ const GameBoard = ({ ...props }: any) => {
         <ShowImage
           text={
             phase === "recognition1"
-              ? Data[randomNumberArray.current[currentIndex]].question
+              ? data.question
               : ""
           }
           image={
             phase === "recognition1"
-              ? Data[randomNumberArray.current[currentIndex]].missingImg
-              : Data[randomNumberArray.current[currentIndex]].img
+              ? data.missingImg
+              : data.img
           }
           currentIndex={randomNumberArray.current[currentIndex]}
         />
@@ -404,7 +406,7 @@ const GameBoard = ({ ...props }: any) => {
       return (
         <FinalRecognitionPhase
           options={shuffleArray(
-            Data[randomNumberArray.current[currentIndex]].option
+            data.option
           )}
           handleImageSelection={handleImageSelection}
           setTimeTaken={setTimeTaken}
@@ -437,7 +439,7 @@ const GameBoard = ({ ...props }: any) => {
         {getPhaseTitle() != "" && (
           <div className="timer-div">{getPhaseTitle()}</div>
         )}
-        {renderContent()}
+        {data ? renderContent() : <></>}
       </div>
       <Backdrop className="backdrop" open={loading}>
         <CircularProgress color="inherit" />
