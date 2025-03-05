@@ -5,6 +5,7 @@ import Cards from './components/Cards';
 import { useEffect } from 'react';
 import GameOver from './components/GameOver';
 import React from 'react';
+import i18n from 'src/i18n';
 
 let overlayStyle = {
   visibility: 'hidden',
@@ -16,19 +17,19 @@ let modalStyle = {
 }
 
 
-function ColourMemo() {
+function ColourMemo({...props}) {
   const [level, setLevel] = useState(1);
   const [gameState, setGameState] = useState('');
   const [score, setScore] = useState(0);
   const [highestScore, setHighestScore] = useState(0);
+  i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
   useEffect(() => {
     (gameState === 'next level') && setLevel(level + 1);
-
     return () => {
-      setGameState('');
+      setGameState("");
     }
-  }, [gameState, level])
+  }, [gameState])
 
   useEffect(() => {
     if (gameState === 'game over') {
@@ -57,7 +58,7 @@ function ColourMemo() {
 
   useEffect(() => {
     (score > highestScore) && setHighestScore(score);
-  }, [score, highestScore])
+  }, [score])
 
   const resetGame = () => {
     setGameState('new game');
@@ -68,8 +69,8 @@ function ColourMemo() {
   return (
     <>
       <header>
-        <Title/>
-        <Stats level={level} score={score} highestScore={highestScore}/>
+        <Title language={props.language}/>
+        <Stats level={level} score={score} highestScore={highestScore} language={props.language}/>
       </header>
       <main>
         <Cards 
@@ -78,7 +79,8 @@ function ColourMemo() {
         setGameState={setGameState} 
         setScore={setScore} score={score}/>
       </main>
-      <GameOver 
+      <GameOver
+      language={props.language} 
       highestScore={highestScore} 
       overlayStyle={overlayStyle} 
       modalStyle={modalStyle}

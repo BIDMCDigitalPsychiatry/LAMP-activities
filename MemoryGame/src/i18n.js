@@ -33,6 +33,14 @@ const resources = {
       TIME_OUT: "Tiden er udl\u00f8bet",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
+
     },
   },  "de-DE": {
     translation: {
@@ -65,6 +73,13 @@ const resources = {
       TIME_OUT: "Zeit abgelaufen",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },"en-US": {
     translation: {
@@ -97,6 +112,13 @@ const resources = {
       TIME_OUT: "Time Out",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   }, "es-ES": {
     translation: {
@@ -128,7 +150,14 @@ const resources = {
       TAP_THE_4th_PICTURE:"Toca la cuarta imagen",
       TIME_OUT: "Se acabó el tiempo",
       TODAY:"¿Cuál es la fecha de hoy?",
-      TRIAL: "Ensayo"
+      TRIAL: "Ensayo",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "fr-FR": {
@@ -162,6 +191,13 @@ const resources = {
       TIME_OUT: "Time Out",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },  "hi-IN": {
     translation: {
@@ -195,6 +231,13 @@ const resources = {
       TAP_THE_4th_PICTURE:"चौथी तस्वीर टैप करे",
       TODAY:"आज की तारीख क्या है?",
       TRIAL: "परीक्षण",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
   "it-IT": {
@@ -228,6 +271,13 @@ const resources = {
       TIME_OUT: "Tempo scaduto",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   }, 
 "ko-KR": {
@@ -261,6 +311,13 @@ const resources = {
       TIME_OUT: "\uc2dc\uac04 \uc885\ub8cc",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   }, "zh-CN": {
     translation: {
@@ -293,6 +350,13 @@ const resources = {
       TIMEOUT: "超时",
       TODAY:"What is today’s date?",
       TRIAL: "Trial",
+      YOU_LOST : "You lost...",
+      HIGHEST_SCORE : "Higherst Score",
+      CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+      TRY_AGAIN : "Try Again",
+      SCORE : "Score",
+      COLOUR : "Colour",
+      MEMO : "Memo"
     },
   },
      "zh-HK": {
@@ -326,6 +390,13 @@ const resources = {
         TIME_OUT: "超時",
         TODAY:"What is today’s date?",
         TRIAL: "Trial",
+        YOU_LOST : "You lost...",
+        HIGHEST_SCORE : "Higherst Score",
+        CLICKED_SAME_COLOUR_TEXT : "You clicked the same colour twice.",
+        TRY_AGAIN : "Try Again",
+        SCORE : "Score",
+        COLOUR : "Colour",
+        MEMO : "Memo"
       },
     },
   };

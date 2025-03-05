@@ -1,14 +1,15 @@
 import '../styles/Stats.css';
+import i18n from "./../../i18n";
 
 
-export default function Stats({level, score, highestScore}) {
-    
+export default function Stats({level, score, highestScore, language}) {
+    i18n.changeLanguage(!language ? "en-US" : language);
     return (
         <div id="stats">
-            <h5>Level: {level}</h5>
+            <h5>{i18n.t("LEVEL")}: {level}</h5>
             <div>
-                <h6>Score: {score}</h6>
-                <h6>Highest Score: {highestScore}</h6>
+                <h6>{i18n.t("SCORE")}: {score}</h6>
+                <h6>{i18n.t("HIGHEST_SCORE")}: {highestScore}</h6>
             </div>
             <hr/>
         </div>
