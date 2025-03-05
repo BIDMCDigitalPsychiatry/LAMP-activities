@@ -29,4 +29,15 @@ const getData = () =>{
   return dataForMonth;
 }
 const Data = getData(); 
-export default Data;
+
+export const getIdentificationList = (randomNumberArray: number[]) =>{
+        let tempArray: string[][] = [];
+        randomNumberArray.forEach((num: number) => {
+          tempArray.push(Data[num].images);
+        });
+        return tempArray;
+}
+
+export const getDataForIndex = (currentIndex : number) =>{
+    return Data[currentIndex]  
+}

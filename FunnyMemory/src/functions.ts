@@ -34,8 +34,8 @@ export const stringCleanUp = (str : string) =>{
 }
 
 export const checkIsStringInArray = (arr: string[], str : string) =>{
-  const result = arr.findIndex(( item : string )=>  stringCleanUp(str) === stringCleanUp(item));
-  if(result === 1){
+  const result = arr.findIndex(( item : string )=>  stringCleanUp(item) === stringCleanUp(str));
+  if(result != -1){
     return true
   }
   else{

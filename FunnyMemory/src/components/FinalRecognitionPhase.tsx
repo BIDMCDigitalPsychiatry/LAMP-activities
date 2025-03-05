@@ -7,7 +7,7 @@
  */
 import React, { useEffect, useState } from "react";
 import i18n from "src/i18n";
-import { images } from "./ImageComponents";
+import { getImage } from "./ImageComponents";
 
 const FinalRecognitionPhase = ({ ...props }) => {
   const { options, handleImageSelection , currentIndex} = props;
@@ -34,7 +34,7 @@ const FinalRecognitionPhase = ({ ...props }) => {
                   setSelectedImg(img)
                 }}
               >
-                {images[currentIndex][img]}
+                {getImage(currentIndex,img)}
               </div>
             );
           })

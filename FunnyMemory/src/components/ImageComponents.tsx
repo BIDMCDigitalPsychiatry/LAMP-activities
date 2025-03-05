@@ -36,3 +36,7 @@ const getImages = () =>{
 }
 
 export const images = getImages()
+
+export const getImage = (currentIndex: number, image: number) =>{
+  return images[currentIndex][image]
+}
