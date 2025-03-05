@@ -373,7 +373,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         }
         const ele = document.querySelector("[data-key='" + index + "']");
         if (ele) {
-          ele.className = "box-white error-box";
+          ele.className = !this.state.autoCorrect ? "box-white" :  "box-white error-box";
           this.setState(
             {
               clickedImageIndex: index,
@@ -454,9 +454,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             ? "box-white inactive"
             : "box-white"
           : i.getAttribute("data-key") === index
-          ? !success
-            ? "box-white error-box"
-            : "box-white"
+          ? "box-white"
           : "box-white inactive";
       }
       this.setState(
