@@ -24,7 +24,8 @@ const Layout = ({ ...props }: any) => {
 
   const reloadPage = () => {
     window.location.reload();
-  };
+  };  
+
 
   return (
     <div className="main-class">

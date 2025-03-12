@@ -56,14 +56,14 @@ const GameBoard = ({ ...props }: any) => {
     }
   }, []);
 
-  useEffect(() =>{
-    if(currentIndex != -1){
-      setData(getDataForIndex(randomNumberArray.current[currentIndex]))
+  useEffect(() => {
+    if (currentIndex != -1) {
+      setData(getDataForIndex(randomNumberArray.current[currentIndex]));
     }
-  },[currentIndex])
+  }, [currentIndex]);
 
   useEffect(() => {
-    if (randomNumberArray && randomNumberArray.current.length > 0) {      
+    if (randomNumberArray && randomNumberArray.current.length > 0) {
       setIdentificationList(getIdentificationList(randomNumberArray.current));
     }
   }, [randomNumberArray]);
@@ -159,7 +159,7 @@ const GameBoard = ({ ...props }: any) => {
           item: randomNumberArray.current[currentIndex],
           level: phase,
           type: checkImageIdentified(word),
-          value: null,
+          value: word,
         };
         tempRoute.push(route);
       });
@@ -174,28 +174,31 @@ const GameBoard = ({ ...props }: any) => {
     if (textArray && textArray.length > 0) {
       textArray.forEach((arr: any[]) => {
         if (arr && arr.length > 0) {
-          let firstIndex: number[] = []
-          let secondIndex: number[] = []
+          let firstIndex: number[] = [];
+          let secondIndex: number[] = [];
           replaceDuplicatesWithEmptyString(arr).forEach((str: string) => {
             let imageIdentified = false;
             for (let i = 0; i < identificationList.length; i++) {
               for (let j = 0; j < identificationList[i].length; j++) {
-                if (stringCleanUp(identificationList[i][j]) === stringCleanUp(str)) {
-                  if(firstIndex.length > 0){
-                    if(i===firstIndex[0] && (j === 0 || secondIndex[0]===0)){
-                      imageIdentified = true
+                if (
+                  stringCleanUp(identificationList[i][j]) === stringCleanUp(str)
+                ) {
+                  if (firstIndex.length > 0) {
+                    if (
+                      i === firstIndex[0] &&
+                      (j === 0 || secondIndex[0] === 0)
+                    ) {
+                      imageIdentified = true;
+                    } else {
+                      imageIdentified = false;
                     }
-                    else{
-                      imageIdentified = false
-                    }
-                  }else{
-                    imageIdentified = true
-
+                  } else {
+                    imageIdentified = true;
                   }
-                  firstIndex.push(i)
-                  secondIndex.push(j)
+                  firstIndex.push(i);
+                  secondIndex.push(j);
                   break;
-                }          
+                }
               }
             }
             const route = {
@@ -205,14 +208,14 @@ const GameBoard = ({ ...props }: any) => {
               type: imageIdentified,
               value: null,
             };
-            tempRoute.push(route)
+            tempRoute.push(route);
             if (route.type === true) {
               itemCount++;
             }
-          }) 
-          if(firstIndex[0]===firstIndex[1] && secondIndex.includes(0)){
+          });
+          if (firstIndex[0] === firstIndex[1] && secondIndex.includes(0)) {
             pairCount++;
-          }       
+          }
         }
       });
       setPairsIdentified(pairCount);
@@ -226,19 +229,13 @@ const GameBoard = ({ ...props }: any) => {
       setShowImage(true);
     }, 1000);
   };
-  
 
   const handleRecognition1 = (text: string) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
       item: randomNumberArray.current[currentIndex],
       level: phase,
-      type: checkIsStringInArray(
-        data.missingItem,
-        text
-      )
-        ? true
-        : false,
+      type: checkIsStringInArray(data.missingItem, text) ? true : false,
       value: null,
     };
     if (route.type === true) {
@@ -263,7 +260,7 @@ const GameBoard = ({ ...props }: any) => {
     setTimeTaken(new Date().getTime());
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
-      setData({})
+      setData({});
       setShowImage(true);
       setShowAudioRecorder(false);
     } else {
@@ -281,17 +278,6 @@ const GameBoard = ({ ...props }: any) => {
       }
     }
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (showImage) {
-        setShowImage(false);
-        setShowAudioRecorder(true);
-      }
-    }, imageExposureTime);
-
-    return () => clearInterval(interval);
-  }, [showImage]);
 
   const handleClose = () => {
     setShowModalInfo(false);
@@ -327,10 +313,7 @@ const GameBoard = ({ ...props }: any) => {
       duration: new Date().getTime() - timeTaken,
       item: randomNumberArray.current[currentIndex],
       level: phase,
-      type:
-        img === data.img
-          ? true
-          : false,
+      type: img === data.img ? true : false,
       value: null,
     };
     setRoutes(routes.concat(route));
@@ -342,27 +325,20 @@ const GameBoard = ({ ...props }: any) => {
       setData({});
       setTimeTaken(new Date().getTime());
     } else {
-      setTimeout(() => {
-        sendGameResult();
-        setTrial(0);
-      }, 500);
+      sendGameResult();
+      setTrial(0);
     }
   };
   const renderContent = () => {
     if (showImage) {
       return (
         <ShowImage
-          text={
-            phase === "recognition1"
-              ? data.question
-              : ""
-          }
-          image={
-            phase === "recognition1"
-              ? data.missingImg
-              : data.img
-          }
+          text={phase === "recognition1" ? data.question : ""}
+          image={phase === "recognition1" ? data.missingImg : data.img}
           currentIndex={randomNumberArray.current[currentIndex]}
+          setShowImage={setShowImage}
+          setShowAudioRecorder={setShowAudioRecorder}
+          imageExposureTime={imageExposureTime}
         />
       );
     } else if (showAudioRecorder) {
@@ -405,9 +381,7 @@ const GameBoard = ({ ...props }: any) => {
     } else if (phase === "recognition2") {
       return (
         <FinalRecognitionPhase
-          options={shuffleArray(
-            data.option
-          )}
+          options={shuffleArray(data?.option)}
           handleImageSelection={handleImageSelection}
           setTimeTaken={setTimeTaken}
           language={i18n.language}

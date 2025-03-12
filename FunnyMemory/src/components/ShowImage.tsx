@@ -5,20 +5,32 @@
  * @author ZCO Engineer
  * @copyright (c) 2024, ZCO
  */
-import React from "react";
-import { getImage} from "./ImageComponents";
+import React, { useState } from "react";
+const ShowImage = ({ ...props }) => {
+  const { image, text } = props;
+  const [loaded, setLoaded] = useState(false);
 
-const ShowImage = ({...props}) =>{
-    const {image, text, currentIndex} = props;
-    return(
-        <div className="box-game mt-30">
-          <p>{text}</p>
-          <div className="imgOption">
-          {getImage(currentIndex,image)}
-          </div>
-        </div>
-    )
+  const handleImageLoad = () => {
+    setLoaded(true);
+    setTimeout(() => {
+      props.setShowImage(false);
+      props.setShowAudioRecorder(true);
+    }, props.imageExposureTime);
+  };
 
-}
+  return (
+    <div className="box-game mt-30">
+      <p>{text}</p>
+      <div className="imgOption">
+        <img
+          src={image}
+          className={loaded ? "" : "d-none"}
+          onLoad={handleImageLoad}
+          alt=""
+        ></img>
+      </div>
+    </div>
+  );
+};
 
-export default ShowImage
+export default ShowImage;
