@@ -82,7 +82,7 @@ class Jewels extends React.Component<any, AppState> {
       i18n.changeLanguage(langugae);
       const diamondCountVal = settingsData ? (settingsData.diamond_count ? settingsData.diamond_count : 15 ) : 15
       const shapeCountVal =  settingsData ? (settingsData.shape_count ? settingsData.shape_count : 
-        settingsData.variant && settingsData.variant === "trails_b" ? 2 : 1 ) : 1;
+        settingsData.variant && settingsData.variant === "trails_b" ? 2 : 1 ) : 2;
       const state = {
         bonusPoints:0,
         current: [],
@@ -256,7 +256,6 @@ class Jewels extends React.Component<any, AppState> {
   
   // Reset game board
   reset = (loadedVal: boolean) => {
-    console.log(this.state)
     const noOfDimonds = this.state ? this.state.shapeCount : 2;
     const diamondType = this.getDiamond(noOfDimonds);
     const maxPlots = 52
@@ -374,32 +373,45 @@ class Jewels extends React.Component<any, AppState> {
 
   sendDataToDashboard = (pointVal : number, status?: boolean) => {
     const route = {'type': 'manual_exit', 'value': status ?? false}  
-    const routeData:any = []
+    let routeData:any = []
     if (this.state.routes.length > 0) {
-      const r = JSON.parse(this.state.routes);
-      Object.keys(r).forEach((key) => {
-        routeData.push(r[key]);
-      });
+      // const r = JSON.parse(this.state.routes);
+      // Object.keys(r).forEach((key) => {
+      //   routeData.push(r[key]);
+      // });
+      routeData = JSON.parse(this.state.routes);
     }
     routeData.push(route);
-    this.setState({routes: JSON.stringify(routeData)}, () => {
-    const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
-      parent.postMessage(
-        JSON.stringify({
-          static_data: {
-            point: pointVal,
-            score: scoreVal,
-            total_attempts: this.state.totalAttempts,
-            total_bonus_collected: this.state.bonusPoints,
-            total_jewels_collected: this.state.totalJewelsCollected,
-          },
-          temporal_slices: JSON.parse(this.state.routes),
-          timestamp: new Date().getTime(),
-          duration: new Date().getTime() - this.state.time
-        }),
-        "*"
-      );
-    })
+    const uniqueRoutes = new Map(routeData.map((item:any) => [JSON.stringify(item), item]));
+    const routeKey = JSON.stringify(route);
+    if (!uniqueRoutes.has(routeKey)) {
+        uniqueRoutes.set(routeKey, route);
+    }
+
+    const updatedRoutes = JSON.stringify(Array.from(uniqueRoutes.values()));
+    console.log(updatedRoutes)
+    // this.setState({routes: JSON.stringify(routeData)}, () => {
+    if (updatedRoutes !== this.state.routes) {
+      this.setState({ routes: updatedRoutes }, () => {
+        const scoreVal = ((this.state.totalJewelsCollected / (this.state.totalAttempts)) * 100).toFixed(2);
+        parent.postMessage(
+          JSON.stringify({
+            static_data: {
+              point: pointVal,
+              score: scoreVal,
+              total_attempts: this.state.totalAttempts,
+              total_bonus_collected: this.state.bonusPoints,
+              total_jewels_collected: this.state.totalJewelsCollected,
+            },
+            // temporal_slices: JSON.parse(this.state.routes),
+            temporal_slices: JSON.parse(updatedRoutes),
+            timestamp: new Date().getTime(),
+            duration: new Date().getTime() - this.state.time
+          }),
+          "*"
+        );
+      })
+    }
   }
   handleClose = (status:boolean, pointVal: number) => {
     if(status) {

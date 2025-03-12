@@ -23,6 +23,12 @@ const AudioRecorder = ({ ...props }) => {
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(180);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
+
+  useEffect(() => {
+    (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
+  }, []);
+
+
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
       <div className="mircophone-container">
@@ -30,6 +36,7 @@ const AudioRecorder = ({ ...props }) => {
       </div>
     );
   }
+ 
 
   const getTextForPhase = () => {
     if (phase === "recall") {
@@ -54,7 +61,6 @@ const AudioRecorder = ({ ...props }) => {
   };
 
   useEffect(() => {
-    console.log("transcript", transcript);
     if (transcript && transcript != "") {
       setRecordedText(transcript);
     }

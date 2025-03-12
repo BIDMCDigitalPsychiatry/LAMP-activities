@@ -89,9 +89,17 @@ nav a {
 }
 .imgOption {
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
   height: auto;
   margin: 0 auto;
+  img {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+
+  }
 }
 
 .mt-30 {
@@ -242,7 +250,7 @@ input[type=checkbox] {
   flex-wrap: wrap;
   width: 100%;
   max-width: 500px;
-  svg {
+  img {
     max-width: 200px;
     max-height: 200px;
     width: 100%;
@@ -256,7 +264,7 @@ input[type=checkbox] {
   flex: 0 1 50%;
   padding: 0 15px;
  }
- #img-wrapper div.active svg{
+ #img-wrapper div.active img{
   border: #359ffe solid 3px;
 }
 
