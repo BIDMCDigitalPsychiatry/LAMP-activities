@@ -86,26 +86,28 @@ const numbers = [
   "tenth",
   'eleventh',
   'twelth',
-  'thirteenth',
-  'fourteenth',
-  'fifteenth',
-  'sixteenth',
-  'seventeenth',
-  'eighteenth'
+  // 'thirteenth',
+  // 'fourteenth',
+  // 'fifteenth',
+  // 'sixteenth',
+  // 'seventeenth',
+  // 'eighteenth'
 ];
 
-const numbersSmall = [
-  "first",
-  "second",
-  "third",
-  "fourth",
-  "fifth",
-  "sixth",
-  "seventh",
-  "eightth",
-  "nineth",
-  "tenth",
-];
+// const numbersSmall = [
+//   "first",
+//   "second",
+//   "third",
+//   "fourth",
+//   "fifth",
+//   "sixth",
+//   "seventh",
+//   "eightth",
+//   "nineth",
+//   "tenth",
+//   'eleventh',
+//   'twelth',
+// ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
 
@@ -119,9 +121,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       boxClass: ["box-square"],
       boxes: null,
       dogCount: 0,
-      numbers: this.shuffleArray(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      ) ? numbersSmall : numbers),
+      numbers: this.shuffleArray(numbers),
       enableTap: false,
       endTime: null,
       gameOver: false,
@@ -156,18 +156,43 @@ class Board extends React.Component<BoardProps, BoardState> {
   resetState = () => {
     // var refreshIntervalId: any = undefined
     // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
-    let dogTempCount = this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
-    let boxCount = this.state.successCompletion ? this.state.boxCount + 2 : (this.state.dogCount > 1 ? this.state.boxCount - 2 : 4)
-    if (
-      (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      ) && boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
-        navigator.userAgent
-      ) && boxCount >= 20
-    ) {
-      this.sendGameResult();
+    let dogTempCount =  this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
+    let boxCount = 4
+    if(dogTempCount > 9) dogTempCount = 9
+    switch (dogTempCount) {
+      case 1:
+        boxCount = 4;
+        break;
+      case 2:
+      case 3:      
+        boxCount = 6;
+        break;
+      case 4:
+      case 5:
+        boxCount = 8;
+        break;
+      case 6:
+      case 7:
+        boxCount = 10
+        break;
+      case 8:
+      case 9:
+        boxCount = 12
+        break;
     }
-    else {
+
+
+    // if (
+    //   boxCount >= 12
+    //   // (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+    //   //   navigator.userAgent
+    //   // ) && boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+    //   //   navigator.userAgent
+    //   // ) && boxCount >= 20
+    // ) {
+    //   this.sendGameResult();
+    // }
+    // else {
       const rP = getRandomNumbers(dogTempCount, 1, boxCount);
       this.setState({
         animate: true,
@@ -182,9 +207,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         wrongTaps: 0,
         boxCount: boxCount,
         questionCount: this.state.questionCount + rP.length,
-        numbers: this.shuffleArray(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-          navigator.userAgent
-        ) ? numbersSmall : numbers),
+        numbers: this.shuffleArray(numbers),
       });
       setTimeout(() => {
         this.setState({
@@ -207,7 +230,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         }, 2500);
       }, 2000)
       this.checkStatus();
-    }
+    // }
     // }
   };
   // Rest box styles after each load
@@ -355,8 +378,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       lastClickTime: new Date().getTime(),
     }, () => {
       let statusOutComes = this.state.outComes
-        !statusVal ? statusOutComes.push(0) : statusOutComes.push(1)
-      let levels = this.state.levels 
+      !statusVal ? statusOutComes.push(0) : statusOutComes.push(1)
+      let levels = this.state.levels
       levels.push(this.state.randomPoints.length)
       if (!statusVal || (this.state.successTaps === this.state.randomPoints.length)) {
         this.setState({
@@ -378,8 +401,8 @@ class Board extends React.Component<BoardProps, BoardState> {
               outComes: statusOutComes,
               levels: levels
             }, () => {
-            this.resetBoxClass();
-            this.resetState()
+              this.resetBoxClass();
+              this.resetState()
             })
           }
         }, 4000)
@@ -444,19 +467,19 @@ class Board extends React.Component<BoardProps, BoardState> {
       // item response theory computation (no partial credit)
       //MLE approach: find maximum likelihood ability theta, given the round outcomes
       let irf = 0.00;
-      let expectedScores = Array(theta.length).fill(0) 
-          //expectedScores[j] = expected score (# correct) of a person with true ability theta[j] 
+      let expectedScores = Array(theta.length).fill(0)
+      //expectedScores[j] = expected score (# correct) of a person with true ability theta[j] 
       for (let i = 0; i < this.state.outComes.length; i++) {
-          for (let j = 0; j < theta.length; j++) {
-              irf = Math.exp(k * (theta[j] - this.state.levels[i])) / 
-              (1 + Math.exp(k * (theta[j] - this.state.levels[i]))) 
-                  //= probability of getting an item of difficulty b[i] correct at an ability level of theta[j]
-              expectedScores[j] += irf
-          }
+        for (let j = 0; j < theta.length; j++) {
+          irf = Math.exp(k * (theta[j] - this.state.levels[i])) /
+            (1 + Math.exp(k * (theta[j] - this.state.levels[i])))
+          //= probability of getting an item of difficulty b[i] correct at an ability level of theta[j]
+          expectedScores[j] += irf
+        }
       }
-      let deviations = expectedScores.map( function(value) {return Math.abs(value - actualScore)} )
+      let deviations = expectedScores.map(function (value) { return Math.abs(value - actualScore) })
       let index = deviations.indexOf(Math.min(...deviations))
-      let score = Math.round(theta[index]*10)/10
+      let score = Math.round(theta[index] * 10) / 10
       const gameScore = score;
       let points = 0;
       if (gameScore === 100) {
@@ -487,13 +510,14 @@ class Board extends React.Component<BoardProps, BoardState> {
   // Render the game board
   render() {
     let boxes;
-    if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-      navigator.userAgent
-    ) && this.state.boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
-      navigator.userAgent
-    ) && this.state.boxCount >= 20) {
-      boxes = i18n.t("GAME_OVER") + " !!!";
-    } else if (this.state.boxCount >= 4) {
+    // if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
+    //   navigator.userAgent
+    // ) && this.state.boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
+    //   navigator.userAgent
+    // ) && this.state.boxCount >= 20) {
+    //   boxes = i18n.t("GAME_OVER") + " !!!";
+    // } else 
+    if (this.state.boxCount >= 4) {
 
       boxes = [];
       let classn = "";

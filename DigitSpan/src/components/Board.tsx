@@ -284,8 +284,6 @@ export default function Board({ ...props }) {
         }
         if ((mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence)) ||
           (mode == 1 && JSON.stringify(rev) == JSON.stringify(questionSequence))) {
-          setErrorState(0)
-          error = 0
           newCount = ++newCount
         }
         if (error > 1 || newCount === 10) {
