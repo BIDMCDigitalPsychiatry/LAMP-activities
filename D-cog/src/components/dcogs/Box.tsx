@@ -36,7 +36,7 @@ export class Box extends React.Component<BoxProps> {
     return (
       <div
         key="this.props.index"
-        className={this.props.boxClass}
+        className={this.props.boxClass }
         onClick={this.onClick}
       >
         <div className={classN} />
