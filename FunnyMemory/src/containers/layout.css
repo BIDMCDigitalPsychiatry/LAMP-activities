@@ -15,7 +15,7 @@ body {
 nav a {
   color: rgba(53, 159, 254, 1);
   padding: 10px;
-  display: inline-block;  
+  display: inline-block;
 }
 
 .App {
@@ -52,22 +52,25 @@ nav a {
   right: 15px;
   top: 15px;
 }
-.home-link svg path{
-  fill:#fff;
+
+.home-link svg path {
+  fill: #fff;
 }
 
 .game-board {
   color: #fff;
   text-align: center;
 }
+
 .back-link {
   position: absolute;
   left: 0;
   left: 15px;
   top: 15px;
 }
-.back-link svg path{
-  fill:#fff;
+
+.back-link svg path {
+  fill: #fff;
 }
 
 .btn-primary:hover {
@@ -79,32 +82,32 @@ nav a {
   padding: 0 30px;
   margin: auto;
   color: #fff;
-  font-size: 20px;  
+  font-size: 20px;
 }
-.box-game p, .box-game h6{
+
+.box-game p,
+.box-game h6 {
   color: #359ffe;
 }
-.box-game p{
+
+.box-game p {
   font-weight: 600;
 }
+
 .imgOption {
   width: 100%;
   max-width: 400px;
   height: auto;
   margin: 0 auto;
-  img {
-    max-width: 400px;
-    max-height: 400px;
-    width: 100%;
-    margin-top: 20px;
-    cursor: pointer;
+}
 
-  }
-  *{
-    max-width: 400px;
-    width: 100%;
-    max-height: 400px;
-  }
+.imgOption img {
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+
 }
 
 .mt-30 {
@@ -198,76 +201,106 @@ input[type=checkbox] {
     height: 280px !important;
   }
 }
-.memory-outer{
-	background-color: #FFF;
-	padding: 15px 30px 15px 30px;
-	border-radius: 5px;
-	text-align: left;
-	width: 100%;
-	max-width: 650px;
-	margin: 0 auto 30px ;
+
+.memory-outer {
+  background-color: #FFF;
+  padding: 15px 30px 15px 30px;
+  border-radius: 5px;
+  text-align: left;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto 30px;
 }
-.marginTop10{
-	margin-top: 12px;
+
+.marginTop10 {
+  margin-top: 12px;
 }
-.react-datepicker__time-list-item{
-	display: flex;
-	align-items: center;
+
+.react-datepicker__time-list-item {
+  display: flex;
+  align-items: center;
 }
-.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
-.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
-.react-datepicker__input-container input{
-	border: #ccc solid 1px;
-    padding: 10px;
-    border-radius: 3px;
-	font-size: 14px;
-	min-width: 202px;
+
+.question-nav {
+  background-color: #f4f4f4;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.react-datepicker__input-container input:focus-visible, .question-nav select{
-	outline: 0;
+
+.question-nav p {
+  color: #333;
+  font-size: 14px;
+  margin-top: 0;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
-.question-nav select{
-	border: #ccc solid 1px;
-    padding: 10px;
-    border-radius: 3px;
-	min-width: 202px;
-	font-size: 14px;
+
+.react-datepicker__input-container input {
+  border: #ccc solid 1px;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  min-width: 202px;
 }
-.question-nav button{
-	border: #ccc solid 1px;
-    padding: 10px; 
-    border-radius: 3px;
-	min-width: 202px;
-	font-size: 14px;
+
+.react-datepicker__input-container input:focus-visible,
+.question-nav select {
+  outline: 0;
+}
+
+.question-nav select {
+  border: #ccc solid 1px;
+  padding: 10px;
+  border-radius: 3px;
+  min-width: 202px;
+  font-size: 14px;
+}
+
+.question-nav button {
+  border: #ccc solid 1px;
+  padding: 10px;
+  border-radius: 3px;
+  min-width: 202px;
+  font-size: 14px;
   text-align: left;
 }
-.react-datepicker--time-only .react-datepicker__triangle{
-	left: -40px !important;
+
+.react-datepicker--time-only .react-datepicker__triangle {
+  left: -40px !important;
 }
-.img-wrap-main{
+
+.img-wrap-main {
   display: flex;
   justify-content: center;
 }
+
 #img-wrapper {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   max-width: 500px;
-  img {
-    max-width: 200px;
-    max-height: 200px;
-    width: 100%;
-    margin-top: 20px;
-    cursor: pointer;
 
-  }
- }
- 
- #img-wrapper > div {
+}
+
+#img-wrapper img {
+  max-width: 200px;
+  max-height: 200px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+
+}
+
+#img-wrapper>div {
   flex: 0 1 50%;
   padding: 0 15px;
- }
- #img-wrapper div.active img{
+}
+
+#img-wrapper div.active img {
   border: #359ffe solid 3px;
 }
 
@@ -281,7 +314,8 @@ input[type=checkbox] {
     margin-left: 37%;
   }
 }
-.microphone-icon{
+
+.microphone-icon {
   background-color: #ff0000;
   width: 60px;
   height: 60px;
@@ -289,23 +323,27 @@ input[type=checkbox] {
   border-radius: 50%;
   cursor: pointer;
   margin: 50px auto;
-  -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
--moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
+  -webkit-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
+  -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
 }
-.microphone-icon svg{
+
+.microphone-icon svg {
   width: 80%;
 }
-.microphone-icon svg path{
-  fill:#fff;
+
+.microphone-icon svg path {
+  fill: #fff;
 }
-.microphone-status{
+
+.microphone-status {
   font-size: 14px;
   color: #3b3b3b;
 }
-.btn-stop{
+
+.btn-stop {
   color: #fff;
-  background-color:#359ffe;
+  background-color: #359ffe;
   padding: 10px 25px;
   border: 0;
   border-radius: 25px;
@@ -314,28 +352,29 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   min-width: 106px;
 }
 
-.btn-submit{
-	color: #fff;
-	background-color:#359ffe !important;
-	padding: 10px 25px 12px !important;
-	border: 0 !important;
-	border-radius: 25px;
-	font-weight: 600;
-	min-width: 106px;
-  }
-  
-  .btn-submit-disabled{
-	color: #999;
-	background-color:#b6b6b6 !important;
-	padding: 10px 25px 12px !important;
-	border: 0 !important;
-	border-radius: 25px;
-	font-weight: 600;
-	min-width: 106px;
-  }
-.btn-cancel{
+.btn-submit {
+  color: #fff;
+  background-color: #359ffe !important;
+  padding: 10px 25px 12px !important;
+  border: 0 !important;
+  border-radius: 25px;
+  font-weight: 600;
+  min-width: 106px;
+}
+
+.btn-submit-disabled {
+  color: #999;
+  background-color: #b6b6b6 !important;
+  padding: 10px 25px 12px !important;
+  border: 0 !important;
+  border-radius: 25px;
+  font-weight: 600;
+  min-width: 106px;
+}
+
+.btn-cancel {
   color: #359ffe;
-  background-color:transparent;
+  background-color: transparent;
   padding: 8px 25px;
   border: #359ffe solid 2px;
   border-radius: 25px;
@@ -343,12 +382,14 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   font-weight: 600;
   margin-right: 10px;
 }
-.btn-cancel:hover{
+
+.btn-cancel:hover {
   border: #359ffe solid 2px;
   background-color: #eee !important;
   color: #359ffe;
 }
-.lamp-datepicker{
+
+.lamp-datepicker {
   background-color: #fff;
   height: 40.8px;
   padding: 8px 10px !important;
