@@ -335,7 +335,8 @@ button.primary:hover{background-color: #197ed8}
 	font-weight: 600;
 	min-width: 106px;
   }
-  
+
+   
   .btn-submit-disabled{
 	color: #999;
 	background-color:#b6b6b6 !important;
@@ -344,6 +345,21 @@ button.primary:hover{background-color: #197ed8}
 	border-radius: 25px;
 	font-weight: 600;
 	min-width: 106px;
+  }
+
+  .btn-start-game{
+	color: #359ffe !important;
+	background-color:#fff !important;
+	padding: 10px 25px 12px !important;
+	border: 0 !important;
+	border-radius: 25px;
+	font-weight: 600;
+	min-width: 106px;
+  } 
+  .btn-start-game:hover{
+	border: #359ffe solid 2px;
+	background-color: #eee !important;
+	color: #359ffe;
   }
 
   .lamp-datepicker{
@@ -381,4 +397,11 @@ button.primary:hover{background-color: #197ed8}
 		height: 70px !important;
 	}
 	
+}
+.instructionvideo video{
+	width: 90%;
+	max-width: 640px;
+}
+.instructionvideo h5{
+	margin: 25px 0;
 }
