@@ -12,7 +12,7 @@
  
  interface Props {
    show: boolean;
-   modalClose(status: boolean): void;
+   modalClose(): void;
    msg: string;
    language: string;
  }
@@ -35,7 +35,7 @@
      this.setState({
        showStatus: false,
      });
-     this.props.modalClose(false);
+     this.props.modalClose();
    };
  
    // Modal render function

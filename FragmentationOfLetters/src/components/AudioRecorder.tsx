@@ -23,11 +23,7 @@ const AudioRecorder = ({ ...props }) => {
   const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
   const [transcript, setTranscript] = useState('');
-  const [userAgent, setUserAgent] = useState("")
 
-  useEffect(()=>{
-    setUserAgent(window.navigator.userAgent)
-  },[])
 
   useEffect(()=>{
     ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({})
@@ -105,7 +101,6 @@ const AudioRecorder = ({ ...props }) => {
   return (
     <div>
       <h6>{i18n.t("INSTRUCTION_TEXT")}</h6>
-      <h6>{userAgent}</h6>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
