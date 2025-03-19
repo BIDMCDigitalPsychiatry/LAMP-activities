@@ -154,6 +154,10 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
   // Reset game state for each state
   resetState = () => {
+    if(this.state.startTimer <= 6) {
+      this.finishGame()
+    } else {
+
     // var refreshIntervalId: any = undefined
     // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
     let dogTempCount =  this.state.successCompletion ? this.state.dogCount + 1 : (this.state.dogCount > 1 ? this.state.dogCount - 1 : 1)
@@ -231,7 +235,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       }, 2000)
       this.checkStatus();
     // }
-    // }
+    }
   };
   // Rest box styles after each load
   resetBoxClass = () => {
@@ -574,7 +578,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       <InstructionModal
         show={true}
         modalClose={this.handleCloseInstructionModal}
-        msg={`${i18n.t("When the squares turn white, tap where the dogs were.")}`}
+        msg={`${i18n.t("Pay attention to where the dogs were on the screen. When the squares turn blue, tap where the dogs were.")}`}
         language={i18n.language}
       />
     ) : null;

@@ -35,8 +35,8 @@ export class Questionnaire extends React.Component<Props, State> {
     i18n.changeLanguage(!!props.language ? props.language : "en-US");
     this.state = {
       showStatus: true,
-      clarity: 5,
-      happiness: 5,
+      clarity: 0,
+      happiness: 0,
     };
   }
 

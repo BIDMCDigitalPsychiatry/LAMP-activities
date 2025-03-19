@@ -383,6 +383,7 @@ ol,ul {
 }
 .smileynav .btn.active{
 	background-color:rgba(53,159,254,1) ;
+	border: 2px solid rgba(53,159,254,1);
 }
 .smileynav .btn svg{
 	width: 100%;
