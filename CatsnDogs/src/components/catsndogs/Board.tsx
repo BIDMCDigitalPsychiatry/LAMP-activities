@@ -479,8 +479,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         "fifth",
         "sixth",
         "seventh",
-        "eightth",
-        "nineth",
+        "eighth",
+        "ninth",
         "tenth",
       ];
       boxes = [];
