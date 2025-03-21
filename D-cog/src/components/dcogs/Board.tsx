@@ -198,6 +198,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     // }
     // else {
       const rP = getRandomNumbers(dogTempCount, 1, boxCount);
+      const newGameState = this.state.gameState + 1;
       this.setState({
         animate: true,
         boxClass: ["box-square"],
@@ -212,6 +213,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         boxCount: boxCount,
         questionCount: this.state.questionCount + rP.length,
         numbers: this.shuffleArray(numbers),
+        gameState: newGameState,
       });
       setTimeout(() => {
         this.setState({
