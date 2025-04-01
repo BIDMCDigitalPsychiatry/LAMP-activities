@@ -353,8 +353,9 @@ button.primary:hover{background-color: #197ed8}
 	padding: 10px 25px 12px !important;
 	border: 0 !important;
 	border-radius: 25px;
-	font-weight: 600;
+	font-weight: 600 !important;
 	min-width: 106px;
+	font-size: 18px !important;
   } 
   .btn-start-game:hover{
 	border: #359ffe solid 2px;

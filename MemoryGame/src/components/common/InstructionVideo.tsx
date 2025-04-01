@@ -16,10 +16,19 @@ const InstructionVideo = (props: Props) => {
   return (
     <div className="instructionvideo">
       <h5>{i18n.t("INSTRUCTIONAL_VIDEO")}</h5>
-      <video poster={thumbNail} controls>
-        <source src={video} type="video/mp4" />
-        {i18n.t("VIDEO_ERROR")}
-      </video>
+      <div className="video-container">
+        <video poster={thumbNail} 
+        ref={(videoElement) => {
+          if (videoElement) {
+            videoElement.volume = 1; // Set the volume to 100%
+          }
+        }}
+        controls
+        >
+          <source src={video} type="video/mp4" />
+          {i18n.t("VIDEO_ERROR")}
+        </video>
+      </div>
       <div>
         <Button
           variant="primary"

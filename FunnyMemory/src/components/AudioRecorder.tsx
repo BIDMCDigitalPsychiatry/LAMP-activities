@@ -21,7 +21,7 @@ const AudioRecorder = ({ ...props }) => {
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
-  const [startTimer, setStartTimer] = useState(180);
+  const [startTimer, setStartTimer] = useState(45);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
   useEffect(() => {
@@ -150,7 +150,7 @@ const AudioRecorder = ({ ...props }) => {
                   stopHandle();
                 }}
               >
-                {i18n.t("STOP")}
+                {i18n.t("DONE")}
               </Button>
             </>
           )}

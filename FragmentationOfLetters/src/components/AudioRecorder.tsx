@@ -19,11 +19,10 @@ const AudioRecorder = ({ ...props }) => {
   const microphoneRef = useRef(null);
   const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
-  const [startTimer, setStartTimer] = useState(180);
+  const [startTimer, setStartTimer] = useState(30);
   const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  const [transcript, setTranscript] = useState('');
-
+  const [transcript, setTranscript] = useState(''); 
 
   useEffect(()=>{
     ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({})
@@ -35,7 +34,7 @@ const AudioRecorder = ({ ...props }) => {
       (window as any).msSpeechRecognition || (window as any).oSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech Recognition is not supported in this browser.");
+      alert(i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED"));
       return;
     }
 
@@ -54,7 +53,7 @@ const AudioRecorder = ({ ...props }) => {
 
     // Handle errors
     recognition.onerror = (event) => {
-      alert(`Error: ${event.error}`);
+      alert(i18n.t("PERMISSION_DENIED"));
     };
 
     // Start/stop listening based on `isListening` state
@@ -100,7 +99,7 @@ const AudioRecorder = ({ ...props }) => {
 
   return (
     <div>
-      <h6>{i18n.t("INSTRUCTION_TEXT")}</h6>
+      <h5>{i18n.t("INSTRUCTION_TEXT")}</h5>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
@@ -147,7 +146,7 @@ const AudioRecorder = ({ ...props }) => {
                   else {stopListening()}
                 }}
               >
-                {i18n.t("STOP")}
+                {i18n.t("DONE")}
               </Button>
             </>
           )}
