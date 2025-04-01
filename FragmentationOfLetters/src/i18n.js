@@ -10,11 +10,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "de-DE": {
@@ -25,11 +26,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
 
     },
   },
@@ -41,11 +43,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "es-ES": {
@@ -56,11 +59,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "fr-FR": {
@@ -71,11 +75,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "hi-IN": {
@@ -86,11 +91,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "it-IT": {
@@ -101,11 +107,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "ko-KR": {
@@ -116,11 +123,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "zh-CN": {
@@ -131,11 +139,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
   "zh-HK": {
@@ -146,11 +155,12 @@ const resources = {
       SPEECH_RECOGNITION_NOT_SUPPORTED: "Browser does not support speech recognition.",
       START_RECORDING: "Click to start recording your response",
       RECORDING: "Recording...",
-      STOP: "Stop",
+      DONE: "Done",
       CANCEL : "Cancel",
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
-      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown."
+      INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
+      PERMISSION_DENIED : "Microphone Permission not allowed"
     },
   },
 };

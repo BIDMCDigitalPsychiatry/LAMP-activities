@@ -11,7 +11,6 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import  Layout from "./containers/Layout";
 import './index.css';
-
 const eventMethod = "addEventListener"
 const eventer = window[eventMethod]
 const messageEvent =  "message"

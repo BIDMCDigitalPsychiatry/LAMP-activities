@@ -70,20 +70,10 @@ const GameBoard = ({ ...props }: any) => {
     setGameStarted(false);
   };
 
-  console.log("routes", routes);
 
   const sendGameResult = () => {
     const maxFragmentation = getMaxValue(routes,"level")
     const sequence = getSequence(routes)
-    console.log("result", JSON.stringify({
-      duration: new Date().getTime() - startTime,
-      static_data: Object.assign({
-        best_correct_fragmentation : maxFragmentation+"%",
-        sequence : sequence
-      }),
-      temporal_slices: JSON.parse(JSON.stringify(routes)),
-      timestamp: new Date().getTime(),
-    }))
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -118,10 +108,8 @@ const GameBoard = ({ ...props }: any) => {
     }
   };
 
-  console.log("fragmentation", fragmentation)
 
   const handleRecordComplete = (text: string) => { 
-    console.log("text", text)   
     let res = false;
     if (text.toLowerCase().includes(currentLetter.toLowerCase()) || checkTextInArray(text, currentLetter)) {
       setFragmentation(fragmentation + 10);

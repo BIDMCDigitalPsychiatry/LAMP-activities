@@ -84,6 +84,9 @@ nav a {
 .box-game p, .box-game h6{
   color: #359ffe;
 }
+.box-game p, .box-game h5{
+  color: #359ffe;
+}
 .box-game p{
   font-weight: 600;
 }
