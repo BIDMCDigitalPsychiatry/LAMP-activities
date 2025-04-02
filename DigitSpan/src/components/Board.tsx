@@ -243,6 +243,7 @@ export default function Board({ ...props }) {
   const [successTaps, setSuccessTaps] = useState(0)
   const [totalQuestions, setTotal] = useState(3)
   const [mode, setMode] = useState(0)
+  const [showOverlay, setShowOverlay] = useState(false);
 
   useEffect(() => {
     const configuration = props.data?.configuration ?? null
@@ -254,7 +255,14 @@ export default function Board({ ...props }) {
     i18n.changeLanguage(langugae)
     setStartTime(new Date().getTime())
     setSequenceCount(3)
-  }, [])
+    if(mode === 1){
+      setShowOverlay(true); 
+      setPopup(false)
+      setTimeout(() => {
+        setShowOverlay(false); 
+      }, 5000);
+    }
+  }, [mode])
 
   const [start, setStart] = useState(false)
 
@@ -401,6 +409,30 @@ export default function Board({ ...props }) {
   const [startGame, setStartGame] = useState(false)
 
   return (
+    <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+      {showOverlay && start ? (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "3rem",
+            fontWeight: "bold",
+            zIndex: 10000, 
+            pointerEvents: "all",
+          }}
+        >
+          <Typography variant="h4" style={{ fontWeight: "bold", color:" #0373d8" }}>
+            Now enter digits in reverse order
+          </Typography>
+        </div>
+      ):
     <React.Fragment>
       <Dialog open={popup} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
         <DialogContent>
@@ -462,7 +494,7 @@ export default function Board({ ...props }) {
                       onClick={() => {
                         if (!!startGame) updateAnswer(num)
                       }}>
-                      <Typography variant="h6" align="center">
+                      <Typography variant="h6" align="center"style={{ fontSize: "3rem" }}>
                         {num} </Typography>
                     </Grid>
                   ))}
@@ -472,15 +504,17 @@ export default function Board({ ...props }) {
           </Box>
           <Grid justifyContent="center" container alignItems="center">
             <Box className={classes.answerNav}>
-              <Typography variant="h5" align="center"> Current Answer: <span>{answers.toString().replace(/,/g, "")}</span></Typography>
+              <Typography variant="h5" align="center"> Current Answer: <span style={{ fontSize: "2rem", fontWeight: "bold" }}>{answers.toString().replace(/,/g, "")}</span></Typography>
               <Button variant="contained" className={classes.btnDelete} onClick={() => deleteLast()}>Delete</Button>
             </Box>
           </Grid>
           <Grid justifyContent="center" container>
-            <Button variant="contained" className={classes.btnDone} onClick={() => sendGameResult()}>Done</Button>
+            <Button variant="contained" className={classes.btnDone} onClick={() => sendGameResult()}>Exit</Button>
           </Grid>
         </Box>
       )}
     </React.Fragment>
+  }
+  </div>
   )
 }
