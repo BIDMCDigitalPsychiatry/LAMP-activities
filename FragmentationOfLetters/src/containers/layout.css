@@ -271,7 +271,9 @@ input[type=checkbox] {
 -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
 box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
 }
-
+.microphone-icon-dissable{
+  background-color: #999;
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -284,6 +286,9 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
 .microphone-status{
   font-size: 14px;
   color: #3b3b3b;
+}
+.microphone-wrapper{
+  margin-bottom: 50px;
 }
 
 .btn-stop{
