@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'rgba(0, 0, 0, 0.75)'
     },
     contentBox: {
-        height: 538,
+        height: "70vh",
         top: 70, background: '#E7F8F2', alignItems: 'center', justifyContent: 'center',
         display: 'flex', width: '100%'
     },
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold', fontSize: 16, color: 'rgba(0, 0, 0, 0.75)'
     },
     buttonsContainer: {
-        width: '100%', display: 'flex', flexDirection: 'column', marginTop: 55, marginBottom: 55, alignItems: 'center', justifyContent: 'center'
+        width: '100%', display: 'flex', flexDirection: 'column',alignItems: 'center', justifyContent: 'center'
     },
 }))
 
