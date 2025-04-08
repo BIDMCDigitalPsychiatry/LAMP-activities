@@ -51,7 +51,6 @@ interface DiamondState {
   showConfirmModal: boolean;
   totalLevels: number; 
   showInstruction: boolean;
-  mistakeCount: number;
 }
 
 class Board extends React.Component<BoardProps, DiamondState> {
@@ -76,7 +75,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       showConfirmModal: false,
       totalLevels: this.getTotalLevels(),
       showInstruction: true,
-      mistakeCount: 0,
     };
     i18n.changeLanguage(props.language);
   }
@@ -153,19 +151,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
       ) {
         // When wrong diamond is tapped, update the negative point
         const negPoints = 2
-        const newMistakeCount = this.state.mistakeCount + 1;
         this.setState({
           displayNegativePoints: true,
           negativePoints: this.state.negativePoints - negPoints,
-          mistakeCount: newMistakeCount,
         });
 
-        if (newMistakeCount >= 5) {
-          this.setState({ gameOver: true, timeout: true }, () => {
-            this.sendGameResult(1); 
-          });
-          return; 
-        }
         // Show the negative point for 3 seconds
         setTimeout(() => {
           this.setState({

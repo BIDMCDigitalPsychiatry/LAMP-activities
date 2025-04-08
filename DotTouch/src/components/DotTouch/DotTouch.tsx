@@ -1,6 +1,6 @@
 /**
- * @file   DotTouch.tsx
- * @brief  DotTouch component which is the initial point of DotTouch game
+ * @file   Trails B.tsx
+ * @brief  Trails B component which is the initial point of DotTouch game
  * @date   May , 2020
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
@@ -37,6 +37,7 @@ interface DotState {
  totalTaps:number;
  settings: any;
  showInstruction: boolean;
+ mistakeCount: number,
 }
 
 class DotTouch extends React.Component<any, DotState> {
@@ -73,6 +74,7 @@ class DotTouch extends React.Component<any, DotState> {
          timeout : false,
          totalTaps:0,
          showInstruction: true,
+         mistakeCount: 0,
        };      
       //  this.resetState()
    }
@@ -118,8 +120,20 @@ class DotTouch extends React.Component<any, DotState> {
         correctTaps : status? this.state.correctTaps + 1 : this.state.correctTaps,
         lastWrongClick: !status ? item :null, 
         tapCount : status ? this.state.tapCount + 1 : this.state.tapCount,
-        totalTaps:this.state.totalTaps + 1
+        totalTaps:this.state.totalTaps + 1,
+        mistakeCount: !status ? this.state.mistakeCount + 1 : this.state.mistakeCount,
       });
+
+      if (!status && this.state.mistakeCount + 1 >= 5) {
+        setTimeout(() => {
+          this.setState({
+            gameOver: true
+          });
+          this.sendGameResult();
+        }, 500);
+        return;
+      }
+      
         let routeList:any;
         if(i === '1') {
           const timerVal = this.state.gameLevel == 1? this.state.settings.level1_timeout ?? 60 : this.state.settings.level2_timeout ?? 120;  
@@ -246,7 +260,8 @@ class DotTouch extends React.Component<any, DotState> {
    sendGameResult = (status?: boolean) => {
     const route = {'type': 'manual_exit', 'value': status ?? false} 
     const boxes = [];
-    if (this.state.route !== null) {
+    // if (this.state.route !== null) {
+    if (this.state.route && this.state.route.length > 0) {
       const r = JSON.parse(this.state.route);
       Object.keys(r).forEach((key) => {
         boxes.push(r[key]);
@@ -316,6 +331,7 @@ class DotTouch extends React.Component<any, DotState> {
 
   clickBack = () => {
     this.sendGameResult(true)
+    
   }
 
   // To refresh the game
@@ -350,7 +366,7 @@ class DotTouch extends React.Component<any, DotState> {
            <RefreshRounded color="primary" onClick={this.clickHome}/>
            {/* <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/> */}
          </nav>
-         <div className="heading">Dot touch</div>
+         <div className="heading">Trails B</div>
          <div className="game-board">
            <div> 
              {/* <div className="countdown-timer mt-10"> 
