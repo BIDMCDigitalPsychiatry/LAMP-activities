@@ -78,7 +78,7 @@ const AudioRecorder = ({ ...props }) => {
   const stopListening = () => {
       setIsListening(false);
       setIsTimeOut(true);
-      setStartTimer(180);
+      setStartTimer(30);
       handleRecordComplete(getStringAfterWord(recordedText));
   };
 
@@ -103,7 +103,7 @@ const AudioRecorder = ({ ...props }) => {
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
-            className={isListening ? "microphone-icon" : "microphone-icon cursor-pointer"}
+            className={isListening ? "microphone-icon microphone-icon-dissable" : "microphone-icon cursor-pointer"}
             ref={microphoneRef}
             onClick={(e) => {
               startListening();
@@ -130,7 +130,7 @@ const AudioRecorder = ({ ...props }) => {
                   setIsListening(false);
                   setTranscript("");
                   setIsTimeOut(true);
-                  setStartTimer(180);
+                  setStartTimer(30);
                 }}
               >
                 {i18n.t("CANCEL")}
