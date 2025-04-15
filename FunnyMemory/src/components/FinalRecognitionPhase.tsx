@@ -43,9 +43,7 @@ const FinalRecognitionPhase = ({ ...props }) => {
                   key={index}
                   className={selectedImg === index ? "active" : ""}
                   onClick={() => {
-                    setTimeout(() => {
-                      handleImageSelection(img);
-                    }, 1000);
+                    handleImageSelection(img);
                     setSelectedImg(index);
                   }}
                 >
