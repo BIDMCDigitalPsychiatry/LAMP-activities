@@ -11,16 +11,25 @@ import i18n from "src/i18n";
 const FinalRecognitionPhase = ({ ...props }) => {
   const { options, handleImageSelection, currentIndex } = props;
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  const [selectedImg, setSelectedImg] = useState(-1);
-  const [loadedImages, setLoadedImages] = useState<any>([])
 
+  const [selectedImg, setSelectedImg] = useState(-1);
+  const [loadedImages, setLoadedImages] = useState<any>([]);
+
+  // Reset selected image when currentIndex changes
   useEffect(() => {
     setSelectedImg(-1);
+    setLoadedImages([]); // Reset loaded images when the index changes
   }, [currentIndex]);
 
-  const handleImageLoad = (index : number) =>{
-    setLoadedImages([...loadedImages,index])
-  }
+  // Handle when an image finishes loading
+  const handleImageLoad = (index: number) => {
+    if (!loadedImages.includes(index)) {
+      setLoadedImages((prev: any) => [...prev, index]);
+    }
+  };
+
+  // Check if all images are loaded
+  const allImagesLoaded = loadedImages.length === options?.length;
 
   return (
     <div className="box-game mt-30">
@@ -31,6 +40,7 @@ const FinalRecognitionPhase = ({ ...props }) => {
             options?.map((img: string, index: number) => {
               return (
                 <div
+                  key={index}
                   className={selectedImg === index ? "active" : ""}
                   onClick={() => {
                     setTimeout(() => {
@@ -41,8 +51,8 @@ const FinalRecognitionPhase = ({ ...props }) => {
                 >
                   <img
                     src={img}
-                    className={loadedImages.includes(index) ? "" : "d-none"}
-                    onLoad={()=>handleImageLoad(index)}
+                    className={allImagesLoaded ? "" : "d-none"} // Hide images until all are loaded
+                    onLoad={() => handleImageLoad(index)}
                     alt=""
                   ></img>
                 </div>
@@ -56,4 +66,5 @@ const FinalRecognitionPhase = ({ ...props }) => {
     </div>
   );
 };
+
 export default FinalRecognitionPhase;
