@@ -3,19 +3,8 @@ import Title from './components/Title';
 import Stats from './components/Stats'
 import Cards from './components/Cards';
 import { useEffect } from 'react';
-import GameOver from './components/GameOver';
 import React from 'react';
 import i18n from 'src/i18n';
-
-let overlayStyle = {
-  visibility: 'hidden',
-  opacity: '0%'
-}
-
-let modalStyle = {
-  transform: 'translate(0%, 0%)'
-}
-
 
 function ColourMemo({...props}) {
   const [level, setLevel] = useState(1);
@@ -32,41 +21,10 @@ function ColourMemo({...props}) {
   }, [gameState])
 
   useEffect(() => {
-    if (gameState === 'game over') {
-      overlayStyle = {
-        opacity: '100%',
-        visibility : 'visible'
-      }
-      modalStyle = {
-        transform: 'translate(0%, 50%)'
-      }
-    }
-
-    return () => {
-      setTimeout(()=>{
-        overlayStyle = {
-          visibility: 'hidden',
-          opacity: '0%'
-        }
-  
-        modalStyle = {
-          transform: 'translate(0%, 0%)'
-        }
-      },1000)      
-    }
-  }, [gameState])
-
-  useEffect(() => {
     (score > highestScore) && setHighestScore(score);
   }, [score])
 
-  const resetGame = () => {
-    setGameState('new game');
-    setScore(0);
-    setLevel(1);
-  }
-
-  return (
+   return (
     <>
       <header>
         <Title language={props.language}/>
@@ -78,13 +36,7 @@ function ColourMemo({...props}) {
         gameState={gameState}
         setGameState={setGameState} 
         setScore={setScore} score={score}/>
-      </main>
-      <GameOver
-      language={props.language} 
-      highestScore={highestScore} 
-      overlayStyle={overlayStyle} 
-      modalStyle={modalStyle}
-      resetGame={resetGame}/>
+      </main>      
     </>
   )
 }
