@@ -185,18 +185,6 @@ class Board extends React.Component<BoardProps, BoardState> {
         break;
     }
 
-
-    // if (
-    //   boxCount >= 12
-    //   // (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-    //   //   navigator.userAgent
-    //   // ) && boxCount >= 12) || !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i).test(
-    //   //   navigator.userAgent
-    //   // ) && boxCount >= 20
-    // ) {
-    //   this.sendGameResult();
-    // }
-    // else {
       const rP = getRandomNumbers(dogTempCount, 1, boxCount);
       this.setState({
         animate: true,
@@ -286,7 +274,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         setTimeout(() => {
           this.setState({ tapType: -1 })
-        }, 500)
+        }, this.state.dogCount ==1 ?400 : 50)
 
       });
     }
