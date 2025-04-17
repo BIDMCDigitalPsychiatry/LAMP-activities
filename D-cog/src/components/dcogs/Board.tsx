@@ -221,8 +221,8 @@ class Board extends React.Component<BoardProps, BoardState> {
               }
             }, 4000)
           })
-        }, 2500);
-      }, 2000)
+        }, 1000);
+      }, 500)
       this.checkStatus();
     // }
     }
@@ -276,7 +276,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         setTimeout(() => {
           this.setState({ tapType: -1 })
-        }, this.state.dogCount ==1 ?400 : 50)
+        }, 250)
 
       });
     }
