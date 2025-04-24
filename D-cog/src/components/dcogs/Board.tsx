@@ -201,10 +201,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         questionCount: this.state.questionCount + rP.length,
         numbers: this.shuffleArray(numbers),
       });
-      setTimeout(() => {
         this.setState({
           animate: false,
-          enableTap: false,
         })
         setTimeout(() => {
           this.setState({
@@ -220,7 +218,6 @@ class Board extends React.Component<BoardProps, BoardState> {
             }, 4000)
           })
         }, 1000);
-      }, 50)
       this.checkStatus();
     // }
     }
@@ -242,7 +239,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       clearInterval(this.timer!);
       this.setState({
         dogCount: 0,
-        enableTap: false,
+        // enableTap: false,
       });
     }
   };
