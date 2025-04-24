@@ -222,7 +222,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             }, 4000)
           })
         }, 1000);
-      }, 500)
+      }, 50)
       this.checkStatus();
     // }
     }
