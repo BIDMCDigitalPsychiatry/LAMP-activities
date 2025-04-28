@@ -206,6 +206,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         this.setState({
           animate: false,
         })
+       
         setTimeout(() => {
           this.setState({
             animate: true,
@@ -273,7 +274,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         setTimeout(() => {
           this.setState({ tapType: -1 })
-        }, 250)
+        }, 150)
 
       });
     }
@@ -345,7 +346,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // Update the state values after each game state
-  updateWithTaps = (boxNo: number, statusVal: boolean) => {
+  updateWithTaps = async (boxNo: number, statusVal: boolean) => {
     const boxes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
     if (this.state.boxes !== null) {
