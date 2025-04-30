@@ -463,7 +463,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     left: 0,
     background: "#fff",
-    zIndex:2,
+    zIndex: 2,
   },
 
 }))
@@ -1026,7 +1026,7 @@ function Matrix({ x, responses, onResponse, activityId, total, index, idx, start
           <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
             <Box className={classes.questionScroll}>
               <Table className={classes.matrix}>
-              
+
                 {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert" || x.type === "rating" || x.type === "list" || x.type === "boolean" || x.type === "multiselect") && (
                   <TableRow className={classes.firstTr}>
                     <TableCell style={{ minWidth: "30%" }}>{null}</TableCell>
@@ -1042,23 +1042,23 @@ function Matrix({ x, responses, onResponse, activityId, total, index, idx, start
                       </TableCell>
                     ))}
                   </TableRow>)}
-                  <TableHead>
-                {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert" || x.type === "rating" || x.type === "list" || x.type === "boolean" || x.type === "multiselect") && (
-                  <TableRow className={classes.secondTr}>
-                    <TableCell style={{ minWidth: "30%" }} className={classes.thStick}>{null}</TableCell>
-                    {(x.options || []).map((x) => (
-                      <TableCell className={classes.textCenter}>
-                        <ReactMarkdown children={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                          link: LinkRenderer, sub: (props) => {
-                            return <sub>{props?.children}</sub>;
-                          }, sup: (props) => {
-                            return <sup>{props.children}</sup>;
-                          }
-                        }} />
-                      </TableCell>
-                    ))}
-                  </TableRow>)}
-                  </TableHead>
+                <TableHead>
+                  {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert" || x.type === "rating" || x.type === "list" || x.type === "boolean" || x.type === "multiselect") && (
+                    <TableRow className={classes.secondTr}>
+                      <TableCell style={{ minWidth: "30%" }} className={classes.thStick}>{null}</TableCell>
+                      {(x.options || []).map((x) => (
+                        <TableCell className={classes.textCenter}>
+                          <ReactMarkdown children={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
+                            link: LinkRenderer, sub: (props) => {
+                              return <sub>{props?.children}</sub>;
+                            }, sup: (props) => {
+                              return <sup>{props.children}</sup>;
+                            }
+                          }} />
+                        </TableCell>
+                      ))}
+                    </TableRow>)}
+                </TableHead>
                 {(x.questions || []).map((question, qindex) => (
                   <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
                     <TableCell className={classes.required} style={{ minWidth: "30%", maxWidth: "150px" }}>
@@ -1207,13 +1207,13 @@ function Matrix({ x, responses, onResponse, activityId, total, index, idx, start
               </Table>
             </Box>
           </Grid>
-          <div className={classes.sliderActionsContainer}>
+          {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settingsQuestions - 1 && (
               <Fab onClick={index === settingsQuestions - 1 ? onComplete : handleNext} className={classes.btngreen + " " + classes.marginBottom40} >
                 {t("Submit")}
               </Fab>
             )}
-          </div>
+          </div> */}
         </Grid>
       </Box>
     </Grid>
@@ -1357,7 +1357,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
               return <sup>{props.children}</sup>;
             }
           }} />
-         </Typography>
+        </Typography>
       </Box>
       <Box className={classes.questionhead}>
         <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>
@@ -1427,13 +1427,13 @@ function Questions({
             }}
             startTime={new Date().getTime()}
           />
-          <div className={classes.sliderActionsContainer}>
+          {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settings.length - 1 && (
               <Fab onClick={index === settings.length - 1 ? onComplete : handleNext} className={classes.btngreen}>
                 {t("Submit")}
               </Fab>
             )}
-          </div>
+          </div> */}
         </Grid>
       </Grid>
     </Box>
@@ -1559,13 +1559,13 @@ function Section({
   }
 
   const slideElementChange = (type: number) => {
-    if (!supportsSidebar) {
-      setElementIn(false)
-      setTimeout(() => {
-        type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length)
-        setElementIn(true)
-      }, 100)
-    }
+    // if (!supportsSidebar) {
+    setElementIn(false)
+    setTimeout(() => {
+      type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length)
+      setElementIn(true)
+    }, 100)
+    // }
     type === 0 ? setTab(tab - 1) : setTab(tab + 1)
     const val = type === 0 ? progressValue - 100 / settings.length : progressValue + 100 / settings.length
     type === 0 ? setProgressValue(val > 0 ? val : 100 / settings.length) : setProgressValue(val > 100 ? 100 : val)
@@ -1634,7 +1634,7 @@ function Section({
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
-      {supportsSidebar ? (
+      {/* {supportsSidebar ? (
         settings.map((x, idx) => (
           <Box my={4}>
             {!!x.questions && x.questions.length > 0 ?
@@ -1670,30 +1670,30 @@ function Section({
               />}
           </Box>
         ))
-      ) : (
-        <Box>
-          <Slide in={elementIn} direction={tabDirection(index)} mountOnEnter unmountOnExit>
-            <Box>{!!slideElements && !!slideElements[index] ? slideElements[index] : null}</Box>
-          </Slide>
-          <Box className={classes.surveyQuestionNav}>
-            {!supportsSidebar && index > 0 && (
-              <Fab onClick={handleBack} className={classes.btnBack}>
-                {t("Back")}
-              </Fab>
-            )}
-            {!supportsSidebar && (
-              <Fab
-                onClick={elementIn && (index === settings.length - 1 ? onComplete : handleNext)}
-                className={classes.btngreen}
-              >
-                {index === settings.length - 1
-                  ? t("Submit")
-                  : t("Next")}
-              </Fab>
-            )}
-          </Box>
+      ) : ( */}
+      <Box>
+        <Slide in={elementIn} direction={tabDirection(index)} mountOnEnter unmountOnExit>
+          <Box>{!!slideElements && !!slideElements[index] ? slideElements[index] : null}</Box>
+        </Slide>
+        <Box className={classes.surveyQuestionNav}>
+          {index > 0 && (
+            <Fab onClick={handleBack} className={classes.btnBack}>
+              {t("Back")}
+            </Fab>
+          )}
+          {/* {!supportsSidebar && ( */}
+          <Fab
+            onClick={elementIn && (index === settings.length - 1 ? onComplete : handleNext)}
+            className={classes.btngreen}
+          >
+            {index === settings.length - 1
+              ? t("Submit")
+              : t("Next")}
+          </Fab>
+          {/* )} */}
         </Box>
-      )}
+      </Box>
+      {/* )} */}
     </Box>
   )
 }
