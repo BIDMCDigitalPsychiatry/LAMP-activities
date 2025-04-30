@@ -248,7 +248,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // Each box click is handled here
-  handleClick = (e: any, i: number) => {
+  handleClick = async (e: any, i: number) => {
     let success = this.state.randomPoints.indexOf(i) > -1 ? true : false;
     const item = e.target?.className?.indexOf("box-square") > -1 ? e.target : (
       e.target?.className?.indexOf("dog") > -1 ?
@@ -274,7 +274,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
         setTimeout(() => {
           this.setState({ tapType: -1 })
-        }, 150)
+        }, 300)
 
       });
     }
@@ -383,7 +383,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             setTimeout(() => {
               this.resetBoxClass();
               this.resetState()
-            }, 500)
+            }, 250)
           })
       } else {
         setTimeout(() => {
