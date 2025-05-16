@@ -275,6 +275,9 @@ class DotTouch extends React.Component<any, DotState> {
      const gameScore = totalAttempts < 30 ? Math.round((this.state.correctTaps / 30) * 100) :
           Math.round((this.state.correctTaps / totalAttempts) * 100);
      const points = gameScore === 100 ? 2 : 1;
+     const percentageCorrectOverall = totalAttempts > 0 
+     ? Math.round((this.state.correctTaps / totalAttempts) * 100)
+     : 0;
 
      parent.postMessage(
       JSON.stringify({
@@ -284,7 +287,9 @@ class DotTouch extends React.Component<any, DotState> {
           point: points,
           total_questions: this.state.totalTaps,
           wrong_answers: this.state.totalTaps- this.state.correctTaps,
-          score: gameScore
+          score: gameScore,
+          percentageCorrectOverall: percentageCorrectOverall,
+          total_levels: this.state.gameLevel,
         },
         temporal_slices: JSON.parse(this.state.route),
         timestamp: new Date().getTime(),

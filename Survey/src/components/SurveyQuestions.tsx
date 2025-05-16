@@ -893,9 +893,9 @@ function Rating({ onChange, options, value, ...props }) {
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={
-          parseInt(options[0].value, 10) < 0 && parseInt(options[1]?.value, 10 ?? 0) < 0
+          parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) < 0
             ? Math.abs(parseInt(options[0].value, 10)) + parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 0, 10) > 0
+            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) > 0
               ? Math.abs(parseInt(options[0].value, 10)) - parseInt(options[1]?.value ?? 0, 10)
               : parseInt(options[1]?.value ?? 0, 10) - parseInt(options[0].value, 10)
         }
@@ -1285,10 +1285,9 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
 }
 
 
-function Question({ onResponse, text, desc, required, type, options, value, startTime, ...props }) {
+function Question({ onResponse, text, desc, required, type, options, value, startTime, currentIndex, settings, setSettings, ...props }) {
   const { t } = useTranslation()
   const onChange = (value) => {
-
     onResponse({ item: text, value })
   }
   const binaryOpts = [
@@ -1399,6 +1398,7 @@ function Questions({
   onComplete,
   startTime,
   index,
+  setSettings,
   ...props
 }) {
   const classes = useStyles()
@@ -1426,6 +1426,9 @@ function Questions({
               onResponse(data)
             }}
             startTime={new Date().getTime()}
+            currentIndex={index}
+            settings={settings}
+            setSettings={setSettings}
           />
           {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settings.length - 1 && (
@@ -1471,6 +1474,8 @@ function Section({
   onComplete,
   totalQuestions,
   noBack,
+  setSettings,
+  orginalSettings,
   ...props
 }) {
   const activityId = value?.id
@@ -1488,6 +1493,8 @@ function Section({
   const [elementIn, setElementIn] = useState(false)
   const { t } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
+  let settingsCopy = [...settings];
+  let contingencyArray = [];
 
   const calcIndex = (idx) => {
     let index = 0
@@ -1504,52 +1511,52 @@ function Section({
   }
   // Force creation of result data whether survey was interacted with or not.
   useEffect(() => {
-    if (slideElements === null) {
-      let index = 0
-      const slideElements = (settings || []).map((x, idx) => {
-        setElementIn(true)
-        index = calcIndex(idx)
-        return (
-          <Box key={idx}>
-            {!!x.questions && x.questions.length > 0 ?
-              <Matrix
-                x={x}
-                idx={index}
-                index={idx}
-                activityId={activityId}
-                total={totalQuestions}
-                onResponse={onResponse}
-                setActiveStep={setActiveStep}
-                startTime={new Date().getTime()}
-                responses={responses}
-                settingsQuestions={settings.length}
-                handleBack={handleBack}
-                handleNext={handleNext}
-                onComplete={onComplete}
-              /> :
-              <Questions
-                idx={index}
-                x={x}
-                index={idx}
-                activityId={activityId}
-                settings={settings}
-                responses={responses}
-                setActiveStep={setActiveStep}
-                onResponse={onResponse}
-                handleBack={handleBack}
-                handleNext={handleNext}
-                onComplete={onComplete}
-                startTime={new Date().getTime()}
-                totalQuestions={totalQuestions}
-              />
-            }
-          </Box>
-        )
-      })
-      setSlideElements(slideElements)
-    }
-    window.addEventListener("scroll", handleChange, true)
-  }, [])
+    let index = 0;
+    const slideElements = (settings || []).map((x, idx) => {
+      setElementIn(true)
+      index = calcIndex(idx)
+      return (
+        <Box key={idx}>
+          {!!x.questions && x.questions.length > 0 ? (
+            <Matrix
+              x={x}
+              idx={index}
+              index={idx}
+              activityId={activityId}
+              total={totalQuestions}
+              onResponse={onResponse}
+              setActiveStep={setActiveStep}
+              startTime={new Date().getTime()}
+              responses={responses}
+              settingsQuestions={settings.length}
+              handleBack={handleBack}
+              handleNext={handleNext}
+              onComplete={onComplete}
+            />
+          ) : (
+            <Questions
+              idx={index}
+              x={x}
+              index={idx}
+              activityId={activityId}
+              settings={settings}
+              responses={responses}
+              setActiveStep={setActiveStep}
+              onResponse={onResponse}
+              handleBack={handleBack}
+              handleNext={handleNext}
+              onComplete={onComplete}
+              startTime={new Date().getTime()}
+              totalQuestions={totalQuestions}
+              setSettings={setSettings}
+            />
+          )}
+        </Box>
+      );
+    });
+
+    setSlideElements(slideElements);
+  }, [settings]);
 
   const isComplete = (idx) => !!responses.current[idx]?.value
   const isError = (idx) => !isComplete(idx) && idx < activeStep
@@ -1571,8 +1578,68 @@ function Section({
     type === 0 ? setProgressValue(val > 0 ? val : 100 / settings.length) : setProgressValue(val > 100 ? 100 : val)
   }
 
+  const handleContingencyQuestion = (selectedOption, actualIndex) => {
+    let settingsCopyy = [...settings]
+    const currentQuestion = settingsCopyy[actualIndex];
+    if (currentQuestion?.visited == undefined) {
+      settingsCopyy = settingsCopyy.map((question, index) => ({
+        ...question,
+        visited: false
+      }));
+    }
+    if (selectedOption.contigencySettings.contigency_type === "question") {
+      const targetIndex = selectedOption.contigencySettings.question_index;
+      if (targetIndex === index + 1) return settingsCopyy;
+      const questionToMove = settingsCopyy[targetIndex];
+      const updatedSettings = settingsCopyy.filter((_, idx) => idx !== targetIndex);
+      updatedSettings.splice(index + 1, 0, questionToMove);
+      return updatedSettings;
+    }
+    if (selectedOption.contigencySettings.contigency_type === "activity") {
+      if (typeof window !== "undefined" && window.parent) {
+        window.parent.postMessage(
+          {
+            type: "OPEN_ACTIVITY",
+            activityId: selectedOption.contigencySettings.activity,
+          },
+          "*",
+        );
+      }
+      return settingsCopyy;
+    }
+  }
+
+  const handleQuestionFlow = (actualIndex, selectedOption) => {
+    const currentQuestion = settingsCopy[actualIndex];
+    if (currentQuestion?.visited == undefined) {
+      settingsCopy = settingsCopy.map((question, index) => ({
+        ...question,
+        visited: false
+      }));
+    }
+    if (selectedOption?.contigencySettings?.enable_contigency) {
+      contingencyArray = handleContingencyQuestion(selectedOption, actualIndex);
+      if (contingencyArray[actualIndex]?.visited == false) {
+        contingencyArray[actualIndex].visited = true;
+      }
+      setSettings(contingencyArray)
+    }
+    else {
+      if (currentQuestion?.visited == true) {
+        setSettings(value.settings)
+      }
+      else {
+        const updatedQuestion = { ...currentQuestion, visited: true };
+        settingsCopy[actualIndex] = updatedQuestion;
+        setSettings(settingsCopy);
+      }
+    }
+  }
+
   const handleNext = () => {
     const actualIndex = calcIndex(index)
+    const currentQuestion = settings[index];
+    const selectedOption = currentQuestion?.options?.find(opt => opt.value === responses?.current[actualIndex]?.value);
     if (settings[index].subType === "matrix") {
       let i = 0;
       let status = true
@@ -1589,12 +1656,14 @@ function Section({
         i++
       }
       if (!!status) {
+        handleQuestionFlow(actualIndex, selectedOption)
         slideElementChange(1)
       }
     } else {
       if (!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses?.current[actualIndex]?.value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
         (typeof responses?.current[actualIndex]?.value !== "string" || (typeof responses?.current[actualIndex]?.value === "string" &&
           responses?.current[actualIndex]?.value?.trim().length !== 0))))) {
+        handleQuestionFlow(actualIndex, selectedOption)
         slideElementChange(1)
       } else {
         enqueueSnackbar(t("Please enter your response."), {
@@ -1731,15 +1800,29 @@ export default function SurveyQuestions({ ...props }) {
     return status
   }
 
+  const calculateTotalScore = (response) => {
+    let totalScore = 0;
+    (response || []).forEach((question) => {
+      let questionValue = question?.value;
+      const numericValue = parseFloat(questionValue);
+      if (!isNaN(numericValue)) {
+        totalScore += numericValue;
+      }
+    });
+    return totalScore;
+    }
+
+
   const postSubmit = (response) => {
     if (validator(response)) {
       response.map((r) => {
         delete r.endTime
       })
+      const totalScore = calculateTotalScore(response);
       const result = {
         temporal_slices: response,
         duration: new Date().getTime() - startTime,
-        static_data: {},
+        static_data: { totalScore: totalScore },
         timestamp: startTime
       }
       onResponse(result)
@@ -1823,8 +1906,14 @@ export default function SurveyQuestions({ ...props }) {
           }
         }
       })
-    setSettings(settings)
+    const updatedArray = activity.settings.map((question, index) => ({
+      ...question,
+      visited: false
+    }));
+    setSettings(updatedArray)
   }
+
+
 
   return (
     <Box className={classes.root}>
@@ -1849,6 +1938,8 @@ export default function SurveyQuestions({ ...props }) {
           onComplete={() => {
             postSubmit(responses)
           }}
+          setSettings={setSettings}
+          orginalSettings={activity?.settings}
         /> : null}
     </Box>
   )
