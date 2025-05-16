@@ -244,7 +244,9 @@ export default function Board({ ...props }) {
   const [totalQuestions, setTotal] = useState(3)
   const [mode, setMode] = useState(0)
   const [showOverlay, setShowOverlay] = useState(false);
-
+  const [questions, setQuestions] = useState<string[]>([]);
+  
+  
   useEffect(() => {
     const configuration = props.data?.configuration ?? null
     const langugae = !!configuration
@@ -272,6 +274,9 @@ export default function Board({ ...props }) {
       setLevel(level + 1)
       const randomPicks: number[] = getRandomNumbers(sequenceCount, 1, 9)
       setQuestionSequence(randomPicks)
+      console.log("random",randomPicks)
+      const stringified = randomPicks.join(',');
+      setQuestions(prev => [...prev, stringified]);
     }
   }
 
@@ -350,7 +355,7 @@ export default function Board({ ...props }) {
       });
     }
     boxes.push(route);
-
+   
     const gameScore = Math.round(
       (successTaps / totalQuestions) * 100
     );
@@ -360,6 +365,53 @@ export default function Board({ ...props }) {
     } else {
       points = points + 1;
     }
+    
+    let bestForward = { span: 0, duration: Infinity, details: [] as any[] };
+    let bestBackward = { span: 0, duration: Infinity, details: [] as any[] };
+
+    const groupedByLevel: Record<string, any[]> = {};
+
+    boxes.forEach(entry => {
+      if (entry.type === 'manual_exit') return;
+      if (!entry.item || typeof entry.level !== 'number' || typeof entry.mode !== 'number') return;
+
+      const key = `${entry.mode}-${entry.level}`;
+      if (!groupedByLevel[key]) groupedByLevel[key] = [];
+      groupedByLevel[key].push(entry);
+    });
+
+    Object.entries(groupedByLevel).forEach(([key, entries]) => {
+      const allCorrect = entries.every(e => e.type === true);
+      if (!allCorrect) return;
+
+      const totalDuration = entries.reduce((sum, e) => sum + (e.duration || 0), 0);
+      const spanLength = entries.length;
+      const mode = entries[0].mode;
+
+      if (mode === 0) {
+        if (
+          spanLength > bestForward.span ||
+          (spanLength === bestForward.span && totalDuration < bestForward.duration)
+        ) {
+          bestForward = {
+          span: spanLength,
+          duration: totalDuration,
+          details: entries
+        };
+      }
+    } else if (mode === 1) {
+      if (
+        spanLength > bestBackward.span ||
+        (spanLength === bestBackward.span && totalDuration < bestBackward.duration)
+      ) {
+        bestBackward = {
+          span: spanLength,
+          duration: totalDuration,
+          details: entries
+        };
+      }
+    }
+  });
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -369,6 +421,9 @@ export default function Board({ ...props }) {
           score: gameScore,
           total_questions: totalQuestions,
           wrong_answers: totalQuestions - successTaps,
+          bestForwardDigitSpan: bestForward.details,
+          bestBackwardDigitSpan: bestBackward.details,
+          question_sequences: questions,
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
@@ -392,6 +447,7 @@ export default function Board({ ...props }) {
       level: level,
       type: statusVal,
       value: null,
+      mode: mode,
     };
     boxes.push(route);
     setRoutes(JSON.stringify(boxes))
