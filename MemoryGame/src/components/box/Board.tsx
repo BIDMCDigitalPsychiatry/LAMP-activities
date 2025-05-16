@@ -168,7 +168,6 @@ class Board extends React.Component<BoardProps, BoardState> {
     };
   }
 
-
   // Modal close is handled here
   handleClose = (status: boolean) => {
     this.setState(
@@ -187,14 +186,11 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   showInstructionVideo = () => {
-    this.setState(
-      {
-        playInstructionVideo: true,
-        showModalInfo: false
-
-      }
-    )
-  }
+    this.setState({
+      playInstructionVideo: true,
+      showModalInfo: false,
+    });
+  };
 
   // On load function - set state of the gamne
   componentDidMount = () => {
@@ -295,7 +291,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           stateWrongTaps: 0,
           successStages: 0,
           successTaps: 0,
-          playInstructionVideo : false,
+          playInstructionVideo: false,
           supportsSidebar: window.matchMedia("(min-width: 768px)").matches,
           trail:
             typeof type !== "undefined"
@@ -464,7 +460,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         clearInterval(this.correctionTimer);
         clearInterval(this.autoCorrectionStartTimer);
         clearInterval(this.locationTimer);
-        clearInterval(this.locationautoTimer);
+        // clearInterval(this.locationautoTimer);
       }
 
       const index = e.target.closest("div").getAttribute("data-key");
@@ -822,6 +818,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       }
     }, 8000);
   };
+
   updateAutoLocation = () => {
     clearInterval(this.locationTimer);
     clearInterval(this.autoCorrectionStartTimer);
@@ -1063,9 +1060,9 @@ class Board extends React.Component<BoardProps, BoardState> {
                 language={i18n.language}
               />
             ) : !!this.state.playInstructionVideo ? (
-              <InstructionVideo 
-              handleGameStart={()=>this.handleClose(false)} 
-              language={i18n.language}
+              <InstructionVideo
+                handleGameStart={() => this.handleClose(false)}
+                language={i18n.language}
               />
             ) : !!this.state.showQuestions ? (
               <Questions

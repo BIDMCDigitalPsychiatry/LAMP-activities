@@ -244,7 +244,9 @@ export default function Board({ ...props }) {
   const [totalQuestions, setTotal] = useState(3)
   const [mode, setMode] = useState(0)
   const [showOverlay, setShowOverlay] = useState(false);
-
+  const [questions, setQuestions] = useState<string[]>([]);
+  
+  
   useEffect(() => {
     const configuration = props.data?.configuration ?? null
     const langugae = !!configuration
@@ -272,6 +274,8 @@ export default function Board({ ...props }) {
       setLevel(level + 1)
       const randomPicks: number[] = getRandomNumbers(sequenceCount, 1, 9)
       setQuestionSequence(randomPicks)
+      const stringified = randomPicks.join(',');
+      setQuestions(prev => [...prev, stringified]);
     }
   }
 
@@ -407,7 +411,6 @@ export default function Board({ ...props }) {
       }
     }
   });
-
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -419,6 +422,7 @@ export default function Board({ ...props }) {
           wrong_answers: totalQuestions - successTaps,
           bestForwardDigitSpan: bestForward.details,
           bestBackwardDigitSpan: bestBackward.details,
+          question_sequences: questions,
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
