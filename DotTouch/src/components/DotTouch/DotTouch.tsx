@@ -142,9 +142,14 @@ class DotTouch extends React.Component<any, DotState> {
               routeList = this.updateRouteList();    
             }
           const routes = [];  
-             
+          if(this.state.route.length > 0) {
+            const r = JSON.parse(this.state.route);
+            Object.keys(r).forEach(key => {
+              routes.push(r[key]);
+            });
+         }
           routes.push({
-            duration: new Date().getTime() - this.state.startTime,
+            duration: this.state.gameLevel == 1 ? 0 : new Date().getTime() - this.state.startTime,
             item: i,
             level: this.state.gameLevel,
             type: status,
@@ -212,7 +217,6 @@ class DotTouch extends React.Component<any, DotState> {
       value: null}
     //  const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
      routes.push(route);
-    
      this.setState({ 
        lastClickTime:new Date().getTime(),
        route:JSON.stringify(routes),
@@ -267,7 +271,7 @@ class DotTouch extends React.Component<any, DotState> {
         boxes.push(r[key]);
       });
     }    
-    boxes.push(route);    
+    boxes.push(route); 
     this.setState({
       route: JSON.stringify(boxes),
     }, () => {
@@ -278,7 +282,6 @@ class DotTouch extends React.Component<any, DotState> {
      const percentageCorrectOverall = totalAttempts > 0 
      ? Math.round((this.state.correctTaps / totalAttempts) * 100)
      : 0;
-
      parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.state.startTime,
