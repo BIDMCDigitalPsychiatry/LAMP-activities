@@ -512,7 +512,7 @@ function RadioOption({ onChange, options, value, ...props }) {
           onChange(event.target.value)
         }}
       >
-        {options.map((x) => (
+        {options?.map((x) => (
           <FormControlLabel
             key={x.label}
             value={`${x.value}`}
@@ -986,8 +986,45 @@ function Rating({ onChange, options, value, ...props }) {
 // function SwitchResponse({ onChange, value, ...props }) {
 //   return <Switch {...props} value={value || false} onChange={(event) => onChange(event.target.value)} />
 // }
-const csvParse = (x) => (Array.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
-const csvStringify = (x) => (Array.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
+// const csvParse = (x) => (Array?.isArray(JSON.parse(`[${x}]`)) ? JSON.parse(`[${x}]`) : [])
+// const csvParse = (x) => {
+//   try {
+//     if (Array.isArray(x)) return x; // already an array
+//     if (typeof x === 'string') {
+//       const trimmed = x.trim();
+
+//       // If it looks like a JSON array
+//       if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+//         return JSON.parse(trimmed);
+//       }
+
+//       // Else, treat as comma-separated
+//       return trimmed ? trimmed.split(',').map(s => s.trim()) : [];
+//     }
+//     return [];
+//   } catch (e) {
+//     console.error('csvParse error:', e);
+//     return [];
+//   }
+// };
+const csvParse = (x) => {
+  try {
+    if (Array.isArray(x)) return x;
+    if (typeof x !== 'string') return [];
+    const unescaped = x.replace(/\\"/g, '"');
+    const wrapped = unescaped.trim().startsWith('[') ? unescaped : `[${unescaped}]`;
+    let parsed = JSON.parse(wrapped);
+    parsed = parsed.map((item) =>
+      typeof item === 'string' ? item.replace(/^"+|"+$/g, '') : item
+    );
+
+    return parsed;
+  } catch (e) {
+    console.error('csvParse error:', e);
+    return [];
+  }
+};
+const csvStringify = (x) => (Array?.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
 
 function Matrix({ x, responses, onResponse, activityId, total, index, idx, startTime, setActiveStep, settingsQuestions, handleBack,
   handleNext, onComplete, ...props }) {
@@ -1059,11 +1096,11 @@ function Matrix({ x, responses, onResponse, activityId, total, index, idx, start
                       ))}
                     </TableRow>)}
                 </TableHead>
-                {(x.questions || []).map((question, qindex) => (
+                {(x?.questions || []).map((question, qindex) => (
                   <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
                     <TableCell className={classes.required} style={{ minWidth: "30%", maxWidth: "150px" }}>
                       <ReactMarkdown children={question.required
-                        ? `${t(question.text) + "<span> *</span>"}` : `${t(question.text)}`} allowDangerousHtml={true} plugins={[gfm, emoji]} renderers={{
+                        ? `${t(question?.text) + "<span> *</span>"}` : `${t(question?.text)}`} allowDangerousHtml={true} plugins={[gfm, emoji]} renderers={{
                           link: LinkRenderer, span: (props) => {
                             return <sub>{props?.children}</sub>;
                           }, sup: (props) => {
@@ -1288,26 +1325,40 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
 function Question({ onResponse, text, desc, required, type, options, value, startTime, currentIndex, settings, setSettings, ...props }) {
   const { t } = useTranslation()
   const onChange = (value) => {
-    onResponse({ item: text, value })
+    const cleanedValue = String(value).replace(/^"(.*)"$/, '$1');
+    if (currentIndex === settings.length - 1) {
+      const selectedOption = options?.find(opt => opt.value === cleanedValue);
+      if (selectedOption?.contigencySettings?.enable_contigency) {
+        if (selectedOption.contigencySettings.contigency_type === "activity") {
+          if (typeof window !== "undefined" && window.parent) {
+            window.parent.postMessage(
+              {
+                type: "OPEN_ACTIVITY",
+                activityId: selectedOption.contigencySettings.activity,
+              },
+              "*",
+            );
+          }
+        }
+      }
+    }
+    onResponse({ item: text, value: cleanedValue });
   }
-  const binaryOpts = [
-    { label: t("Yes"), value: "Yes" /* true */ },
-    { label: t("No"), value: "No" /* false */ },
-  ]
-  const ternaryOpts = [
-    { label: t("Yes"), value: "Yes" /* true */ },
-    { label: t("No"), value: "No" /* false */ },
-    { label: t("N/A"), value: null /* null */ },
-  ]
   const classes = useStyles()
   // FIXME: CheckboxResponse, SwitchResponse
   let component = <Box />
-  const likertOpts = [
-    { label: t("Nearly All the Time"), value: 3 },
-    { label: t("More than Half the Time"), value: 2 },
-    { label: t("Several Times"), value: 1 },
-    { label: t("Not at all"), value: 0 },
+  const binaryOpts = options ?? [
+    { description: t("Yes"), value: "Yes" /* true */ },
+    { description: t("No"), value: "No" /* false */ },
   ]
+
+  const likertOpts = options ?? [
+    { description: t("Nearly All the Time"), value: 3 },
+    { description: t("More than Half the Time"), value: 2 },
+    { description: t("Several Times"), value: 1 },
+    { description: t("Not at all"), value: 0 },
+  ]
+
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
 
   switch (type) {
@@ -1414,12 +1465,12 @@ function Questions({
 
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign}>
-          <Question
-            text={x.text}
-            type={x.type}
-            required={x.required}
-            desc={x.description ?? null}
-            options={Array.isArray(x.options) ? x.options?.map((y) => ({ ...y, label: y.value })) : x.options}
+          {x && (<Question
+            text={x?.text}
+            type={x?.type}
+            required={x?.required}
+            desc={x?.description ?? null}
+            options={Array.isArray(x?.options) ? x?.options?.map((y) => ({ ...y, label: y.value })) : x.options}
             value={responses.current[idx] ?? null}
             onResponse={(response) => {
               const data = updateResponses(x, response, activityId, responses, idx, startTime, setActiveStep, totalQuestions)
@@ -1430,6 +1481,7 @@ function Questions({
             settings={settings}
             setSettings={setSettings}
           />
+          )}
           {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settings.length - 1 && (
               <Fab onClick={index === settings.length - 1 ? onComplete : handleNext} className={classes.btngreen}>
@@ -1500,7 +1552,7 @@ function Section({
     let index = 0
       ; (settings || []).map((x, i) => {
         if (i < idx) {
-          if (!!x.questions && x.questions.length > 0) {
+          if (!!x?.questions && x?.questions.length > 0) {
             index = index + x.questions.length
           } else {
             index++
@@ -1509,7 +1561,6 @@ function Section({
       })
     return index
   }
-  // Force creation of result data whether survey was interacted with or not.
   useEffect(() => {
     let index = 0;
     const slideElements = (settings || []).map((x, idx) => {
@@ -1517,7 +1568,7 @@ function Section({
       index = calcIndex(idx)
       return (
         <Box key={idx}>
-          {!!x.questions && x.questions.length > 0 ? (
+          {!!x?.questions && x?.questions.length > 0 ? (
             <Matrix
               x={x}
               idx={index}
@@ -1579,7 +1630,7 @@ function Section({
   }
 
   const handleContingencyQuestion = (selectedOption, actualIndex) => {
-    let settingsCopyy = [...settings]
+    let settingsCopyy = value.settings
     const currentQuestion = settingsCopyy[actualIndex];
     if (currentQuestion?.visited == undefined) {
       settingsCopyy = settingsCopyy.map((question, index) => ({
@@ -1588,12 +1639,17 @@ function Section({
       }));
     }
     if (selectedOption.contigencySettings.contigency_type === "question") {
-      const targetIndex = selectedOption.contigencySettings.question_index;
+      const targetIndex = (selectedOption.contigencySettings.question_index) - 1;
+      if (targetIndex >= settingsCopyy.length) {
+        return settingsCopyy
+      }
       if (targetIndex === index + 1) return settingsCopyy;
       const questionToMove = settingsCopyy[targetIndex];
-      const updatedSettings = settingsCopyy.filter((_, idx) => idx !== targetIndex);
-      updatedSettings.splice(index + 1, 0, questionToMove);
-      return updatedSettings;
+      if (targetIndex < actualIndex) {
+        questionToMove.revisited = true
+      }
+      settingsCopyy.splice(index + 1, 0, questionToMove);
+      return settingsCopyy
     }
     if (selectedOption.contigencySettings.contigency_type === "activity") {
       if (typeof window !== "undefined" && window.parent) {
@@ -1610,6 +1666,7 @@ function Section({
   }
 
   const handleQuestionFlow = (actualIndex, selectedOption) => {
+
     const currentQuestion = settingsCopy[actualIndex];
     if (currentQuestion?.visited == undefined) {
       settingsCopy = settingsCopy.map((question, index) => ({
@@ -1617,12 +1674,16 @@ function Section({
         visited: false
       }));
     }
+
     if (selectedOption?.contigencySettings?.enable_contigency) {
-      contingencyArray = handleContingencyQuestion(selectedOption, actualIndex);
-      if (contingencyArray[actualIndex]?.visited == false) {
-        contingencyArray[actualIndex].visited = true;
+      if (currentQuestion?.revisited == undefined) {
+        contingencyArray = handleContingencyQuestion(selectedOption, actualIndex);
+        if (contingencyArray[actualIndex]?.visited == false) {
+          contingencyArray[actualIndex].visited = true;
+        }
+        setSettings(contingencyArray)
       }
-      setSettings(contingencyArray)
+
     }
     else {
       if (currentQuestion?.visited == true) {
@@ -1639,6 +1700,7 @@ function Section({
   const handleNext = () => {
     const actualIndex = calcIndex(index)
     const currentQuestion = settings[index];
+
     const selectedOption = currentQuestion?.options?.find(opt => opt.value === responses?.current[actualIndex]?.value);
     if (settings[index].subType === "matrix") {
       let i = 0;
@@ -1810,7 +1872,7 @@ export default function SurveyQuestions({ ...props }) {
       }
     });
     return totalScore;
-    }
+  }
 
 
   const postSubmit = (response) => {
@@ -1869,26 +1931,25 @@ export default function SurveyQuestions({ ...props }) {
     }
   }, [activity])
 
-  const binaryOpts = [
-    { description: t("Yes"), value: "Yes" /* true */ },
-    { description: t("No"), value: "No" /* false */ },
-  ]
-
-  const likertOpts = [
-    { description: t("Nearly All the Time"), value: 3 },
-    { description: t("More than Half the Time"), value: 2 },
-    { description: t("Several Times"), value: 1 },
-    { description: t("Not at all"), value: 0 },
-  ]
 
   const setQuestions = () => {
     const settings = []
     const processed = []
+    const binaryOpts =  [
+      { description: t("Yes"), value: "Yes" /* true */ },
+      { description: t("No"), value: "No" /* false */ },
+    ]  
+    const likertOpts =  [
+      { description: t("Nearly All the Time"), value: 3 },
+      { description: t("More than Half the Time"), value: 2 },
+      { description: t("Several Times"), value: 1 },
+      { description: t("Not at all"), value: 0 },
+    ]
       ; (activity.settings || []).map((question, index) => {
         if (!processed.includes(index)) {
           if (activity.settings[index + 1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
             const desc = question?.description ?? ""
-            const options = question?.type === "boolean" ? binaryOpts : question?.type === "likert" ? likertOpts : question?.options ?? []
+            const options = question?.options ?? question?.type === "boolean" ? binaryOpts : question?.type === "likert" ? likertOpts : []
             const questions = []
 
             for (let k = index; k < activity.settings.length; k++) {
