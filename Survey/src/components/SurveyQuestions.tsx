@@ -1347,6 +1347,17 @@ function Question({ onResponse, text, desc, required, type, options, value, star
   const classes = useStyles()
   // FIXME: CheckboxResponse, SwitchResponse
   let component = <Box />
+  const binaryOpts = options ?? [
+    { description: t("Yes"), value: "Yes" /* true */ },
+    { description: t("No"), value: "No" /* false */ },
+  ]
+
+  const likertOpts = options ?? [
+    { description: t("Nearly All the Time"), value: 3 },
+    { description: t("More than Half the Time"), value: 2 },
+    { description: t("Several Times"), value: 1 },
+    { description: t("Not at all"), value: 0 },
+  ]
 
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
 
@@ -1364,7 +1375,7 @@ function Question({ onResponse, text, desc, required, type, options, value, star
     case "boolean":
     case "select":
     case "list":
-      const selectOptions = options
+      const selectOptions = type === "boolean" ? binaryOpts : type === "likert" ? likertOpts : options
       component = <RadioOption options={selectOptions} onChange={onChange} value={!!value ? value.value : undefined} />
       break
     case "short":
@@ -1924,11 +1935,21 @@ export default function SurveyQuestions({ ...props }) {
   const setQuestions = () => {
     const settings = []
     const processed = []
+    const binaryOpts =  [
+      { description: t("Yes"), value: "Yes" /* true */ },
+      { description: t("No"), value: "No" /* false */ },
+    ]  
+    const likertOpts =  [
+      { description: t("Nearly All the Time"), value: 3 },
+      { description: t("More than Half the Time"), value: 2 },
+      { description: t("Several Times"), value: 1 },
+      { description: t("Not at all"), value: 0 },
+    ]
       ; (activity.settings || []).map((question, index) => {
         if (!processed.includes(index)) {
           if (activity.settings[index + 1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
             const desc = question?.description ?? ""
-            const options = question?.options ?? []
+            const options = question?.options ?? question?.type === "boolean" ? binaryOpts : question?.type === "likert" ? likertOpts : []
             const questions = []
 
             for (let k = index; k < activity.settings.length; k++) {

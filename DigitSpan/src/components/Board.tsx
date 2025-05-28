@@ -411,6 +411,7 @@ export default function Board({ ...props }) {
       }
     }
   });
+  
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
@@ -510,7 +511,7 @@ export default function Board({ ...props }) {
               <Grid container alignItems="center">
                 <IconButton
                   onClick={() => {
-                    parent.postMessage(null, "*")
+                    sendGameResult(true)
                   }}
                   color="default"
                   aria-label="Menu"
