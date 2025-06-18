@@ -83,12 +83,13 @@ const GameBoard = ({ ...props }: any) => {
   const clickBack = () => {
     const route = { type: "manual_exit", value: true };
     routes.push(route);
-    console.log("result", {
+    console.log("result", JSON.stringify({
+        timestamp: new Date().getTime(),
         duration: new Date().getTime() - startTime.current,
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
-          learning_trials: numberOfTrials,
           image_set_shown: getMonthIndex(),
+          learning_trials: numberOfTrials,
           delay_time: delayBeforeRecall,
           timeTakenForTrial : isTimestamp(timeTakenForTrial)? 0: timeTakenForTrial,
           timeTakenForRecall : isTimestamp(timeTakenForRecall) ? 0 :timeTakenForRecall ,
@@ -101,8 +102,7 @@ const GameBoard = ({ ...props }: any) => {
           total_number_of_pairings_listed: currentIndex + 1,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
-        timestamp: new Date().getTime(),
-      }) 
+      })) 
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
@@ -325,7 +325,7 @@ const GameBoard = ({ ...props }: any) => {
   };
 
   const sendGameResult = () => { 
-    console.log("result", {
+    console.log("result", JSON.stringify({
         duration: new Date().getTime() - startTime.current,
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
@@ -344,7 +344,7 @@ const GameBoard = ({ ...props }: any) => {
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
-      })     
+      }))     
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime.current,
