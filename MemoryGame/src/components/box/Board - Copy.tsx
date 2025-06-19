@@ -246,6 +246,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       );
     } else {
       const selected = getImages(this.props.seqLength);
+
       this.setState(
         {
           activeCell: -1,
@@ -278,7 +279,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           lastClickTime: null,
           loading:
             this.state.trail > 0 &&
-              this.state.trail <= this.props.encodingTrials
+            this.state.trail <= this.props.encodingTrials
               ? true
               : false,
           orderNumber: -1,
@@ -294,7 +295,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           stateWrongTaps: 0,
           successStages: 0,
           successTaps: 0,
-          playInstructionVideo: false,
+          playInstructionVideo : false,
           supportsSidebar: window.matchMedia("(min-width: 768px)").matches,
           trail:
             typeof type !== "undefined"
@@ -360,7 +361,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       (this.state.boxes === null ||
         (this.state.boxes !== null &&
           JSON.parse(this.state.boxes).length <
-          2 * this.state.randomPoints.length))
+            2 * this.state.randomPoints.length))
     ) {
       this.resetBoxGreyClass();
       if (!!this.state.autoCorrect) {
@@ -405,8 +406,8 @@ class Board extends React.Component<BoardProps, BoardState> {
               enableLocationTap: false,
               enableTap:
                 this.state.boxes === null ||
-                  (this.state.boxes != null &&
-                    JSON.parse(this.state.boxes).length <
+                (this.state.boxes != null &&
+                  JSON.parse(this.state.boxes).length <
                     2 * this.state.randomPoints.length)
                   ? true
                   : false,
@@ -455,7 +456,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       (this.state.boxes === null ||
         (this.state.boxes !== null &&
           JSON.parse(this.state.boxes).length <
-          2 * this.state.randomPoints.length))
+            2 * this.state.randomPoints.length))
     ) {
       if (!!this.state.autoCorrect) {
         clearInterval(this.autoCorrectionTimer);
@@ -476,11 +477,11 @@ class Board extends React.Component<BoardProps, BoardState> {
           ? !success && i.getAttribute("data-key") === index
             ? "box-white inactive error-box"
             : i.getAttribute("data-key") !== index && !!success
-              ? "box-white inactive"
-              : "box-white"
+            ? "box-white inactive"
+            : "box-white"
           : i.getAttribute("data-key") === index
-            ? "box-white"
-            : "box-white inactive";
+          ? "box-white"
+          : "box-white inactive";
       }
       this.setState(
         {
@@ -502,6 +503,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // To track echa tap on box
   updateStateWithTaps = () => {
+    debugger
     if (this.state.completedIndex === this.props.seqLength) {
       const states: any[] = [];
       if (this.state.states !== null) {
@@ -518,10 +520,10 @@ class Board extends React.Component<BoardProps, BoardState> {
           timeTakenForEachTrial:
             this.state.trail <= this.props.encodingTrials
               ? {
-                ...prevState.timeTakenForEachTrial,
-                [this.state.trail]:
-                  new Date().getTime() - this.state.currentTime,
-              }
+                  ...prevState.timeTakenForEachTrial,
+                  [this.state.trail]:
+                    new Date().getTime() - this.state.currentTime,
+                }
               : this.state.timeTakenForEachTrial,
           timeTakenRecall:
             this.state.trail > this.props.encodingTrials
@@ -551,7 +553,6 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Update the state values after each game state
   updateWithTaps = async (index: number, type: number, statusVal: boolean) => {
-
     const boxes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
     let status = true;
@@ -606,65 +607,6 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
   };
 
-
-  createPerRoundStructure = () => {
-    const rawData = JSON.parse(this.state.states);
-    const temporalSlices = rawData.filter((item: { type: string; }) => !(item?.type === "manual_exit"));
-    const transformLevel = (levelData: string | any[]) => {
-      const trials = [];
-      for (let i = 0; i < levelData.length; i += 2) {
-        const selectItem = levelData[i];     // item 1
-        const placeItem = levelData[i + 1];  // item 2
-        if (!selectItem || !placeItem) continue;
-
-        const trial = {
-          time_to_select: selectItem.duration,
-          selection_grid_box_selection: {
-            value: selectItem.value,
-            is_correct: selectItem.type
-          },
-          placement_time: placeItem.duration,
-          placement_location: {
-            value: placeItem.value,
-            is_correct: placeItem.type
-          },
-          total_time_per_trial: selectItem.duration + placeItem.duration
-        };
-
-        trials.push(trial);
-      }
-
-      return trials;
-    };
-
-    // Final structure
-    const transformed = temporalSlices.map(transformLevel)
-
-    return transformed;
-
-  }
-
-  createImagesInSelectionGridStructure = () => {
-    const usedKeys = new Set(this.state.images?.map((img: any) => img.key));
-    const imagesInSelectionGrid = this.state.allImages?.map((img: any, index: number) => ({
-      item_id: img.key,
-      selection_grid_location: index,
-      used: usedKeys.has(img.key)
-    }));
-    return imagesInSelectionGrid;
-  };
-
-  createTargetSequenceStructure = () => {
-    const imgKeys = this.state.images?.map((img: any) => img.key);
-    const target_sequence = {
-      image_id: imgKeys,
-      selection_boxes: this.state.allImages,
-      image_boxes: this.state.images,
-      image_sequence: this.state.imageSelections,
-    }
-    return target_sequence;
-  }
-
   // Call the API to pass game result
   sendGameResult = (status?: boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
@@ -690,32 +632,44 @@ class Board extends React.Component<BoardProps, BoardState> {
           points = points + 1;
         }
 
-        const per_round = this.createPerRoundStructure();
-        const images_in_selection_grid = this.createImagesInSelectionGridStructure();
-        const target_sequence = this.createTargetSequenceStructure();
-        parent.postMessage(
-          JSON.stringify({
-            "timestamp/Date+Time": new Date().getTime(),
-            "duration/total_time_taken": new Date().getTime() - this.props.time,
-            "static_data": Object.assign(this.state.staticData ?? {}, {
-              "target_sequence": target_sequence,
-              "images_in_selection_grid": images_in_selection_grid,
-              "per_round": per_round,
-              "total_learning/encoding_points": this.state.totalLearningScore,
-              "total_recall/recall_points": this.state.totalRecallScore,
-              "time_of_recall_phase": this.state.timeTakenRecall,
-              "total_questions": this.props.seqLength,
-              "point": points,
-              "locations": this.state.randomPoints,
-              "images": this.state.imageSelections,
-              "correct_answers": this.state.stateSuccessTaps,
-              "wrong_answers": this.state.stateWrongTaps,
-              "time_taken_for_each_trial": this.state.timeTakenForEachTrial,
+        console.log("result", {
+            duration: new Date().getTime() - this.props.time,
+            static_data: Object.assign(this.state.staticData ?? {}, {
+              correct_answers: this.state.stateSuccessTaps,
+              images: this.state.imageSelections,
+              locations: this.state.randomPoints,
+              point: points,
+              total_questions: this.props.seqLength,
+              wrong_answers: this.state.stateWrongTaps,
+              total_learning: this.state.totalLearningScore,
+              total_recall: this.state.totalRecallScore,
+              time_taken_for_each_trial: this.state.timeTakenForEachTrial,
+              time_taken_recall: this.state.timeTakenRecall,
             }),
-            "temporal_slices": JSON.parse(this.state.states),
-          }),
-          "*"
-        );
+            temporal_slices: JSON.parse(this.state.states),
+            timestamp: new Date().getTime(),
+          },)
+
+        // parent.postMessage(
+        //   JSON.stringify({
+        //     duration: new Date().getTime() - this.props.time,
+        //     static_data: Object.assign(this.state.staticData ?? {}, {
+        //       correct_answers: this.state.stateSuccessTaps,
+        //       images: this.state.imageSelections,
+        //       locations: this.state.randomPoints,
+        //       point: points,
+        //       total_questions: this.props.seqLength,
+        //       wrong_answers: this.state.stateWrongTaps,
+        //       total_learning: this.state.totalLearningScore,
+        //       total_recall: this.state.totalRecallScore,
+        //       time_taken_for_each_trial: this.state.timeTakenForEachTrial,
+        //       time_taken_recall: this.state.timeTakenRecall,
+        //     }),
+        //     temporal_slices: JSON.parse(this.state.states),
+        //     timestamp: new Date().getTime(),
+        //   }),
+        //   "*"
+        // );
 
         clearInterval(this.timer!);
         clearInterval(this.timerBox!);
@@ -911,10 +865,10 @@ class Board extends React.Component<BoardProps, BoardState> {
                 timeTakenForEachTrial:
                   this.state.trail <= this.props.encodingTrials
                     ? {
-                      ...prevState.timeTakenForEachTrial,
-                      [this.state.trail]:
-                        new Date().getTime() - this.state.currentTime,
-                    }
+                        ...prevState.timeTakenForEachTrial,
+                        [this.state.trail]:
+                          new Date().getTime() - this.state.currentTime,
+                      }
                     : this.state.timeTakenForEachTrial,
                 timeTakenRecall:
                   this.state.trail > 3
@@ -961,13 +915,13 @@ class Board extends React.Component<BoardProps, BoardState> {
               data-key={p}
             >
               {!!this.state.randomPoints &&
-                (this.state.randomPoints || []).includes(p) &&
-                (this.state?.randomPoints || []).indexOf(p) <=
+              (this.state.randomPoints || []).includes(p) &&
+              (this.state?.randomPoints || []).indexOf(p) <=
                 this.state.imageIndex &&
-                this.state.gameSequence === true
+              this.state.gameSequence === true
                 ? this.state?.images[
-                (this.state.randomPoints || []).indexOf(p)
-                ] ?? null
+                    (this.state.randomPoints || []).indexOf(p)
+                  ] ?? null
                 : null}{" "}
             </div>
           );
@@ -1045,8 +999,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       }
       boardResult =
         !this.state.loading &&
-          this.state.imageIndex === this.props.seqLength - 1 &&
-          !this.state.gameSequence ? (
+        this.state.imageIndex === this.props.seqLength - 1 &&
+        !this.state.gameSequence ? (
           <div>
             <table
               className="box-table"
@@ -1061,8 +1015,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         );
       alertText =
         !this.state?.loading &&
-          !this.state.enableTap &&
-          !this.state.enableLocationTap ? (
+        !this.state.enableTap &&
+        !this.state.enableLocationTap ? (
           <div className="box-info">{i18n.t("LEARN_THE_SEQUENCE")}</div>
         ) : (!!this.state.enableTap || !!this.state.enableLocationTap) &&
           this.state.resultClickIndex < this.props.seqLength ? (
@@ -1128,49 +1082,29 @@ class Board extends React.Component<BoardProps, BoardState> {
                 language={i18n.language}
               />
             ) : !!this.state.playInstructionVideo ? (
-              <InstructionVideo
-                handleGameStart={() => this.handleClose(false)}
-                language={i18n.language}
+              <InstructionVideo 
+              handleGameStart={()=>this.handleClose(false)} 
+              language={i18n.language}
               />
             ) : !!this.state.showQuestions ? (
               <Questions
                 language={this.props.language}
                 onStateChange={(data: any) => {
-                  const startDateObj = new Date(data.start_time);
-                  const formattedTime = `${startDateObj.getHours()}:${startDateObj.getMinutes()}`;
-                  const orientation_survey = {
-                    start_time: { value: formattedTime, is_correct: true },
-                    day: { value: data.day, is_correct: true },
-                    today_date: { value: data.today_date, is_correct: true },
-                    month: { value: data.month, is_correct: true },
-                    year: { value: data.year, is_correct: true },
-                    season: { value: data.season, is_correct: true },
-                  };
                   const stateDetails = Object.assign({}, data);
                   stateDetails.start_time =
                     new Date(data.start_time)?.getHours() +
                     ":" +
                     new Date(data.start_time)?.getMinutes();
-                  this.setState({ staticData: orientation_survey });
+                  this.setState({ staticData: stateDetails });
                 }}
                 timeLimit={this.props.retrievalDelay}
                 onSubmit={(data: any) => {
-                  const startDateObj = new Date(data.start_time);
-                  const formattedTime = `${startDateObj.getHours()}:${startDateObj.getMinutes()}`;
-                  const orientation_survey = {
-                    start_time: { value: formattedTime, is_correct: data.isValidStartTime },
-                    day: { value: data.day, is_correct: data.isValidDay },
-                    today_date: { value: data.today_date, is_correct: data.isValidDate },
-                    month: { value: data.month, is_correct: data.isValidMonth },
-                    year: { value: data.year, is_correct: data.isValidYear },
-                    season: { value: data.season, is_correct: data.isValidSeason },
-                  };
                   const stateDetails = Object.assign({}, data);
                   stateDetails.start_time =
                     new Date(data.start_time)?.getHours() +
                     ":" +
                     new Date(data.start_time)?.getMinutes();
-                  this.setState({ loading: true, staticData: { orientation_survey } });
+                  this.setState({ loading: true, staticData: stateDetails });
                   setTimeout(() => {
                     this.resetState();
                   }, 1000);

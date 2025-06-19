@@ -81,6 +81,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
    }
 
    handleAudioStop = (data) => {
+    debugger
      this.setState({ audioDetails: data, disableUploadBtn: false });
   };
 

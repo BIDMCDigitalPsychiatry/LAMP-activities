@@ -274,7 +274,6 @@ export default function Board({ ...props }) {
       setLevel(level + 1)
       const randomPicks: number[] = getRandomNumbers(sequenceCount, 1, 9)
       setQuestionSequence(randomPicks)
-      console.log("random",randomPicks)
       const stringified = randomPicks.join(',');
       setQuestions(prev => [...prev, stringified]);
     }
