@@ -16,9 +16,13 @@ import { renderToString } from "react-dom/server";
 
 import { Backdrop, CircularProgress } from "@material-ui/core";
 
+import "material-icons";
+
 import { getRandomNumbers } from "../../functions";
 
 import i18n from "./../../i18n";
+
+import { Fab, Icon, Tooltip } from "@material-ui/core";
 
 import ErrorBoundary from "../common/ErrorBoundary";
 
@@ -87,6 +91,7 @@ interface BoardState {
   timeTakenRecall: any;
   playAudio: number;
   playInstructionVideo: boolean;
+  isFavoriteActive: boolean;
 }
 
 interface BoardProps {
@@ -100,6 +105,7 @@ interface BoardProps {
   language: string;
   noBack: boolean;
   retrievalDelay: number;
+  is_favorite?: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -165,6 +171,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       currentTime: new Date().getTime(),
       playAudio: -1,
       playInstructionVideo: false,
+      isFavoriteActive: this?.props?.is_favorite ?? false,
     };
   }
 
@@ -713,6 +720,7 @@ class Board extends React.Component<BoardProps, BoardState> {
               "time_taken_for_each_trial": this.state.timeTakenForEachTrial,
             }),
             "temporal_slices": JSON.parse(this.state.states),
+            "is_favorite": this.state.isFavoriteActive,
           }),
           "*"
         );
@@ -1025,7 +1033,11 @@ class Board extends React.Component<BoardProps, BoardState> {
     const styles = { width: `${size}px` };
     return styles;
   };
-
+  handleFavoriteClick = () => {
+    this.setState((prevState) => ({
+      isFavoriteActive: !prevState.isFavoriteActive,
+    }));
+  };
   // Render the game board
   render() {
     let board;
@@ -1111,7 +1123,23 @@ class Board extends React.Component<BoardProps, BoardState> {
         <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
-        <div className="heading">{i18n.t("MEMORY_GAME")}</div>
+        <div className="heading">{i18n.t("MEMORY_GAME")}
+          <Tooltip
+            title={
+              this.state.isFavoriteActive
+                ? "Tap to remove from Favorite Activities"
+                : "Tap to add to Favorite Activities"
+            }
+          >
+            <Fab
+              className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
+                }`}
+              onClick={this.handleFavoriteClick}
+            >
+              <Icon>star_rounded</Icon>
+            </Fab>
+          </Tooltip>
+        </div>
         <div className="game-board">
           <div>
             {!!this.state && !!this.state.error ? (

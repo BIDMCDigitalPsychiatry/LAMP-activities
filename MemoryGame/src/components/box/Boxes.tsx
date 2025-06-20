@@ -43,6 +43,7 @@ class Box extends React.Component<any, AppState> {
             time={this.state.time}
             autoCorrect={this.state.autoCorrect}
             retrievalDelay={this.state.settings?.retrieval_delay ? this.state.settings?.retrieval_delay * 60 : 60}
+            is_favorite={this?.props?.data?.is_favorite ?? false}
           />
           )}
       </div>
