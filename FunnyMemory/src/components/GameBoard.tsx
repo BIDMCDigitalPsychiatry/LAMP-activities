@@ -6,10 +6,12 @@
  * @copyright (c) 2024, ZCO
  */
 import { Backdrop, CircularProgress } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   checkIsStringInArray,
+  getMonthIndex,
   getRandomNumbers,
+  isTimestamp,
   replaceDuplicatesWithEmptyString,
   shuffleArray,
   stringCleanUp,
@@ -37,8 +39,8 @@ const GameBoard = ({ ...props }: any) => {
   const [showQuestions, setShowQuestions] = useState(false);
   const [staticdata, setStaticData] = useState(null);
   const [phase, setPhase] = useState("Trial");
-  const startTime = new Date().getTime();
-  const [timeTaken, setTimeTaken] = useState(startTime);
+    const startTime = React.useRef(new Date().getTime());
+  const [timeTaken, setTimeTaken] = useState(startTime.current);
   const numberOfTrials = props?.numberOfTrials;
   const delayBeforeRecall = props?.delayBeforeRecall;
   const [routes, setRoutes] = useState<any>([]);
@@ -48,6 +50,10 @@ const GameBoard = ({ ...props }: any) => {
   const [itemRecognized, setItemRecognized] = useState(0);
   const [correctChoice, setCorrectChoice] = useState(0);
   const [data, setData] = useState<any>({});
+  const [timeTakenForTrial, setTimeTakenForTrial] = useState(startTime.current)
+  const [timeTakenForRecall, setTimeTakenForRecall] = useState(0)
+  const [timeForRecognition1, setTimeForRecognition1] = useState(0)
+  const timeForRecognition2Ref = useRef(0);
 
   useEffect(() => {
     if (trial === 0) {
@@ -80,17 +86,21 @@ const GameBoard = ({ ...props }: any) => {
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTime.current,
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
+          image_set_shown: getMonthIndex(),
           learning_trials: numberOfTrials,
           delay_time: delayBeforeRecall,
+          timeTakenForTrial : isTimestamp(timeTakenForTrial)? 0: timeTakenForTrial,
+          timeTakenForRecall : isTimestamp(timeTakenForRecall) ? 0 :timeTakenForRecall ,
+          timeForRecognition1 :  isTimestamp(timeForRecognition1) ? 0 : timeForRecognition1,
+          timeForRecognition2 : isTimestamp(timeForRecognition2Ref.current) ? 0 : timeForRecognition2Ref.current,
           number_of_correct_pairs_recalled: pairsIdentified,
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
-          number_of_total_pairs: currentIndex + 1,
-          is_favorite: props?.isFavoriteActive,
+          total_number_of_pairings_listed: currentIndex + 1,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -149,18 +159,18 @@ const GameBoard = ({ ...props }: any) => {
     return arr;
   };
 
-  const saveResult = (recorededText: any[]) => {
+  const saveResult = (recorededText: any[], audio : string) => {    
     let tempRoute: any = [];
     if (recorededText && recorededText.length > 0) {
       recorededText.length = 2;
       const validatedArray = validateStrings(recorededText);
-      validatedArray.map((word) => {
+      validatedArray.map((word, index) => {
         const route = {
           duration: new Date().getTime() - timeTaken,
           item: randomNumberArray.current[currentIndex],
           level: phase,
           type: checkImageIdentified(word),
-          value: word,
+          value: index===recorededText?.length-1 ? audio :  null,
         };
         tempRoute.push(route);
       });
@@ -168,16 +178,16 @@ const GameBoard = ({ ...props }: any) => {
     setRoutes(routes.concat(tempRoute));
   };
 
-  const handleRecall = (textArray: string[][]) => {
+  const handleRecall = (textArray: string[][], audio: string) => {
     let tempRoute: any = [];
     let itemCount = 0;
     let pairCount = 0;
     if (textArray && textArray.length > 0) {
-      textArray.forEach((arr: any[]) => {
+      textArray.forEach((arr: any[], index) => {
         if (arr && arr.length > 0) {
           let firstIndex: number[] = [];
           let secondIndex: number[] = [];
-          replaceDuplicatesWithEmptyString(arr).forEach((str: string) => {
+          replaceDuplicatesWithEmptyString(arr).forEach((str: string, ind) => {
             let imageIdentified = false;
             for (let i = 0; i < identificationList.length; i++) {
               for (let j = 0; j < identificationList[i].length; j++) {
@@ -207,7 +217,7 @@ const GameBoard = ({ ...props }: any) => {
               item: null,
               level: phase,
               type: imageIdentified,
-              value: null,
+              value: index===textArray.length-1 && ind===replaceDuplicatesWithEmptyString(arr).length-1 ? audio : null,
             };
             tempRoute.push(route);
             if (route.type === true) {
@@ -224,6 +234,9 @@ const GameBoard = ({ ...props }: any) => {
       setRoutes(routes.concat(tempRoute));
     }
     setPhase("recognition1");
+    setTimeTaken(new Date().getTime());
+    setTimeTakenForRecall(new Date().getTime()-timeTakenForRecall)
+    setTimeForRecognition1(new Date().getTime())
     setShowAudioRecorder(false);
     setTimeout(() => {
       setCurrentIndex(0);
@@ -231,13 +244,14 @@ const GameBoard = ({ ...props }: any) => {
     }, 1000);
   };
 
-  const handleRecognition1 = (text: string) => {
+  const handleRecognition1 = (text: string, audio:string) => {
+    setTimeTaken(new Date().getTime());
     const route = {
       duration: new Date().getTime() - timeTaken,
       item: randomNumberArray.current[currentIndex],
       level: phase,
       type: checkIsStringInArray(data.missingItem, text) ? true : false,
-      value: null,
+      value: audio,
     };
     if (route.type === true) {
       setItemRecognized(itemRecognized + 1);
@@ -251,13 +265,15 @@ const GameBoard = ({ ...props }: any) => {
       setShowImage(true);
     } else {
       setPhase("recognition2");
+      timeForRecognition2Ref.current = new Date().getTime();
+      setTimeForRecognition1(new Date().getTime()-timeForRecognition1)
       setCurrentIndex(0);
       setTimeTaken(new Date().getTime());
     }
   };
 
-  const handleRecordComplete = (text: any[]) => {
-    saveResult(text);
+  const handleRecordComplete = (text: any[], audio: string) => {
+    saveResult(text, audio);
     setTimeTaken(new Date().getTime());
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -267,6 +283,7 @@ const GameBoard = ({ ...props }: any) => {
     } else {
       setShowAudioRecorder(false);
       if (trial === numberOfTrials && phase.includes("Trial")) {
+        setTimeTakenForTrial(new Date().getTime()-timeTakenForTrial)
         setShowQuestions(true);
         setPhase("questions");
       } else {
@@ -287,20 +304,24 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  const sendGameResult = () => {
+  const sendGameResult = () => {             
     parent.postMessage(
       JSON.stringify({
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTime.current,
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
           learning_trials: numberOfTrials,
+          image_set_shown: getMonthIndex(),
           delay_time: delayBeforeRecall,
+          timeTakenForTrial : timeTakenForTrial,
+          timeTakenForRecall : timeTakenForRecall,
+          timeForRecognition1 :  timeForRecognition1,
+          timeForRecognition2 : timeForRecognition2Ref.current,
           number_of_correct_pairs_recalled: pairsIdentified,
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
-          number_of_total_pairs: currentIndex + 1,
-            is_favorite: props?.isFavoriteActive,
+          total_number_of_pairings_listed: currentIndex + 1,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
@@ -327,8 +348,12 @@ const GameBoard = ({ ...props }: any) => {
       setData({});
       setTimeTaken(new Date().getTime());
     } else {
-      sendGameResult();
-      setTrial(0);
+      const updatedTime = new Date().getTime() - timeForRecognition2Ref.current;
+      timeForRecognition2Ref.current = updatedTime;
+      setTimeout(() => {
+        sendGameResult();
+        setTrial(0);
+      }, 300);
     }
   };
   const renderContent = () => {
@@ -394,7 +419,6 @@ const GameBoard = ({ ...props }: any) => {
       return <></>;
     }
   };
-console.log("  is_favorite: props?.isFavoriteActive,",   props?.isFavoriteActive,)
   const getPhaseTitle = () => {
     if (phase.includes("Trial") && trial > 0) {
       return i18n.t("TRIAL") + " " + trial;
