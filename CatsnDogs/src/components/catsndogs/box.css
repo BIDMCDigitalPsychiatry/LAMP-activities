@@ -175,7 +175,49 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .headerTitleIcon.active .material-icons {
   color: #e3b303 !important;
 }
-
+.first{
+	margin-left: 11%;
+    top: 22%;
+}
+.second{
+	margin-left: 26%;
+    top: 64%;
+}
+.third{
+	margin-left: 51%;
+    top: 77%;
+}
+.fourth{
+	margin-left: 72%;
+    top: 72%;
+}
+.fifth{
+	margin-left: 42%;
+    top: 40%;
+}
+.sixth{
+	margin-left: 59%;
+    top: 15%;
+}
+.seventh{
+	margin-left: 26%;
+    top: 2.5%;
+}
+.eighth{
+	margin-left: 10%;
+    top: 85%;
+}
+.ninth{
+	margin-left: 73%;
+    top: 34%;
+}
+.tenth{
+	margin-left: 77%;
+    top: 3%;
+}
+.mt-30{
+	margin-top: 30px;
+}
 @keyframes slidein {
   0% {
     top: -100%;
