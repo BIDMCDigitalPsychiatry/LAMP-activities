@@ -15,28 +15,28 @@ body {
 nav a {
   color: rgba(53, 159, 254, 1);
   padding: 10px;
-  display: inline-block;  
+  display: inline-block;
 }
 
 .App {
   padding-top: 2em;
-  text-align: center
+  text-align: center;
 }
 
 .App-logo {
   -webkit-animation: App-logo-spin infinite 20s linear;
   animation: App-logo-spin infinite 20s linear;
-  height: 80px
+  height: 80px;
 }
 
 .App-header {
   height: 90px;
   padding: 20px;
-  color: #fff
+  color: #fff;
 }
 
 .App-intro {
-  font-size: large
+  font-size: large;
 }
 
 .heading {
@@ -48,12 +48,11 @@ nav a {
 
 .home-link {
   position: absolute;
-  right: 0;
   right: 15px;
-  top: 15px;
+  top: 20px;
 }
-.home-link svg path{
-  fill:#fff;
+.home-link svg path {
+  fill: #fff;
 }
 
 .game-board {
@@ -64,10 +63,10 @@ nav a {
   position: absolute;
   left: 0;
   left: 15px;
-  top: 15px;
+  top: 20px;
 }
-.back-link svg path{
-  fill:#fff;
+.back-link svg path {
+  fill: #fff;
 }
 
 .btn-primary:hover {
@@ -79,15 +78,17 @@ nav a {
   padding: 0 30px;
   margin: auto;
   color: #fff;
-  font-size: 20px;  
+  font-size: 20px;
 }
-.box-game p, .box-game h6{
+.box-game p,
+.box-game h6 {
   color: #359ffe;
 }
-.box-game p, .box-game h5{
+.box-game p,
+.box-game h5 {
   color: #359ffe;
 }
-.box-game p{
+.box-game p {
   font-weight: 600;
 }
 .imgOption {
@@ -148,7 +149,7 @@ nav a {
   padding-bottom: 10px;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   margin-right: 10px;
   accent-color: black;
 }
@@ -160,8 +161,6 @@ input[type=checkbox] {
 
 .btn-primary:hover {
   background: #007bff !important;
-
-
 }
 
 .btn-outline-secondary {
@@ -174,6 +173,35 @@ input[type=checkbox] {
   margin-top: 10px;
   min-height: 60px;
   color: #359ffe;
+}
+.headerTitleIcon {
+  background: none !important;
+  box-shadow: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  color: #ccc !important;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 8px !important;
+}
+.headerTitleIcon .material-icons {
+  font-size: 2rem;
+  color: #666;
+}
+.headerTitleIcon svg {
+  width: 20px;
+  height: 20px;
+}
+.header-with-icon {
+  display: flex;
+  align-items: center;
+}
+.headerTitleIcon:hover {
+  background: #f4f4f4 !important;
+}
+.headerTitleIcon.active .material-icons {
+  color: #e3b303 !important;
 }
 
 @media only screen and (min-width: 500px) {
@@ -190,45 +218,60 @@ input[type=checkbox] {
     height: 280px !important;
   }
 }
-.memory-outer{
-	background-color: #FFF;
-	padding: 15px 30px 15px 30px;
-	border-radius: 5px;
-	text-align: left;
-	width: 100%;
-	max-width: 650px;
-	margin: 0 auto ;
+.memory-outer {
+  background-color: #fff;
+  padding: 15px 30px 15px 30px;
+  border-radius: 5px;
+  text-align: left;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
 }
-.marginTop10{
-	margin-top: 12px;
+.marginTop10 {
+  margin-top: 12px;
 }
-.react-datepicker__time-list-item{
-	display: flex;
-	align-items: center;
+.react-datepicker__time-list-item {
+  display: flex;
+  align-items: center;
 }
-.question-nav{background-color: #f4f4f4; padding: 15px 20px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between;}
-.question-nav p{color: #333; font-size: 14px; margin-top: 0; font-weight: 600; margin-bottom: 5px;} 
-.react-datepicker__input-container input{
-	border: #ccc solid 1px;
-    padding: 10px;
-    border-radius: 3px;
-	font-size: 14px;
-	min-width: 202px;
+.question-nav {
+  background-color: #f4f4f4;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.react-datepicker__input-container input:focus-visible, .question-nav select{
-	outline: 0;
+.question-nav p {
+  color: #333;
+  font-size: 14px;
+  margin-top: 0;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
-.question-nav select{
-	border: #ccc solid 1px;
-    padding: 10px;
-    border-radius: 3px;
-	min-width: 202px;
-	font-size: 14px;
+.react-datepicker__input-container input {
+  border: #ccc solid 1px;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  min-width: 202px;
 }
-.react-datepicker--time-only .react-datepicker__triangle{
-	left: -40px !important;
+.react-datepicker__input-container input:focus-visible,
+.question-nav select {
+  outline: 0;
 }
-.img-wrap-main{
+.question-nav select {
+  border: #ccc solid 1px;
+  padding: 10px;
+  border-radius: 3px;
+  min-width: 202px;
+  font-size: 14px;
+}
+.react-datepicker--time-only .react-datepicker__triangle {
+  left: -40px !important;
+}
+.img-wrap-main {
   display: flex;
   justify-content: center;
 }
@@ -243,12 +286,12 @@ input[type=checkbox] {
     width: 100%;
     margin-top: 20px;
   }
- }
- 
- #img-wrapper > div {
+}
+
+#img-wrapper > div {
   flex: 0 1 50%;
   padding: 0 15px;
- }
+}
 
 @media only screen and (min-width: 1100px) {
   .modal-content {
@@ -260,40 +303,40 @@ input[type=checkbox] {
     margin-left: 37%;
   }
 }
-.microphone-icon{
+.microphone-icon {
   background-color: #ff0000;
   width: 60px;
   height: 60px;
   padding: 10px;
   border-radius: 50%;
   margin: 50px auto;
-  -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
--moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
+  -webkit-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
+  -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
 }
-.microphone-icon-dissable{
+.microphone-icon-dissable {
   background-color: #999;
 }
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
-.microphone-icon svg{
+.microphone-icon svg {
   width: 80%;
 }
-.microphone-icon svg path{
-  fill:#fff;
+.microphone-icon svg path {
+  fill: #fff;
 }
-.microphone-status{
+.microphone-status {
   font-size: 14px;
   color: #3b3b3b;
 }
-.microphone-wrapper{
+.microphone-wrapper {
   margin-bottom: 50px;
 }
 
-.btn-stop{
+.btn-stop {
   color: #fff;
-  background-color:#359ffe;
+  background-color: #359ffe;
   padding: 10px 25px;
   border: 0;
   border-radius: 25px;
@@ -301,9 +344,9 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   font-weight: 600;
   min-width: 106px;
 }
-.btn-cancel{
+.btn-cancel {
   color: #359ffe;
-  background-color:transparent;
+  background-color: transparent;
   padding: 8px 25px;
   border: #359ffe solid 2px;
   border-radius: 25px;
@@ -311,7 +354,7 @@ box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.54);
   font-weight: 600;
   margin-right: 10px;
 }
-.btn-cancel:hover{
+.btn-cancel:hover {
   border: #359ffe solid 2px;
   background-color: #eee !important;
   color: #359ffe;

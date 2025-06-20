@@ -37,7 +37,7 @@ class Box extends React.Component<any, AppState> {
       <div>
         {this.state && this.state.loaded && (
           
-              <Board reverse={this.state.reverse} noBack={this.state.noBack} language={i18n.language} time={this.state.time} />
+              <Board reverse={this.state.reverse} noBack={this.state.noBack} language={i18n.language} time={this.state.time}         is_favorite={this.props.data.is_favorite}/>
           
         )}
       </div>

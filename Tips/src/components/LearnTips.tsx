@@ -1,5 +1,5 @@
 // Core Imports
-import React from "react"
+import React from "react";
 import { useState, useEffect } from "react";
 import {
   Typography,
@@ -11,6 +11,8 @@ import {
   AppBar,
   Toolbar,
   Icon,
+  Tooltip,
+  Fab,
 } from "@material-ui/core";
 import ResponsiveDialog from "./ResponsiveDialog";
 import TipNotification from "./TipNotification";
@@ -30,6 +32,23 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 345,
     margin: "16px",
     maxLength: 500,
+  },
+  headerTitleIcon: {
+    background: "none",
+    boxShadow: "none",
+    width: 36,
+    height: 36,
+    color: "#666",
+    marginLeft: 8,
+    "& .material-icons": {
+      fontSize: "2rem",
+    },
+    "&:hover": {
+      background: "#fff",
+    },
+    "&.active": {
+      color: "#e3b303",
+    },
   },
   media: {
     height: 200,
@@ -140,7 +159,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   colorLine: { maxWidth: 115 },
-  titleText: {marginTop: "8px"}
+  titleText: { marginTop: "8px" },
 }));
 
 export default function LearnTips({ ...props }) {
@@ -151,11 +170,15 @@ export default function LearnTips({ ...props }) {
   const [images, setImages] = useState(null);
   const [settings, setSettings] = useState([]);
   const [activityData, setActivityData] = useState<any>(null);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
   const { t } = useTranslation();
 
   useEffect(() => {
     const propsData = props.data;
-    const settingsData = propsData.activity?.settings ?? propsData.settings ?? {};
+    const settingsData =
+      propsData.activity?.settings ?? propsData.settings ?? {};
     const configuration = propsData.configuration;
     const langugae = configuration
       ? configuration.hasOwnProperty("language")
@@ -165,80 +188,138 @@ export default function LearnTips({ ...props }) {
     i18n.changeLanguage(langugae);
     setSettings(settingsData);
     setActivityData(propsData.activity ?? {});
+    if (settingsData?.length === 1) {
+      setOpenDialog(true);
+      setTitle(settingsData[0]?.title);
+      setDetails(settingsData[0]?.text);
+      setImages(settings[0]?.image);
+    }
   }, []);
 
-  const completeMarkingTips = (status: string) => {
+  // useEffect(() => {
+  //   if (settings?.length === 1) {
+  //     setOpenDialog(true);
+  //     setTitle(settings[0].title);
+  //     setDetails(settings[0].text);
+  //     setImages(settings[0].image);
+  //   }
+  // }, [settings]);
+
+  const completeMarkingTips = (status: string, isFavoriteActive: boolean) => {
     // eslint-disable-next-line no-restricted-globals
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
         static_data: {
           sentiment: status,
+          is_favorite: isFavoriteActive,
         },
         temporal_slices: [],
       }),
       "*"
-    )    
+    );
+  };
+
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
   };
 
   const backToParentTips = () => {
-    // eslint-disable-next-line no-restricted-globals 
+    // eslint-disable-next-line no-restricted-globals
     /*eslint no-restricted-globals: ["error", "event"]*/
-    parent.postMessage(JSON.stringify({ completed: true }), "*")
+    parent.postMessage(
+      JSON.stringify({
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
+      }),
+      "*"
+    );
   };
 
+  const handleSubTipBack = () => {
+    if (settings?.length === 1) {
+      backToParentTips();
+    } else {
+      setOpenDialog(false);
+    }
+  };
   return (
     <Container>
       <Box pb={4}>
-        <Grid container spacing={4}>
-          <Grid item xs  className={classes.rightArrow}>
-          <IconButton aria-label="Back" onClick={() => backToParentTips()}>
-              <Icon>arrow_back</Icon>
-            </IconButton>
-          </Grid>
-          <Grid item xs>
-            <Typography variant="h6" className={classes.titleText}>{activityData ? t(activityData.name) : ""}</Typography>
-          </Grid>
-        </Grid>
-
-        <Grid container direction="row" alignItems="stretch">
-          {settings.length > 0
-            ? settings.map((detail: any, index: any) => (
-                <Grid
-                  key={index}
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="center"
+        {settings?.length !== 1 && (
+          <>
+            <Grid container spacing={4}>
+              <Grid item xs className={classes.rightArrow}>
+                <IconButton
+                  aria-label="Back"
+                  onClick={() => backToParentTips()}
                 >
-                  <Grid item lg={6} sm={12} xs={12}>
-                    <Box
-                      className={classes.tipStyle}
-                      onClick={() => {
-                        setOpenDialog(true);
-                        setTitle(detail.title);
-                        setDetails(detail.text);
-                        setImages(detail.image);
-                      }}
+                  <Icon>arrow_back</Icon>
+                </IconButton>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="h6" className={classes.titleText}>
+                  {activityData ? t(activityData.name) : ""}
+                  <Tooltip
+                    title={
+                      isFavoriteActive
+                        ? "Tap to remove from Favorite Activities"
+                        : "Tap to add to Favorite Activities"
+                    }
+                  >
+                    <Fab
+                      className={`${classes.headerTitleIcon} ${
+                        isFavoriteActive ? "active" : ""
+                      }`}
+                      onClick={handleFavoriteClick}
                     >
-                      <div>
-                        <Grid container spacing={3}>
-                          <Grid item xs lg>
-                            <Typography variant="h6">
-                              {t(detail.title)}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs lg className={classes.rightArrow}>
-                            <Icon>chevron_right</Icon>
-                          </Grid>
-                        </Grid>
-                      </div>
-                    </Box>
-                  </Grid>
-                </Grid>
-              ))
-            : ""}
-        </Grid>
+                      <Icon>star_rounded</Icon>
+                    </Fab>
+                  </Tooltip>
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container direction="row" alignItems="stretch">
+              {settings?.length > 0
+                ? settings.map((detail: any, index: any) => (
+                    <Grid
+                      key={index}
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                    >
+                      <Grid item lg={6} sm={12} xs={12}>
+                        <Box
+                          className={classes.tipStyle}
+                          onClick={() => {
+                            setOpenDialog(true);
+                            setTitle(detail.title);
+                            setDetails(detail.text);
+                            setImages(detail.image);
+                            // setIsFavoriteActive(detail.is_favorite);
+                          }}
+                        >
+                          <div>
+                            <Grid container spacing={3}>
+                              <Grid item xs lg>
+                                <Typography variant="h6">
+                                  {t(detail.title)}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs lg className={classes.rightArrow}>
+                                <Icon>chevron_right</Icon>
+                              </Grid>
+                            </Grid>
+                          </div>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  ))
+                : ""}
+            </Grid>
+          </>
+        )}
       </Box>
       <ResponsiveDialog
         transient={false}
@@ -255,7 +336,7 @@ export default function LearnTips({ ...props }) {
         >
           <Toolbar className={classes.toolbardashboard}>
             <IconButton
-              onClick={() => setOpenDialog(false)}
+              onClick={() => handleSubTipBack()}
               color="default"
               aria-label="Menu"
             >
@@ -268,10 +349,13 @@ export default function LearnTips({ ...props }) {
           details={details}
           icon={!!activityData ? activityData.icon : null}
           images={images}
-          onComplete={(status: string) => {
+          isFavoriteActive={isFavoriteActive}
+          onComplete={(status: string, isFavoriteActive: boolean) => {
             setOpenDialog(false);
-            completeMarkingTips(status);
+            completeMarkingTips(status, isFavoriteActive);
           }}
+          setIsFavoriteActive={setIsFavoriteActive}
+          hideFavorite={settings.length === 1 ? true : false}
         />
       </ResponsiveDialog>
     </Container>

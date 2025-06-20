@@ -7,6 +7,7 @@ import i18n from "../i18n";
 import ModalPopup from './uielements/ModalPopup';
 import { GameComponent } from "./GameComponent";
 
+
 const Layout = ({...props} : any) =>{
     
     const [circles, setCircles] = useState(2)

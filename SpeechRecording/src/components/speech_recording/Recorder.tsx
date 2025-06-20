@@ -5,12 +5,12 @@ import Stop from "./images/stop";
 import Close from "./images/close";
 // import microphone from './images/microphone.png';
 import Microphone from "./images/microphone";
-import './SpeechRecordingStyle.css';
-import Alert from '@material-ui/lab/Alert';
+import "./SpeechRecordingStyle.css";
+import Alert from "@material-ui/lab/Alert";
 import i18n from "./../../i18n";
-import ReactMarkdown from "react-markdown"
-import emoji from "remark-emoji"
-import gfm from "remark-gfm"
+import ReactMarkdown from "react-markdown";
+import emoji from "remark-emoji";
+import gfm from "remark-gfm";
 import { Col, Container, Row } from "react-bootstrap";
 
 const audioType = "audio/*";
@@ -44,12 +44,12 @@ interface AppState {
 interface AppProps {
   mimeTypeToUseWhenRecording: any;
   handleReset(): void;
-  handleAudioStop(arg:any): void;
+  handleAudioStop(arg: any): void;
   showUIAudio: Boolean;
   title: string;
   audioURL: string | null;
   hideHeader: Boolean;
-  handleAudioUpload( audioBlob: any, qn_duration: number, question: any): void;
+  handleAudioUpload(audioBlob: any, qn_duration: number, question: any): void;
   handleSubmit(recordedData: any): void;
   uploadButtonDisabled: any;
   clickUpload: Boolean;
@@ -58,7 +58,6 @@ interface AppProps {
   settings: any;
   questions: any[];
   data: any;
-
 }
 
 class Recorder extends Component<AppProps, AppState> {
@@ -106,9 +105,12 @@ class Recorder extends Component<AppProps, AppState> {
     this.setState({ pauseRecord: false });
   }
 
-  
-  LinkRenderer(data:any) {
-    return <a href={data.href} target="_blank">{data.children}</a>
+  LinkRenderer(data: any) {
+    return (
+      <a href={data.href} target="_blank">
+        {data.children}
+      </a>
+    );
   }
 
   startTimer = () => {
@@ -117,16 +119,17 @@ class Recorder extends Component<AppProps, AppState> {
       seconds: 0,
     });
     this.timer = setInterval(this.countDown, 1000);
-  }
+  };
 
   resumeTimer = () => {
     this.timer = setInterval(this.countDown, 1000);
-  }
+  };
 
   countDown() {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds + 1;
-    if (seconds > Number(maximumRecordTime)) { // Time limit  to stop the recording
+    if (seconds > Number(maximumRecordTime)) {
+      // Time limit  to stop the recording
       this.reachedRecordLimit();
     } else {
       this.setState({
@@ -154,7 +157,7 @@ class Recorder extends Component<AppProps, AppState> {
   }
   getRootWindow(window) {
     if (window.parent === window) {
-        return window;
+      return window;
     }
 
     return this.getRootWindow(window.parent);
@@ -162,12 +165,16 @@ class Recorder extends Component<AppProps, AppState> {
 
   async componentDidMount() {
     if (this.getRootWindow(window).navigator.mediaDevices) {
-      const stream = await this.getRootWindow(window).navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      const stream = await this.getRootWindow(
+        window
+      ).navigator.mediaDevices.getUserMedia({ audio: true, video: false });
 
-      if(this.props.mimeTypeToUseWhenRecording) {
-        this.mediaRecorder = new MediaRecorder(stream, { mimeType: this.props.mimeTypeToUseWhenRecording });
+      if (this.props.mimeTypeToUseWhenRecording) {
+        this.mediaRecorder = new MediaRecorder(stream, {
+          mimeType: this.props.mimeTypeToUseWhenRecording,
+        });
       } else {
-        this.mediaRecorder = new MediaRecorder(stream); 
+        this.mediaRecorder = new MediaRecorder(stream);
       }
       this.chunks = [];
       this.mediaRecorder.ondataavailable = (e) => {
@@ -181,8 +188,8 @@ class Recorder extends Component<AppProps, AppState> {
     }
   }
 
-  async componentDidUpdate(prevProps, prevState){
-    if(prevState.clickUpload){
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.clickUpload) {
       await this.setState({
         time: {},
         seconds: 0,
@@ -191,8 +198,8 @@ class Recorder extends Component<AppProps, AppState> {
         qn_duration: 0,
       });
     }
-    
-    if(prevState.clickStop && prevState.pauseRecord){
+
+    if (prevState.clickStop && prevState.pauseRecord) {
       await this.setState({
         time: {},
         seconds: 0,
@@ -202,7 +209,7 @@ class Recorder extends Component<AppProps, AppState> {
       });
     }
 
-    if(prevState.clickPause){
+    if (prevState.clickPause) {
       await this.setState({
         time: {},
         seconds: 0,
@@ -214,7 +221,7 @@ class Recorder extends Component<AppProps, AppState> {
   }
 
   startRecording(e) {
-    this.setState({ maxRecordLimit: false,  });
+    this.setState({ maxRecordLimit: false });
     e.preventDefault();
     // wipe old data chunks
     this.chunks = [];
@@ -236,16 +243,16 @@ class Recorder extends Component<AppProps, AppState> {
     // save the video to memory
     this.saveAudio();
   }
-  
+
   reachedRecordLimit() {
     // stop the recorder
     this.mediaRecorder.stop();
     // say that we're not recording
-    this.setState({ 
-      recording: false, 
-      pauseRecord: false, 
-      maxRecordLimit: true,  
-      clickStop: false, 
+    this.setState({
+      recording: false,
+      pauseRecord: false,
+      maxRecordLimit: true,
+      clickStop: false,
       startTime: new Date().getTime(),
     });
     // save the video to memory
@@ -301,20 +308,28 @@ class Recorder extends Component<AppProps, AppState> {
   }
 
   handleNext = () => {
-    if (this.state.index < this.props.data?.activity?.settings?.length - 1) { 
-       const currentTime = new Date().getTime();
-       const duration_time = currentTime - this.state.startTime;
-       this.setState({ qn_duration: duration_time, index: this.state.index + 1, startTime: currentTime })
-      }
+    if (this.state.index < this.props.data?.activity?.settings?.length - 1) {
+      const currentTime = new Date().getTime();
+      const duration_time = currentTime - this.state.startTime;
+      this.setState({
+        qn_duration: duration_time,
+        index: this.state.index + 1,
+        startTime: currentTime,
+      });
+    }
   };
 
   handlePrevious = () => {
     if (this.state.index > 0) {
       const currentTime = new Date().getTime();
       const duration_time = currentTime - this.state.startTime;
-      this.setState({ qn_duration: duration_time, index: this.state.index - 1, startTime: currentTime })
+      this.setState({
+        qn_duration: duration_time,
+        index: this.state.index - 1,
+        startTime: currentTime,
+      });
     }
-  }
+  };
 
   render() {
     const { recording, audios, time, medianotFound, pauseRecord } = this.state;
@@ -330,50 +345,66 @@ class Recorder extends Component<AppProps, AppState> {
           <Alert severity="info" className="mT25 information">
             {i18n.t("INFO_MAX_RECORD_TIME_REACHED")}
           </Alert>
-        )}  
+        )}
 
         <div className="question-section">
-          <Container> 
+          <Container>
             <Row>
-              <Col> {this.props.data.activity?.settings[this.state.index]?.question ? (
-                <p className="index">{this.state.index + 1} {i18n.t("Of")} {this.props.data.activity?.settings?.length}</p>  
-              ): <p className="index">No question available</p>}            
+              <Col>
+                {" "}
+                {this.props.data.activity?.settings[this.state.index]
+                  ?.question ? (
+                  <p className="index">
+                    {this.state.index + 1} {i18n.t("Of")}{" "}
+                    {this.props.data.activity?.settings?.length}
+                  </p>
+                ) : (
+                  <p className="index">No question available</p>
+                )}
               </Col>
-            </Row>          
+            </Row>
             <Row className="question">
-              <Col>                            
-                <h4>{this.props.data.activity?.settings[this.state.index]?.question}</h4>
+              <Col>
+                <h4>
+                  {
+                    this.props.data.activity?.settings[this.state.index]
+                      ?.question
+                  }
+                </h4>
               </Col>
-            </Row> 
+            </Row>
           </Container>
-      
-          {!recording && !this.state.clickStop && !this.state.maxRecordLimit? (
+
+          {!recording && !this.state.clickStop && !this.state.maxRecordLimit ? (
             <div className="navigation-buttons">
-              {this.state.index > 0 &&  (
+              {this.state.index > 0 && (
                 <button onClick={this.handlePrevious} className="nav-button">
-                  {i18n.t("PREV_BTN")} 
+                  {i18n.t("PREV_BTN")}
                 </button>
               )}
-              {this.state.index < this.props.data.activity?.settings?.length - 1  ? (
+              {this.state.index <
+              this.props.data.activity?.settings?.length - 1 ? (
                 <button onClick={this.handleNext} className="nav-button">
                   {i18n.t("NEXT_BTN")}
                 </button>
-              ) : null
-              }
+              ) : null}
             </div>
-            ): <div className="navigation-buttons-disabled">
-                {this.state.index < this.props.data.activity?.settings?.length - 1 && (
-                  <button className="nav-button-disabled">
-                    {i18n.t("PREV_BTN")} 
-                  </button>
-                )}
-                {this.state.index < this.props.data.activity?.settings?.length - 1  ? (
-                  <button className="nav-button-disabled">
-                    {i18n.t("NEXT_BTN")}
-                  </button>
-                ) : null}
+          ) : (
+            <div className="navigation-buttons-disabled">
+              {this.state.index <
+                this.props.data.activity?.settings?.length - 1 && (
+                <button className="nav-button-disabled">
+                  {i18n.t("PREV_BTN")}
+                </button>
+              )}
+              {this.state.index <
+              this.props.data.activity?.settings?.length - 1 ? (
+                <button className="nav-button-disabled">
+                  {i18n.t("NEXT_BTN")}
+                </button>
+              ) : null}
             </div>
-          }
+          )}
         </div>
         <div className="recorder_box">
           <div className="recorder_box_inner">
@@ -393,10 +424,9 @@ class Recorder extends Component<AppProps, AppState> {
                 </span>
               </div>
             ) : null}
-            
+
             {!medianotFound ? (
               <div className="record_section">
-                
                 <div className="duration_section">
                   <div className="audio_section">
                     {audioURL !== null && showUIAudio ? (
@@ -421,16 +451,31 @@ class Recorder extends Component<AppProps, AppState> {
                   </div>
                   {!recording && !this.state.clickStop ? (
                     <p className="help tACenter">
-                      <ReactMarkdown  remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: this.LinkRenderer}} >{this.props?.settings?.record_label ?? i18n.t("PRESS_MICROPHONE_TO_RECORD")}</ReactMarkdown> 
+                      <ReactMarkdown
+                        remarkPlugins={[gfm, emoji]}
+                        skipHtml={false}
+                        components={{ link: this.LinkRenderer }}
+                      >
+                        {this.props?.settings?.record_label ??
+                          i18n.t("PRESS_MICROPHONE_TO_RECORD")}
+                      </ReactMarkdown>
                     </p>
-                  ) : 
-                  (this.state.clickStop ? (
+                  ) : this.state.clickStop ? (
                     <p className="help tACenter">
-                        <ReactMarkdown  remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: this.LinkRenderer}} >{this.props?.settings?.record_label ?? i18n.t("CLICK_TO_CLEAR_MSG")}</ReactMarkdown>                     </p>
-                  ) :
-                  null)}
+                      <ReactMarkdown
+                        remarkPlugins={[gfm, emoji]}
+                        skipHtml={false}
+                        components={{ link: this.LinkRenderer }}
+                      >
+                        {this.props?.settings?.record_label ??
+                          i18n.t("CLICK_TO_CLEAR_MSG")}
+                      </ReactMarkdown>{" "}
+                    </p>
+                  ) : null}
                 </div>
-                {!recording && !this.state.clickStop && !this.state.maxRecordLimit? (                  
+                {!recording &&
+                !this.state.clickStop &&
+                !this.state.maxRecordLimit ? (
                   <a
                     onClick={(e) => this.startRecording(e)}
                     href=" #"
@@ -452,56 +497,62 @@ class Recorder extends Component<AppProps, AppState> {
                       </svg>
                     </span>
                   </a>
-                ) : (                    
-                   this.state.clickStop || this.state.maxRecordLimit  ? (
-                    <div className="record_controller">
-                  <a className="mic_icon_disabled">
-                    <Microphone />
-                    {/* <img src={microphone} width={30} height={30} alt="Microphone icons" /> */}
+                ) : this.state.clickStop || this.state.maxRecordLimit ? (
+                  <div className="record_controller">
+                    <a className="mic_icon_disabled">
+                      <Microphone />
+                      {/* <img src={microphone} width={30} height={30} alt="Microphone icons" /> */}
                     </a>
                   </div>
-                  ) : (
-                    <div className="record_controller">
-                      <a
-                        onClick={(e) => this.stopRecording(e)}
-                        href=" #"
-                        className="icons stop"
-                      >
-                        {
-                          <Stop />
-                          // <img
-                          //   src={stopIcon}
-                          //   width={20}
-                          //   height={20}
-                          //   alt="Stop icons"
-                          // />
-                        }
-                      </a>
-                      <a
-                        onClick={
-                          !pauseRecord
-                            ? (e) => this.handleAudioPause(e)
-                            : (e) => this.handleAudioStart(e)
-                        }
-                        href=" #"
-                        className="icons pause"
-                      >
-                        {pauseRecord ? (
-                          <span className="play_icons"></span>
-                        ) : (
-                          <span className="pause_icons"></span>
-                        )}
-                      </a>
-                    </div>
-                    ) 
+                ) : (
+                  <div className="record_controller">
+                    <a
+                      onClick={(e) => this.stopRecording(e)}
+                      href=" #"
+                      className="icons stop"
+                    >
+                      {
+                        <Stop />
+                        // <img
+                        //   src={stopIcon}
+                        //   width={20}
+                        //   height={20}
+                        //   alt="Stop icons"
+                        // />
+                      }
+                    </a>
+                    <a
+                      onClick={
+                        !pauseRecord
+                          ? (e) => this.handleAudioPause(e)
+                          : (e) => this.handleAudioStart(e)
+                      }
+                      href=" #"
+                      className="icons pause"
+                    >
+                      {pauseRecord ? (
+                        <span className="play_icons"></span>
+                      ) : (
+                        <span className="pause_icons"></span>
+                      )}
+                    </a>
+                  </div>
                 )}
                 <div className="btn_wrapper">
                   <button
                     onClick={() => {
-                        this.setState({clickUpload: true, clickStop: false, maxRecordLimit: false, submitEnabled: true})  
-                        this.props.handleAudioUpload( this.state.audioBlob, this.state.qn_duration, this.props.data.activity?.settings[this.state.index])
-                      }
-                    }
+                      this.setState({
+                        clickUpload: true,
+                        clickStop: false,
+                        maxRecordLimit: false,
+                        submitEnabled: true,
+                      });
+                      this.props.handleAudioUpload(
+                        this.state.audioBlob,
+                        this.state.qn_duration,
+                        this.props.data.activity?.settings[this.state.index]
+                      );
+                    }}
                     disabled={this.props.uploadButtonDisabled}
                     className="btn upload_btn"
                   >
@@ -510,20 +561,22 @@ class Recorder extends Component<AppProps, AppState> {
                   <button
                     onClick={(e) => this.handleReset(e)}
                     className="btn clear_btn"
-                    disabled={this.props.audioURL===null&&!pauseRecord}
+                    disabled={this.props.audioURL === null && !pauseRecord}
                   >
                     {i18n.t("CLEAR_BTN")}
-                  </button><br></br>
-                  {this.state.index+1 === this.props.questions?.length ?(
-                  <button
-                    onClick={() => this.props.handleSubmit(this.state.recordedData)}
-                    className="btn submit_btn"
-                    disabled={!this.state.submitEnabled} 
-                  >
-                    {i18n.t("SUBMIT_BTN")}
                   </button>
-                  ): null
-                }
+                  <br></br>
+                  {this.state.index + 1 === this.props.questions?.length ? (
+                    <button
+                      onClick={() =>
+                        this.props.handleSubmit(this.state.recordedData)
+                      }
+                      className="btn submit_btn"
+                      disabled={!this.state.submitEnabled}
+                    >
+                      {i18n.t("SUBMIT_BTN")}
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ) : (

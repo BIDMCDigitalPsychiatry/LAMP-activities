@@ -12,7 +12,7 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import VoiceRecording from './components/voice_recording/VoiceRecording';
 import './index.css';
-
+import "material-icons"
 const eventMethod: any = window.addEventListener !== undefined ? "addEventListener" : "attachEvent";
 const eventer: any = window[eventMethod];
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";

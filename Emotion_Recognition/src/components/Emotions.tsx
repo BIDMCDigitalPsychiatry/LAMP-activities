@@ -17,7 +17,7 @@ const Emotions = ({...props} : any) => {
     const newArray = props.emotions.map ((em: any)=>{
         return {
         ...em,
-        "selected" : (em.emotion.toLowerCase() === data?.selected?.toLowerCase()) ? true : false
+        "selected" : (em?.emotion?.toLowerCase() === data?.selected?.toLowerCase()) ? true : false
       }
     })
     setEmotions(newArray)

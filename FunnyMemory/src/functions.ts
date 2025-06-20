@@ -54,6 +54,22 @@ export const getMonthIndex = () =>{
   }
 }
 
+export function isTimestamp(value: string | number | Date): boolean {
+  const timestamp = typeof value === 'number' || typeof value === 'string'
+    ? Number(value)
+    : value instanceof Date
+    ? value.getTime()
+    : NaN;
+
+  if (isNaN(timestamp)) return false;
+
+  // Timestamp boundaries (in milliseconds)
+  const minValidDate = new Date('2000-01-01').getTime();
+  const maxValidDate = new Date('2100-01-01').getTime();
+
+  return timestamp >= minValidDate && timestamp <= maxValidDate;
+}
+
 
 
 

@@ -1,5 +1,5 @@
 ﻿// Core Imports
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   makeStyles,
@@ -16,15 +16,16 @@ import {
   Fab,
   Backdrop,
   CircularProgress,
-  Icon
-} from "@material-ui/core"
-import classnames from "classnames"
-import { useTranslation } from "react-i18next"
-import i18n from "../i18n"
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
-import CloseIcon from '@material-ui/icons/Close';
-import ConfirmationDialog from "./ConfirmationDialog"
+  Icon,
+  Tooltip,
+} from "@material-ui/core";
+import classnames from "classnames";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
+import CloseIcon from "@material-ui/icons/Close";
+import ConfirmationDialog from "./ConfirmationDialog";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -50,7 +51,12 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 20px 35px 20px",
     textAlign: "center",
     "& h4": { fontSize: 25, fontWeight: 600, marginBottom: 15 },
-    "& p": { fontSize: 16, fontWeight: 300, color: "rgba(0, 0, 0, 0.75)", lineHeight: "19px" },
+    "& p": {
+      fontSize: 16,
+      fontWeight: 300,
+      color: "rgba(0, 0, 0, 0.75)",
+      lineHeight: "19px",
+    },
   },
   dialogueStyle: {
     display: "flex",
@@ -81,9 +87,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "200px",
     boxShadow: " 0px 10px 15px rgba(255, 172, 152, 0.25)",
     lineHeight: "22px",
-    display: "inline-block",    
+    display: "inline-block",
     cursor: "pointer",
-    "& h6":{
+    "& h6": {
       textTransform: "capitalize",
       fontSize: "16px",
       color: "rgba(0, 0, 0, 0.75)",
@@ -108,114 +114,227 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   todaydate: { paddingLeft: 13, color: "rgba(0, 0, 0, 0.4)" },
-  linkpeach: { fontSize: 16, color: "#BC453D", fontWeight: 600, cursor: "pointer" },
-  howFeel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", fontStyle: "italic", textAlign: "center", marginBottom: 10 },
+  linkpeach: {
+    fontSize: 16,
+    color: "#BC453D",
+    fontWeight: 600,
+    cursor: "pointer",
+  },
+  howFeel: {
+    fontSize: 14,
+    color: "rgba(0, 0, 0, 0.5)",
+    fontStyle: "italic",
+    textAlign: "center",
+    marginBottom: 10,
+  },
   btnNav: { marginBottom: 0 },
   dialogueCurve: { borderRadius: 10, maxWidth: 400 },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
-}))
+  headerTitleIcon: {
+    background: "none",
+    boxShadow: "none",
+    width: 36,
+    height: 36,
+    color: "#666",
+    marginLeft: 8,
+    "& .material-icons": {
+      fontSize: "2rem",
+    },
+    "&:hover": {
+      background: "#fff",
+    },
+    "&.active": {
+      color: "#e3b303",
+    },
+  },
+}));
 export default function JournalEntries({ ...props }) {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
-  const [journalValue, setJounalValue] = useState("")
-  const [status, setStatus] = useState("good")
-  const [loading, setLoading] = useState(false)
-  const [time, setTime] = useState(new Date().getTime())
-  const [noBack, setNoBack] = useState(false)
-  const [id, setId] = useState(null)
-  const [confirm, setConfirm] = useState(false)
-  const { t } = useTranslation()
-  const CHARACTER_LIMIT = 800
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [journalValue, setJounalValue] = useState("");
+  const [status, setStatus] = useState("good");
+  const [loading, setLoading] = useState(false);
+  const [time, setTime] = useState(new Date().getTime());
+  const [noBack, setNoBack] = useState(false);
+  const [id, setId] = useState(null);
+  const [confirm, setConfirm] = useState(false);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
+
+  const { t } = useTranslation();
+  const CHARACTER_LIMIT = 800;
   const handleClickStatus = (statusVal: string) => {
-    setStatus(statusVal)
-  }
-  
+    setStatus(statusVal);
+  };
+
   useEffect(() => {
-        if(typeof localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) !== 'undefined' &&
-        (localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0) {
-          setLoading(true)
-          setConfirm(true)
-        } else { 
-          setId(props.data?.activity?.id)
-        }
-        const configuration = props.data?.configuration ?? null
-        const langugae = !!configuration
-          ? configuration.hasOwnProperty("language")
-            ? configuration.language
-            : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)
-        setNoBack(props?.data?.noBack)
-        setTime(new Date().getTime())
-  }, [])
+    if (
+      typeof localStorage.getItem(
+        "activity-journal-" + (props.data?.activity?.id ?? "")
+      ) !== "undefined" &&
+      (localStorage
+        .getItem("activity-journal-" + (props.data?.activity?.id ?? ""))
+        ?.trim()?.length ?? 0) > 0
+    ) {
+      setLoading(true);
+      setConfirm(true);
+    } else {
+      setId(props.data?.activity?.id);
+    }
+    const configuration = props.data?.configuration ?? null;
+    const langugae = !!configuration
+      ? configuration.hasOwnProperty("language")
+        ? configuration.language
+        : "en-US"
+      : "en-US";
+    i18n.changeLanguage(langugae);
+    setNoBack(props?.data?.noBack);
+    setTime(new Date().getTime());
+  }, []);
 
   const saveJournal = (completed?: boolean) => {
-    setLoading(true)
-    !!completed ? 
-    parent.postMessage(
-      JSON.stringify({
-        timestamp: time,
-        duration: new Date().getTime() - time,
-        static_data: {
-          text: journalValue,
-          sentiment: status,
-        },
-        temporal_slices: [],
-      }),
-      "*"
-    )
-    : parent.postMessage(null, "*")
-    setLoading(false)
-  }
+    setLoading(true);
+    !!completed
+      ? parent.postMessage(
+          JSON.stringify({
+            timestamp: time,
+            duration: new Date().getTime() - time,
+            static_data: {
+              text: journalValue,
+              sentiment: status,
+              is_favorite: isFavoriteActive,
+            },
+            temporal_slices: [],
+          }),
+          "*"
+        )
+      : parent.postMessage(
+          JSON.stringify({
+            static_data: {
+              is_favorite: isFavoriteActive,
+            },
+          }),
+          "*"
+        );
+    setLoading(false);
+  };
 
   const getDateString = (date: Date) => {
-    const weekday = [t("Sunday"), t("Monday"), t("Tuesday"), t("Wednesday"), t("Thursday"), t("Friday"), t("Saturday")]
-    const monthname = [t("Jan"), t("Feb"), t("Mar"), t("Apr"), t("May"), t("Jun"), t("Jul"), 
-    t("Aug"), t("Sep"), t("Oct"), t("Nov"), t("Dec")]
-    return weekday[date.getDay()] + " " + monthname[date.getMonth()] + ", " + date.getDate()
-  }
+    const weekday = [
+      t("Sunday"),
+      t("Monday"),
+      t("Tuesday"),
+      t("Wednesday"),
+      t("Thursday"),
+      t("Friday"),
+      t("Saturday"),
+    ];
+    const monthname = [
+      t("Jan"),
+      t("Feb"),
+      t("Mar"),
+      t("Apr"),
+      t("May"),
+      t("Jun"),
+      t("Jul"),
+      t("Aug"),
+      t("Sep"),
+      t("Oct"),
+      t("Nov"),
+      t("Dec"),
+    ];
+    return (
+      weekday[date.getDay()] +
+      " " +
+      monthname[date.getMonth()] +
+      ", " +
+      date.getDate()
+    );
+  };
 
   useEffect(() => {
-    if(!!id) { 
-      localStorage.setItem('activity-journal-'+(id ?? ""), journalValue)
+    if (!!id) {
+      localStorage.setItem("activity-journal-" + (id ?? ""), journalValue);
     }
-  }, [journalValue])
+  }, [journalValue]);
 
   const loadData = (statusVal: boolean) => {
-    if(!!statusVal) { 
-      setId(props.data?.activity?.id)
-      const val = localStorage.getItem('activity-journal-'+(props.data?.activity?.id ?? "")) ?? ""
-      setJounalValue(val)
+    if (!!statusVal) {
+      setId(props.data?.activity?.id);
+      const val =
+        localStorage.getItem(
+          "activity-journal-" + (props.data?.activity?.id ?? "")
+        ) ?? "";
+      setJounalValue(val);
     } else {
-      localStorage.setItem('activity-journal-'+(id ?? ""), "")
+      localStorage.setItem("activity-journal-" + (id ?? ""), "");
     }
-    setLoading(false)
-    setConfirm(false)
-  }
+    setLoading(false);
+    setConfirm(false);
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
 
   return (
     <div className={classes.root}>
-      <ConfirmationDialog            
+      <ConfirmationDialog
         onClose={() => setConfirm(false)}
         open={confirm}
-        confirmAction={loadData} 
-        confirmationMsg={t("Would you like to resume this activity where you left off?")}/>
+        confirmAction={loadData}
+        confirmationMsg={t(
+          "Would you like to resume this activity where you left off?"
+        )}
+      />
       <Backdrop className={classes.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
+      <AppBar
+        position="static"
+        style={{ background: "#FBF1EF", boxShadow: "none" }}
+      >
         <Toolbar className={classes.toolbardashboard}>
-          {!noBack && <IconButton onClick={() => setOpen(true)} color="default" aria-label="Menu">
-            <Icon>arrow_back</Icon>
-          </IconButton>}
-          <Typography variant="h5">{t("New journal entry")}</Typography>
+          {!noBack && (
+            <IconButton
+              onClick={() => setOpen(true)}
+              color="default"
+              aria-label="Menu"
+            >
+              <Icon>arrow_back</Icon>
+            </IconButton>
+          )}
+          <Typography variant="h5">
+            {t("New journal entry")}{" "}
+            <Tooltip
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
+              }
+            >
+              <Fab
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
+                onClick={handleFavoriteClick}
+              >
+                <Icon>star_rounded</Icon>
+              </Fab>
+            </Tooltip>{" "}
+          </Typography>
         </Toolbar>
       </AppBar>
       <Box px={2}>
-        <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="flex-start"
+        >
           <Grid item lg={4} sm={10} xs={12}>
             <Box px={2}>
               <FormControl
@@ -237,34 +356,49 @@ export default function JournalEntries({ ...props }) {
                   classes={{ root: classes.textArea }}
                   helperText={
                     journalValue
-                      ? ` ${t("max")} ${journalValue.length}/${CHARACTER_LIMIT} ${t("characters")}`
+                      ? ` ${t("max")} ${
+                          journalValue.length
+                        }/${CHARACTER_LIMIT} ${t("characters")}`
                       : ` ${t("max")} ${CHARACTER_LIMIT} ${t("characters")}`
                   }
                   inputProps={{
                     maxLength: CHARACTER_LIMIT,
                   }}
                 />
-                <Box className={classes.howFeel}>{t("How do you feel today?")}</Box>
+                <Box className={classes.howFeel}>
+                  {t("How do you feel today?")}
+                </Box>
                 <Grid className={classes.btnNav}>
                   <Box textAlign="center">
                     <IconButton
                       onClick={() => handleClickStatus("good")}
-                      className={status === "good" ? classnames(classes.likebtn, classes.active) : classes.likebtn}
+                      className={
+                        status === "good"
+                          ? classnames(classes.likebtn, classes.active)
+                          : classes.likebtn
+                      }
                     >
                       <ThumbUpAltOutlinedIcon />
                       <label>{t("Good")}</label>
                     </IconButton>
                     <IconButton
                       onClick={() => handleClickStatus("bad")}
-                      className={status === "bad" ? classnames(classes.likebtn, classes.active) : classes.likebtn}
+                      className={
+                        status === "bad"
+                          ? classnames(classes.likebtn, classes.active)
+                          : classes.likebtn
+                      }
                     >
-                      <ThumbDownAltOutlinedIcon />                      
+                      <ThumbDownAltOutlinedIcon />
                       <label>{t("Bad")}</label>
                     </IconButton>
                   </Box>
                 </Grid>
                 <Box textAlign="center" pt={4} mt={2}>
-                  <Fab className={classes.btnpeach} onClick={() => saveJournal(true)}>
+                  <Fab
+                    className={classes.btnpeach}
+                    onClick={() => saveJournal(true)}
+                  >
                     <Typography variant="h6">{t("Submit")}</Typography>
                   </Fab>
                 </Box>
@@ -284,7 +418,11 @@ export default function JournalEntries({ ...props }) {
             >
               <Box display="flex" justifyContent="flex-end">
                 <Box>
-                  <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpen(false)}>
+                  <IconButton
+                    aria-label="close"
+                    className={classes.closeButton}
+                    onClick={() => setOpen(false)}
+                  >
                     <CloseIcon />
                   </IconButton>
                 </Box>
@@ -293,7 +431,9 @@ export default function JournalEntries({ ...props }) {
               <DialogContent className={classes.dialogueContent}>
                 <Typography variant="h4">{t("Leaving so soon?")}</Typography>
                 <Typography variant="body1">
-                  {t("If you leave without submitting, your entry will be lost.")}
+                  {t(
+                    "If you leave without submitting, your entry will be lost."
+                  )}
                 </Typography>
               </DialogContent>
               <Grid>
@@ -307,11 +447,17 @@ export default function JournalEntries({ ...props }) {
                   </Link>
                 </Box>
                 <Box textAlign="center" width={1} mb={4}>
-                  <Link underline="none" onClick={() => {
-                    setOpen(false)
-                    saveJournal(false)
-                    localStorage.removeItem('activity-journal-'+(props?.activity?.id ?? ""))
-                  }} className={classes.linkpeach}>
+                  <Link
+                    underline="none"
+                    onClick={() => {
+                      setOpen(false);
+                      saveJournal(false);
+                      localStorage.removeItem(
+                        "activity-journal-" + (props?.activity?.id ?? "")
+                      );
+                    }}
+                    className={classes.linkpeach}
+                  >
                     {t("Yes, leave")}
                   </Link>
                 </Box>
@@ -321,5 +467,5 @@ export default function JournalEntries({ ...props }) {
         </Grid>
       </Box>
     </div>
-  )
+  );
 }

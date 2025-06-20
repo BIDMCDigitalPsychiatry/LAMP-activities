@@ -11,10 +11,10 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from "react-hot-loader";
 import  Layout from "./containers/Layout";
 
-
 const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
 const eventer = window[eventMethod]
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+
 eventer(
     messageEvent, (e : any) => {    
 		ReactDOM.render(

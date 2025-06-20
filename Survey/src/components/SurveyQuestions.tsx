@@ -40,7 +40,6 @@ import {
   TableCell,
   TableHead,
   Tooltip,
-  Button,
 } from "@material-ui/core";
 import classnames from "classnames";
 import i18n from "../i18n";
@@ -50,9 +49,10 @@ import emoji from "remark-emoji";
 import gfm from "remark-gfm";
 import { useSnackbar } from "notistack";
 import ConfirmationDialog from "./ConfirmationDialog";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown"
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
+import { Button } from "react-bootstrap";
 
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     width: "100%",
     maxWidth: "300px",
-    margin: "auto"
+    margin: "auto",
   },
 
   scrollBox: {
@@ -109,9 +109,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "24px",
     userSelect: "none",
     color: "#555",
-    margin: "10px 0",
+    margin: 0,
+    background: "transparent",
+    border: 0,
+    "& svg": {
+      width: "1.5em",
+      height: "1.5em",
+    },
     [theme.breakpoints.up("lg")]: {
-      display: "none"
+      display: "none",
     },
   },
   button: {
@@ -376,7 +382,7 @@ const useStyles = makeStyles((theme) => ({
   },
   questionhead: {
     textAlign: "center",
-    padding: "8px",
+    padding: "0 8px",
     "& h5": { fontSize: 18, fontWeight: 600 },
     "& span": {
       marginTop: 15,
@@ -568,9 +574,10 @@ function range(start, stop, step = 1) {
 const CHARACTER_LIMIT = 800;
 
 const scrollBox = (offset) => {
-  const box = document.getElementById('scrollBox');
-  box.scrollBy({ top: offset, behavior: 'smooth' });
-}
+  const box = document.getElementById("scrollBox");
+  box.scrollBy({ top: offset, behavior: "smooth" });
+};
+
 function RateAnswer({ checked, onChange, value }) {
   const classes = useStyles();
 
@@ -736,17 +743,17 @@ function TimeSelection({ onChange, options, value, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-      ":" +
-      (minuteSelectedIndex.length === 1
-        ? "0" + minuteSelectedIndex
-        : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-        ? ampmSelectedIndex
-        : "")
+          ? ampmSelectedIndex
+          : "")
     );
   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
@@ -784,17 +791,17 @@ function TimeSelection({ onChange, options, value, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-      ":" +
-      (minuteSelectedIndex.length === 1
-        ? "0" + minuteSelectedIndex
-        : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-        ? ampmSelectedIndex
-        : "")
+          ? ampmSelectedIndex
+          : "")
     );
   };
   const handleHoursClose = () => {
@@ -810,10 +817,10 @@ function TimeSelection({ onChange, options, value, ...props }) {
 
   const hourvalues =
     (!!options?.timePattern && options?.timePattern === "standard") ||
-      (Array.isArray(options) &&
-        !!options[0] &&
-        !!options[0]?.value &&
-        options[0]?.value === "standard")
+    (Array.isArray(options) &&
+      !!options[0] &&
+      !!options[0]?.value &&
+      options[0]?.value === "standard")
       ? range(1, 13)
       : range(0, 24);
   const minutevalues = ["00", "15", "30", "45"];
@@ -926,33 +933,33 @@ function TimeSelection({ onChange, options, value, ...props }) {
             !!options[0] &&
             !!options[0]?.value &&
             options[0]?.value === "standard")) && (
-            <Grid item>
-              <List
-                component="nav"
-                className={classes.timeHours}
-                aria-label="Device settings"
+          <Grid item>
+            <List
+              component="nav"
+              className={classes.timeHours}
+              aria-label="Device settings"
+            >
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="lock-menu"
+                onClick={handleClickAmPm}
               >
-                <ListItem
-                  button
-                  aria-haspopup="true"
-                  aria-controls="lock-menu"
-                  onClick={handleClickAmPm}
-                >
-                  <ListItemText secondary={ampmSelectedIndex} />
-                </ListItem>
-              </List>
-              <Menu
-                id="lock-menu"
-                classes={{ paper: classes.menuPaper }}
-                anchorEl={anchorE3}
-                keepMounted
-                open={Boolean(anchorE3)}
-                onClose={handleAmPmClose}
-              >
-                {ampm}
-              </Menu>
-            </Grid>
-          )}
+                <ListItemText secondary={ampmSelectedIndex} />
+              </ListItem>
+            </List>
+            <Menu
+              id="lock-menu"
+              classes={{ paper: classes.menuPaper }}
+              anchorEl={anchorE3}
+              keepMounted
+              open={Boolean(anchorE3)}
+              onClose={handleAmPmClose}
+            >
+              {ampm}
+            </Menu>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
@@ -1138,14 +1145,14 @@ function Rating({ onChange, options, value, ...props }) {
         valueLabelDisplay="auto"
         step={
           parseInt(options[0].value, 10) < 0 &&
-            parseInt(options[1].value ?? 10, 0) < 0
+          parseInt(options[1].value ?? 10, 0) < 0
             ? Math.abs(parseInt(options[0].value, 10)) +
-            parseInt(options[1]?.value ?? 0, 10)
+              parseInt(options[1]?.value ?? 0, 10)
             : parseInt(options[0].value, 10) < 0 &&
               parseInt(options[1].value ?? 10, 0) > 0
-              ? Math.abs(parseInt(options[0].value, 10)) -
+            ? Math.abs(parseInt(options[0].value, 10)) -
               parseInt(options[1]?.value ?? 0, 10)
-              : parseInt(options[1]?.value ?? 0, 10) -
+            : parseInt(options[1]?.value ?? 0, 10) -
               parseInt(options[0].value, 10)
         }
         marks={options}
@@ -1182,7 +1189,7 @@ function Rating({ onChange, options, value, ...props }) {
             <ReactMarkdown
               children={
                 !!options[0].description &&
-                  options[0].description.trim().length === 0
+                options[0].description.trim().length === 0
                   ? options[0].value
                   : options[0].description
               }
@@ -1211,8 +1218,8 @@ function Rating({ onChange, options, value, ...props }) {
               <ReactMarkdown
                 children={
                   !!options[Math.ceil(options.length / 2) - 1].description &&
-                    options[Math.ceil(options.length / 2) - 1].description.trim()
-                      .length === 0
+                  options[Math.ceil(options.length / 2) - 1].description.trim()
+                    .length === 0
                     ? options[Math.ceil(options.length / 2) - 1].value
                     : options[Math.ceil(options.length / 2) - 1].description
                 }
@@ -1241,7 +1248,7 @@ function Rating({ onChange, options, value, ...props }) {
             <ReactMarkdown
               children={
                 !!options[options.length - 1].description &&
-                  options[options.length - 1].description.trim().length === 0
+                options[options.length - 1].description.trim().length === 0
                   ? options[options.length - 1].value
                   : options[options.length - 1].description
               }
@@ -1365,11 +1372,10 @@ function Matrix({
       parseInt(a.value, 10) > parseInt(b.value, 10)
         ? 1
         : parseInt(a.value, 10) < parseInt(b.value, 10)
-          ? -1
-          : 0
+        ? -1
+        : 0
     );
   };
-
 
   return (
     <Grid>
@@ -1385,12 +1391,14 @@ function Matrix({
           </Typography>
         </Box>
         <Box className="carouselContainer">
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(-100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
             <KeyboardArrowUpIcon />
           </Button>
           <div className={classes.scrollBox} id="scrollBox">
             <Box className={classes.questionScroll}>
-
               <Box className={classes.questionhead}>
                 <Typography variant="caption" className={classes.required}>
                   <ReactMarkdown
@@ -1426,42 +1434,8 @@ function Matrix({
                     classes.surveyQuestionMatrixAlign
                   }
                 >
-
-
-
-                  <Table className={classes.matrix}>
-                    {Array.isArray(x.options) &&
-                      x.options.length > 0 &&
-                      (x.type === "likert" ||
-                        x.type === "rating" ||
-                        x.type === "list" ||
-                        x.type === "boolean" ||
-                        x.type === "multiselect") && (
-                        <TableRow className={classes.firstTr}>
-                          <TableCell style={{ minWidth: "30%" }}>{null}</TableCell>
-                          {(x.options || []).map((x) => (
-                            <TableCell className={classes.textCenter}>
-                              {(x.description || "").length > 0 && (
-                                <ReactMarkdown
-                                  children={` ${t(x.description?.toString())}`}
-                                  skipHtml={false}
-                                  plugins={[gfm, emoji]}
-                                  renderers={{
-                                    link: LinkRenderer,
-                                    sub: (props) => {
-                                      return <sub>{props?.children}</sub>;
-                                    },
-                                    sup: (props) => {
-                                      return <sup>{props.children}</sup>;
-                                    },
-                                  }}
-                                />
-                              )}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      )}
-                    <TableHead>
+                  <Box className={classes.questionScroll}>
+                    <Table className={classes.matrix}>
                       {Array.isArray(x.options) &&
                         x.options.length > 0 &&
                         (x.type === "likert" ||
@@ -1469,232 +1443,237 @@ function Matrix({
                           x.type === "list" ||
                           x.type === "boolean" ||
                           x.type === "multiselect") && (
-                          <TableRow className={classes.secondTr}>
-                            <TableCell
-                              style={{ minWidth: "30%" }}
-                              className={classes.thStick}
-                            >
+                          <TableRow className={classes.firstTr}>
+                            <TableCell style={{ minWidth: "30%" }}>
                               {null}
                             </TableCell>
                             {(x.options || []).map((x) => (
                               <TableCell className={classes.textCenter}>
-                                <ReactMarkdown
-                                  children={
-                                    (x.description || "").length > 0 &&
-                                      (x.value || "").length > 0
-                                      ? `(${t(x.value?.toString())})`
-                                      : `${t(x.value?.toString())}`
-                                  }
-                                  skipHtml={false}
-                                  plugins={[gfm, emoji]}
-                                  renderers={{
-                                    link: LinkRenderer,
-                                    sub: (props) => {
-                                      return <sub>{props?.children}</sub>;
-                                    },
-                                    sup: (props) => {
-                                      return <sup>{props.children}</sup>;
-                                    },
-                                  }}
-                                />
+                                {(x.description || "").length > 0 && (
+                                  <ReactMarkdown
+                                    children={` ${t(
+                                      x.description?.toString()
+                                    )}`}
+                                    skipHtml={false}
+                                    plugins={[gfm, emoji]}
+                                    renderers={{
+                                      link: LinkRenderer,
+                                      sub: (props) => {
+                                        return <sub>{props?.children}</sub>;
+                                      },
+                                      sup: (props) => {
+                                        return <sup>{props.children}</sup>;
+                                      },
+                                    }}
+                                  />
+                                )}
                               </TableCell>
                             ))}
                           </TableRow>
                         )}
-                    </TableHead>
-                    {(x?.questions || []).map((question, qindex) => (
-                      <TableRow
-                        style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}
-                      >
-                        <TableCell
-                          className={classes.required}
-                          style={{ minWidth: "30%", maxWidth: "150px" }}
-                        >
-                          <ReactMarkdown
-                            children={
-                              question.required
-                                ? `${t(question?.text) + "<span> *</span>"}`
-                                : `${t(question?.text)}`
-                            }
-                            allowDangerousHtml={true}
-                            plugins={[gfm, emoji]}
-                            renderers={{
-                              link: LinkRenderer,
-                              span: (props) => {
-                                return <sub>{props?.children}</sub>;
-                              },
-                              sup: (props) => {
-                                return <sup>{props.children}</sup>;
-                              },
-                            }}
-                          />
-                        </TableCell>
+                      <TableHead>
                         {Array.isArray(x.options) &&
+                          x.options.length > 0 &&
+                          (x.type === "likert" ||
+                            x.type === "rating" ||
+                            x.type === "list" ||
+                            x.type === "boolean" ||
+                            x.type === "multiselect") && (
+                            <TableRow className={classes.secondTr}>
+                              <TableCell
+                                style={{ minWidth: "30%" }}
+                                className={classes.thStick}
+                              >
+                                {null}
+                              </TableCell>
+                              {(x.options || []).map((x) => (
+                                <TableCell className={classes.textCenter}>
+                                  <ReactMarkdown
+                                    children={
+                                      (x.description || "").length > 0 &&
+                                      (x.value || "").length > 0
+                                        ? `(${t(x.value?.toString())})`
+                                        : `${t(x.value?.toString())}`
+                                    }
+                                    skipHtml={false}
+                                    plugins={[gfm, emoji]}
+                                    renderers={{
+                                      link: LinkRenderer,
+                                      sub: (props) => {
+                                        return <sub>{props?.children}</sub>;
+                                      },
+                                      sup: (props) => {
+                                        return <sup>{props.children}</sup>;
+                                      },
+                                    }}
+                                  />
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          )}
+                      </TableHead>
+                      {(x?.questions || []).map((question, qindex) => (
+                        <TableRow
+                          style={{
+                            borderBottom: "1px solid rgba(224, 224, 224, 1)",
+                          }}
+                        >
+                          <TableCell
+                            className={classes.required}
+                            style={{ minWidth: "30%", maxWidth: "150px" }}
+                          >
+                            <ReactMarkdown
+                              children={
+                                question.required
+                                  ? `${t(question?.text) + "<span> *</span>"}`
+                                  : `${t(question?.text)}`
+                              }
+                              allowDangerousHtml={true}
+                              plugins={[gfm, emoji]}
+                              renderers={{
+                                link: LinkRenderer,
+                                span: (props) => {
+                                  return <sub>{props?.children}</sub>;
+                                },
+                                sup: (props) => {
+                                  return <sup>{props.children}</sup>;
+                                },
+                              }}
+                            />
+                          </TableCell>
+                          {Array.isArray(x.options) &&
                           (x.options || []).length > 0 ? (
-                          x.type === "list" ||
+                            x.type === "list" ||
                             x.type === "boolean" ||
                             x.type === "likert" ? (
-                            (x.options || []).map((op, k) => (
-                              <TableCell className={classes.textCenter}>
-                                <FormControlLabel
-                                  key={`${op.value}`}
-                                  value={`${op.value}`}
-                                  className={classes.formLabelMatrix}
-                                  control={
-                                    <Radio
-                                      className={classes.mradioroot}
-                                      disableRipple
-                                      checked={csvParse(
-                                        selectedValue[idx + qindex]?.value || []
-                                      ).includes(op.value)}
-                                      color="default"
-                                      size="medium"
-                                      checkedIcon={
-                                        <span
-                                          className={classnames(
-                                            classes.icon,
-                                            classes.checkedIcon
-                                          )}
-                                        />
-                                      }
-                                      icon={<span className={classes.icon} />}
-                                      onClick={() => {
-                                        setSelectedValue({
-                                          ...selectedValue,
-                                          [idx + qindex]: {
+                              (x.options || []).map((op, k) => (
+                                <TableCell className={classes.textCenter}>
+                                  <FormControlLabel
+                                    key={`${op.value}`}
+                                    value={`${op.value}`}
+                                    className={classes.formLabelMatrix}
+                                    control={
+                                      <Radio
+                                        className={classes.mradioroot}
+                                        disableRipple
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
+                                        color="default"
+                                        size="medium"
+                                        checkedIcon={
+                                          <span
+                                            className={classnames(
+                                              classes.icon,
+                                              classes.checkedIcon
+                                            )}
+                                          />
+                                        }
+                                        icon={<span className={classes.icon} />}
+                                        onClick={() => {
+                                          setSelectedValue({
+                                            ...selectedValue,
+                                            [idx + qindex]: {
+                                              item: question.text,
+                                              value: csvStringify([op.value]),
+                                            },
+                                          });
+                                          const response = {
                                             item: question.text,
                                             value: csvStringify([op.value]),
-                                          },
-                                        });
-                                        const response = {
-                                          item: question.text,
-                                          value: csvStringify([op.value]),
-                                        };
-                                        const data = updateResponses(
-                                          x,
-                                          response,
-                                          activityId,
-                                          responses,
-                                          idx + qindex,
-                                          startTime,
-                                          setActiveStep,
-                                          total
-                                        );
-                                        onResponse(data);
-                                      }}
-                                    />
-                                  }
-                                  label={null}
-                                />
-                              </TableCell>
-                            ))
-                          ) : x.type === "multiselect" ? (
-                            (x.options || []).map((op, j) => (
-                              <TableCell className={classes.textCenter}>
-                                <FormControlLabel
-                                  key={op.value}
-                                  value={`${qindex}-${op.value}`}
-                                  className={classes.formLabelMatrix}
-                                  control={
-                                    <GreenCheckbox
-                                      className={classes.mradioroot}
-                                      checked={csvParse(
-                                        selectedValue[idx + qindex]?.value || []
-                                      ).includes(op.value)}
-                                      onClick={() => {
-                                        let values = csvParse(
-                                          selectedValue[idx + qindex]?.value || []
-                                        );
-
-                                        if (
-                                          !csvParse(
-                                            selectedValue[idx + qindex]?.value || []
-                                          ).includes(op.value)
-                                        ) {
-                                          values.push(op.value);
-                                          values = (values || []).filter(
-                                            (elem, i, self) => {
-                                              return i === self.indexOf(elem);
-                                            }
+                                          };
+                                          const data = updateResponses(
+                                            x,
+                                            response,
+                                            activityId,
+                                            responses,
+                                            idx + qindex,
+                                            startTime,
+                                            setActiveStep,
+                                            total
                                           );
-                                        } else {
-                                          const key = values.indexOf(op.value);
-                                          if (key !== -1) {
-                                            values.splice(key, 1);
+                                          onResponse(data);
+                                        }}
+                                      />
+                                    }
+                                    label={null}
+                                  />
+                                </TableCell>
+                              ))
+                            ) : x.type === "multiselect" ? (
+                              (x.options || []).map((op, j) => (
+                                <TableCell className={classes.textCenter}>
+                                  <FormControlLabel
+                                    key={op.value}
+                                    value={`${qindex}-${op.value}`}
+                                    className={classes.formLabelMatrix}
+                                    control={
+                                      <GreenCheckbox
+                                        className={classes.mradioroot}
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
+                                        onClick={() => {
+                                          let values = csvParse(
+                                            selectedValue[idx + qindex]
+                                              ?.value || []
+                                          );
+
+                                          if (
+                                            !csvParse(
+                                              selectedValue[idx + qindex]
+                                                ?.value || []
+                                            ).includes(op.value)
+                                          ) {
+                                            values.push(op.value);
+                                            values = (values || []).filter(
+                                              (elem, i, self) => {
+                                                return i === self.indexOf(elem);
+                                              }
+                                            );
+                                          } else {
+                                            const key = values.indexOf(
+                                              op.value
+                                            );
+                                            if (key !== -1) {
+                                              values.splice(key, 1);
+                                            }
                                           }
-                                        }
-                                        setSelectedValue({
-                                          ...selectedValue,
-                                          [idx + qindex]: {
+                                          setSelectedValue({
+                                            ...selectedValue,
+                                            [idx + qindex]: {
+                                              item: question.text,
+                                              value: csvStringify(values),
+                                            },
+                                          });
+                                          const response = {
                                             item: question.text,
                                             value: csvStringify(values),
-                                          },
-                                        });
-                                        const response = {
-                                          item: question.text,
-                                          value: csvStringify(values),
-                                        };
-                                        const data = updateResponses(
-                                          x,
-                                          response,
-                                          activityId,
-                                          responses,
-                                          idx + qindex,
-                                          startTime,
-                                          setActiveStep,
-                                          total
-                                        );
-                                        onResponse(data);
-                                      }}
-                                    />
-                                  }
-                                  label={null}
-                                />
-                              </TableCell>
-                            ))
-                          ) : x.type === "slider" ? (
-                            <TableCell className={classes.textCenter}>
-                              <Rating
-                                options={getSorted(x.options)}
-                                onChange={(val) => {
-                                  setSelectedValue({
-                                    ...selectedValue,
-                                    [idx + qindex]: {
-                                      item: question.text,
-                                      value: csvStringify([val]),
-                                    },
-                                  });
-                                  const response = {
-                                    item: question.text,
-                                    value:
-                                      val !== null ? csvStringify([val]) : null,
-                                  };
-                                  const data = updateResponses(
-                                    x,
-                                    response,
-                                    activityId,
-                                    responses,
-                                    idx + qindex,
-                                    startTime,
-                                    setActiveStep,
-                                    total
-                                  );
-                                  onResponse(data);
-                                }}
-                                value={
-                                  csvParse(
-                                    selectedValue[idx + qindex]?.value || []
-                                  )[0] ?? null
-                                }
-                              />
-                            </TableCell>
-                          ) : x.type === "rating" ? (
-                            (x.options || []).map((op, j) => (
+                                          };
+                                          const data = updateResponses(
+                                            x,
+                                            response,
+                                            activityId,
+                                            responses,
+                                            idx + qindex,
+                                            startTime,
+                                            setActiveStep,
+                                            total
+                                          );
+                                          onResponse(data);
+                                        }}
+                                      />
+                                    }
+                                    label={null}
+                                  />
+                                </TableCell>
+                              ))
+                            ) : x.type === "slider" ? (
                               <TableCell className={classes.textCenter}>
-                                <RateAnswer
-                                  checked={csvParse(
-                                    selectedValue[idx + qindex]?.value || []
-                                  ).includes(op.value)}
+                                <Rating
+                                  options={getSorted(x.options)}
                                   onChange={(val) => {
                                     setSelectedValue({
                                       ...selectedValue,
@@ -1706,7 +1685,9 @@ function Matrix({
                                     const response = {
                                       item: question.text,
                                       value:
-                                        val !== null ? csvStringify([val]) : null,
+                                        val !== null
+                                          ? csvStringify([val])
+                                          : null,
                                     };
                                     const data = updateResponses(
                                       x,
@@ -1720,92 +1701,51 @@ function Matrix({
                                     );
                                     onResponse(data);
                                   }}
-                                  value={op.value}
+                                  value={
+                                    csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    )[0] ?? null
+                                  }
                                 />
                               </TableCell>
-                            ))
-                          ) : x.type === "time" ? (
-                            <Box className={classes.timeMatrix}>
-                              <TimeSelection
-                                onChange={(val) => {
-                                  const response = {
-                                    item: question.text,
-                                    value: val,
-                                  };
-                                  const data = updateResponses(
-                                    x,
-                                    response,
-                                    activityId,
-                                    responses,
-                                    idx + qindex,
-                                    startTime,
-                                    setActiveStep,
-                                    total
-                                  );
-                                  onResponse(data);
-                                }}
-                                options={x.options}
-                                value={
-                                  !!responses?.current[idx + qindex]?.value
-                                    ? responses?.current[idx + qindex]?.value
-                                    : undefined
-                                }
-                              />
-                            </Box>
-                          ) : null
-                        ) : (
-                          <TableCell className={classes.textCenter}>
-                            {x?.type === "short" ? (
-                              <ShortTextSection
-                                onChange={(val) => {
-                                  const response = {
-                                    item: question.text,
-                                    value: val,
-                                  };
-                                  const data = updateResponses(
-                                    x,
-                                    response,
-                                    activityId,
-                                    responses,
-                                    idx + qindex,
-                                    startTime,
-                                    setActiveStep,
-                                    total
-                                  );
-                                  onResponse(data);
-                                }}
-                                value={
-                                  !!responses?.current[idx + qindex]?.value
-                                    ? responses?.current[idx + qindex]?.value
-                                    : undefined
-                                }
-                              />
-                            ) : x.type === "text" ? (
-                              <TextSection
-                                onChange={(val) => {
-                                  const response = {
-                                    item: question.text,
-                                    value: val,
-                                  };
-                                  const data = updateResponses(
-                                    x,
-                                    response,
-                                    activityId,
-                                    responses,
-                                    idx + qindex,
-                                    startTime,
-                                    setActiveStep,
-                                    total
-                                  );
-                                  onResponse(data);
-                                }}
-                                charLimit={CHARACTER_LIMIT}
-                                value={
-                                  !!responses?.current[idx + qindex]?.value
-                                    ? responses?.current[idx + qindex]?.value
-                                    : undefined
-                                }
-                              />
+                            ) : x.type === "rating" ? (
+                              (x.options || []).map((op, j) => (
+                                <TableCell className={classes.textCenter}>
+                                  <RateAnswer
+                                    checked={csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    ).includes(op.value)}
+                                    onChange={(val) => {
+                                      setSelectedValue({
+                                        ...selectedValue,
+                                        [idx + qindex]: {
+                                          item: question.text,
+                                          value: csvStringify([val]),
+                                        },
+                                      });
+                                      const response = {
+                                        item: question.text,
+                                        value:
+                                          val !== null
+                                            ? csvStringify([val])
+                                            : null,
+                                      };
+                                      const data = updateResponses(
+                                        x,
+                                        response,
+                                        activityId,
+                                        responses,
+                                        idx + qindex,
+                                        startTime,
+                                        setActiveStep,
+                                        total
+                                      );
+                                      onResponse(data);
+                                    }}
+                                    value={op.value}
+                                  />
+                                </TableCell>
+                              ))
                             ) : x.type === "time" ? (
                               <Box className={classes.timeMatrix}>
                                 <TimeSelection
@@ -1834,14 +1774,96 @@ function Matrix({
                                   }
                                 />
                               </Box>
-                            ) : null}
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    ))}
-                  </Table>
-
-
+                            ) : null
+                          ) : (
+                            <TableCell className={classes.textCenter}>
+                              {x?.type === "short" ? (
+                                <ShortTextSection
+                                  onChange={(val) => {
+                                    const response = {
+                                      item: question.text,
+                                      value: val,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  value={
+                                    !!responses?.current[idx + qindex]?.value
+                                      ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                />
+                              ) : x.type === "text" ? (
+                                <TextSection
+                                  onChange={(val) => {
+                                    const response = {
+                                      item: question.text,
+                                      value: val,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  charLimit={CHARACTER_LIMIT}
+                                  value={
+                                    !!responses?.current[idx + qindex]?.value
+                                      ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                />
+                              ) : x.type === "time" ? (
+                                <Box className={classes.timeMatrix}>
+                                  <TimeSelection
+                                    onChange={(val) => {
+                                      const response = {
+                                        item: question.text,
+                                        value: val,
+                                      };
+                                      const data = updateResponses(
+                                        x,
+                                        response,
+                                        activityId,
+                                        responses,
+                                        idx + qindex,
+                                        startTime,
+                                        setActiveStep,
+                                        total
+                                      );
+                                      onResponse(data);
+                                    }}
+                                    options={x.options}
+                                    value={
+                                      !!responses?.current[idx + qindex]?.value
+                                        ? responses?.current[idx + qindex]
+                                            ?.value
+                                        : undefined
+                                    }
+                                  />
+                                </Box>
+                              ) : null}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </Table>
+                  </Box>
                 </Grid>
                 {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settingsQuestions - 1 && (
@@ -1853,10 +1875,12 @@ function Matrix({
               </Grid>
             </Box>
           </div>
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
             <KeyboardArrowDownIcon />
           </Button>
-
         </Box>
       </Box>
     </Grid>
@@ -2034,8 +2058,8 @@ function Question({
         parseInt(a.value, 10) > parseInt(b.value, 10)
           ? 1
           : parseInt(a.value, 10) < parseInt(b.value, 10)
-            ? -1
-            : 0
+          ? -1
+          : 0
       );
       component = (
         <Rating
@@ -2136,17 +2160,19 @@ function Question({
             children={
               type === "slider"
                 ? t(
-                  `${options[0].value} being ${!!options[0].description &&
-                    options[0].description.trim().length > 0
-                    ? options[0].description
-                    : options[0].value
-                  }, 
-                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description &&
-                    options[options.length - 1].description.trim().length > 0
-                    ? options[options.length - 1].description
-                    : options[options.length - 1].value
-                  }`
-                )
+                    `${options[0].value} being ${
+                      !!options[0].description &&
+                      options[0].description.trim().length > 0
+                        ? options[0].description
+                        : options[0].value
+                    }, 
+                  ${options[options.length - 1].value} being ${
+                      !!options[options.length - 1].description &&
+                      options[options.length - 1].description.trim().length > 0
+                        ? options[options.length - 1].description
+                        : options[options.length - 1].value
+                    }`
+                  )
                 : !!desc && t(`${desc}`)
             }
             skipHtml={false}
@@ -2203,13 +2229,22 @@ function Questions({
           {settings.length}
         </Typography>
       </Box>
+
       <Box className={classes.questionScroll}>
         <Box className="carouselContainer">
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(-100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
             <KeyboardArrowUpIcon />
           </Button>
           <div className={classes.scrollBox} id="scrollBox">
-            <Grid container direction="row" justify="center" alignItems="flex-start">
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+            >
               <Grid
                 item
                 lg={4}
@@ -2257,12 +2292,13 @@ function Questions({
           </div> */}
               </Grid>
             </Grid>
-
           </div>
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
             <KeyboardArrowDownIcon />
           </Button>
-
         </Box>
       </Box>
     </Box>
@@ -2400,7 +2436,11 @@ function Section({
     const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
     if (lastIndexStr !== null) {
       const lastIndex = parseInt(lastIndexStr);
-      if (!isNaN(lastIndex) && lastIndex < slideElements.length && lastIndex != slideElements.length) {
+      if (
+        !isNaN(lastIndex) &&
+        lastIndex < slideElements.length &&
+        lastIndex != slideElements.length
+      ) {
         setIndex(lastIndex);
         setTab(lastIndex);
         const val = (100 / settings.length) * (lastIndex + 1);
@@ -2553,12 +2593,12 @@ function Section({
             (element.required &&
               responses?.current[actualIndex + i]?.value !== null &&
               typeof responses?.current[actualIndex + i]?.value !==
-              "undefined" &&
+                "undefined" &&
               (typeof responses?.current[actualIndex + i]?.value !== "string" ||
                 (typeof responses?.current[actualIndex + i]?.value ===
                   "string" &&
                   responses?.current[actualIndex + i]?.value?.trim().length !==
-                  0)))
+                    0)))
           )
         ) {
           enqueueSnackbar(t("Please enter your response."), {
@@ -2641,8 +2681,9 @@ function Section({
               }
             >
               <Fab
-                className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""
-                  }`}
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
                 onClick={handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
@@ -2700,9 +2741,11 @@ export default function SurveyQuestions({ ...props }) {
   const [confirm, setConfirm] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(lastIndexStr != null ? lastIndexStr : 0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    lastIndexStr != null ? lastIndexStr : 0
+  );
   const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.is_favorite ?? false
+    props?.data?.is_favorite ?? false
   );
   const validator = (response) => {
     let status = true;
@@ -2754,14 +2797,13 @@ export default function SurveyQuestions({ ...props }) {
       const result = {
         temporal_slices: response,
         duration: new Date().getTime() - startTime,
-        static_data: { totalScore: totalScore },
+        static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
         timestamp: startTime,
       };
       onResponse(result);
       setIsSubmit(!isSubmit);
       localStorage.removeItem("enabledActivities");
       localStorage.removeItem("lastAnsweredIndex");
-      // localStorage.removeItem("activity-survey-" + (activity?.id ?? ""))
     } else {
       enqueueSnackbar(
         t(
@@ -2775,7 +2817,13 @@ export default function SurveyQuestions({ ...props }) {
   };
   const onResponse = (response) => {
     parent.postMessage(
-      response === null ? null : JSON.stringify(response),
+      response === null
+        ? JSON.stringify({
+            static_data: {
+              is_favorite: isFavoriteActive,
+            },
+          })
+        : JSON.stringify(response),
       "*"
     );
   };
@@ -2799,7 +2847,9 @@ export default function SurveyQuestions({ ...props }) {
   };
 
   useEffect(() => {
-    console.log("sadf")
+    const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
+    setCurrentQuestionIndex(lastIndexStr);
+
     if (
       typeof localStorage.getItem(
         "activity-survey-" + (props.data?.activity?.id ?? "")
@@ -2809,6 +2859,9 @@ export default function SurveyQuestions({ ...props }) {
         ?.trim()?.length ?? 0) > 0
     ) {
       setConfirm(true);
+    } else {
+      const activity = props.data.activity ?? props.data ?? {};
+      setActivity(activity);
     }
     const activity = props.data.activity ?? props.data ?? {};
     setActivity(activity);
@@ -2867,18 +2920,19 @@ export default function SurveyQuestions({ ...props }) {
     }));
     setSettings(updatedArray);
   };
-  console.log("asd")
+
   return (
     <Box className={classes.root}>
-      {currentQuestionIndex < settings?.length &&
-        <ConfirmationDialog
-          onClose={() => setConfirm(false)}
-          open={confirm}
-          confirmAction={loadData}
-          confirmationMsg={t(
-            "Would you like to resume this activity where you left off?"
-          )}
-        />}
+      {/* {currentQuestionIndex < activity?.settings?.length &&  */}
+      <ConfirmationDialog
+        onClose={() => setConfirm(false)}
+        open={confirm}
+        confirmAction={loadData}
+        confirmationMsg={t(
+          "Would you like to resume this activity where you left off?"
+        )}
+      />
+      {/* }  */}
 
       {activity !== null && settings !== null ? (
         <Section

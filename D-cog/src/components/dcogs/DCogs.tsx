@@ -8,9 +8,7 @@
 import * as React from "react";
 import Board from "./Board";
 
-
 import i18n from "../../i18n";
-
 
 interface AppState {
   loaded: boolean;
@@ -21,10 +19,13 @@ interface AppState {
 class DCogs extends React.Component<any, AppState> {
   constructor(props: any) {
     super(props);
-        const configuration = props.data.configuration;
-        i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-          this.state = { loaded: true, noBack: props.data.noBack, time: new Date().getTime() };
-       
+    const configuration = props.data.configuration;
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
+    this.state = {
+      loaded: true,
+      noBack: props.data.noBack,
+      time: new Date().getTime(),
+    };
   }
 
   // Game render function
@@ -32,7 +33,12 @@ class DCogs extends React.Component<any, AppState> {
     return (
       <div>
         {this.state && this.state.loaded && (
-          <Board noBack={this.state.noBack} language={i18n.language} time={this.state.time} />
+          <Board
+            noBack={this.state.noBack}
+            language={i18n.language}
+            time={this.state.time}
+            is_favorite={this?.props.data.is_favorite}
+          />
         )}
       </div>
     );

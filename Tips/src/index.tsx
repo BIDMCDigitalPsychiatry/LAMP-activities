@@ -1,15 +1,13 @@
-
-
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import ReactDOM from "react-dom";
-import * as React from 'react';
+import * as React from "react";
 import { AppContainer } from "react-hot-loader";
 import LearnTips from "./components/LearnTips";
-import './index.css';
+import "./index.css";
 import { createRoot } from "react-dom/client";
-const eventMethod = "addEventListener"
-const eventer = window[eventMethod]
-const messageEvent = "message"
+const eventMethod = "addEventListener";
+const eventer = window[eventMethod];
+const messageEvent = "message";
 
  eventer(
   messageEvent, (e: any) => {
