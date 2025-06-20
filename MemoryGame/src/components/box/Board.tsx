@@ -22,8 +22,6 @@ import { getRandomNumbers } from "../../functions";
 
 import i18n from "./../../i18n";
 
-import { Fab, Icon, Tooltip } from "@material-ui/core";
-
 import ErrorBoundary from "../common/ErrorBoundary";
 
 import Questions from "./Questions";
