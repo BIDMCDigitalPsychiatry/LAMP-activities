@@ -2189,7 +2189,11 @@ function Question({
           />
         </Typography>
       </Box>
-      <Box className={classes.questionScroll}>{component}</Box>
+
+      <Box className={classes.questionScroll}>
+        {component}
+
+      </Box>
     </Grid>
   );
 }
@@ -2859,6 +2863,9 @@ export default function SurveyQuestions({ ...props }) {
       const activity = props.data.activity ?? props.data ?? {};
       setActivity(activity);
     }
+    const activity = props.data.activity ?? props.data ?? {};
+    setActivity(activity);
+
     const configuration = props.data.configuration;
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, []);
