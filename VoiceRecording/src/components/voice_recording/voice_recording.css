@@ -6,7 +6,7 @@
  * @copyright (c) 2021, ZCO
  */
 
- :root {
+:root {
   --square-size: 84px;
   --square-font-size: 72px;
 }
@@ -33,31 +33,31 @@ h1 {
 }
 
 .overlay {
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 100%;
   width: 100%;
-  background-color:rgba(0, 0, 0, 0.85);
-  background-image: url('images/ajax-loader.gif');
+  background-color: rgba(0, 0, 0, 0.85);
+  background-image: url("images/ajax-loader.gif");
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  z-index:9999;
-  color:white;
+  z-index: 9999;
+  color: white;
 }
 
-.errorMsg{
+.errorMsg {
   color: #ff0000;
   text-align: center;
   margin-top: 10px;
 }
 
-.mT25{
+.mT25 {
   margin-top: 25px;
 }
 
-.tACenter{
+.tACenter {
   text-align: center;
   max-height: 110px;
   overflow-y: auto;
@@ -70,7 +70,7 @@ h1 {
   height: 60px;
   justify-content: center;
   align-items: center;
-  transition: .5s ease all;
+  transition: 0.5s ease all;
   background: #808080;
   border-radius: 50%;
   bottom: 65px;
@@ -79,10 +79,38 @@ h1 {
   font-size: 25px;
 }
 
-.cursorPointer{
-  cursor: pointer
+.cursorPointer {
+  cursor: pointer;
 }
-
+.headerTitleIcon {
+  background: none !important;
+  box-shadow: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  color: #ccc !important;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 8px !important;
+}
+.headerTitleIcon .material-icons {
+  font-size: 2rem;
+  color: #666;
+}
+.headerTitleIcon svg {
+  width: 20px;
+  height: 20px;
+}
+.header-with-icon {
+  display: flex;
+  align-items: center;
+}
+.headerTitleIcon:hover {
+  background: #f4f4f4 !important;
+}
+.headerTitleIcon.active .material-icons {
+  color: #e3b303 !important;
+}
 @media only screen and (min-width: 768px) {
   .heading {
     font-size: 24px !important;

@@ -12,45 +12,67 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
 import i18n from "src/i18n";
+import { Fab, Icon, Tooltip } from "@material-ui/core";
+import "material-icons";
 
-const Layout = ({ ...props }: any) => {  
+const Layout = ({ ...props }: any) => {
+  
   const configuration = props?.data?.configuration;
-  const settings= props?.data?.activity?.settings;
+  const settings = props?.data?.activity?.settings;
   i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-  const delayBeforeRecall = settings?.delayBeforeRecall * 60;// in milli seconds
-  const numberOfTrials = settings?. numberOfTrials;      
-  const imageExposureTime = settings?.imageExposureTime * 1000;//in milli seconds
+  const delayBeforeRecall = settings?.delayBeforeRecall * 60; // in milli seconds
+  const numberOfTrials = settings?.numberOfTrials;
+  const imageExposureTime = settings?.imageExposureTime * 1000; //in milli seconds
   const [clickBack, setClickBack] = useState(false);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
 
   const reloadPage = () => {
     window.location.reload();
-  };  
-
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
 
   return (
     <div className="main-class">
       <nav className="back-link">
         <FontAwesomeIcon
           icon={faArrowLeft}
-          onClick={()=>setClickBack(true)}
+          onClick={() => setClickBack(true)}
         />
       </nav>
       <nav className="home-link">
-        <FontAwesomeIcon
-          icon={faRedo}
-          onClick={reloadPage}
-        />
+        <FontAwesomeIcon icon={faRedo} onClick={reloadPage} />
       </nav>
-      <div className="heading">{i18n.t("FUNNY_MEMORY_GAME")}</div>
+      <div className="heading">
+        {i18n.t("FUNNY_MEMORY_GAME")}{" "}
+        <Tooltip
+          title={
+            isFavoriteActive
+              ? "Tap to remove from Favorite Activities"
+              : "Tap to add to Favorite Activities"
+          }
+        >
+          <Fab
+            className={`headerTitleIcon ${isFavoriteActive ? "active" : ""}`}
+            onClick={handleFavoriteClick}
+          >
+            <Icon>star_rounded</Icon>
+          </Fab>
+        </Tooltip>{" "}
+      </div>
       <Container>
         <Row>
           <Col>
-            <GameBoard 
-            language={i18n.language}
-            delayBeforeRecall={delayBeforeRecall}
-            imageExposureTime={imageExposureTime}
-            numberOfTrials={numberOfTrials}
-            clickBack={clickBack}
+            <GameBoard
+              language={i18n.language}
+              delayBeforeRecall={delayBeforeRecall}
+              imageExposureTime={imageExposureTime}
+              numberOfTrials={numberOfTrials}
+              clickBack={clickBack}
+              isFavoriteActive={isFavoriteActive}
             />
           </Col>
         </Row>

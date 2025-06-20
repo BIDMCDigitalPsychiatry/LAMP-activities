@@ -5,26 +5,23 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-import 'bootstrap/dist/css/bootstrap.min.css';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import Instructions from "./containers/Instructions";
-
+import "material-icons";
 // const eventMethod = !!window.addEventListener ? "addEventListener" : "attachEvent"
 // const eventer = window[eventMethod]
 // const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
 // eventer(
-//     messageEvent, (e : any) => {    
-		ReactDOM.render(
-        <AppContainer>
-        <Instructions 
-        data={{}}
-          />
-      </AppContainer>,
-		  document.getElementById("root")
-		);
+//     messageEvent, (e : any) => {
+ReactDOM.render(
+  <AppContainer>
+    <Instructions data={{}} />
+  </AppContainer>,
+  document.getElementById("root")
+);
 //     },
 //     false
 // )
-

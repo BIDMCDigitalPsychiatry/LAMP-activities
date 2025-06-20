@@ -19,18 +19,15 @@ const AudioRecorder = ({ ...props }) => {
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
+  const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(45);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
-  const recordedTextRef = useRef("");
-
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
   useEffect(() => {
     (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
   }, []);
+
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -39,6 +36,7 @@ const AudioRecorder = ({ ...props }) => {
       </div>
     );
   }
+ 
 
   const getTextForPhase = () => {
     if (phase === "recall") {
@@ -63,74 +61,33 @@ const AudioRecorder = ({ ...props }) => {
   };
 
   useEffect(() => {
-    if (transcript && transcript !== "") {
-      recordedTextRef.current = transcript;
+    if (transcript && transcript != "") {
+      setRecordedText(transcript);
     }
   }, [transcript]);
-  const handleListening = async () => {
-    try {
-      setIsListening(true);
-      setIsTimeOut(false);
 
-      SpeechRecognition.startListening({ continuous: true });
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      setMediaRecorder(recorder);
-
-      const chunks: Blob[] = [];
-
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/mpeg" });
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Audio = reader.result?.toString() || null;
-
-          const processAudio = (base64Audio: string | null) => {
-            const currentText = recordedTextRef.current;
-            if (phase === "recall") {
-              const textArray = currentText.split("next");
-              const finalArray: string[][] = textArray.map((text) =>
-                text.split("and")
-              );
-              props.handleRecall(finalArray, base64Audio);
-            } else if (phase === "recognition1") {
-              props.handleRecognition1(currentText, base64Audio);
-            } else {
-              props.handleRecordComplete(currentText.split("and"), base64Audio);
-            }
-          };
-
-          processAudio(base64Audio);
-        };
-
-        reader.readAsDataURL(blob); // Convert blob to Base64
-      };
-
-      recorder.start();
-    } catch (error: any) {
-      console.error("Microphone access denied or failed", error);
-      setIsListening(false);
-      setIsTimeOut(true);
-
-      // Show alert or custom UI message
-      alert(i18n.t("PERMISSION_DENIED"));
-
-      // Optional: You can also show a UI banner or toast instead of alert
-    }
+  const handleListing = () => {
+    setIsListening(true);
+    setIsTimeOut(false);
+    SpeechRecognition.startListening({
+      continuous: true,
+    });
   };
-
   const stopHandle = () => {
     setIsListening(false);
     SpeechRecognition.stopListening();
-
-    if (mediaRecorder) {
-      mediaRecorder.stop();
+    if (phase === "recall") {
+      const textArray = recordedText.split("next");
+      let finalArray: string[][] = [];
+      textArray.forEach((text) => {
+        finalArray.push(text.split("and"));
+      });
+      props.handleRecall(finalArray);
+    } else if (phase === "recognition1") {
+      props.handleRecognition1(recordedText);
+    } else {
+      props.handleRecordComplete(recordedText.split("and"));
     }
-
     resetTranscript();
   };
 
@@ -151,15 +108,11 @@ const AudioRecorder = ({ ...props }) => {
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
-            className={
-              isListening
-                ? "microphone-icon microphone-icon-dissable"
-                : "microphone-icon cursor-pointer"
-            }
+            className={isListening ? "microphone-icon microphone-icon-dissable" : "microphone-icon cursor-pointer"}
             ref={microphoneRef}
             onClick={(e) => {
               e.stopPropagation();
-              handleListening();
+              handleListing();
             }}
           >
             <Microphone />

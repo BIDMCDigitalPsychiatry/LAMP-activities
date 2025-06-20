@@ -1,5 +1,5 @@
 // Core Imports
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react";
 import {
   Typography,
   makeStyles,
@@ -38,17 +38,22 @@ import {
   IconButton,
   TableRow,
   TableCell,
-  TableHead
-} from "@material-ui/core"
-import classnames from "classnames"
-import i18n from "../i18n"
-import { useTranslation } from "react-i18next"
-import ReactMarkdown from "react-markdown"
-import emoji from "remark-emoji"
-import gfm from "remark-gfm"
-import { useSnackbar } from "notistack"
-import ConfirmationDialog from "./ConfirmationDialog"
-import zIndex from "@material-ui/core/styles/zIndex"
+  TableHead,
+  Tooltip,
+} from "@material-ui/core";
+import classnames from "classnames";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
+import ReactMarkdown from "react-markdown";
+import emoji from "remark-emoji";
+import gfm from "remark-gfm";
+import { useSnackbar } from "notistack";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { Button } from "react-bootstrap";
+
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+
 const GreenCheckbox = withStyles({
   root: {
     color: "#2F9D7E",
@@ -57,7 +62,7 @@ const GreenCheckbox = withStyles({
     },
     "& svg": { fontSize: "28px !important" },
   },
-})((props: CheckboxProps) => <Checkbox color="default" {...props} />)
+})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -73,14 +78,47 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
       backgroundColor: "#2F9D7E",
     },
   })
-)(LinearProgress)
+)(LinearProgress);
 
 const useStyles = makeStyles((theme) => ({
   textCenter: {
-    textAlign: "center"
+    textAlign: "center",
   },
   root: {
     width: "100%",
+  },
+  carouselContainer: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "300px",
+    margin: "auto",
+  },
+
+  scrollBox: {
+    maxHeight: "calc(100vh - 400px)",
+    overflowY: "auto",
+    padding: "10px",
+    [theme.breakpoints.up("lg")]: {
+      maxHeight: "calc(100vh - 300px)",
+    },
+  },
+
+  scrollArrow: {
+    textAlign: "center",
+    cursor: "pointer",
+    fontSize: "24px",
+    userSelect: "none",
+    color: "#555",
+    margin: 0,
+    background: "transparent",
+    border: 0,
+    "& svg": {
+      width: "1.5em",
+      height: "1.5em",
+    },
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
   },
   button: {
     marginTop: theme.spacing(1),
@@ -112,10 +150,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     "& p": {
       margin: "0",
-    }
+    },
   },
   marginBottom40: {
-    marginBottom: "40px !important"
+    marginBottom: "40px !important",
   },
   sliderActionsContainer: {
     textAlign: "center",
@@ -136,8 +174,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& span.MuiIconButton-label span": {
       width: 24,
-      height: 24
-    }
+      height: 24,
+    },
   },
   icon: {
     borderRadius: "50%",
@@ -145,7 +183,8 @@ const useStyles = makeStyles((theme) => ({
     height: 32,
     border: "#C6C6C6 solid 2px",
     backgroundColor: "#fff",
-    backgroundImage: "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
     [theme.breakpoints.down("sm")]: {
       width: 20,
       height: 20,
@@ -169,7 +208,8 @@ const useStyles = makeStyles((theme) => ({
   checkedIcon: {
     backgroundColor: "#2F9D7E",
     borderColor: "#2F9D7E",
-    backgroundImage: "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
     "&:before": {
       display: "block",
       width: 32,
@@ -208,7 +248,7 @@ const useStyles = makeStyles((theme) => ({
   formLabelMatrix: { alignItems: "center", margin: "0 auto" },
   timeMatrix: {
     "& div": {
-      marginTop: "0px"
+      marginTop: "0px",
     },
   },
   firstTr: {
@@ -219,7 +259,7 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
       verticalAlign: "top",
       border: 0,
-    }
+    },
   },
   secondTr: {
     position: "sticky",
@@ -229,14 +269,14 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 0 6px rgba(0,0,0,0.25)",
     "& td": {
       padding: "5px 0",
-      zIndex: 2
-    }
+      zIndex: 2,
+    },
   },
   matrix: {
     "& td": {
       paddingLeft: "3px !important",
       paddingRight: "3px !important",
-      width: "3%"
+      width: "3%",
     },
     "& tr": {
       padding: "25px 0",
@@ -246,8 +286,8 @@ const useStyles = makeStyles((theme) => ({
       position: "sticky",
       left: 0,
       background: "#fff",
-      zIndex: 1
-    }
+      zIndex: 1,
+    },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -262,9 +302,12 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "600",
       fontSize: 18,
       width: "100%",
+      display: "flex",
+      alignItems: "center",
       [theme.breakpoints.up("sm")]: {
         textAlign: "left",
         margin: "0 55px",
+        justifyContent: "center",
       },
     },
   },
@@ -321,7 +364,7 @@ const useStyles = makeStyles((theme) => ({
   },
   required: {
     "& span": { color: "red" },
-    "& sup": { color: "red" }
+    "& sup": { color: "red" },
   },
   sliderResponse: {
     marginTop: "60px",
@@ -339,7 +382,7 @@ const useStyles = makeStyles((theme) => ({
   },
   questionhead: {
     textAlign: "center",
-    padding: "8px",
+    padding: "0 8px",
     "& h5": { fontSize: 18, fontWeight: 600 },
     "& span": {
       marginTop: 15,
@@ -350,18 +393,28 @@ const useStyles = makeStyles((theme) => ({
   },
   checkP: {
     maxWidth: 65,
-    display: "block"
+    display: "block",
   },
   timeHours: {
     padding: 0,
     borderBottom: "#BCEFDD solid 2px",
     minWidth: 57,
     "& div": { padding: 0, margin: 0 },
-    "& p": { fontSize: 40, fontWeight: 600, color: "rgba(0, 0, 0, 0.75)", textAlign: "center" },
+    "& p": {
+      fontSize: 40,
+      fontWeight: 600,
+      color: "rgba(0, 0, 0, 0.75)",
+      textAlign: "center",
+    },
   },
   textCaption: { color: "rgba(0, 0, 0, 0.5)", fontSize: 10 },
   centerBar: { height: 4, background: "#BCEFDD" },
-  customTrack: { width: 4, height: 4, borderRadius: "50%", background: "#65DEB4" },
+  customTrack: {
+    width: 4,
+    height: 4,
+    borderRadius: "50%",
+    background: "#65DEB4",
+  },
   customThumb: { width: 24, height: 24, marginTop: -10, marginLeft: -10 },
   noInitialVal: { display: "none" },
   menuPaper: {
@@ -393,14 +446,21 @@ const useStyles = makeStyles((theme) => ({
     background: "#E7F8F2 !important",
   },
   surveyQuestionNav: {
-    textAlign: "center", position: "fixed", width: "100%", bottom: 50,
-    [`${theme.breakpoints.down('md')} and (orientation: landscape)`]: {
+    textAlign: "center",
+    position: "fixed",
+    width: "100%",
+    bottom: 50,
+    [`${theme.breakpoints.down("md")} and (orientation: landscape)`]: {
       position: "relative",
       bottom: 30,
-    }
+    },
   },
   surveyQuestionAlign: {
-    "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
+    "& blockquote": {
+      borderLeft: "5px solid #ccc",
+      margin: "1.5em 10px",
+      padding: "0.5em 10px",
+    },
     "& code": {
       padding: ".2rem .5rem",
       margin: "0 .2rem",
@@ -417,7 +477,7 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "left",
       padding: "0 40px",
       maxHeight: "55%",
-      position: "absolute",
+      // position: "absolute",
       overflow: "auto",
       width: "100%",
     },
@@ -427,13 +487,36 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 20px !important",
     },
   },
-  radioLabel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", alignItems: "center !important", textAlign: "left" },
+  radioLabel: {
+    fontSize: 14,
+    color: "rgba(0, 0, 0, 0.5)",
+    alignItems: "center !important",
+    textAlign: "left",
+  },
 
   chatDrawerCustom: { minWidth: 411 },
   questionScroll: {
     textAlign: "center",
-    maxHeight: "60vh",
+    // maxHeight: "calc(100vh - 400px)",
     overflow: "auto",
+    // "&::-webkit-scrollbar, &::scrollbar": {
+    //   appearance: "none",
+    // },
+    // "&::-webkit-scrollbar:vertical, &::scrollbar:vertical": {
+    //   width: 8,
+    // },
+    // "&::-webkit-scrollbar:horizontal, &::scrollbar:horizontal": {
+    //   height: 8,
+    // },
+    // "&::-webkit-scrollbar-thumb, &::scrollbar-thumb": {
+    //   backgroundColor: "rgba(0, 0, 0, .5)",
+    //   borderRadius: 10,
+    //   border: "2px solid #ffffff",
+    // },
+    // "&::-webkit-scrollbar-track, &::scrollbar-track": {
+    //   borderRadius: 10,
+    //   backgroundColor: "#ffffff",
+    // },
     [theme.breakpoints.down("xs")]: {
       overflow: "auto",
     },
@@ -449,7 +532,7 @@ const useStyles = makeStyles((theme) => ({
     "& div": {
       [theme.breakpoints.down("xs")]: {
         maxWidth: "100px",
-        width: "30%"
+        width: "30%",
       },
     },
   },
@@ -465,41 +548,78 @@ const useStyles = makeStyles((theme) => ({
     background: "#fff",
     zIndex: 2,
   },
-
-}))
+  headerTitleIcon: {
+    background: "none",
+    boxShadow: "none",
+    width: 36,
+    height: 36,
+    color: "#666",
+    marginLeft: 8,
+    "& .material-icons": {
+      fontSize: "2rem",
+    },
+    "&:hover": {
+      background: "#fff",
+    },
+    "&.active": {
+      color: "#e3b303",
+    },
+  },
+}));
 function range(start, stop, step = 1) {
   return [...Array(stop - start).keys()].map((v, i) =>
     start + i * step < 10 ? "0" + (start + i * step) : start + i * step
-  )
+  );
 }
-const CHARACTER_LIMIT = 800
+const CHARACTER_LIMIT = 800;
+
+const scrollBox = (offset) => {
+  const box = document.getElementById("scrollBox");
+  box.scrollBy({ top: offset, behavior: "smooth" });
+};
 
 function RateAnswer({ checked, onChange, value }) {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
-    <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
-      {checked && <Typography className={classes.checkText}>
-        <ReactMarkdown children={value?.toString()} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-          link: LinkRenderer, sub: (props) => {
-            return <sub>{props?.children}</sub>;
-          }, sup: (props) => {
-            return <sup>{props.children}</sup>;
-          }
-        }} />
-      </Typography>}
+    <div
+      onClick={() => onChange(value)}
+      className={checked ? classes.checkedContainer : classes.uncheckContainer}
+    >
+      {checked && (
+        <Typography className={classes.checkText}>
+          <ReactMarkdown
+            children={value?.toString()}
+            skipHtml={false}
+            plugins={[gfm, emoji]}
+            renderers={{
+              link: LinkRenderer,
+              sub: (props) => {
+                return <sub>{props?.children}</sub>;
+              },
+              sup: (props) => {
+                return <sup>{props.children}</sup>;
+              },
+            }}
+          />
+        </Typography>
+      )}
     </div>
-  )
+  );
 }
 
 function LinkRenderer(data: any) {
-  return <a href={data.href} target="_blank">{data.children}</a>
+  return (
+    <a href={data.href} target="_blank">
+      {data.children}
+    </a>
+  );
 }
 
 function RadioOption({ onChange, options, value, ...props }) {
-  const [selectedValue, setSelectedValue] = useState(value)
-  const classes = useStyles()
-  const { t } = useTranslation()
+  const [selectedValue, setSelectedValue] = useState(value);
+  const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <FormControl component="fieldset" className={classes.radioGroup}>
@@ -508,15 +628,20 @@ function RadioOption({ onChange, options, value, ...props }) {
         name="option"
         value={`${selectedValue}`}
         onChange={(event) => {
-          setSelectedValue(event.target.value)
-          onChange(event.target.value)
+          setSelectedValue(event.target.value);
+          onChange(event.target.value);
         }}
       >
         {options?.map((x) => (
           <FormControlLabel
             key={x.label}
             value={`${x.value}`}
-            style={{ alignItems: x.value.length > 25 && !!x.description ? "flex-start" : undefined }}
+            style={{
+              alignItems:
+                x.value.length > 25 && !!x.description
+                  ? "flex-start"
+                  : undefined,
+            }}
             control={
               <Radio
                 className={classes.radioroot}
@@ -525,11 +650,15 @@ function RadioOption({ onChange, options, value, ...props }) {
                 size="medium"
                 onClick={() => {
                   if (selectedValue === `${x.value}`) {
-                    setSelectedValue("")
-                    onChange(undefined)
+                    setSelectedValue("");
+                    onChange(undefined);
                   }
                 }}
-                checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
+                checkedIcon={
+                  <span
+                    className={classnames(classes.icon, classes.checkedIcon)}
+                  />
+                }
                 icon={<span className={classes.icon} />}
               />
             }
@@ -537,24 +666,49 @@ function RadioOption({ onChange, options, value, ...props }) {
               <Box className={classes.radioLabelText}>
                 <Typography
                   variant="body2"
-                  style={{ color: selectedValue === `${x.value}` ? "black" : "rgba(0, 0, 0, 0.7)" }}
+                  style={{
+                    color:
+                      selectedValue === `${x.value}`
+                        ? "black"
+                        : "rgba(0, 0, 0, 0.7)",
+                  }}
                 >
-                  <ReactMarkdown children={t(x.label?.toString())} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                    link: LinkRenderer, sub: (props) => {
-                      return <sub>{props?.children}</sub>;
-                    }, sup: (props) => {
-                      return <sup>{props.children}</sup>;
-                    }
-                  }} />
+                  <ReactMarkdown
+                    children={t(x.label?.toString())}
+                    skipHtml={false}
+                    plugins={[gfm, emoji]}
+                    renderers={{
+                      link: LinkRenderer,
+                      sub: (props) => {
+                        return <sub>{props?.children}</sub>;
+                      },
+                      sup: (props) => {
+                        return <sup>{props.children}</sup>;
+                      },
+                    }}
+                  />
                 </Typography>
-                <Typography component="span" variant="caption" className={classes.lightGray}>
-                  <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                    link: LinkRenderer, sub: (props) => {
-                      return <sub>{props?.children}</sub>;
-                    }, sup: (props) => {
-                      return <sup>{props.children}</sup>;
+                <Typography
+                  component="span"
+                  variant="caption"
+                  className={classes.lightGray}
+                >
+                  <ReactMarkdown
+                    children={
+                      !!x.description && ` ${x.description?.toString()}`
                     }
-                  }} />
+                    skipHtml={false}
+                    plugins={[gfm, emoji]}
+                    renderers={{
+                      link: LinkRenderer,
+                      sub: (props) => {
+                        return <sub>{props?.children}</sub>;
+                      },
+                      sup: (props) => {
+                        return <sup>{props.children}</sup>;
+                      },
+                    }}
+                  />
                 </Typography>
               </Box>
             }
@@ -564,74 +718,119 @@ function RadioOption({ onChange, options, value, ...props }) {
         ))}
       </RadioGroup>
     </FormControl>
-  )
+  );
 }
 
 function TimeSelection({ onChange, options, value, ...props }) {
-  const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null)
-  const [anchorE3, setAnchorE3] = React.useState<null | HTMLElement>(null)
-  const currentValue = !!value ? value?.split(":") : ""
-  const [hourSelectedIndex, setHourSelectedIndex] = React.useState(!!value ? currentValue[0] : "01")
-  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].substr(0, 2) : "00")
-  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? (currentValue[1].substr(2, 3) ?? "") : "AM")
-  const { t } = useTranslation()
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
+  const [anchorE3, setAnchorE3] = React.useState<null | HTMLElement>(null);
+  const currentValue = !!value ? value?.split(":") : "";
+  const [hourSelectedIndex, setHourSelectedIndex] = React.useState(
+    !!value ? currentValue[0] : "01"
+  );
+  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(
+    !!value ? currentValue[1].substr(0, 2) : "00"
+  );
+  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(
+    !!value ? currentValue[1].substr(2, 3) ?? "" : "AM"
+  );
+  const { t } = useTranslation();
 
   useEffect(() => {
-    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) + ":" +
-      (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
-        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
-  }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex])
+    onChange(
+      (hourSelectedIndex.length === 1
+        ? "0" + hourSelectedIndex
+        : hourSelectedIndex) +
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
+        (Array.isArray(options) &&
+          !!options[0] &&
+          !!options[0]?.value &&
+          options[0]?.value === "standard")
+          ? ampmSelectedIndex
+          : "")
+    );
+  }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
   const handleClickHours = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClickMinutes = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorE2(event.currentTarget)
-  }
+    setAnchorE2(event.currentTarget);
+  };
 
   const handleClickAmPm = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorE3(event.currentTarget)
-  }
+    setAnchorE3(event.currentTarget);
+  };
 
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: any, type: number) => {
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    index: any,
+    type: number
+  ) => {
     switch (type) {
       case 0:
-        setHourSelectedIndex(index)
-        setAnchorEl(null)
-        break
+        setHourSelectedIndex(index);
+        setAnchorEl(null);
+        break;
       case 1:
-        setMinuteSelectedIndex(index)
-        setAnchorE2(null)
-        break
+        setMinuteSelectedIndex(index);
+        setAnchorE2(null);
+        break;
       case 2:
-        setAmPmSelectedIndex(index)
-        setAnchorE3(null)
-        break
+        setAmPmSelectedIndex(index);
+        setAnchorE3(null);
+        break;
     }
-    onChange((hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
-      ":" + (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
-        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? ampmSelectedIndex : ""))
-  }
+    onChange(
+      (hourSelectedIndex.length === 1
+        ? "0" + hourSelectedIndex
+        : hourSelectedIndex) +
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
+        (Array.isArray(options) &&
+          !!options[0] &&
+          !!options[0]?.value &&
+          options[0]?.value === "standard")
+          ? ampmSelectedIndex
+          : "")
+    );
+  };
   const handleHoursClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
   const handleMinutesClose = () => {
-    setAnchorE2(null)
-  }
+    setAnchorE2(null);
+  };
   const handleAmPmClose = () => {
-    setAnchorE3(null)
-  }
-  const ampm = []
+    setAnchorE3(null);
+  };
+  const ampm = [];
 
-  const hourvalues = (!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard") ? range(1, 13) : range(0, 24)
-  const minutevalues = ["00", "15", "30", "45"]
-  if ((!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) {
+  const hourvalues =
+    (!!options?.timePattern && options?.timePattern === "standard") ||
+    (Array.isArray(options) &&
+      !!options[0] &&
+      !!options[0]?.value &&
+      options[0]?.value === "standard")
+      ? range(1, 13)
+      : range(0, 24);
+  const minutevalues = ["00", "15", "30", "45"];
+  if (
+    (!!options?.timePattern && options?.timePattern === "standard") ||
+    (Array.isArray(options) &&
+      !!options[0] &&
+      !!options[0]?.value &&
+      options[0]?.value === "standard")
+  ) {
     ampm.push(
       <MenuItem
         key="AM"
@@ -641,7 +840,7 @@ function TimeSelection({ onChange, options, value, ...props }) {
       >
         {t("AM")}
       </MenuItem>
-    )
+    );
     ampm.push(
       <MenuItem
         key="PM"
@@ -651,15 +850,25 @@ function TimeSelection({ onChange, options, value, ...props }) {
       >
         {t("PM")}
       </MenuItem>
-    )
+    );
   }
 
   return (
     <Box textAlign="center">
-      <Grid container justify="center" alignItems="center" className={classes.timeWrapper}>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        className={classes.timeWrapper}
+      >
         <Grid item>
           <List component="nav" className={classes.timeHours}>
-            <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickHours}>
+            <ListItem
+              button
+              aria-haspopup="true"
+              aria-controls="lock-menu"
+              onClick={handleClickHours}
+            >
               <ListItemText secondary={hourSelectedIndex} />
             </ListItem>
           </List>
@@ -685,8 +894,17 @@ function TimeSelection({ onChange, options, value, ...props }) {
         </Grid>
         :
         <Grid item>
-          <List component="nav" className={classes.timeHours} aria-label="Device settings">
-            <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickMinutes}>
+          <List
+            component="nav"
+            className={classes.timeHours}
+            aria-label="Device settings"
+          >
+            <ListItem
+              button
+              aria-haspopup="true"
+              aria-controls="lock-menu"
+              onClick={handleClickMinutes}
+            >
               <ListItemText secondary={minuteSelectedIndex} />
             </ListItem>
           </List>
@@ -711,9 +929,22 @@ function TimeSelection({ onChange, options, value, ...props }) {
           </Menu>
         </Grid>
         {((!!options?.timePattern && options?.timePattern === "standard") ||
-          (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) && (<Grid item>
-            <List component="nav" className={classes.timeHours} aria-label="Device settings">
-              <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
+          (Array.isArray(options) &&
+            !!options[0] &&
+            !!options[0]?.value &&
+            options[0]?.value === "standard")) && (
+          <Grid item>
+            <List
+              component="nav"
+              className={classes.timeHours}
+              aria-label="Device settings"
+            >
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="lock-menu"
+                onClick={handleClickAmPm}
+              >
                 <ListItemText secondary={ampmSelectedIndex} />
               </ListItem>
             </List>
@@ -727,15 +958,16 @@ function TimeSelection({ onChange, options, value, ...props }) {
             >
               {ampm}
             </Menu>
-          </Grid>)}
+          </Grid>
+        )}
       </Grid>
     </Box>
-  )
+  );
 }
 
 function TextSection({ onChange, charLimit, value, ...props }) {
-  const classes = useStyles()
-  const [text, setText] = useState(value)
+  const classes = useStyles();
+  const [text, setText] = useState(value);
 
   return (
     <Box className={classes.textfieldwrapper}>
@@ -751,11 +983,15 @@ function TextSection({ onChange, charLimit, value, ...props }) {
           rows={10}
           variant="outlined"
           onChange={(e) => {
-            setText(e.target.value)
-            onChange(e.target.value)
+            setText(e.target.value);
+            onChange(e.target.value);
           }}
           defaultValue={text}
-          helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
+          helperText={
+            text
+              ? `${text.length}/${charLimit} max characters`
+              : `${charLimit} max characters`
+          }
           inputProps={{
             maxLength: charLimit,
           }}
@@ -763,7 +999,7 @@ function TextSection({ onChange, charLimit, value, ...props }) {
         />
       </FormControl>
     </Box>
-  )
+  );
 }
 const CssTextField = withStyles({
   root: {
@@ -780,11 +1016,11 @@ const CssTextField = withStyles({
     borderRadius: 0,
     textAlign: "center",
   },
-})(InputBase)
+})(InputBase);
 
 function ShortTextSection({ onChange, value, ...props }) {
-  const classes = useStyles()
-  const [text, setText] = useState(value)
+  const classes = useStyles();
+  const [text, setText] = useState(value);
 
   return (
     <Box className={classes.textfieldwrapper}>
@@ -792,98 +1028,113 @@ function ShortTextSection({ onChange, value, ...props }) {
         <CssTextField
           value={text}
           onChange={(e) => {
-            setText(e.target.value)
-            onChange(e.target.value)
+            setText(e.target.value);
+            onChange(e.target.value);
           }}
         />
       </FormControl>
     </Box>
-  )
+  );
 }
 
-
 function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
-  const [val, setValue] = useState(value)
-  const { t } = useTranslation()
+  const [val, setValue] = useState(value);
+  const { t } = useTranslation();
 
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <Box textAlign="center" mt={mtValue}>
-      <Grid direction="row" container justify="center" style={{ alignItems: "top" }}>
+      <Grid
+        direction="row"
+        container
+        justify="center"
+        style={{ alignItems: "top" }}
+      >
         {options.map((option) => (
           <Box mr={1}>
             <RateAnswer
               checked={val === option.value}
               onChange={() => {
-                setValue(option.value)
-                onChange(option.value)
+                setValue(option.value);
+                onChange(option.value);
               }}
               value={option.value}
             />
             {type !== "matrix" && (
               <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown children={t(option.description?.toString())} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                  link: LinkRenderer, sub: (props) => {
-                    return <sub>{props?.children}</sub>;
-                  }, sup: (props) => {
-                    return <sup>{props.children}</sup>;
-                  }
-                }} />
+                <ReactMarkdown
+                  children={t(option.description?.toString())}
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props.children}</sup>;
+                    },
+                  }}
+                />
               </Typography>
             )}
           </Box>
         ))}
       </Grid>
     </Box>
-  )
+  );
 }
 
 function Rating({ onChange, options, value, ...props }) {
-  const classes = useStyles()
+  const classes = useStyles();
   const getText = (val) => {
-    let sliderValue = null
+    let sliderValue = null;
     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
     options.map((mark) => {
       if (mark.value === val) {
-        sliderValue = !!mark.description && mark.description.trim().length > 0 ? mark.description : mark.value
+        sliderValue =
+          !!mark.description && mark.description.trim().length > 0
+            ? mark.description
+            : mark.value;
       }
-    })
-    return sliderValue
-  }
+    });
+    return sliderValue;
+  };
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [valueText, setValueText] = useState(
-    !!value
-      ? getText(value)
-      : null
+    !!value ? getText(value) : null
     // : !!options[0].description && options[0].description.trim().length > 0
     // ? options[0].description
     // : options[0].value
-  )
-  const [sliderValue, setSliderValue] = useState(!!value ? value : null)
+  );
+  const [sliderValue, setSliderValue] = useState(!!value ? value : null);
 
   useEffect(() => {
-    onChange(sliderValue)
-  }, [])
+    onChange(sliderValue);
+  }, []);
 
   const valuetext = (value: number) => {
-    return `${options[value]}`
-  }
+    return `${options[value]}`;
+  };
   const getSliderValue = (val) => {
-    let sliderValue = null
+    let sliderValue = null;
     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
-    const slValue = val
+    const slValue = val;
     options.map((mark) => {
       if (parseInt(mark.value, 10) === slValue) {
-        sliderValue = !!mark.description && mark.description.trim().length > 0 ? mark.description : mark.value
+        sliderValue =
+          !!mark.description && mark.description.trim().length > 0
+            ? mark.description
+            : mark.value;
       }
-    })
-    setSliderValue(val)
-    setValueText(sliderValue)
-    onChange(val)
-    return sliderValue
-  }
+    });
+    setSliderValue(val);
+    setValueText(sliderValue);
+    onChange(val);
+    return sliderValue;
+  };
   return (
     <Box textAlign="center" mt={5}>
       <Slider
@@ -893,11 +1144,16 @@ function Rating({ onChange, options, value, ...props }) {
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={
-          parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) < 0
-            ? Math.abs(parseInt(options[0].value, 10)) + parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) > 0
-              ? Math.abs(parseInt(options[0].value, 10)) - parseInt(options[1]?.value ?? 0, 10)
-              : parseInt(options[1]?.value ?? 0, 10) - parseInt(options[0].value, 10)
+          parseInt(options[0].value, 10) < 0 &&
+          parseInt(options[1].value ?? 10, 0) < 0
+            ? Math.abs(parseInt(options[0].value, 10)) +
+              parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[0].value, 10) < 0 &&
+              parseInt(options[1].value ?? 10, 0) > 0
+            ? Math.abs(parseInt(options[0].value, 10)) -
+              parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[1]?.value ?? 0, 10) -
+              parseInt(options[0].value, 10)
         }
         marks={options}
         min={parseInt(options[0].value, 10)}
@@ -907,74 +1163,134 @@ function Rating({ onChange, options, value, ...props }) {
           root: classes.slider,
           rail: classes.centerBar,
           mark: classes.customTrack,
-          thumb: classes.customThumb + (sliderValue !== null ? "" : " " + classes.noInitialVal),
+          thumb:
+            classes.customThumb +
+            (sliderValue !== null ? "" : " " + classes.noInitialVal),
           valueLabel: classes.countlabel,
         }}
         onChange={(evt, val) => {
-          getSliderValue(val)
+          getSliderValue(val);
         }}
       />
-      <Grid container className={classes.sliderValueLabel} direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        className={classes.sliderValueLabel}
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         <Grid item>
-          <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-            <ReactMarkdown children={!!options[0].description && options[0].description.trim().length === 0
-              ? options[0].value
-              : options[0].description} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                link: LinkRenderer, sub: (props) => {
+          <Typography
+            variant="caption"
+            className={classes.textCaption}
+            display="block"
+            gutterBottom
+          >
+            <ReactMarkdown
+              children={
+                !!options[0].description &&
+                options[0].description.trim().length === 0
+                  ? options[0].value
+                  : options[0].description
+              }
+              skipHtml={false}
+              plugins={[gfm, emoji]}
+              renderers={{
+                link: LinkRenderer,
+                sub: (props) => {
                   return <sub>{props?.children}</sub>;
-                }, sup: (props) => {
+                },
+                sup: (props) => {
                   return <sup>{props?.children}</sup>;
-                }
-              }} />
+                },
+              }}
+            />
           </Typography>
         </Grid>
         <Grid item>
           {options.length > 2 && (
-            <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-              <ReactMarkdown children={!!options[Math.ceil(options.length / 2) - 1].description &&
-                options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
-                ? options[Math.ceil(options.length / 2) - 1].value
-                : options[Math.ceil(options.length / 2) - 1].description} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                  link: LinkRenderer, sub: (props) => {
+            <Typography
+              variant="caption"
+              className={classes.textCaption}
+              display="block"
+              gutterBottom
+            >
+              <ReactMarkdown
+                children={
+                  !!options[Math.ceil(options.length / 2) - 1].description &&
+                  options[Math.ceil(options.length / 2) - 1].description.trim()
+                    .length === 0
+                    ? options[Math.ceil(options.length / 2) - 1].value
+                    : options[Math.ceil(options.length / 2) - 1].description
+                }
+                skipHtml={false}
+                plugins={[gfm, emoji]}
+                renderers={{
+                  link: LinkRenderer,
+                  sub: (props) => {
                     return <sub>{props?.children}</sub>;
-                  }, sup: (props) => {
+                  },
+                  sup: (props) => {
                     return <sup>{props.children}</sup>;
-                  }
-                }} />
+                  },
+                }}
+              />
             </Typography>
           )}
         </Grid>
         <Grid item>
-          <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-            <ReactMarkdown children={!!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
-              ? options[options.length - 1].value
-              : options[options.length - 1].description} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                link: LinkRenderer, sub: (props) => {
+          <Typography
+            variant="caption"
+            className={classes.textCaption}
+            display="block"
+            gutterBottom
+          >
+            <ReactMarkdown
+              children={
+                !!options[options.length - 1].description &&
+                options[options.length - 1].description.trim().length === 0
+                  ? options[options.length - 1].value
+                  : options[options.length - 1].description
+              }
+              skipHtml={false}
+              plugins={[gfm, emoji]}
+              renderers={{
+                link: LinkRenderer,
+                sub: (props) => {
                   return <sub>{props?.children}</sub>;
-                }, sup: (props) => {
+                },
+                sup: (props) => {
                   return <sup>{props.children}</sup>;
-                }
-              }} />
-
+                },
+              }}
+            />
           </Typography>
         </Grid>
       </Grid>
       <Box className={classes.sliderResponse}>
         <Typography variant="caption" display="block" gutterBottom>
-          {t("Your response")}<span>:</span>
+          {t("Your response")}
+          <span>:</span>
         </Typography>
         <Typography variant="h4">
-          <ReactMarkdown children={t(valueText?.toString())} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-            link: LinkRenderer, sub: (props) => {
-              return <sub>{props?.children}</sub>;
-            }, sup: (props) => {
-              return <sup>{props.children}</sup>;
-            }
-          }} />
+          <ReactMarkdown
+            children={t(valueText?.toString())}
+            skipHtml={false}
+            plugins={[gfm, emoji]}
+            renderers={{
+              link: LinkRenderer,
+              sub: (props) => {
+                return <sub>{props?.children}</sub>;
+              },
+              sup: (props) => {
+                return <sup>{props.children}</sup>;
+              },
+            }}
+          />
         </Typography>
       </Box>
     </Box>
-  )
+  );
 }
 
 // // eslint-disable-next-line
@@ -1010,258 +1326,572 @@ function Rating({ onChange, options, value, ...props }) {
 const csvParse = (x) => {
   try {
     if (Array.isArray(x)) return x;
-    if (typeof x !== 'string') return [];
+    if (typeof x !== "string") return [];
     const unescaped = x.replace(/\\"/g, '"');
-    const wrapped = unescaped.trim().startsWith('[') ? unescaped : `[${unescaped}]`;
+    const wrapped = unescaped.trim().startsWith("[")
+      ? unescaped
+      : `[${unescaped}]`;
     let parsed = JSON.parse(wrapped);
     parsed = parsed.map((item) =>
-      typeof item === 'string' ? item.replace(/^"+|"+$/g, '') : item
+      typeof item === "string" ? item.replace(/^"+|"+$/g, "") : item
     );
 
     return parsed;
   } catch (e) {
-    console.error('csvParse error:', e);
+    console.error("csvParse error:", e);
     return [];
   }
 };
-const csvStringify = (x) => (Array?.isArray(x) ? JSON.stringify(x).slice(1, -1) : "")
+const csvStringify = (x) =>
+  Array?.isArray(x) ? JSON.stringify(x).slice(1, -1) : "";
 
-function Matrix({ x, responses, onResponse, activityId, total, index, idx, startTime, setActiveStep, settingsQuestions, handleBack,
-  handleNext, onComplete, ...props }) {
-  const classes = useStyles()
-  const { t } = useTranslation()
-  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const [selectedValue, setSelectedValue] = useState(responses?.current ?? null)
+function Matrix({
+  x,
+  responses,
+  onResponse,
+  activityId,
+  total,
+  index,
+  idx,
+  startTime,
+  setActiveStep,
+  settingsQuestions,
+  handleBack,
+  handleNext,
+  onComplete,
+  ...props
+}) {
+  const classes = useStyles();
+  const { t } = useTranslation();
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
+  const [selectedValue, setSelectedValue] = useState(
+    responses?.current ?? null
+  );
   const getSorted = (options) => {
     return options.sort((a, b) =>
-      parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
-    )
-  }
-
+      parseInt(a.value, 10) > parseInt(b.value, 10)
+        ? 1
+        : parseInt(a.value, 10) < parseInt(b.value, 10)
+        ? -1
+        : 0
+    );
+  };
 
   return (
     <Grid>
       <Box style={{ marginTop: "100px" }}>
         <Box textAlign="center">
-          <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-            {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settingsQuestions}
+          <Typography
+            gutterBottom
+            align="center"
+            classes={{ root: classes.questionTrack }}
+          >
+            {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span>{" "}
+            {settingsQuestions}
           </Typography>
         </Box>
-        <Box className={classes.questionhead}>
-          <Typography variant="caption" className={classes.required}>
-            <ReactMarkdown children={`${t(x.description?.toString() ?? "")}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-              link: LinkRenderer, sub: (props) => {
-                return <sub>{props?.children}</sub>;
-              }, sup: (props) => {
-                return <sup>{props.children}</sup>;
-              }
-            }} />
-          </Typography>
-        </Box>
-        <Grid container direction="row" justify="center" alignItems="flex-start">
-
-          <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}>
+        <Box className="carouselContainer">
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
+            <KeyboardArrowUpIcon />
+          </Button>
+          <div className={classes.scrollBox} id="scrollBox">
             <Box className={classes.questionScroll}>
-              <Table className={classes.matrix}>
-
-                {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert" || x.type === "rating" || x.type === "list" || x.type === "boolean" || x.type === "multiselect") && (
-                  <TableRow className={classes.firstTr}>
-                    <TableCell style={{ minWidth: "30%" }}>{null}</TableCell>
-                    {(x.options || []).map((x) => (
-                      <TableCell className={classes.textCenter}>
-                        {(x.description || "").length > 0 && <ReactMarkdown children={` ${t(x.description?.toString())}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                          link: LinkRenderer, sub: (props) => {
-                            return <sub>{props?.children}</sub>;
-                          }, sup: (props) => {
-                            return <sup>{props.children}</sup>;
-                          }
-                        }} />}
-                      </TableCell>
-                    ))}
-                  </TableRow>)}
-                <TableHead>
-                  {Array.isArray(x.options) && x.options.length > 0 && (x.type === "likert" || x.type === "rating" || x.type === "list" || x.type === "boolean" || x.type === "multiselect") && (
-                    <TableRow className={classes.secondTr}>
-                      <TableCell style={{ minWidth: "30%" }} className={classes.thStick}>{null}</TableCell>
-                      {(x.options || []).map((x) => (
-                        <TableCell className={classes.textCenter}>
-                          <ReactMarkdown children={(x.description || "").length > 0 && (x.value || "").length > 0 ? `(${t(x.value?.toString())})` : `${t(x.value?.toString())}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                            link: LinkRenderer, sub: (props) => {
-                              return <sub>{props?.children}</sub>;
-                            }, sup: (props) => {
-                              return <sup>{props.children}</sup>;
-                            }
-                          }} />
-                        </TableCell>
-                      ))}
-                    </TableRow>)}
-                </TableHead>
-                {(x?.questions || []).map((question, qindex) => (
-                  <TableRow style={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
-                    <TableCell className={classes.required} style={{ minWidth: "30%", maxWidth: "150px" }}>
-                      <ReactMarkdown children={question.required
-                        ? `${t(question?.text) + "<span> *</span>"}` : `${t(question?.text)}`} allowDangerousHtml={true} plugins={[gfm, emoji]} renderers={{
-                          link: LinkRenderer, span: (props) => {
-                            return <sub>{props?.children}</sub>;
-                          }, sup: (props) => {
-                            return <sup>{props.children}</sup>;
-                          }
-                        }} />
-                    </TableCell>
-                    {(Array.isArray(x.options) && (x.options || []).length > 0) ? (
-                      x.type === "list" || x.type === "boolean" || x.type === "likert" ? (
-                        (x.options || []).map((op, k) => (
-                          <TableCell className={classes.textCenter}>
-                            <FormControlLabel
-                              key={`${op.value}`}
-                              value={`${op.value}`}
-                              className={classes.formLabelMatrix}
-                              control={
-                                <Radio
-                                  className={classes.mradioroot}
-                                  disableRipple
-                                  checked={csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
-                                  color="default"
-                                  size="medium"
-                                  checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
-                                  icon={<span className={classes.icon} />}
-                                  onClick={() => {
-                                    setSelectedValue({ ...selectedValue, [idx + qindex]: { item: question.text, value: csvStringify([op.value]) } })
-                                    const response = { item: question.text, value: csvStringify([op.value]) }
-                                    const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                    onResponse(data)
-                                  }}
-                                />
+              <Box className={classes.questionhead}>
+                <Typography variant="caption" className={classes.required}>
+                  <ReactMarkdown
+                    children={`${t(x.description?.toString() ?? "")}`}
+                    skipHtml={false}
+                    plugins={[gfm, emoji]}
+                    renderers={{
+                      link: LinkRenderer,
+                      sub: (props) => {
+                        return <sub>{props?.children}</sub>;
+                      },
+                      sup: (props) => {
+                        return <sup>{props.children}</sup>;
+                      },
+                    }}
+                  />
+                </Typography>
+              </Box>
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+              >
+                <Grid
+                  item
+                  lg={4}
+                  sm={10}
+                  xs={12}
+                  className={
+                    classes.surveyQuestionAlign +
+                    " " +
+                    classes.surveyQuestionMatrixAlign
+                  }
+                >
+                  <Box className={classes.questionScroll}>
+                    <Table className={classes.matrix}>
+                      {Array.isArray(x.options) &&
+                        x.options.length > 0 &&
+                        (x.type === "likert" ||
+                          x.type === "rating" ||
+                          x.type === "list" ||
+                          x.type === "boolean" ||
+                          x.type === "multiselect") && (
+                          <TableRow className={classes.firstTr}>
+                            <TableCell style={{ minWidth: "30%" }}>
+                              {null}
+                            </TableCell>
+                            {(x.options || []).map((x) => (
+                              <TableCell className={classes.textCenter}>
+                                {(x.description || "").length > 0 && (
+                                  <ReactMarkdown
+                                    children={` ${t(
+                                      x.description?.toString()
+                                    )}`}
+                                    skipHtml={false}
+                                    plugins={[gfm, emoji]}
+                                    renderers={{
+                                      link: LinkRenderer,
+                                      sub: (props) => {
+                                        return <sub>{props?.children}</sub>;
+                                      },
+                                      sup: (props) => {
+                                        return <sup>{props.children}</sup>;
+                                      },
+                                    }}
+                                  />
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        )}
+                      <TableHead>
+                        {Array.isArray(x.options) &&
+                          x.options.length > 0 &&
+                          (x.type === "likert" ||
+                            x.type === "rating" ||
+                            x.type === "list" ||
+                            x.type === "boolean" ||
+                            x.type === "multiselect") && (
+                            <TableRow className={classes.secondTr}>
+                              <TableCell
+                                style={{ minWidth: "30%" }}
+                                className={classes.thStick}
+                              >
+                                {null}
+                              </TableCell>
+                              {(x.options || []).map((x) => (
+                                <TableCell className={classes.textCenter}>
+                                  <ReactMarkdown
+                                    children={
+                                      (x.description || "").length > 0 &&
+                                      (x.value || "").length > 0
+                                        ? `(${t(x.value?.toString())})`
+                                        : `${t(x.value?.toString())}`
+                                    }
+                                    skipHtml={false}
+                                    plugins={[gfm, emoji]}
+                                    renderers={{
+                                      link: LinkRenderer,
+                                      sub: (props) => {
+                                        return <sub>{props?.children}</sub>;
+                                      },
+                                      sup: (props) => {
+                                        return <sup>{props.children}</sup>;
+                                      },
+                                    }}
+                                  />
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          )}
+                      </TableHead>
+                      {(x?.questions || []).map((question, qindex) => (
+                        <TableRow
+                          style={{
+                            borderBottom: "1px solid rgba(224, 224, 224, 1)",
+                          }}
+                        >
+                          <TableCell
+                            className={classes.required}
+                            style={{ minWidth: "30%", maxWidth: "150px" }}
+                          >
+                            <ReactMarkdown
+                              children={
+                                question.required
+                                  ? `${t(question?.text) + "<span> *</span>"}`
+                                  : `${t(question?.text)}`
                               }
-                              label={null}
+                              allowDangerousHtml={true}
+                              plugins={[gfm, emoji]}
+                              renderers={{
+                                link: LinkRenderer,
+                                span: (props) => {
+                                  return <sub>{props?.children}</sub>;
+                                },
+                                sup: (props) => {
+                                  return <sup>{props.children}</sup>;
+                                },
+                              }}
                             />
                           </TableCell>
-                        ))
-                      ) : x.type === "multiselect" ? ((x.options || []).map((op, j) => (
-                        <TableCell className={classes.textCenter}>
-                          <FormControlLabel
-                            key={op.value}
-                            value={`${qindex}-${op.value}`}
-                            className={classes.formLabelMatrix}
-                            control={
-                              <GreenCheckbox
-                                className={classes.mradioroot}
-                                checked={
-                                  csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
-                                onClick={() => {
-                                  let values = csvParse(selectedValue[idx + qindex]?.value || [])
-
-                                  if (!csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)) {
-                                    values.push(op.value)
-                                    values = (values || []).filter((elem, i, self) => {
-                                      return i === self.indexOf(elem);
-                                    })
-                                  } else {
-                                    const key = values.indexOf(op.value);
-                                    if (key !== -1) {
-                                      values.splice(key, 1);
+                          {Array.isArray(x.options) &&
+                          (x.options || []).length > 0 ? (
+                            x.type === "list" ||
+                            x.type === "boolean" ||
+                            x.type === "likert" ? (
+                              (x.options || []).map((op, k) => (
+                                <TableCell className={classes.textCenter}>
+                                  <FormControlLabel
+                                    key={`${op.value}`}
+                                    value={`${op.value}`}
+                                    className={classes.formLabelMatrix}
+                                    control={
+                                      <Radio
+                                        className={classes.mradioroot}
+                                        disableRipple
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
+                                        color="default"
+                                        size="medium"
+                                        checkedIcon={
+                                          <span
+                                            className={classnames(
+                                              classes.icon,
+                                              classes.checkedIcon
+                                            )}
+                                          />
+                                        }
+                                        icon={<span className={classes.icon} />}
+                                        onClick={() => {
+                                          setSelectedValue({
+                                            ...selectedValue,
+                                            [idx + qindex]: {
+                                              item: question.text,
+                                              value: csvStringify([op.value]),
+                                            },
+                                          });
+                                          const response = {
+                                            item: question.text,
+                                            value: csvStringify([op.value]),
+                                          };
+                                          const data = updateResponses(
+                                            x,
+                                            response,
+                                            activityId,
+                                            responses,
+                                            idx + qindex,
+                                            startTime,
+                                            setActiveStep,
+                                            total
+                                          );
+                                          onResponse(data);
+                                        }}
+                                      />
                                     }
+                                    label={null}
+                                  />
+                                </TableCell>
+                              ))
+                            ) : x.type === "multiselect" ? (
+                              (x.options || []).map((op, j) => (
+                                <TableCell className={classes.textCenter}>
+                                  <FormControlLabel
+                                    key={op.value}
+                                    value={`${qindex}-${op.value}`}
+                                    className={classes.formLabelMatrix}
+                                    control={
+                                      <GreenCheckbox
+                                        className={classes.mradioroot}
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
+                                        onClick={() => {
+                                          let values = csvParse(
+                                            selectedValue[idx + qindex]
+                                              ?.value || []
+                                          );
+
+                                          if (
+                                            !csvParse(
+                                              selectedValue[idx + qindex]
+                                                ?.value || []
+                                            ).includes(op.value)
+                                          ) {
+                                            values.push(op.value);
+                                            values = (values || []).filter(
+                                              (elem, i, self) => {
+                                                return i === self.indexOf(elem);
+                                              }
+                                            );
+                                          } else {
+                                            const key = values.indexOf(
+                                              op.value
+                                            );
+                                            if (key !== -1) {
+                                              values.splice(key, 1);
+                                            }
+                                          }
+                                          setSelectedValue({
+                                            ...selectedValue,
+                                            [idx + qindex]: {
+                                              item: question.text,
+                                              value: csvStringify(values),
+                                            },
+                                          });
+                                          const response = {
+                                            item: question.text,
+                                            value: csvStringify(values),
+                                          };
+                                          const data = updateResponses(
+                                            x,
+                                            response,
+                                            activityId,
+                                            responses,
+                                            idx + qindex,
+                                            startTime,
+                                            setActiveStep,
+                                            total
+                                          );
+                                          onResponse(data);
+                                        }}
+                                      />
+                                    }
+                                    label={null}
+                                  />
+                                </TableCell>
+                              ))
+                            ) : x.type === "slider" ? (
+                              <TableCell className={classes.textCenter}>
+                                <Rating
+                                  options={getSorted(x.options)}
+                                  onChange={(val) => {
+                                    setSelectedValue({
+                                      ...selectedValue,
+                                      [idx + qindex]: {
+                                        item: question.text,
+                                        value: csvStringify([val]),
+                                      },
+                                    });
+                                    const response = {
+                                      item: question.text,
+                                      value:
+                                        val !== null
+                                          ? csvStringify([val])
+                                          : null,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  value={
+                                    csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    )[0] ?? null
                                   }
-                                  setSelectedValue({ ...selectedValue, [idx + qindex]: { item: question.text, value: csvStringify(values) } })
-                                  const response = { item: question.text, value: csvStringify(values) }
-                                  const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                  onResponse(data)
-                                }}
-                              />
-                            }
-                            label={null}
-                          />
-                        </TableCell>
-                      ))
-                      )
-                        : x.type === "slider" ? (
-                          <TableCell className={classes.textCenter}>
-                            <Rating options={getSorted(x.options)} onChange={(val) => {
-                              setSelectedValue({ ...selectedValue, [idx + qindex]: { item: question.text, value: csvStringify([val]) } })
-                              const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-                              const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                              onResponse(data)
-                            }} value={csvParse(selectedValue[idx + qindex]?.value || [])[0] ?? null} />
-                          </TableCell>
-                        ) : x.type === "rating" ?
-                          ((x.options || []).map((op, j) => (
+                                />
+                              </TableCell>
+                            ) : x.type === "rating" ? (
+                              (x.options || []).map((op, j) => (
+                                <TableCell className={classes.textCenter}>
+                                  <RateAnswer
+                                    checked={csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    ).includes(op.value)}
+                                    onChange={(val) => {
+                                      setSelectedValue({
+                                        ...selectedValue,
+                                        [idx + qindex]: {
+                                          item: question.text,
+                                          value: csvStringify([val]),
+                                        },
+                                      });
+                                      const response = {
+                                        item: question.text,
+                                        value:
+                                          val !== null
+                                            ? csvStringify([val])
+                                            : null,
+                                      };
+                                      const data = updateResponses(
+                                        x,
+                                        response,
+                                        activityId,
+                                        responses,
+                                        idx + qindex,
+                                        startTime,
+                                        setActiveStep,
+                                        total
+                                      );
+                                      onResponse(data);
+                                    }}
+                                    value={op.value}
+                                  />
+                                </TableCell>
+                              ))
+                            ) : x.type === "time" ? (
+                              <Box className={classes.timeMatrix}>
+                                <TimeSelection
+                                  onChange={(val) => {
+                                    const response = {
+                                      item: question.text,
+                                      value: val,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  options={x.options}
+                                  value={
+                                    !!responses?.current[idx + qindex]?.value
+                                      ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                />
+                              </Box>
+                            ) : null
+                          ) : (
                             <TableCell className={classes.textCenter}>
-                              <RateAnswer
-                                checked={csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
-                                onChange={(val) => {
-                                  setSelectedValue({ ...selectedValue, [idx + qindex]: { item: question.text, value: csvStringify([val]) } })
-                                  const response = { item: question.text, value: val !== null ? csvStringify([val]) : null }
-                                  const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                  onResponse(data)
-                                }}
-                                value={op.value}
-                              />
+                              {x?.type === "short" ? (
+                                <ShortTextSection
+                                  onChange={(val) => {
+                                    const response = {
+                                      item: question.text,
+                                      value: val,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  value={
+                                    !!responses?.current[idx + qindex]?.value
+                                      ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                />
+                              ) : x.type === "text" ? (
+                                <TextSection
+                                  onChange={(val) => {
+                                    const response = {
+                                      item: question.text,
+                                      value: val,
+                                    };
+                                    const data = updateResponses(
+                                      x,
+                                      response,
+                                      activityId,
+                                      responses,
+                                      idx + qindex,
+                                      startTime,
+                                      setActiveStep,
+                                      total
+                                    );
+                                    onResponse(data);
+                                  }}
+                                  charLimit={CHARACTER_LIMIT}
+                                  value={
+                                    !!responses?.current[idx + qindex]?.value
+                                      ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                />
+                              ) : x.type === "time" ? (
+                                <Box className={classes.timeMatrix}>
+                                  <TimeSelection
+                                    onChange={(val) => {
+                                      const response = {
+                                        item: question.text,
+                                        value: val,
+                                      };
+                                      const data = updateResponses(
+                                        x,
+                                        response,
+                                        activityId,
+                                        responses,
+                                        idx + qindex,
+                                        startTime,
+                                        setActiveStep,
+                                        total
+                                      );
+                                      onResponse(data);
+                                    }}
+                                    options={x.options}
+                                    value={
+                                      !!responses?.current[idx + qindex]?.value
+                                        ? responses?.current[idx + qindex]
+                                            ?.value
+                                        : undefined
+                                    }
+                                  />
+                                </Box>
+                              ) : null}
                             </TableCell>
-
-                          ))) : x.type === "time" ? (
-                            <Box className={classes.timeMatrix}>
-                              <TimeSelection onChange={(val) => {
-                                const response = { item: question.text, value: val }
-                                const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                onResponse(data)
-                              }} options={x.options} value={!!responses?.current[idx + qindex]?.value ? responses?.current[idx + qindex]?.value : undefined} />
-                            </Box>) : null) :
-                      (
-                        <TableCell className={classes.textCenter}>
-                          {
-
-                            x?.type === "short" ?
-                              (
-                                <ShortTextSection onChange={(val) => {
-                                  const response = { item: question.text, value: val }
-                                  const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                  onResponse(data)
-                                }} value={!!responses?.current[idx + qindex]?.value ? responses?.current[idx + qindex]?.value : undefined} />
-                              )
-                              : x.type === "text" ? (
-                                <TextSection onChange={(val) => {
-                                  const response = { item: question.text, value: val }
-                                  const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                  onResponse(data)
-                                }} charLimit={CHARACTER_LIMIT} value={!!responses?.current[idx + qindex]?.value ? responses?.current[idx + qindex]?.value : undefined} />
-                              ) :
-                                x.type === "time" ? (
-                                  <Box className={classes.timeMatrix}>
-                                    <TimeSelection onChange={(val) => {
-                                      const response = { item: question.text, value: val }
-                                      const data = updateResponses(x, response, activityId, responses, idx + qindex, startTime, setActiveStep, total)
-                                      onResponse(data)
-                                    }} options={x.options} value={!!responses?.current[idx + qindex]?.value ? responses?.current[idx + qindex]?.value : undefined} />
-                                  </Box>) :
-                                  null
-                          }
-                        </TableCell>
-                      )
-                    }
-
-                  </TableRow>
-                ))}
-              </Table>
-            </Box>
-          </Grid>
-          {/* <div className={classes.sliderActionsContainer}>
+                          )}
+                        </TableRow>
+                      ))}
+                    </Table>
+                  </Box>
+                </Grid>
+                {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settingsQuestions - 1 && (
               <Fab onClick={index === settingsQuestions - 1 ? onComplete : handleNext} className={classes.btngreen + " " + classes.marginBottom40} >
                 {t("Submit")}
               </Fab>
             )}
           </div> */}
-        </Grid>
+              </Grid>
+            </Box>
+          </div>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
+            <KeyboardArrowDownIcon />
+          </Button>
+        </Box>
       </Box>
     </Grid>
-  )
+  );
 }
 
 function MultiSelectResponse({ onChange, options, value, ...props }) {
-  const [selectedValue, setSelectedValue] = useState(value || "")
-  const selection = csvParse(selectedValue)
-  const classes = useStyles()
-  const { t } = useTranslation()
+  const [selectedValue, setSelectedValue] = useState(value || "");
+  const selection = csvParse(selectedValue);
+  const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <FormGroup
@@ -1275,17 +1905,20 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
           className={classes.mrgBtm}
           key={x.label}
           value={`${x.value}`}
-          style={{ alignItems: x.value.length > 20 && !!x.description ? "flex-start" : undefined }}
+          style={{
+            alignItems:
+              x.value.length > 20 && !!x.description ? "flex-start" : undefined,
+          }}
           control={
             <GreenCheckbox
               checked={selection.includes(`${x.value}`)}
               onClick={() => {
                 const targetValue = !selection.includes(`${x.value}`)
                   ? [...selection, `${x.value}`]
-                  : selection.filter((y) => y !== `${x.value}`)
-                const target = csvStringify(targetValue)
-                setSelectedValue(target)
-                onChange(target)
+                  : selection.filter((y) => y !== `${x.value}`);
+                const target = csvStringify(targetValue);
+                setSelectedValue(target);
+                onChange(target);
               }}
             />
           }
@@ -1293,24 +1926,42 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
             <Box className={classes.radioLabelText}>
               <Typography
                 variant="body2"
-                style={{ color: selection.includes(`${x.value}`) ? "black" : "rgba(0, 0, 0, 0.7)" }}
+                style={{
+                  color: selection.includes(`${x.value}`)
+                    ? "black"
+                    : "rgba(0, 0, 0, 0.7)",
+                }}
               >
-                <ReactMarkdown children={t(x.label?.toString())} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                  link: LinkRenderer, sub: (props) => {
-                    return <sub>{props?.children}</sub>;
-                  }, sup: (props) => {
-                    return <sup>{props.children}</sup>;
-                  }
-                }} />
+                <ReactMarkdown
+                  children={t(x.label?.toString())}
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props.children}</sup>;
+                    },
+                  }}
+                />
               </Typography>
               <Box className={classes.lightGray}>
-                <ReactMarkdown children={!!x.description && ` ${x.description?.toString()}`} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-                  link: LinkRenderer, sub: (props) => {
-                    return <sub>{props?.children}</sub>;
-                  }, sup: (props) => {
-                    return <sup>{props.children}</sup>;
-                  }
-                }} />
+                <ReactMarkdown
+                  children={!!x.description && ` ${x.description?.toString()}`}
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props.children}</sup>;
+                    },
+                  }}
+                />
               </Box>
             </Box>
           }
@@ -1318,122 +1969,229 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
         />
       ))}
     </FormGroup>
-  )
+  );
 }
 
-
-function Question({ onResponse, text, desc, required, type, options, value, startTime, currentIndex, settings, setSettings, ...props }) {
-  const { t } = useTranslation()
+function Question({
+  onResponse,
+  text,
+  desc,
+  required,
+  type,
+  options,
+  value,
+  startTime,
+  currentIndex,
+  settings,
+  setSettings,
+  ...props
+}) {
+  const { t } = useTranslation();
   const onChange = (value) => {
-    const cleanedValue = String(value).replace(/^"(.*)"$/, '$1');
+    const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
+    // let enabledActivities: { question: string; value: string }[] = [];
+    // const enabledActivitiesStr = localStorage.getItem("enabledActivities");
+    // if (enabledActivitiesStr !== null) {
+    //   enabledActivities = JSON.parse(enabledActivitiesStr);
+    // }
+    // const existingActivity = enabledActivities.find(
+    //   (activity) => activity.question === text
+    // );
+
+    // if (existingActivity && existingActivity.value !== value) {
+    //   enabledActivities = enabledActivities.filter(
+    //     (activity) => !(activity.question === text)
+    //   );
+    //   localStorage.setItem("enabledActivities", JSON.stringify(enabledActivities));
+
     if (currentIndex === settings.length - 1) {
-      const selectedOption = options?.find(opt => opt.value === cleanedValue);
+      const selectedOption = options?.find((opt) => opt.value === cleanedValue);
       if (selectedOption?.contigencySettings?.enable_contigency) {
         if (selectedOption.contigencySettings.contigency_type === "activity") {
+          let enabledActivities: { question: string; value: string }[] = [];
+          const enabledActivitiesStr =
+            localStorage.getItem("enabledActivities");
+
+          if (enabledActivitiesStr !== null) {
+            enabledActivities = JSON.parse(enabledActivitiesStr);
+          }
+
+          const alreadyEnabled = enabledActivities.some(
+            (activity) => activity.question === text && activity.value === value
+          );
+
+          if (!alreadyEnabled) {
+            enabledActivities.push({
+              question: text,
+              value: value,
+            });
+            localStorage.setItem(
+              "enabledActivities",
+              JSON.stringify(enabledActivities)
+            );
+          }
           if (typeof window !== "undefined" && window.parent) {
+            // const lastIndex = cleanedValue ? currentIndex : 0;
+            localStorage.setItem("lastAnsweredIndex", currentIndex);
             window.parent.postMessage(
               {
                 type: "OPEN_ACTIVITY",
                 activityId: selectedOption.contigencySettings.activity,
               },
-              "*",
+              "*"
             );
           }
         }
       }
     }
     onResponse({ item: text, value: cleanedValue });
-  }
-  const classes = useStyles()
+  };
+  const classes = useStyles();
   // FIXME: CheckboxResponse, SwitchResponse
-  let component = <Box />
-  const binaryOpts = options ?? [
-    { description: t("Yes"), value: "Yes" /* true */ },
-    { description: t("No"), value: "No" /* false */ },
-  ]
+  let component = <Box />;
 
-  const likertOpts = options ?? [
-    { description: t("Nearly All the Time"), value: 3 },
-    { description: t("More than Half the Time"), value: 2 },
-    { description: t("Several Times"), value: 1 },
-    { description: t("Not at all"), value: 0 },
-  ]
-
-  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
 
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
-        parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
-      )
-      component = <Rating options={options} onChange={onChange} value={!!value ? value.value : undefined} />
-      break
+        parseInt(a.value, 10) > parseInt(b.value, 10)
+          ? 1
+          : parseInt(a.value, 10) < parseInt(b.value, 10)
+          ? -1
+          : 0
+      );
+      component = (
+        <Rating
+          options={options}
+          onChange={onChange}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "rating":
-      component = <RadioRating options={options} type="normal" mtValue={!supportsSidebar ? 0 : 5} onChange={onChange} value={!!value ? value.value : undefined} />
-      break
+      component = (
+        <RadioRating
+          options={options}
+          type="normal"
+          mtValue={!supportsSidebar ? 0 : 5}
+          onChange={onChange}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "likert":
     case "boolean":
     case "select":
     case "list":
-      const selectOptions = type === "boolean" ? binaryOpts : type === "likert" ? likertOpts : options
-      component = <RadioOption options={selectOptions} onChange={onChange} value={!!value ? value.value : undefined} />
-      break
+      const selectOptions = options;
+      component = (
+        <RadioOption
+          options={selectOptions}
+          onChange={onChange}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "short":
-      component = <ShortTextSection onChange={onChange} value={!!value ? value.value : undefined} />
-      break
+      component = (
+        <ShortTextSection
+          onChange={onChange}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "text":
       component = (
-        <TextSection onChange={onChange} charLimit={CHARACTER_LIMIT} value={!!value ? value.value : undefined} />
-      )
-      break
+        <TextSection
+          onChange={onChange}
+          charLimit={CHARACTER_LIMIT}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "time":
-      component = <TimeSelection onChange={onChange} options={options} value={!!value ? value.value : undefined} />
-      break
+      component = (
+        <TimeSelection
+          onChange={onChange}
+          options={options}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
     case "multiselect":
       component = (
-        <MultiSelectResponse options={options} onChange={onChange} value={!!value ? value.value : undefined} />
-      )
-      break
+        <MultiSelectResponse
+          options={options}
+          onChange={onChange}
+          value={!!value ? value.value : undefined}
+        />
+      );
+      break;
   }
 
   return (
     <Grid>
       <Box className={classes.questionhead}>
         <Typography variant="caption" className={classes.required}>
-          <ReactMarkdown children={t(`${text}`) + (!!required ? "<span>*</span>" : "")} allowDangerousHtml={true} plugins={[gfm, emoji]} renderers={{
-            link: LinkRenderer, span: (props) => {
-              return <sub>{props?.children}</sub>;
-            }, sup: (props) => {
-              return <sup>{props.children}</sup>;
-            }
-          }} />
+          <ReactMarkdown
+            children={t(`${text}`) + (!!required ? "<span>*</span>" : "")}
+            allowDangerousHtml={true}
+            plugins={[gfm, emoji]}
+            renderers={{
+              link: LinkRenderer,
+              span: (props) => {
+                return <sub>{props?.children}</sub>;
+              },
+              sup: (props) => {
+                return <sup>{props.children}</sup>;
+              },
+            }}
+          />
         </Typography>
       </Box>
       <Box className={classes.questionhead}>
-        <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>
-          <ReactMarkdown children={type === "slider"
-            ? t(
-              `${options[0].value} being ${!!options[0].description && options[0].description.trim().length > 0
-                ? options[0].description
-                : options[0].value
-              }, 
-                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description && options[options.length - 1].description.trim().length > 0
-                ? options[options.length - 1].description
-                : options[options.length - 1].value
-              }`
-            )
-            : !!desc && t(`${desc}`)} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-              link: LinkRenderer, sub: (props) => {
+        <Typography
+          variant="caption"
+          display="block"
+          style={{ lineHeight: "0.66" }}
+        >
+          <ReactMarkdown
+            children={
+              type === "slider"
+                ? t(
+                    `${options[0].value} being ${
+                      !!options[0].description &&
+                      options[0].description.trim().length > 0
+                        ? options[0].description
+                        : options[0].value
+                    }, 
+                  ${options[options.length - 1].value} being ${
+                      !!options[options.length - 1].description &&
+                      options[options.length - 1].description.trim().length > 0
+                        ? options[options.length - 1].description
+                        : options[options.length - 1].value
+                    }`
+                  )
+                : !!desc && t(`${desc}`)
+            }
+            skipHtml={false}
+            plugins={[gfm, emoji]}
+            renderers={{
+              link: LinkRenderer,
+              sub: (props) => {
                 return <sub>{props?.children}</sub>;
-              }, sup: (props) => {
+              },
+              sup: (props) => {
                 return <sup>{props.children}</sup>;
-              }
-            }} />
+              },
+            }}
+          />
         </Typography>
       </Box>
       <Box className={classes.questionScroll}>{component}</Box>
     </Grid>
-  )
+  );
 }
 function Questions({
   idx,
@@ -1452,71 +2210,131 @@ function Questions({
   setSettings,
   ...props
 }) {
-  const classes = useStyles()
-  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const { t } = useTranslation()
+  const classes = useStyles();
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
+  const { t } = useTranslation();
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
-        <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-          {`${t("Question")}`} {(index + 1)} <span>{`${t("of")}`}</span> {settings.length}
+        <Typography
+          gutterBottom
+          align="center"
+          classes={{ root: classes.questionTrack }}
+        >
+          {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span>{" "}
+          {settings.length}
         </Typography>
       </Box>
 
-      <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign}>
-          {x && (<Question
-            text={x?.text}
-            type={x?.type}
-            required={x?.required}
-            desc={x?.description ?? null}
-            options={Array.isArray(x?.options) ? x?.options?.map((y) => ({ ...y, label: y.value })) : x.options}
-            value={responses.current[idx] ?? null}
-            onResponse={(response) => {
-              const data = updateResponses(x, response, activityId, responses, idx, startTime, setActiveStep, totalQuestions)
-              onResponse(data)
-            }}
-            startTime={new Date().getTime()}
-            currentIndex={index}
-            settings={settings}
-            setSettings={setSettings}
-          />
-          )}
-          {/* <div className={classes.sliderActionsContainer}>
+      <Box className={classes.questionScroll}>
+        <Box className="carouselContainer">
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
+            <KeyboardArrowUpIcon />
+          </Button>
+          <div className={classes.scrollBox} id="scrollBox">
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+            >
+              <Grid
+                item
+                lg={4}
+                sm={10}
+                xs={12}
+                className={classes.surveyQuestionAlign}
+              >
+                {x && (
+                  <Question
+                    text={x?.text}
+                    type={x?.type}
+                    required={x?.required}
+                    desc={x?.description ?? null}
+                    options={
+                      Array.isArray(x?.options)
+                        ? x?.options?.map((y) => ({ ...y, label: y.value }))
+                        : x.options
+                    }
+                    value={responses.current[idx] ?? null}
+                    onResponse={(response) => {
+                      const data = updateResponses(
+                        x,
+                        response,
+                        activityId,
+                        responses,
+                        idx,
+                        startTime,
+                        setActiveStep,
+                        totalQuestions
+                      );
+                      onResponse(data);
+                    }}
+                    startTime={new Date().getTime()}
+                    currentIndex={index}
+                    settings={settings}
+                    setSettings={setSettings}
+                  />
+                )}
+                {/* <div className={classes.sliderActionsContainer}>
             {supportsSidebar && index === settings.length - 1 && (
               <Fab onClick={index === settings.length - 1 ? onComplete : handleNext} className={classes.btngreen}>
                 {t("Submit")}
               </Fab>
             )}
           </div> */}
-        </Grid>
-      </Grid>
+              </Grid>
+            </Grid>
+          </div>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
+            <KeyboardArrowDownIcon />
+          </Button>
+        </Box>
+      </Box>
     </Box>
-  )
+  );
 }
 
-const updateResponses = (x, response, activityId, responses, idx, startTime, setActiveStep, total) => {
-  responses.current[idx] = response
+const updateResponses = (
+  x,
+  response,
+  activityId,
+  responses,
+  idx,
+  startTime,
+  setActiveStep,
+  total
+) => {
+  responses.current[idx] = response;
   if (x.type !== "multiselect") {
-    setActiveStep((prev) => prev + 1)
+    setActiveStep((prev) => prev + 1);
   }
-  response.duration = new Date().getTime() - startTime
+  response.duration = new Date().getTime() - startTime;
 
-  response.endTime = new Date().getTime()
-  response.type = null
-  response.level = null
+  response.endTime = new Date().getTime();
+  response.type = null;
+  response.level = null;
 
-  localStorage.setItem("activity-survey-" + activityId, JSON.stringify(Array.from({
+  localStorage.setItem(
+    "activity-survey-" + activityId,
+    JSON.stringify(
+      Array.from({
+        ...responses.current,
+        length: total,
+      })
+    )
+  );
+  return Array.from({
     ...responses.current,
     length: total,
-  })))
-  return (
-    Array.from({
-      ...responses.current,
-      length: total,
-    })
-  )
-}
+  });
+};
 
 function Section({
   onResponse,
@@ -1528,44 +2346,49 @@ function Section({
   noBack,
   setSettings,
   orginalSettings,
+  isSubmit,
+  isFavoriteActive,
+  setIsFavoriteActive,
   ...props
 }) {
-  const activityId = value?.id
-  const base = value.settings.map((x, index) => (
-    !!activityVal && activityVal[index] ?
-      activityVal[index] : { item: x.text, value: null, duration: 0 }))
-  const responses = useRef(base)
-  const [activeStep, setActiveStep] = useState(0)
-  const classes = useStyles()
-  const [tab, setTab] = useState(0)
-  const [progressValue, setProgressValue] = useState(100 / settings.length)
-  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const [index, setIndex] = useState(0)
-  const [slideElements, setSlideElements] = useState(null)
-  const [elementIn, setElementIn] = useState(false)
-  const { t } = useTranslation()
-  const { enqueueSnackbar } = useSnackbar()
+  const activityId = value?.id;
+  const base = value.settings.map((x, index) =>
+    !!activityVal && activityVal[index]
+      ? activityVal[index]
+      : { item: x.text, value: null, duration: 0 }
+  );
+  const responses = useRef(base);
+  const [activeStep, setActiveStep] = useState(0);
+  const classes = useStyles();
+  const [tab, setTab] = useState(0);
+  const [progressValue, setProgressValue] = useState(100 / settings.length);
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
+  const [index, setIndex] = useState(0);
+  const [slideElements, setSlideElements] = useState(null);
+  const [elementIn, setElementIn] = useState(false);
+  const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
   let settingsCopy = [...settings];
   let contingencyArray = [];
 
   const calcIndex = (idx) => {
-    let index = 0
-      ; (settings || []).map((x, i) => {
-        if (i < idx) {
-          if (!!x?.questions && x?.questions.length > 0) {
-            index = index + x.questions.length
-          } else {
-            index++
-          }
+    let index = 0;
+    (settings || []).map((x, i) => {
+      if (i < idx) {
+        if (!!x?.questions && x?.questions.length > 0) {
+          index = index + x.questions.length;
+        } else {
+          index++;
         }
-      })
-    return index
-  }
+      }
+    });
+    return index;
+  };
   useEffect(() => {
     let index = 0;
     const slideElements = (settings || []).map((x, idx) => {
-      setElementIn(true)
-      index = calcIndex(idx)
+      setElementIn(true);
+      index = calcIndex(idx);
       return (
         <Box key={idx}>
           {!!x?.questions && x?.questions.length > 0 ? (
@@ -1606,205 +2429,278 @@ function Section({
       );
     });
 
+    const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
+    if (lastIndexStr !== null) {
+      const lastIndex = parseInt(lastIndexStr);
+      if (
+        !isNaN(lastIndex) &&
+        lastIndex < slideElements.length &&
+        lastIndex != slideElements.length
+      ) {
+        setIndex(lastIndex);
+        setTab(lastIndex);
+        const val = (100 / settings.length) * (lastIndex + 1);
+        setProgressValue(val > 100 ? 100 : val);
+      }
+    }
+
     setSlideElements(slideElements);
+
+    // setSlideElements(slideElements);
   }, [settings]);
 
-  const isComplete = (idx) => !!responses.current[idx]?.value
-  const isError = (idx) => !isComplete(idx) && idx < activeStep
+  const isComplete = (idx) => !!responses.current[idx]?.value;
+  const isError = (idx) => !isComplete(idx) && idx < activeStep;
 
   const handleBack = () => {
-    slideElementChange(0)
-  }
+    slideElementChange(0);
+  };
 
   const slideElementChange = (type: number) => {
     // if (!supportsSidebar) {
-    setElementIn(false)
+    setElementIn(false);
     setTimeout(() => {
-      type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length)
-      setElementIn(true)
-    }, 100)
+      type === 0
+        ? setIndex((index - 1) % slideElements.length)
+        : setIndex((index + 1) % slideElements.length);
+      setElementIn(true);
+    }, 100);
     // }
-    type === 0 ? setTab(tab - 1) : setTab(tab + 1)
-    const val = type === 0 ? progressValue - 100 / settings.length : progressValue + 100 / settings.length
-    type === 0 ? setProgressValue(val > 0 ? val : 100 / settings.length) : setProgressValue(val > 100 ? 100 : val)
-  }
+    type === 0 ? setTab(tab - 1) : setTab(tab + 1);
+    const val =
+      type === 0
+        ? progressValue - 100 / settings.length
+        : progressValue + 100 / settings.length;
+    type === 0
+      ? setProgressValue(val > 0 ? val : 100 / settings.length)
+      : setProgressValue(val > 100 ? 100 : val);
+  };
 
   const handleContingencyQuestion = (selectedOption, actualIndex) => {
-    let settingsCopyy = value.settings
+    let settingsCopyy = value.settings;
     const currentQuestion = settingsCopyy[actualIndex];
     if (currentQuestion?.visited == undefined) {
       settingsCopyy = settingsCopyy.map((question, index) => ({
         ...question,
-        visited: false
+        visited: false,
       }));
     }
     if (selectedOption.contigencySettings.contigency_type === "question") {
-      const targetIndex = (selectedOption.contigencySettings.question_index) - 1;
+      const targetIndex = selectedOption.contigencySettings.question_index - 1;
       if (targetIndex >= settingsCopyy.length) {
-        return settingsCopyy
+        return settingsCopyy;
       }
       if (targetIndex === index + 1) return settingsCopyy;
       const questionToMove = settingsCopyy[targetIndex];
       if (targetIndex < actualIndex) {
-        questionToMove.revisited = true
+        questionToMove.revisited = true;
       }
       settingsCopyy.splice(index + 1, 0, questionToMove);
-      return settingsCopyy
-    }
-    if (selectedOption.contigencySettings.contigency_type === "activity") {
-      if (typeof window !== "undefined" && window.parent) {
-        window.parent.postMessage(
-          {
-            type: "OPEN_ACTIVITY",
-            activityId: selectedOption.contigencySettings.activity,
-          },
-          "*",
-        );
-      }
       return settingsCopyy;
     }
-  }
+    if (selectedOption.contigencySettings.contigency_type === "activity") {
+      let enabledActivities: { question: string; value: string }[] = [];
+      const enabledActivitiesStr = localStorage.getItem("enabledActivities");
+
+      if (enabledActivitiesStr !== null) {
+        enabledActivities = JSON.parse(enabledActivitiesStr);
+      }
+
+      const alreadyEnabled = enabledActivities.some(
+        (activity) =>
+          activity.question === currentQuestion.text &&
+          activity.value === selectedOption.value
+      );
+
+      if (alreadyEnabled) {
+        return settingsCopyy;
+      } else {
+        enabledActivities.push({
+          question: currentQuestion.text,
+          value: selectedOption.value,
+        });
+        localStorage.setItem(
+          "enabledActivities",
+          JSON.stringify(enabledActivities)
+        );
+
+        if (typeof window !== "undefined" && window.parent) {
+          const lastIndex = actualIndex ? actualIndex : 0;
+          localStorage.setItem("lastAnsweredIndex", lastIndex + 1);
+          window.parent.postMessage(
+            {
+              type: "OPEN_ACTIVITY",
+              activityId: selectedOption.contigencySettings.activity,
+            },
+            "*"
+          );
+        }
+
+        return settingsCopyy;
+      }
+    }
+  };
 
   const handleQuestionFlow = (actualIndex, selectedOption) => {
-
     const currentQuestion = settingsCopy[actualIndex];
     if (currentQuestion?.visited == undefined) {
       settingsCopy = settingsCopy.map((question, index) => ({
         ...question,
-        visited: false
+        visited: false,
       }));
     }
 
     if (selectedOption?.contigencySettings?.enable_contigency) {
       if (currentQuestion?.revisited == undefined) {
-        contingencyArray = handleContingencyQuestion(selectedOption, actualIndex);
+        contingencyArray = handleContingencyQuestion(
+          selectedOption,
+          actualIndex
+        );
         if (contingencyArray[actualIndex]?.visited == false) {
           contingencyArray[actualIndex].visited = true;
         }
-        setSettings(contingencyArray)
+        setSettings(contingencyArray);
       }
-
-    }
-    else {
+    } else {
       if (currentQuestion?.visited == true) {
-        setSettings(value.settings)
-      }
-      else {
+        setSettings(value.settings);
+      } else {
         const updatedQuestion = { ...currentQuestion, visited: true };
         settingsCopy[actualIndex] = updatedQuestion;
         setSettings(settingsCopy);
       }
     }
-  }
+  };
 
   const handleNext = () => {
-    const actualIndex = calcIndex(index)
+    const actualIndex = calcIndex(index);
     const currentQuestion = settings[index];
 
-    const selectedOption = currentQuestion?.options?.find(opt => opt.value === responses?.current[actualIndex]?.value);
+    const selectedOption = currentQuestion?.options?.find(
+      (opt) => opt.value === responses?.current[actualIndex]?.value
+    );
     if (settings[index].subType === "matrix") {
       let i = 0;
-      let status = true
+      let status = true;
       for (const element of settings[index].questions) {
-        if (!(!element.required || (element.required && (responses?.current[actualIndex + i]?.value !== null && typeof responses?.current[actualIndex + i]?.value !== "undefined" &&
-          (typeof responses?.current[actualIndex + i]?.value !== "string" || (typeof responses?.current[actualIndex + i]?.value === "string" &&
-            responses?.current[actualIndex + i]?.value?.trim().length !== 0)))))) {
+        if (
+          !(
+            !element.required ||
+            (element.required &&
+              responses?.current[actualIndex + i]?.value !== null &&
+              typeof responses?.current[actualIndex + i]?.value !==
+                "undefined" &&
+              (typeof responses?.current[actualIndex + i]?.value !== "string" ||
+                (typeof responses?.current[actualIndex + i]?.value ===
+                  "string" &&
+                  responses?.current[actualIndex + i]?.value?.trim().length !==
+                    0)))
+          )
+        ) {
           enqueueSnackbar(t("Please enter your response."), {
             variant: "error",
-          })
-          status = false
-          break
+          });
+          status = false;
+          break;
         }
-        i++
+        i++;
       }
       if (!!status) {
-        handleQuestionFlow(actualIndex, selectedOption)
-        slideElementChange(1)
+        handleQuestionFlow(actualIndex, selectedOption);
+        slideElementChange(1);
       }
     } else {
-      if (!value.settings[actualIndex].required || (value.settings[actualIndex].required && (responses?.current[actualIndex]?.value !== null && typeof responses.current[actualIndex].value !== "undefined" &&
-        (typeof responses?.current[actualIndex]?.value !== "string" || (typeof responses?.current[actualIndex]?.value === "string" &&
-          responses?.current[actualIndex]?.value?.trim().length !== 0))))) {
-        handleQuestionFlow(actualIndex, selectedOption)
-        slideElementChange(1)
+      if (
+        !value.settings[actualIndex].required ||
+        (value.settings[actualIndex].required &&
+          responses?.current[actualIndex]?.value !== null &&
+          typeof responses.current[actualIndex].value !== "undefined" &&
+          (typeof responses?.current[actualIndex]?.value !== "string" ||
+            (typeof responses?.current[actualIndex]?.value === "string" &&
+              responses?.current[actualIndex]?.value?.trim().length !== 0)))
+      ) {
+        handleQuestionFlow(actualIndex, selectedOption);
+        slideElementChange(1);
       } else {
         enqueueSnackbar(t("Please enter your response."), {
           variant: "error",
-        })
+        });
       }
     }
-  }
+  };
   const tabDirection = (currentTab) => {
-    return supportsSidebar ? "up" : "left"
-  }
+    return supportsSidebar ? "up" : "left";
+  };
 
   const handleChange = (event) => {
-    const target = event.target
+    const target = event.target;
     // if (target.getAttribute("role") === "dialog") {
     //   const progressVal = (target.scrollTop / (target.scrollHeight - target.clientHeight)) * 100
     //   setProgressValue(progressVal + 10 > 100 ? progressVal : progressVal + 10)
     // }
-  }
-
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
   return (
     <Box>
-      <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>
+      <AppBar
+        position="fixed"
+        style={{ background: "#E7F8F2", boxShadow: "none" }}
+      >
         <Toolbar className={classes.toolbardashboard}>
-          {!noBack && <IconButton onClick={() => onResponse(null)}>
-            <Icon>arrow_back</Icon>
-          </IconButton>}
+          {!noBack && (
+            <IconButton onClick={() => onResponse(null)}>
+              <Icon>arrow_back</Icon>
+            </IconButton>
+          )}
           <Typography variant="h5">
-            <ReactMarkdown children={t(value?.name?.toString().replace(/_/g, " "))} skipHtml={false} plugins={[gfm, emoji]} renderers={{
-              link: LinkRenderer, sub: (props) => {
-                return <sub>{props?.children}</sub>;
-              }, sup: (props) => {
-                return <sup>{props.children}</sup>;
+            <ReactMarkdown
+              children={t(value?.name?.toString().replace(/_/g, " "))}
+              skipHtml={false}
+              plugins={[gfm, emoji]}
+              renderers={{
+                link: LinkRenderer,
+                sub: (props) => {
+                  return <sub>{props?.children}</sub>;
+                },
+                sup: (props) => {
+                  return <sup>{props.children}</sup>;
+                },
+              }}
+            />
+            <Tooltip
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
               }
-            }} />
+            >
+              <Fab
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
+                onClick={handleFavoriteClick}
+              >
+                <Icon>star_rounded</Icon>
+              </Fab>
+            </Tooltip>{" "}
           </Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
-      {/* {supportsSidebar ? (
-        settings.map((x, idx) => (
-          <Box my={4}>
-            {!!x.questions && x.questions.length > 0 ?
-              <Matrix
-                x={x}
-                index={idx}
-                idx={calcIndex(idx)}
-                total={totalQuestions}
-                activityId={activityId}
-                onResponse={onResponse}
-                setActiveStep={setActiveStep}
-                startTime={new Date().getTime()}
-                responses={responses}
-                settingsQuestions={settings.length}
-                handleBack={handleBack}
-                handleNext={handleNext}
-                onComplete={onComplete}
-              /> :
-              <Questions
-                idx={calcIndex(idx)}
-                x={x}
-                activityId={activityId}
-                index={idx}
-                settings={settings}
-                responses={responses}
-                setActiveStep={setActiveStep}
-                onResponse={onResponse}
-                handleBack={handleBack}
-                handleNext={handleNext}
-                onComplete={onComplete}
-                startTime={new Date().getTime()}
-                totalQuestions={totalQuestions}
-              />}
-          </Box>
-        ))
-      ) : ( */}
       <Box>
-        <Slide in={elementIn} direction={tabDirection(index)} mountOnEnter unmountOnExit>
-          <Box>{!!slideElements && !!slideElements[index] ? slideElements[index] : null}</Box>
+        <Slide
+          in={elementIn}
+          direction={tabDirection(index)}
+          mountOnEnter
+          unmountOnExit
+        >
+          <Box>
+            {!!slideElements && !!slideElements[index]
+              ? slideElements[index]
+              : null}
+          </Box>
         </Slide>
         <Box className={classes.surveyQuestionNav}>
           {index > 0 && (
@@ -1812,55 +2708,69 @@ function Section({
               {t("Back")}
             </Fab>
           )}
-          {/* {!supportsSidebar && ( */}
           <Fab
-            onClick={elementIn && (index === settings.length - 1 ? onComplete : handleNext)}
+            onClick={
+              elementIn &&
+              (index === settings.length - 1 ? onComplete : handleNext)
+            }
             className={classes.btngreen}
+            disabled={isSubmit}
           >
-            {index === settings.length - 1
-              ? t("Submit")
-              : t("Next")}
+            {index === settings.length - 1 ? t("Submit") : t("Next")}
           </Fab>
-          {/* )} */}
         </Box>
       </Box>
-      {/* )} */}
     </Box>
-  )
+  );
 }
 
 export default function SurveyQuestions({ ...props }) {
-  const classes = useStyles()
-  const { t } = useTranslation()
-  const [responses, setResponses] = useState(null)
-  const [activity, setActivity] = useState(null)
-  const [activityVal, setActivityVal] = useState(null)
+  const classes = useStyles();
+  const { t } = useTranslation();
+  const [responses, setResponses] = useState(null);
+  const [activity, setActivity] = useState(null);
+  const [activityVal, setActivityVal] = useState(null);
 
-  const [settings, setSettings] = useState(null)
-  const [startTime, setStartTime] = useState(new Date().getTime())
-  const { enqueueSnackbar } = useSnackbar()
-  const [confirm, setConfirm] = useState(false)
-
+  const [settings, setSettings] = useState(null);
+  const [startTime, setStartTime] = useState(new Date().getTime());
+  const { enqueueSnackbar } = useSnackbar();
+  const [confirm, setConfirm] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    lastIndexStr != null ? lastIndexStr : 0
+  );
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
   const validator = (response) => {
-    let status = true
-    const questions = activity.settings
-    let i = 0
+    let status = true;
+    const questions = activity.settings;
+    let i = 0;
     if (response === null) {
-      return false
+      return false;
     }
     for (const question of questions) {
-      if (!question.required || (!!question.required && (!!response && !!response[i] && response[i]?.value !== null &&
-        typeof response[i]?.value !== "undefined" && (typeof response[i]?.value !== "string" ||
-          (typeof response[i]?.value === "string" && response[i]?.value?.trim().length !== 0))))) {
-        status = true
+      if (
+        !question.required ||
+        (!!question.required &&
+          !!response &&
+          !!response[i] &&
+          response[i]?.value !== null &&
+          typeof response[i]?.value !== "undefined" &&
+          (typeof response[i]?.value !== "string" ||
+            (typeof response[i]?.value === "string" &&
+              response[i]?.value?.trim().length !== 0)))
+      ) {
+        status = true;
       } else {
-        status = false
-        break
+        status = false;
+        break;
       }
-      i++
+      i++;
     }
-    return status
-  }
+    return status;
+  };
 
   const calculateTotalScore = (response) => {
     let totalScore = 0;
@@ -1872,136 +2782,171 @@ export default function SurveyQuestions({ ...props }) {
       }
     });
     return totalScore;
-  }
-
+  };
 
   const postSubmit = (response) => {
     if (validator(response)) {
       response.map((r) => {
-        delete r.endTime
-      })
+        delete r.endTime;
+      });
       const totalScore = calculateTotalScore(response);
       const result = {
         temporal_slices: response,
         duration: new Date().getTime() - startTime,
-        static_data: { totalScore: totalScore },
-        timestamp: startTime
-      }
-      onResponse(result)
+        static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
+        timestamp: startTime,
+      };
+      onResponse(result);
+      setIsSubmit(!isSubmit);
+      localStorage.removeItem("enabledActivities");
+      localStorage.removeItem("lastAnsweredIndex");
     } else {
-      enqueueSnackbar(t("Some responses are missing. Please complete all required questions before submitting."), {
-        variant: "error",
-      })
+      enqueueSnackbar(
+        t(
+          "Some responses are missing. Please complete all required questions before submitting."
+        ),
+        {
+          variant: "error",
+        }
+      );
     }
-  }
+  };
   const onResponse = (response) => {
     parent.postMessage(
-      response === null ? null : JSON.stringify(response),
+      response === null
+        ? JSON.stringify({
+            static_data: {
+              is_favorite: isFavoriteActive,
+            },
+          })
+        : JSON.stringify(response),
       "*"
-    )
-  }
+    );
+  };
 
   const loadData = (statusVal: boolean) => {
     if (!!statusVal) {
-      const val = localStorage.getItem("activity-survey-" + (props.data?.activity?.id ?? ""))
-      setActivityVal(JSON.parse(val))
+      const val = localStorage.getItem(
+        "activity-survey-" + (props.data?.activity?.id ?? "")
+      );
+      setActivityVal(JSON.parse(val));
+      setResponses(JSON.parse(val));
     } else {
-      localStorage.setItem('activity-survey-' + (props.data?.activity?.id ?? ""), "")
+      localStorage.setItem(
+        "activity-survey-" + (props.data?.activity?.id ?? ""),
+        ""
+      );
     }
-    const activity = props.data.activity ?? (props.data ?? {});
+    const activity = props.data.activity ?? props.data ?? {};
     setActivity(activity);
-    setConfirm(false)
-  }
+    setConfirm(false);
+  };
 
   useEffect(() => {
-    if (typeof localStorage.getItem('activity-survey-' + (props.data?.activity?.id ?? "")) !== 'undefined' &&
-      (localStorage.getItem('activity-survey-' + (props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0) {
-      setConfirm(true)
+    const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
+    setCurrentQuestionIndex(lastIndexStr);
+
+    if (
+      typeof localStorage.getItem(
+        "activity-survey-" + (props.data?.activity?.id ?? "")
+      ) !== "undefined" &&
+      (localStorage
+        .getItem("activity-survey-" + (props.data?.activity?.id ?? ""))
+        ?.trim()?.length ?? 0) > 0
+    ) {
+      setConfirm(true);
     } else {
-      const activity = props.data.activity ?? (props.data ?? {});
+      const activity = props.data.activity ?? props.data ?? {};
       setActivity(activity);
     }
     const configuration = props.data.configuration;
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!!activity) {
-      setQuestions()
+      setQuestions();
     }
-  }, [activity])
-
+  }, [activity]);
 
   const setQuestions = () => {
-    const settings = []
-    const processed = []
-    const binaryOpts =  [
-      { description: t("Yes"), value: "Yes" /* true */ },
-      { description: t("No"), value: "No" /* false */ },
-    ]  
-    const likertOpts =  [
-      { description: t("Nearly All the Time"), value: 3 },
-      { description: t("More than Half the Time"), value: 2 },
-      { description: t("Several Times"), value: 1 },
-      { description: t("Not at all"), value: 0 },
-    ]
-      ; (activity.settings || []).map((question, index) => {
-        if (!processed.includes(index)) {
-          if (activity.settings[index + 1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
-            const desc = question?.description ?? ""
-            const options = question?.options ?? question?.type === "boolean" ? binaryOpts : question?.type === "likert" ? likertOpts : []
-            const questions = []
+    const settings = [];
+    const processed = [];
+    (activity.settings || []).map((question, index) => {
+      if (!processed.includes(index)) {
+        if (
+          activity.settings[index + 1]?.type === "matrix" ||
+          (index === 0 && question?.type === "matrix")
+        ) {
+          const desc = question?.description ?? "";
+          const options = question?.options ?? [];
+          const questions = [];
 
-            for (let k = index; k < activity.settings.length; k++) {
-              if (k === index || (activity.settings[k]?.type === "matrix")) {
-                questions.push({ text: activity.settings[k].text, required: activity.settings[k].required })
-                processed.push(k)
-              } else {
-                break
-              }
+          for (let k = index; k < activity.settings.length; k++) {
+            if (k === index || activity.settings[k]?.type === "matrix") {
+              questions.push({
+                text: activity.settings[k].text,
+                required: activity.settings[k].required,
+              });
+              processed.push(k);
+            } else {
+              break;
             }
-            const type = index === 0 && question?.type === "matrix" ? "text" : question.type
-            settings.push({ type, subType: "matrix", description: desc, options, questions })
-          } else {
-            settings.push(question)
           }
+          const type =
+            index === 0 && question?.type === "matrix" ? "text" : question.type;
+          settings.push({
+            type,
+            subType: "matrix",
+            description: desc,
+            options,
+            questions,
+          });
+        } else {
+          settings.push(question);
         }
-      })
+      }
+    });
     const updatedArray = activity.settings.map((question, index) => ({
       ...question,
-      visited: false
+      visited: false,
     }));
-    setSettings(updatedArray)
-  }
-
-
+    setSettings(updatedArray);
+  };
 
   return (
     <Box className={classes.root}>
+      {/* {currentQuestionIndex < activity?.settings?.length &&  */}
       <ConfirmationDialog
         onClose={() => setConfirm(false)}
         open={confirm}
         confirmAction={loadData}
-        confirmationMsg={t("Would you like to resume this activity where you left off?")} />
+        confirmationMsg={t(
+          "Would you like to resume this activity where you left off?"
+        )}
+      />
+      {/* }  */}
 
-      {(activity !== null && settings !== null) ?
+      {activity !== null && settings !== null ? (
         <Section
           onResponse={(response) =>
-            (response === null) ? onResponse(null) :
-              setResponses(response)
+            response === null ? onResponse(null) : setResponses(response)
           }
           value={activity}
           activityVal={activityVal}
-
           settings={settings}
           totalQuestions={(activity?.settings || []).length}
           noBack={props.data.noBack}
           onComplete={() => {
-            postSubmit(responses)
+            postSubmit(responses);
           }}
           setSettings={setSettings}
           orginalSettings={activity?.settings}
-        /> : null}
+          isSubmit={isSubmit}
+          isFavoriteActive={isFavoriteActive}
+          setIsFavoriteActive={setIsFavoriteActive}
+        />
+      ) : null}
     </Box>
-  )
+  );
 }

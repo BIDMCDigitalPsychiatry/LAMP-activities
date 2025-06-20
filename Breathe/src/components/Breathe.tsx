@@ -1,7 +1,7 @@
-import "react-circular-progressbar/dist/styles.css"
-import i18n from "../i18n"
-import React, { useState, useEffect } from "react"
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
+import "react-circular-progressbar/dist/styles.css";
+import i18n from "../i18n";
+import React, { useState, useEffect } from "react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import {
   Typography,
   makeStyles,
@@ -22,11 +22,12 @@ import {
   Fab,
   CircularProgress,
   Link,
-} from "@material-ui/core"
-import Lotus from "./Lotus"
-import { useTranslation } from "react-i18next"
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
+  Tooltip,
+} from "@material-ui/core";
+import Lotus from "./Lotus";
+import { useTranslation } from "react-i18next";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -41,7 +42,7 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
       backgroundColor: "#E56F61",
     },
   })
-)(LinearProgress)
+)(LinearProgress);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -173,139 +174,203 @@ const useStyles = makeStyles((theme) => ({
     height: "3px",
   },
   colorLine: { maxWidth: 115 },
-}))
-
+  headerTitleIcon: {
+    background: "none",
+    boxShadow: "none",
+    width: 36,
+    height: 36,
+    color: "#666",
+    marginLeft: 8,
+    "& .material-icons": {
+      fontSize: "2rem",
+    },
+    "&:hover": {
+      background: "#fff",
+    },
+    "&.active": {
+      color: "#e3b303",
+    },
+  },
+}));
 
 export default function Breathe({ ...props }) {
-  const classes = useStyles()
-  const [started, setStarted] = useState(false)
-  const [progressValue, setProgressValue] = useState(0)
-  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"))
-  const [tab, setTab] = useState(0)
-  const [status, setStatus] = useState("Yes")
-  const [progress, setProgress] = React.useState(100)
-  const [progressLabel, setProgressLabel] = React.useState(4)
-  const [isLoading, setIsLoading] = useState(false)
-  const [inhale, setInhale] = useState(true)
-  const [playMusic, setPlayMusic] = useState(true)
-  const [audio, setAudio] = useState(null)
-  const [time, setTime] = useState(new Date().getTime())
-  const { t } = useTranslation()
-  const [settings, setSettings] = useState(null)
+  const classes = useStyles();
+  const [started, setStarted] = useState(false);
+  const [progressValue, setProgressValue] = useState(0);
+  const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
+  const [tab, setTab] = useState(0);
+  const [status, setStatus] = useState("Yes");
+  const [progress, setProgress] = React.useState(100);
+  const [progressLabel, setProgressLabel] = React.useState(4);
+  const [isLoading, setIsLoading] = useState(false);
+  const [inhale, setInhale] = useState(true);
+  const [playMusic, setPlayMusic] = useState(true);
+  const [audio, setAudio] = useState(null);
+  const [time, setTime] = useState(new Date().getTime());
+  const { t } = useTranslation();
+  const [settings, setSettings] = useState(null);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite
+  );
+
   const tabDirection = (currentTab: number) => {
-    return supportsSidebar ? "up" : "left"
-  }
+    return supportsSidebar ? "up" : "left";
+  };
   const handleNext = () => {
-    setTab(tab + 1)
-    setIsLoading(true)
+    setTab(tab + 1);
+    setIsLoading(true);
     if (!!audio) {
-      ;(audio || new Audio()).loop = true
-      playMusic && tab < 1 ? (audio || new Audio()).play() : (audio || new Audio()).pause()
+      (audio || new Audio()).loop = true;
+      playMusic && tab < 1
+        ? (audio || new Audio()).play()
+        : (audio || new Audio()).pause();
     }
-  }
+  };
 
   const videoLoaded = () => {
-    setIsLoading(false)
-    setStarted(!started)
-    setTime(new Date().getTime())
-    setProgressUpdate()
-  }
+    setIsLoading(false);
+    setStarted(!started);
+    setTime(new Date().getTime());
+    setProgressUpdate();
+  };
 
   const setProgressUpdate = () => {
-    const val = progressLabel - 1
+    const val = progressLabel - 1;
     if (val === -1) {
-      setProgressLabel(4)
-      setProgress(100)
-      setInhale(!inhale)
+      setProgressLabel(4);
+      setProgress(100);
+      setInhale(!inhale);
     } else {
-      setProgressLabel(val)
+      setProgressLabel(val);
     }
-  }
+  };
 
   useEffect(() => {
-    
-        const settingsData = props.data.activity?.settings ?? (props.data.settings ?? {})
-        const configuration = props.data.configuration
-        const langugae = configuration
-          ? configuration.hasOwnProperty("language")
-            ? configuration.language
-            : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)
-        setSettings(settingsData)
-        if ((!!settingsData && !!settingsData?.audio_url && (settingsData?.audio_url || "").trim() !== "") || !!settingsData?.audio) {
-          setAudio(
-            new Audio(settingsData?.audio_url ?? settingsData?.audio ?? "")
-          )
-        }
-     
-  }, [])
+    const settingsData =
+      props.data.activity?.settings ?? props.data.settings ?? {};
+    const configuration = props.data.configuration;
+    const langugae = configuration
+      ? configuration.hasOwnProperty("language")
+        ? configuration.language
+        : "en-US"
+      : "en-US";
+    i18n.changeLanguage(langugae);
+    setSettings(settingsData);
+    if (
+      (!!settingsData &&
+        !!settingsData?.audio_url &&
+        (settingsData?.audio_url || "").trim() !== "") ||
+      !!settingsData?.audio
+    ) {
+      setAudio(new Audio(settingsData?.audio_url ?? settingsData?.audio ?? ""));
+    }
+  }, []);
 
   useEffect(() => {
     if (started) {
-      setTimeout(setProgressUpdate, 1000)
-      const val = progress - 25 >= 0 ? progress - 25 : 100
-      setProgress(val < 0 ? 0 : val)
+      setTimeout(setProgressUpdate, 1000);
+      const val = progress - 25 >= 0 ? progress - 25 : 100;
+      setProgress(val < 0 ? 0 : val);
     }
-  }, [progressLabel])
+  }, [progressLabel]);
 
   useEffect(() => {
-     if (started) {
+    if (started) {
       if (progressValue < 100) {
-        const val = progressValue + (!!audio && !isNaN(audio.duration) ? Math.round((100 / audio.duration) * 10) / 10 : 0.8)
-        setProgressValue(val > 100 ? 100 : val)
+        const val =
+          progressValue +
+          (!!audio && !isNaN(audio.duration)
+            ? Math.round((100 / audio.duration) * 10) / 10
+            : 0.8);
+        setProgressValue(val > 100 ? 100 : val);
       } else {
-        setStarted(!started)
-        setPlayMusic(false)
-        handleNext()
+        setStarted(!started);
+        setPlayMusic(false);
+        handleNext();
       }
     }
-  }, [progress])
+  }, [progress]);
 
   const handleClickStatus = (statusVal: string) => {
-    setStatus(statusVal)
-  }
+    setStatus(statusVal);
+  };
 
   const onBreatheComplete = (statusVal?: boolean) => {
     parent.postMessage(
-      !!statusVal ? JSON.stringify({
-        timestamp: time,
-        duration: new Date().getTime() - time,
-        static_data: {
-          sentiment: status,
-        },
-        temporal_slices: [],
-      }) : JSON.stringify({
-        timestamp: time,
-        duration: new Date().getTime() - time,       
-        temporal_slices: [],
-      }),
+      !!statusVal
+        ? JSON.stringify({
+            timestamp: time,
+            duration: new Date().getTime() - time,
+            static_data: {
+              sentiment: status,
+              is_favorite: isFavoriteActive,
+            },
+            temporal_slices: [],
+          })
+        : JSON.stringify({
+            timestamp: time,
+            duration: new Date().getTime() - time,
+            temporal_slices: [],
+            static_data: {
+              is_favorite: isFavoriteActive,
+            },
+          }),
       "*"
-    )
-  }
-
+    );
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
+      <AppBar
+        position="static"
+        style={{ background: "#FBF1EF", boxShadow: "none" }}
+      >
         <Toolbar className={classes.toolbardashboard}>
           <IconButton
             onClick={() => {
-              setPlayMusic(false)
-              if(!!audio) { audio.pause() }
-              setAudio(null)
-              onBreatheComplete(false)
+              setPlayMusic(false);
+              if (!!audio) {
+                audio.pause();
+              }
+              setAudio(null);
+              onBreatheComplete(false);
             }}
             color="default"
             aria-label="Menu"
           >
-            <Icon>arrow_back</Icon>            
+            <Icon>arrow_back</Icon>
           </IconButton>
-          <Typography variant="h5">{t("Breathe")}</Typography>
+          <Typography variant="h5">
+            {t("Breathe")}{" "}
+            <Tooltip
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
+              }
+            >
+              <Fab
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
+                onClick={handleFavoriteClick}
+              >
+                <Icon>star_rounded</Icon>
+              </Fab>
+            </Tooltip>{" "}
+          </Typography>
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
       <Container>
-        <Slide in={tab === 0} direction={tabDirection(0)} mountOnEnter unmountOnExit>
+        <Slide
+          in={tab === 0}
+          direction={tabDirection(0)}
+          mountOnEnter
+          unmountOnExit
+        >
           <Box>
             <Box textAlign="center">
               {supportsSidebar && (
@@ -313,7 +378,9 @@ export default function Breathe({ ...props }) {
                   <Typography variant="h6">{t("Prepare yourself")}</Typography>
                   <Box textAlign="center" px={4} pt={2}>
                     <Typography variant="body2" component="p">
-                      {t("Get yourself comfortable and when you’re ready tap the start button.")}
+                      {t(
+                        "Get yourself comfortable and when you’re ready tap the start button."
+                      )}
                     </Typography>
                     {/* <img src={Lotus} className={classes.flower}/> */}
                     {/* <Box className={classes.flower + " " + lotus} /> */}
@@ -323,11 +390,13 @@ export default function Breathe({ ...props }) {
               )}
               {!supportsSidebar && (
                 <Box>
-                   <Lotus />
+                  <Lotus />
                   <Typography variant="h6">{t("Get ready")}</Typography>
                   <Box textAlign="center" px={4} pt={2} pb={5}>
                     <Typography variant="body2" component="p">
-                      {t("Get yourself comfortable and when you’re ready tap the start button.")}
+                      {t(
+                        "Get yourself comfortable and when you’re ready tap the start button."
+                      )}
                     </Typography>
                   </Box>
                 </Box>
@@ -335,13 +404,18 @@ export default function Breathe({ ...props }) {
 
               <Box textAlign="center" mt={1}>
                 <Fab className={classes.btnpeach} onClick={handleNext}>
-                {t("Start")}
+                  {t("Start")}
                 </Fab>
               </Box>
             </Box>
           </Box>
         </Slide>
-        <Slide in={tab === 1} direction={tabDirection(1)} mountOnEnter unmountOnExit>
+        <Slide
+          in={tab === 1}
+          direction={tabDirection(1)}
+          mountOnEnter
+          unmountOnExit
+        >
           <Grid
             container
             spacing={0}
@@ -362,17 +436,23 @@ export default function Breathe({ ...props }) {
                 src="./videos/Lotus.mp4"
                 autoPlay={true}
                 onLoadedData={() => {
-                  videoLoaded()
+                  videoLoaded();
                 }}
                 loop
                 preload={"metadata"}
               />
               {started && (
                 <Box className={classes.inhale_exhale}>
-                  <Typography variant="overline" className={classes.ExhaleContainer}>
+                  <Typography
+                    variant="overline"
+                    className={classes.ExhaleContainer}
+                  >
                     {t("Exhale")}
                   </Typography>
-                  <Typography variant="overline" className={classes.InhaleContainer}>
+                  <Typography
+                    variant="overline"
+                    className={classes.InhaleContainer}
+                  >
                     {t("Inhale")}
                   </Typography>
                 </Box>
@@ -414,14 +494,31 @@ export default function Breathe({ ...props }) {
             )}
           </Grid>
         </Slide>
-        <Slide in={tab === 2} direction={tabDirection(2)} mountOnEnter unmountOnExit>
+        <Slide
+          in={tab === 2}
+          direction={tabDirection(2)}
+          mountOnEnter
+          unmountOnExit
+        >
           <Box>
             <Box textAlign="center" className={classes.breatheReview}>
               <Lotus />
               <Typography variant="h4">{t("Nicely done!")}</Typography>
               <Box mt={4} mb={2}>
-                <Grid container direction="row" justify="center" alignItems="center">
-                  <Grid container className={classes.colorLine} spacing={0} xs={4} md={4} lg={2}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <Grid
+                    container
+                    className={classes.colorLine}
+                    spacing={0}
+                    xs={4}
+                    md={4}
+                    lg={2}
+                  >
                     <Grid item xs={3} className={classes.lineyellow} />
                     <Grid item xs={3} className={classes.linegreen} />
                     <Grid item xs={3} className={classes.linered} />
@@ -429,25 +526,38 @@ export default function Breathe({ ...props }) {
                   </Grid>
                 </Grid>
               </Box>
-              <Typography variant="body2">{t("Was this helpful today?")}</Typography>
+              <Typography variant="body2">
+                {t("Was this helpful today?")}
+              </Typography>
               <Box textAlign="center" mb={5}>
                 <IconButton
                   onClick={() => handleClickStatus("Yes")}
-                  className={status === "Yes" ? classes.likebtn + " " + classes.active : classes.likebtn}
+                  className={
+                    status === "Yes"
+                      ? classes.likebtn + " " + classes.active
+                      : classes.likebtn
+                  }
                 >
                   <ThumbUpAltOutlinedIcon />
                   <label>{t("Yes")}</label>
                 </IconButton>
                 <IconButton
                   onClick={() => handleClickStatus("No")}
-                  className={status === "No" ? classes.likebtn + " " + classes.active : classes.likebtn}
+                  className={
+                    status === "No"
+                      ? classes.likebtn + " " + classes.active
+                      : classes.likebtn
+                  }
                 >
                   <ThumbDownAltOutlinedIcon />
                   <label>{t("No")}</label>
                 </IconButton>
               </Box>
               <Box textAlign="center" pt={4}>
-                <Link className={classes.btnpeach} onClick={() => onBreatheComplete(true)}>
+                <Link
+                  className={classes.btnpeach}
+                  onClick={() => onBreatheComplete(true)}
+                >
                   {t("Done")}
                 </Link>
               </Box>
@@ -456,5 +566,5 @@ export default function Breathe({ ...props }) {
         </Slide>
       </Container>
     </div>
-  )
+  );
 }

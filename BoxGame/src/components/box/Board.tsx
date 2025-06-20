@@ -15,6 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Timer } from "../common/Timer";
 import "./box.css";
+import { Tooltip, Fab, Icon } from "@material-ui/core";
+import "material-icons";
 
 interface BoardState {
   activeCell: number;
@@ -45,6 +47,7 @@ interface BoardState {
   wrongStages: number;
   wrongTaps: number;
   sendResponse: boolean;
+  isFavoriteActive: boolean;
 }
 
 interface BoardProps {
@@ -52,6 +55,7 @@ interface BoardProps {
   time: number;
   language: string;
   noBack: boolean;
+  is_favorite: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -97,6 +101,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       timeout: false,
       wrongStages: 0,
       wrongTaps: 0,
+      isFavoriteActive: props?.is_favorite ?? false,
     };
   }
   // On load function - set state of the gamne
@@ -311,52 +316,56 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   // Call the API to pass game result
   sendGameResult = (status?: boolean) => {
-    const route = {'type': 'manual_exit', 'value': status ??  false} 
+    const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
     if (this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
       Object.keys(r).forEach((key) => {
         boxes.push(r[key]);
       });
-    }    
-    boxes.push(route);    
-    this.setState({
-      boxes: JSON.stringify(boxes),
-    }, () => { 
-    let points = 0;
-    const totalLevels = 5;
-    const totalStages = totalLevels + this.state.wrongStages;
-    const gameScore = Math.round(
-      (this.state.successStages / totalStages) * 100
-    );
-    if (gameScore === 100) {
-      points = points + 2;
-    } else {
-      points = points + 1;
     }
-    parent.postMessage(
-      JSON.stringify({
-        duration: new Date().getTime() - this.props.time,
-        static_data: {
-          EndTime: new Date(),
-          StartTime: this.state.startTime,
-          correct_answers: this.state.stateSuccessTaps,
-          point: points,
-          score: gameScore,
-          max_score: 100,
-          type: 1,
-          wrong_answers: this.state.stateWrongTaps,
-        },
-        temporal_slices: JSON.parse(this.state.boxes),
-        timestamp: new Date().getTime(),
-      }),
-      "*"
-    );
+    boxes.push(route);
+    this.setState(
+      {
+        boxes: JSON.stringify(boxes),
+      },
+      () => {
+        let points = 0;
+        const totalLevels = 5;
+        const totalStages = totalLevels + this.state.wrongStages;
+        const gameScore = Math.round(
+          (this.state.successStages / totalStages) * 100
+        );
+        if (gameScore === 100) {
+          points = points + 2;
+        } else {
+          points = points + 1;
+        }
+        parent.postMessage(
+          JSON.stringify({
+            duration: new Date().getTime() - this.props.time,
+            static_data: {
+              EndTime: new Date(),
+              StartTime: this.state.startTime,
+              correct_answers: this.state.stateSuccessTaps,
+              point: points,
+              score: gameScore,
+              max_score: 100,
+              type: 1,
+              wrong_answers: this.state.stateWrongTaps,
+              is_favorite: this.state.isFavoriteActive,
+            },
+            temporal_slices: JSON.parse(this.state.boxes),
+            timestamp: new Date().getTime(),
+          }),
+          "*"
+        );
 
-    this.setState({
-      sendResponse: true,
-    });
-    })
+        this.setState({
+          sendResponse: true,
+        });
+      }
+    );
   };
 
   // Set game state values
@@ -471,14 +480,19 @@ class Board extends React.Component<BoardProps, BoardState> {
     const styles = { height: `${size}px`, width: `${size}px` };
     return styles;
   };
-    // To refresh the game
-    clickHome = () => {
-      window.location.reload();
-    };
-  
-    clickBack = () => {
-      this.sendGameResult(true)      
-    }
+  // To refresh the game
+  clickHome = () => {
+    window.location.reload();
+  };
+
+  clickBack = () => {
+    this.sendGameResult(true);
+  };
+  handleFavoriteClick = () => {
+    this.setState((prevState) => ({
+      isFavoriteActive: !prevState.isFavoriteActive,
+    }));
+  };
 
   // Render the game board
   render() {
@@ -509,7 +523,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           : this.state.timeout
           ? i18n.t("TIME_OUT") + " !!!"
           : null;
-    } else {  
+    } else {
       board = (
         <table className="box-table" style={this.getTableStyles()}>
           <tbody>{this.createTable()}</tbody>
@@ -551,7 +565,9 @@ class Board extends React.Component<BoardProps, BoardState> {
       const total_level = 6 + this.state.wrongStages;
       level =
         this.state.gameState > 0 ? (
-          <span>{i18n.t("LEVEL")} {this.state.gameState}/{total_level}</span>
+          <span>
+            {i18n.t("LEVEL")} {this.state.gameState}/{total_level}
+          </span>
         ) : null;
       // Show the alert on top of game board
       alertText = this.state.gameSequence ? (
@@ -568,39 +584,61 @@ class Board extends React.Component<BoardProps, BoardState> {
         </div>
       ) : null;
       instruction = (
-      <div className="instruction">
-        {i18n.t("YOU_WILL_SEE_A_GRID_OF_BOXES_THE_BOXES_IN_A_GRID_WILL_LIGHT_UP_IN_A_CERTAIN_ORDER_REMEMBER_THE_ORDER_AND_THEN_TAP_THE_BOXES_IN_THE_ORDER_IN_WHICH_THEY_LIT_UP_EACH_LEVEL_WILL_HAVE_MORE_BOXES_LIGHT_UP_IN_SEQUENCE_SEE_HOW_FAR_YOU_CAN_GET")}
-      </div>
-      )
+        <div className="instruction">
+          {i18n.t(
+            "YOU_WILL_SEE_A_GRID_OF_BOXES_THE_BOXES_IN_A_GRID_WILL_LIGHT_UP_IN_A_CERTAIN_ORDER_REMEMBER_THE_ORDER_AND_THEN_TAP_THE_BOXES_IN_THE_ORDER_IN_WHICH_THEY_LIT_UP_EACH_LEVEL_WILL_HAVE_MORE_BOXES_LIGHT_UP_IN_SEQUENCE_SEE_HOW_FAR_YOU_CAN_GET"
+          )}
+        </div>
+      );
     }
 
     return (
       <div>
-             {!this.props.noBack && <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>}
-            <nav className="home-link">
-              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-            </nav>
-            <div className="heading">{i18n.t("BOX_GAME")}</div>
-            <div className="game-board">
-      <div>
-        <div className="timer-div">
-          {timer}
-          {level}
-          <br />
-          {infoText}
+        {!this.props.noBack && (
+          <nav className="back-link">
+            <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+          </nav>
+        )}
+        <nav className="home-link">
+          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+        </nav>
+        <div className="heading">
+          {i18n.t("BOX_GAME")}{" "}
+          <Tooltip
+            title={
+              this.state.isFavoriteActive
+                ? "Tap to remove from Favorite Activities"
+                : "Tap to add to Favorite Activities"
+            }
+          >
+            <Fab
+              className={`headerTitleIcon ${
+                this.state.isFavoriteActive ? "active" : ""
+              }`}
+              onClick={this.handleFavoriteClick}
+            >
+              <Icon>star_rounded</Icon>
+            </Fab>
+          </Tooltip>
         </div>
-        <div className="mt-30 box-game">
-          {board}
-          {alert}
-        </div>
-        {nextButton}
+        <div className="game-board">
+          <div>
+            <div className="timer-div">
+              {timer}
+              {level}
+              <br />
+              {infoText}
+            </div>
+            <div className="mt-30 box-game">
+              {board}
+              {alert}
+            </div>
+            {nextButton}
 
-        {alertText}
-      </div>
-      </div>
-      {instruction}
+            {alertText}
+          </div>
+        </div>
+        {instruction}
       </div>
     );
   }

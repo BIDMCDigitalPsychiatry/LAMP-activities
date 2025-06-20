@@ -21,17 +21,20 @@ import i18n from "./../../i18n";
 import * as React from "react";
 import "./box.css";
 import { InstructionModal } from "./InstructionModal";
+import { Fab, Icon, Tooltip } from "@material-ui/core";
+import "material-icons";
 
 export interface BoardProps {
   language: string;
   time: number;
   noBack: boolean;
+  is_favorite: boolean;
 }
 
 interface BoardState {
   animate: boolean;
   boxClass: Array<string>;
-  boxes: any,
+  boxes: any;
   dogCount: number;
   catCount: number;
   enableTap: boolean;
@@ -50,10 +53,11 @@ interface BoardState {
   stateSuccessTaps: number;
   stateWrongTaps: number;
   states: any;
-  status:any;
+  status: any;
   wrongTaps: number;
   sendResponse: boolean;
   showInstruction: boolean;
+  isFavoriteActive: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -88,11 +92,12 @@ class Board extends React.Component<BoardProps, BoardState> {
       stateSuccessTaps: 0,
       stateWrongTaps: 0,
       states: null,
-      status:null,
+      status: null,
       successTaps: 0,
       timeout: false,
       wrongTaps: 0,
       showInstruction: true,
+      isFavoriteActive: props?.is_favorite ?? false,
     };
   }
   // Reset game state for each state
@@ -199,7 +204,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       wrongTaps: success ? this.state.wrongTaps : this.state.wrongTaps + 1,
     });
 
-    this.updateWithTaps(i, success)
+    this.updateWithTaps(i, success);
   };
 
   // To track the timer expiring
@@ -230,7 +235,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
     const box = JSON.parse(this.state.boxes);
     states.push(box);
-    const status = []
+    const status = [];
     if (this.state.status !== null) {
       const r = JSON.parse(this.state.status);
       Object.keys(r).forEach((key) => {
@@ -247,7 +252,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState({
       lastClickTime: new Date().getTime(),
       states: JSON.stringify(states),
-      status:JSON.stringify(status)
+      status: JSON.stringify(status),
     });
   };
 
@@ -277,58 +282,57 @@ class Board extends React.Component<BoardProps, BoardState> {
     });
   };
 
-  
-
   // Call the API to pass game result
   sendGameResult = (status?: boolean) => {
-    const route = {'type': 'manual_exit', 'value': status ?? false} 
+    const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
     if (this.state.boxes !== null) {
       const r = JSON.parse(this.state.boxes);
       Object.keys(r).forEach((key) => {
         boxes.push(r[key]);
       });
-    }    
-    boxes.push(route);    
-    this.setState({
-      boxes: JSON.stringify(boxes),
-    }, () => {
-    const gameScore = Math.round(
-      (this.state.stateSuccessTaps / 45) * 100
-    );
-    let points = 0;    
-    if (gameScore === 100) {
-      points = points + 2;
-    } else {
-      points = points + 1;
     }
-     parent.postMessage(
-      JSON.stringify({
-        duration: new Date().getTime() - this.props.time,
-        static_data: {
-          correct_answers: this.state.stateSuccessTaps,
-          point: points,
-          total_questions: 45,
-          wrong_answers: this.state.stateWrongTaps,
-        },
-        temporal_slices: JSON.parse(this.state.boxes),
-        timestamp: new Date().getTime(),
-      }),
-      "*"
+    boxes.push(route);
+    this.setState(
+      {
+        boxes: JSON.stringify(boxes),
+      },
+      () => {
+        const gameScore = Math.round((this.state.stateSuccessTaps / 45) * 100);
+        let points = 0;
+        if (gameScore === 100) {
+          points = points + 2;
+        } else {
+          points = points + 1;
+        }
+        parent.postMessage(
+          JSON.stringify({
+            duration: new Date().getTime() - this.props.time,
+            static_data: {
+              correct_answers: this.state.stateSuccessTaps,
+              point: points,
+              total_questions: 45,
+              wrong_answers: this.state.stateWrongTaps,
+              is_favorite: this.state.isFavoriteActive,
+            },
+            temporal_slices: JSON.parse(this.state.boxes),
+            timestamp: new Date().getTime(),
+          }),
+          "*"
+        );
+
+        this.setState({
+          sendResponse: true,
+        });
+      }
     );
-
-    this.setState({
-      sendResponse: true,
-    });
-  });
-
   };
 
   // Modal close is handled here
   handleClose = (status: boolean) => {
     this.setState({
       lastClickTime: new Date().getTime(),
-      showModalInfo: status     
+      showModalInfo: status,
     });
     this.resetState();
     this.startTimer();
@@ -446,20 +450,22 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.checkStatus();
   };
 
-  
   // To refresh the game
   clickHome = () => {
     window.location.reload();
   };
-  
+
   clickBack = () => {
-   
-      this.sendGameResult(true)
-    
-  }
+    this.sendGameResult(true);
+  };
 
   handleCloseInstructionModal = () => {
     this.setState({ showInstruction: false });
+  };
+  handleFavoriteClick = () => {
+    this.setState((prevState) => ({
+      isFavoriteActive: !prevState.isFavoriteActive,
+    }));
   };
 
   // Render the game board
@@ -469,7 +475,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       if (!this.state.sendResponse) {
         this.sendGameResult();
       }
-      boxes = this.state.gameOver ? i18n.t("GAME_OVER") +" !!!" : null;
+      boxes = this.state.gameOver ? i18n.t("GAME_OVER") + " !!!" : null;
     } else {
       const numbers = [
         "first",
@@ -479,8 +485,8 @@ class Board extends React.Component<BoardProps, BoardState> {
         "fifth",
         "sixth",
         "seventh",
-        "eightth",
-        "nineth",
+        "eighth",
+        "ninth",
         "tenth",
       ];
       boxes = [];
@@ -583,27 +589,49 @@ class Board extends React.Component<BoardProps, BoardState> {
       <InstructionModal
         show={true}
         modalClose={this.handleCloseInstructionModal}
-        msg ={ `${i18n.t("IN_THIS_GAME_YOU_WILL_SEE_A_SCREEN_WITH_MANY_BOXES_THESE_BOXES_WILL_LIFT_REVEALING_EITHER_A_DOG_CAT_OR_NOTHING_BEHIND_THEM_A_TASK_IS_TO_TAP_THE_CORRECT_BOXES_BASED_ON_WHAT_IS_BEHIND_EACH_BOX_THE_INSTRUCTIONS_FOR_WHICH_BOXES_ARE_CORRECT_WILL_CHANGE_DEPENDING_ON_THE_LEVEL_SO_PAY_ATTENTION_TO_THE_ANIMALS")}`  }      
+        msg={`${i18n.t(
+          "IN_THIS_GAME_YOU_WILL_SEE_A_SCREEN_WITH_MANY_BOXES_THESE_BOXES_WILL_LIFT_REVEALING_EITHER_A_DOG_CAT_OR_NOTHING_BEHIND_THEM_A_TASK_IS_TO_TAP_THE_CORRECT_BOXES_BASED_ON_WHAT_IS_BEHIND_EACH_BOX_THE_INSTRUCTIONS_FOR_WHICH_BOXES_ARE_CORRECT_WILL_CHANGE_DEPENDING_ON_THE_LEVEL_SO_PAY_ATTENTION_TO_THE_ANIMALS"
+        )}`}
         language={i18n.language}
       />
     ) : null;
     return (
       <div>
-            {!this.props.noBack && <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>}
-            <nav className="home-link">
-              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-            </nav>
-            <div className="heading">{i18n.t("CATS_AND_DOGS")}</div>
-            <div className="game-board">
-      <div>
-        <div className="timer-div">{timer}</div>
-        <div className="mt-30">{boxes}</div>
-        {modal}
-      </div>
-      {instructionModal}
-      </div>
+        {!this.props.noBack && (
+          <nav className="back-link">
+            <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+          </nav>
+        )}
+        <nav className="home-link">
+          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+        </nav>
+        <div className="heading">
+          {i18n.t("CATS_AND_DOGS")}
+          <Tooltip
+            title={
+              this.state.isFavoriteActive
+                ? "Tap to remove from Favorite Activities"
+                : "Tap to add to Favorite Activities"
+            }
+          >
+            <Fab
+              className={`headerTitleIcon ${
+                this.state.isFavoriteActive ? "active" : ""
+              }`}
+              onClick={this.handleFavoriteClick}
+            >
+              <Icon>star_rounded</Icon>
+            </Fab>
+          </Tooltip>
+        </div>
+        <div className="game-board">
+          <div>
+            <div className="timer-div">{timer}</div>
+            <div className="mt-30">{boxes}</div>
+            {modal}
+          </div>
+          {instructionModal}
+        </div>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import {
   Icon,
   Typography,
@@ -13,13 +13,14 @@ import {
   Container,
   AppBar,
   Toolbar,
-} from "@material-ui/core"
+  Tooltip,
+} from "@material-ui/core";
 
-import i18n from "../i18n"
-import { useTranslation } from "react-i18next"
-import ReactMarkdown from "react-markdown"
-import gfm from "remark-gfm"
-import emoji from "remark-emoji"
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
+import emoji from "remark-emoji";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,12 +37,16 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     activityDesc: {
-      "& p" : {
+      "& p": {
         fontSize: "17px !important",
         fontWeight: 600,
-        textAlign: "center"
+        textAlign: "center",
       },
-      "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
+      "& blockquote": {
+        borderLeft: "5px solid #ccc",
+        margin: "1.5em 10px",
+        padding: "0.5em 10px",
+      },
       "& code": {
         padding: ".2rem .5rem",
         margin: "0 .2rem",
@@ -62,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
       "& h2": {
         fontSize: "35px",
         fontWeight: 600,
-        textAlign: "center"
+        textAlign: "center",
       },
       "& p": {
         fontSize: "16px",
@@ -101,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
     headerIcon: {
       textAlign: "center",
       marginBottom: 15,
-      "& img": { maxWidth: "100%", width:"100px" },
+      "& img": { maxWidth: "100%", width: "100px" },
     },
     mainContainer: { padding: 0 },
     toolbardashboard: {
@@ -118,96 +123,180 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
+    headerTitleIcon: {
+      background: "none",
+      boxShadow: "none",
+      width: 36,
+      height: 36,
+      color: "#666",
+      marginLeft: 8,
+      "& .material-icons": {
+        fontSize: "2rem",
+      },
+      "&:hover": {
+        background: "#fff",
+      },
+      "&.active": {
+        color: "#e3b303",
+      },
+    },
   })
-)
-  
+);
+
 export default function Goals({ ...props }) {
-  const classes = useStyles()
-  const [activity, setActivity] = useState<any>(null)
-  const [startTime, setStartTime] = useState(new Date().getTime())
-  const { t } = useTranslation()
+  const classes = useStyles();
+  const [activity, setActivity] = useState<any>(null);
+  const [startTime, setStartTime] = useState(new Date().getTime());
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
+
+  const { t } = useTranslation();
 
   useEffect(() => {
-    const configuration = props.data?.configuration ?? null
+    const configuration = props.data?.configuration ?? null;
     const langugae = !!configuration
       ? configuration.hasOwnProperty("language")
         ? configuration.language
         : "en-US"
-      : "en-US"
-    i18n.changeLanguage(langugae)
-    setStartTime(new Date().getTime())
-    setActivity(props.data.activity)
-  }, [])
+      : "en-US";
+    i18n.changeLanguage(langugae);
+    setStartTime(new Date().getTime());
+    setActivity(props.data.activity);
+  }, []);
 
   const completeMarking = () => {
     parent.postMessage(
       JSON.stringify({
-        duration: new Date().getTime() - startTime, 
-        static_data: {},       
+        duration: new Date().getTime() - startTime,
+        static_data: { is_favorite: isFavoriteActive },
         temporal_slices: [],
-        timestamp:startTime
+        timestamp: startTime,
       }),
       "*"
-    )
-  }
+    );
+  };
 
-  function LinkRenderer(data:any) {
-    return <a href={data.href} target="_blank">{data.children}</a>
+  function LinkRenderer(data: any) {
+    return (
+      <a href={data.href} target="_blank">
+        {data.children}
+      </a>
+    );
   }
-  
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
+
   return (
     <React.Fragment>
+      {!!activity && (
+        <Box>
+          <AppBar
+            position="static"
+            style={{ background: "#FBF1EF", boxShadow: "none" }}
+          >
+            <Toolbar className={classes.toolbardashboard}>
+              <IconButton
+                onClick={() => {
+                  parent.postMessage(
+                    JSON.stringify({
+                      static_data: {
+                        is_favorite: isFavoriteActive,
+                      },
+                    }),
+                    "*"
+                  );
+                }}
+                color="default"
+                aria-label="Menu"
+              >
+                <Icon>arrow_back</Icon>
+              </IconButton>
+              <Typography variant="h5">
+                {!!activity ? t(activity?.name ?? "") : ""}
+                <Tooltip
+                  title={
+                    isFavoriteActive
+                      ? "Tap to remove from Favorite Activities"
+                      : "Tap to add to Favorite Activities"
+                  }
+                >
+                  <Fab
+                    className={`${classes.headerTitleIcon} ${
+                      isFavoriteActive ? "active" : ""
+                    }`}
+                    onClick={handleFavoriteClick}
+                  >
+                    <Icon>star_rounded</Icon>
+                  </Fab>
+                </Tooltip>{" "}
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-    {!!activity && (
-      <Box>
-    <AppBar position="static" style={{ background: "#FBF1EF", boxShadow: "none" }}>
-      <Toolbar className={classes.toolbardashboard}>
-        <IconButton
-          onClick={() => {
-            parent.postMessage(null, "*")
-          }}
-          color="default"
-          aria-label="Menu"
-        >
-          <Icon>arrow_back</Icon>
-        </IconButton>
-        <Typography variant="h5">{!!activity ? t(activity?.name ?? "") : ""}</Typography>
-
-      </Toolbar>
-    </AppBar>
-
-
-    <Container maxWidth={false} className={classes.mainContainer}>
-      <Box className={classes.header}>
-        <Box width={1} className={classes.headerIcon}>
-          {!!activity?.photo ? <img src={!!activity?.photo ? activity?.photo : undefined} alt={activity?.name} /> : ""}
-        </Box>
-      </Box>
-      <Grid container direction="row" justify="center" alignItems="flex-start">
-        <Grid item lg={4} sm={10} xs={12}>
-          <CardContent className={classes.tipscontentarea}>
-            <Typography variant="h2">{(activity?.settings?.value ?? "") + " " + (activity.settings?.unit ?? "")}</Typography>
-            <Typography variant="h5" color="textSecondary" className={classes.activityDesc} >
-              <ReactMarkdown remarkPlugins={[gfm, emoji]} skipHtml={false} components={{link: LinkRenderer,sup: (props) => {
-    return <sup>{props.children}</sup>;
-  }}}>
-                 {activity?.description ?? ""}
-              </ReactMarkdown>
-            
-            </Typography>
-            <Box textAlign="center">
-              <Fab variant="extended" color="primary" className={classes.btnpeach} onClick={() => completeMarking()} > {/*  */}
-                {t("Mark complete")}
-              </Fab>
+          <Container maxWidth={false} className={classes.mainContainer}>
+            <Box className={classes.header}>
+              <Box width={1} className={classes.headerIcon}>
+                {!!activity?.photo ? (
+                  <img
+                    src={!!activity?.photo ? activity?.photo : undefined}
+                    alt={activity?.name}
+                  />
+                ) : (
+                  ""
+                )}
+              </Box>
             </Box>
-            
-          </CardContent>
-        </Grid>
-      </Grid>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+            >
+              <Grid item lg={4} sm={10} xs={12}>
+                <CardContent className={classes.tipscontentarea}>
+                  <Typography variant="h2">
+                    {(activity?.settings?.value ?? "") +
+                      " " +
+                      (activity.settings?.unit ?? "")}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    color="textSecondary"
+                    className={classes.activityDesc}
+                  >
+                    <ReactMarkdown
+                      remarkPlugins={[gfm, emoji]}
+                      skipHtml={false}
+                      components={{
+                        link: LinkRenderer,
+                        sup: (props) => {
+                          return <sup>{props.children}</sup>;
+                        },
+                      }}
+                    >
+                      {activity?.description ?? ""}
+                    </ReactMarkdown>
+                  </Typography>
+                  <Box textAlign="center">
+                    <Fab
+                      variant="extended"
+                      color="primary"
+                      className={classes.btnpeach}
+                      onClick={() => completeMarking()}
+                    >
+                      {" "}
+                      {/*  */}
+                      {t("Mark complete")}
+                    </Fab>
+                  </Box>
+                </CardContent>
+              </Grid>
+            </Grid>
           </Container>
-          </Box>
-          )}
- </React.Fragment>
-         
-  )
+        </Box>
+      )}
+    </React.Fragment>
+  );
 }

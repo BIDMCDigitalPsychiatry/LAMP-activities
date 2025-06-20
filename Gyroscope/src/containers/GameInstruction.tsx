@@ -138,6 +138,7 @@ export default function Instructions({ ...props }) {
           setView={setView}
           clickBack={props.clickBack}
           language={i18n.language}
+          isFavoriteActive={props?.isFavoriteActive}
         />
       )}
       {view === "end game" && <GameEnd />}

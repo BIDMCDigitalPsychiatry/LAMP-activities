@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import {Animated} from "react-animated-css";
+import { Animated } from "react-animated-css";
 
 import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,11 +18,14 @@ import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
 import { InstructionModal } from "./InstructionModal";
+import { Fab, Icon, Tooltip } from "@material-ui/core";
+import "material-icons";
 
 interface AppProps {
   configuration: any;
   activity: any;
-  noBack:any;
+  noBack: any;
+  data: any;
 }
 
 interface AppState {
@@ -58,9 +61,10 @@ interface AppState {
   levelVal: number;
   allRoutes: any;
   wrongNoGoClicks: number;
-  time:number;
+  time: number;
   noBack: boolean;
-  showDialog: boolean; 
+  showDialog: boolean;
+  isFavoriteActive: boolean;
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -74,7 +78,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     const yValues = this.getCoords(
       window.innerHeight - (window.innerHeight * 25) / 100,
       2
-    );   
+    );
     this.state = {
       allRoutes: [],
       bubble_count: [10, 10, 80],
@@ -111,6 +115,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       yCoords: yValues,
       yPoints: this.getCoordPoints(yValues),
       showDialog: true,
+      isFavoriteActive: props?.data?.is_favorite ?? false,
     };
     this.bubbleCount = this.state.bubble_count[0];
   }
@@ -128,12 +133,12 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         bubble_speed: settings
           ? settings.bubble_speed
           : this.state.bubble_speed,
-        eventRecieved:true,
+        eventRecieved: true,
         intertrial_duration: settings
           ? settings.intertrial_duration
           : this.state.intertrial_duration,
-        noBack: this.props.noBack    
-      });    
+        noBack: this.props.noBack,
+      });
       i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     }
     if (this.state.isGameStarted) {
@@ -165,8 +170,8 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   //       intertrial_duration: settings
   //         ? settings.intertrial_duration
   //         : this.state.intertrial_duration,
-  //       noBack: this.props.noBack    
-  //     });    
+  //       noBack: this.props.noBack
+  //     });
   //     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
   //   }
   //   if (this.state.isGameStarted) {
@@ -185,7 +190,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     let i = 0;
     const coords = [];
     const diff = size / 100;
-    for (i = 0; i < size ; i = Math.round(i + diff)) {
+    for (i = 0; i < size; i = Math.round(i + diff)) {
       coords.push(i);
     }
     return coords;
@@ -260,7 +265,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     levelVal: number,
     route: any
   ) => {
-    console.log(route)
+    console.log(route);
     this.setState((prevState) => ({
       completed,
       correctGoCount,
@@ -287,18 +292,18 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       this.setState({ timeDifference: dif });
     }
     if (levelVal === 3) {
-      const route = {'type': 'manual_exit', 'value': false} 
-      const values:any = this.state.route ?? []
-      if(typeof values[this.state.gameLevel-1] === 'undefined') {
-        values[this.state.gameLevel-1] = []
-      } 
-      values[this.state.gameLevel-1].push(route)    
+      const route = { type: "manual_exit", value: false };
+      const values: any = this.state.route ?? [];
+      if (typeof values[this.state.gameLevel - 1] === "undefined") {
+        values[this.state.gameLevel - 1] = [];
+      }
+      values[this.state.gameLevel - 1].push(route);
       const temporalSlices = [].concat.apply([], this.state.route);
       setTimeout(() => {
         parent.postMessage(
           JSON.stringify({
             duration: new Date().getTime() - this.state.time,
-            static_data: {},
+            static_data: { is_favorite: this.state.isFavoriteActive },
             temporal_slices: temporalSlices,
             timestamp: new Date().getTime(),
           }),
@@ -310,13 +315,13 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   };
 
   updateRoute = (route: any, completed: boolean, level: number) => {
-    const values:any = this.state.route
-    if(typeof values[level-1] === 'undefined') {
-      values[level-1] = []
-    } 
-    values[level-1].push(route)
-    this.setState({route : values , completed})
-  }
+    const values: any = this.state.route;
+    if (typeof values[level - 1] === "undefined") {
+      values[level - 1] = [];
+    }
+    values[level - 1].push(route);
+    this.setState({ route: values, completed });
+  };
 
   updateStateData = async (obj: any) => {
     await this.setState(obj);
@@ -350,84 +355,117 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           this.state.gameLevel === 1 ? (
             <div className="pop-the-bubble-board">
               <div className="mt-30">
-             
-
-              <Animated  animationIn="bounceInDown" animationOut="fadeOut" animationInDuration={1000} isVisible={true}>
-                <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
+                <Animated
+                  animationIn="bounceInDown"
+                  animationOut="fadeOut"
+                  animationInDuration={1000}
+                  isVisible={true}
+                >
+                  <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
                 </Animated>
-                <Animated animationIn="bounceInUp" animationInDuration={1500} className="bubble-blue-large size-l" animationOut="fadeOut" isVisible={true}>
-                <Bubble
-                  text={i18n.t("TAP_TO_CONTINUE")}
-                  bubbleToTap={false}
-                  x={x}
-                  index={0}
-                  y={y}
-                  class="bubble-text"
-                  onClick={this.handleClick}
-                  bubbleDuration={this.state.bubble_duration}
-                />
+                <Animated
+                  animationIn="bounceInUp"
+                  animationInDuration={1500}
+                  className="bubble-blue-large size-l"
+                  animationOut="fadeOut"
+                  isVisible={true}
+                >
+                  <Bubble
+                    text={i18n.t("TAP_TO_CONTINUE")}
+                    bubbleToTap={false}
+                    x={x}
+                    index={0}
+                    y={y}
+                    class="bubble-text"
+                    onClick={this.handleClick}
+                    bubbleDuration={this.state.bubble_duration}
+                  />
                 </Animated>
               </div>
             </div>
           ) : (
             <div className="pop-the-bubble-board">
               <div className="mt-30 result-head">
-                <h1>{i18n.t("LEVEL_NUM_COMPLETED", {levelNumber: (this.state.gameLevel - 1)})}</h1>
+                <h1>
+                  {i18n.t("LEVEL_NUM_COMPLETED", {
+                    levelNumber: this.state.gameLevel - 1,
+                  })}
+                </h1>
                 <div className="pl-15 game-rule text-center">
                   <div className="pl-15 game-rule text-center">
                     <h1>
-                      {i18n.t("YOU_GOT_PERCENT", {percentage: Math.round((this.state.correctGoCount / this.state.totalGoCount) * 100)})}
+                      {i18n.t("YOU_GOT_PERCENT", {
+                        percentage: Math.round(
+                          (this.state.correctGoCount /
+                            this.state.totalGoCount) *
+                            100
+                        ),
+                      })}
                       %
                     </h1>
 
                     <div className="textLabel">
-                    {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_GO_TRIALS", {correctGoCount: this.state.correctGoCount,
-                    percentage: Math.round(
-                      (this.state.correctGoCount / this.state.totalGoCount) *
-                        100
-                    )})}
-                      %
-                    </div>
-
-                    <div className="textLabel">                      
-                    {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_GO_TRIALS", {missedClicks: this.state.missedClicks,
-                    percentage: Math.round(
-                      (this.state.missedClicks / this.state.totalGoCount) *
-                        100
-                    )})}
+                      {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_GO_TRIALS", {
+                        correctGoCount: this.state.correctGoCount,
+                        percentage: Math.round(
+                          (this.state.correctGoCount /
+                            this.state.totalGoCount) *
+                            100
+                        ),
+                      })}
                       %
                     </div>
 
                     <div className="textLabel">
-                    {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_NO_GO_TRIALS", {correctNoGo: this.state.correctNoGo,
-                    percentage: this.state.totalNoGoCount > 0
-                    ? Math.round(
-                        (this.state.correctNoGo /
-                          this.state.totalNoGoCount) *
-                          100
-                      )
-                    : 0})}
+                      {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_GO_TRIALS", {
+                        missedClicks: this.state.missedClicks,
+                        percentage: Math.round(
+                          (this.state.missedClicks / this.state.totalGoCount) *
+                            100
+                        ),
+                      })}
                       %
                     </div>
 
                     <div className="textLabel">
-                    {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS", {
-                    percentage: this.state.totalNoGoCount > 0
-                    ? Math.round(
-                        (this.state.wrongNoGoCount /
-                          this.state.totalNoGoCount) *
-                          100
-                      )
-                    : 0, wrongNoGoCount: this.state.wrongNoGoCount})}
+                      {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_NO_GO_TRIALS", {
+                        correctNoGo: this.state.correctNoGo,
+                        percentage:
+                          this.state.totalNoGoCount > 0
+                            ? Math.round(
+                                (this.state.correctNoGo /
+                                  this.state.totalNoGoCount) *
+                                  100
+                              )
+                            : 0,
+                      })}
                       %
                     </div>
 
                     <div className="textLabel">
-                    {i18n.t("NUMBER_OF_FALSE_HITS", {falseHitsCount: this.state.falseHitsCount})}
+                      {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS", {
+                        percentage:
+                          this.state.totalNoGoCount > 0
+                            ? Math.round(
+                                (this.state.wrongNoGoCount /
+                                  this.state.totalNoGoCount) *
+                                  100
+                              )
+                            : 0,
+                        wrongNoGoCount: this.state.wrongNoGoCount,
+                      })}
+                      %
                     </div>
 
                     <div className="textLabel">
-                      {((this.state.timeDifference/1000)).toFixed(2)} {i18n.t("MINUTES_TO_COMPLETE")}
+                      {i18n.t("NUMBER_OF_FALSE_HITS", {
+                        falseHitsCount: this.state.falseHitsCount,
+                      })}
+                    </div>
+
+                    <div className="textLabel">
+                      {(this.state.timeDifference / 1000).toFixed(2)}{" "}
+                      {i18n.t("MINUTES_TO_COMPLETE")}
                     </div>
                   </div>
                 </div>
@@ -462,21 +500,25 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         break;
       case 1:
         const alertTextTop =
-          this.state.gameLevel === 1 ? i18n.t("TAP_TO_POP_LEVEL_1_BUBBLES_TOP") : i18n.t("TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP");
+          this.state.gameLevel === 1
+            ? i18n.t("TAP_TO_POP_LEVEL_1_BUBBLES_TOP")
+            : i18n.t("TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP");
         const alertTextBottom =
           this.state.gameLevel === 1
             ? i18n.t("TAP_TO_POP_LEVEL_1_BUBBLES_BOTTOM")
             : this.state.gameLevel === 2
             ? i18n.t("TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM")
             : i18n.t("TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM");
-                    
+
         infoSection = (
           <div className="pop-the-bubble-board">
             <div className="mt-30">
-              <h1 className="mt-10">{i18n.t("LEVEL_NUMBER", {gameLevel: this.state.gameLevel})}</h1>
+              <h1 className="mt-10">
+                {i18n.t("LEVEL_NUMBER", { gameLevel: this.state.gameLevel })}
+              </h1>
               <div className="pl-30 pr-30 game-rule text-center">
                 <div className="pl-30 pr-30 game-rule text-center">
-                  <p>{alertTextTop}</p> 
+                  <p>{alertTextTop}</p>
                   <p>{alertTextBottom}</p>
                 </div>
               </div>
@@ -527,27 +569,33 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
   };
 
   clickBack = () => {
-    const route = {'type': 'manual_exit', 'value': true} 
-    const values:any = this.state.route ?? []  
-    if(typeof values[this.state.gameLevel-1] === 'undefined') {
-      values[this.state.gameLevel-1] = []
-    } 
-    values[this.state.gameLevel-1].push(route)    
+    const route = { type: "manual_exit", value: true };
+    const values: any = this.state.route ?? [];
+    if (typeof values[this.state.gameLevel - 1] === "undefined") {
+      values[this.state.gameLevel - 1] = [];
+    }
+    values[this.state.gameLevel - 1].push(route);
     const temporalSlices = [].concat.apply([], values);
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.state.time,
-        static_data: {},
+        static_data: { is_favorite: this.state.isFavoriteActive },
         temporal_slices: temporalSlices,
         timestamp: new Date().getTime(),
       }),
       "*"
     );
-  }
+  };
 
   handleCloseInstructionModal = () => {
     this.setState({ showDialog: false });
   };
+  handleFavoriteClick = () => {
+    this.setState((prevState) => ({
+      isFavoriteActive: !prevState.isFavoriteActive,
+    }));
+  };
+
   // Game render function
   render() {
     const infoSection = this.getLevelCases();
@@ -555,19 +603,42 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       <InstructionModal
         show={true}
         modalClose={this.handleCloseInstructionModal}
-        msg ={ `${i18n.t("IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE")}`  }      
+        msg={`${i18n.t(
+          "IN_THIS_GAME_YOU_WILL_SEE_LOTS_OF_DIFFERENT_COLORED_BUBBLES_ONE_AT_A_TIME_YOUR_TASK_IS_TO_POP_THE_CORRECTLY_COLORED_BUBBLES_WHILE_IGNORING_THE_INCORRECT_ONES_PAY_ATTENTION_TO_THE_INSTRUCTIONS_FOR_EACH_LEVEL_TO_KNOW_WHICH_COLORED_BUBBLES_YOU_SHOULD_TAP_AND_WHICH_ONES_YOU_SHOULD_IGNORE"
+        )}`}
         language={i18n.language}
       />
     ) : null;
     return (
       <div id="pop-the-bubble-body">
-        {!this.state.noBack && <nav className="back-link">
-          <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-        </nav>}
+        {!this.state.noBack && (
+          <nav className="back-link">
+            <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+          </nav>
+        )}
+
         <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
-        <div className="heading">{i18n.t("POP_THE_BUBBLES")}</div>
+        <div className="heading">
+          {i18n.t("POP_THE_BUBBLES")}
+          <Tooltip
+            title={
+              this.state.isFavoriteActive
+                ? "Tap to remove from Favorite Activities"
+                : "Tap to add to Favorite Activities"
+            }
+          >
+            <Fab
+              className={`headerTitleIcon ${
+                this.state.isFavoriteActive ? "active" : ""
+              }`}
+              onClick={this.handleFavoriteClick}
+            >
+              <Icon>star_rounded</Icon>
+            </Fab>
+          </Tooltip>
+        </div>
         {infoSection}
         {instructionModal}
       </div>

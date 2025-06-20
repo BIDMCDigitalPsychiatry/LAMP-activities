@@ -44,8 +44,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "de-DE": {
@@ -90,8 +89,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "en-US": {
@@ -136,8 +134,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "es-ES": {
@@ -182,8 +179,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "fr-FR": {
@@ -228,8 +224,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "hi-IN": {
@@ -273,8 +268,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "it-IT": {
@@ -319,8 +313,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "ko-KR": {
@@ -365,8 +358,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "zh-CN": {
@@ -411,8 +403,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
   "zh-HK": {
@@ -457,8 +448,7 @@ const resources = {
       TRY_AGAIN : "Try Again",
       SCORE : "Score",
       COLOUR : "Colour",
-      MEMO : "Memo",
-      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
+      MEMO : "Memo"
     },
   },
 };

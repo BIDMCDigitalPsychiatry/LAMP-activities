@@ -12,7 +12,11 @@ import BallonStandSVG from "./BallonStandSVG";
 import BallonImageSVG from "./BallonImageSVG";
 import TimerComponent from "./TimerComponent";
 import i18n from "./../../i18n";
-import  ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip,Fab, Icon } from "@material-ui/core";
+import "material-icons";
 
 interface AppState {
   balloon_width: any;
@@ -40,13 +44,14 @@ interface AppState {
   reset_data: boolean;
   participant_id: number;
   break_point_array: any;
-  time:number;
-  no_back:boolean;
+  time: number;
+  no_back: boolean;
   points: any;
+  isFavoriteActive: boolean;
 }
 
-interface AppProps{
-  data: any
+interface AppProps {
+  data: any;
 }
 
 class Balloons extends React.Component<AppProps, AppState> {
@@ -54,8 +59,11 @@ class Balloons extends React.Component<AppProps, AppState> {
     super(props);
 
     const configuration = props.data.configuration;
-    const settings = props.data.activity?.settings ?? (props.data.settings ?? {})
-    const pointsArray = this.getRandomGaussianArray(settings.breakpoint_mean, settings.breakpoint_std)
+    const settings = props.data.activity?.settings ?? props.data.settings ?? {};
+    const pointsArray = this.getRandomGaussianArray(
+      settings.breakpoint_mean,
+      settings.breakpoint_std
+    );
     this.state = {
       balloon_burst: false,
       balloon_count: settings.balloon_count,
@@ -63,7 +71,7 @@ class Balloons extends React.Component<AppProps, AppState> {
       balloon_width: 100,
       break_point: 0,
       breakpoint_mean: settings.breakpoint_mean,
-      breakpoint_std:  settings.breakpoint_std,
+      breakpoint_std: settings.breakpoint_std,
       btn_collect_disabled: "disabled",
       btn_pump_disabled: null,
       cls_balloon_burst: null,
@@ -83,29 +91,32 @@ class Balloons extends React.Component<AppProps, AppState> {
       reset_data: false,
       participant_id: 0,
       break_point_array: [],
-      no_back:props.data.noBack,
+      no_back: props.data.noBack,
       points: pointsArray,
+      isFavoriteActive: props?.data?.is_favorite,
     };
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     const currentDate = this.dateFormating();
     const participantData: any = JSON.parse(
-      localStorage.getItem("balloonrisk_") || JSON.stringify({
-        currentDate,
-        balloonCount: settings.balloon_count ?? 15,
-        breakpointMean: settings.breakpoint_mean ?? 64.5,
-        breakpointStd: settings.breakpoint_std?? 37,
-        breakPointArray:pointsArray
-      })
+      localStorage.getItem("balloonrisk_") ||
+        JSON.stringify({
+          currentDate,
+          balloonCount: settings.balloon_count ?? 15,
+          breakpointMean: settings.breakpoint_mean ?? 64.5,
+          breakpointStd: settings.breakpoint_std ?? 37,
+          breakPointArray: pointsArray,
+        })
     );
 
-    if (localStorage.getItem(
-      "balloonrisk_") === null || (!!participantData && 
-     (  participantData.currentDate !== currentDate ||
-      !participantData.hasOwnProperty("breakPointArray") ||
-      this.state.balloon_count !== participantData.balloonCount ||
-      this.state.breakpoint_mean !== participantData.breakpointMean ||
-      this.state.breakpoint_std !== participantData.breakpointStd))) {
-      
+    if (
+      localStorage.getItem("balloonrisk_") === null ||
+      (!!participantData &&
+        (participantData.currentDate !== currentDate ||
+          !participantData.hasOwnProperty("breakPointArray") ||
+          this.state.balloon_count !== participantData.balloonCount ||
+          this.state.breakpoint_mean !== participantData.breakpointMean ||
+          this.state.breakpoint_std !== participantData.breakpointStd))
+    ) {
       localStorage.setItem(
         "balloonrisk_",
         JSON.stringify({
@@ -113,15 +124,13 @@ class Balloons extends React.Component<AppProps, AppState> {
           balloonCount: settings.balloon_count,
           breakpointMean: settings.breakpoint_mean,
           breakpointStd: settings.breakpoint_std,
-          breakPointArray: pointsArray
+          breakPointArray: pointsArray,
         })
       );
     }
   }
 
- 
-
-  getRandomGaussian =  (mean: any, std: any) => {
+  getRandomGaussian = (mean: any, std: any) => {
     let u = 0;
     let v = 0;
     while (u === 0) {
@@ -132,24 +141,23 @@ class Balloons extends React.Component<AppProps, AppState> {
     }
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     num = num * std + mean;
-    return num
+    return num;
   };
 
-
-  getRandomGaussianArray =  (mean: any, std: any): any => {
+  getRandomGaussianArray = (mean: any, std: any): any => {
     const list = [];
-    let i=0;
-    const len = this.state?.balloon_count ?? 15
+    let i = 0;
+    const len = this.state?.balloon_count ?? 15;
     for (i = 0; i < len; i++) {
-      let num = 0
-      while(num < 0.5 || num >= 128) {
-        num = this.getRandomGaussian(mean, std)
+      let num = 0;
+      while (num < 0.5 || num >= 128) {
+        num = this.getRandomGaussian(mean, std);
       }
       list[i] = Math.round(num);
     }
-    this.setState({points: list})
-    return list
-  }
+    this.setState({ points: list });
+    return list;
+  };
 
   componentDidMount = () => {
     const eventMethodObj: any = window.addEventListener;
@@ -162,7 +170,7 @@ class Balloons extends React.Component<AppProps, AppState> {
       messageEvent,
       (e: any) => {
         const configuration = e.data.configuration;
-        const settings = e.data.activity?.settings ?? (e.data.settings ?? {});
+        const settings = e.data.activity?.settings ?? e.data.settings ?? {};
         this.setState({
           balloon_count: settings
             ? settings.balloon_count
@@ -179,7 +187,7 @@ class Balloons extends React.Component<AppProps, AppState> {
       false
     );
   };
-  
+
   // Pump the balloon
   pumpBalloon = async () => {
     if (this.state.balloon_number > this.state.balloon_count) {
@@ -313,45 +321,47 @@ class Balloons extends React.Component<AppProps, AppState> {
   };
 
   getBreakPoinData = (participantData: any, flag = true) => {
-   
-    return  participantData?.breakPointArray[
-          flag ? this.state.balloon_number -1: this.state.balloon_number  
-        ] 
+    return participantData?.breakPointArray[
+      flag ? this.state.balloon_number - 1 : this.state.balloon_number
+    ];
   };
 
- 
-  sendGameData = async (status?:boolean) => {
-    const route = {'type': 'manual_exit', 'value': status ?? false} 
-    this.setState((prevState) => ({
-      route: [...prevState.route, route],
-    }), () => {
-    const currentDate = this.dateFormating();
-   
-    localStorage.setItem(
-      "balloonrisk_",
-      JSON.stringify({
-        currentDate,
-        breakPointArray: this.state.break_point_array,
-        balloonCount: this.state.balloon_count,
-        breakpointMean: this.state.breakpoint_mean,
-        breakpointStd: this.state.breakpoint_std,
-      })
-    );
-    parent.postMessage(
-      JSON.stringify({
-        balloon_count: this.state.balloon_count,
-        breakpoint_mean: this.state.breakpoint_mean,
-        breakpoint_std: this.state.breakpoint_std,
-        static_data: {
-          points: this.state.total_points + this.state.new_current_point,
-        },
-        temporal_slices: this.state.route,
-        timestamp: new Date().getTime(),
-        duration: new Date().getTime() - this.state.time,
+  sendGameData = async (status?: boolean) => {
+    const route = { type: "manual_exit", value: status ?? false };
+    this.setState(
+      (prevState) => ({
+        route: [...prevState.route, route],
       }),
-      "*"
+      () => {
+        const currentDate = this.dateFormating();
+
+        localStorage.setItem(
+          "balloonrisk_",
+          JSON.stringify({
+            currentDate,
+            breakPointArray: this.state.break_point_array,
+            balloonCount: this.state.balloon_count,
+            breakpointMean: this.state.breakpoint_mean,
+            breakpointStd: this.state.breakpoint_std,
+          })
+        );
+        parent.postMessage(
+          JSON.stringify({
+            balloon_count: this.state.balloon_count,
+            breakpoint_mean: this.state.breakpoint_mean,
+            breakpoint_std: this.state.breakpoint_std,
+            static_data: {
+              points: this.state.total_points + this.state.new_current_point,
+              is_favorite: this.state.isFavoriteActive,
+            },
+            temporal_slices: this.state.route,
+            timestamp: new Date().getTime(),
+            duration: new Date().getTime() - this.state.time,
+          }),
+          "*"
+        );
+      }
     );
-    })
   };
 
   dateFormating = () => {
@@ -438,29 +448,59 @@ class Balloons extends React.Component<AppProps, AppState> {
   reloadPage = () => {
     window.location.reload();
   };
-  
+
   clickBack = () => {
-    
-      this.sendGameData(true)
-    
-  }
+    this.sendGameData(true);
+  };
+  handleFavoriteClick = () => {
+    this.setState((prevState) => ({
+      isFavoriteActive: !prevState.isFavoriteActive,
+    }));
+  };
 
   // Game render function
   render() {
     const { start, stop } = this.state;
     const instruction = (
       <div className="instruction">
-        {i18n.t("TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS_WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS_THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET_IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS")}
+        {i18n.t(
+          "TAP_THE_BUTTON_TO_PUMP_UP_A_BALLOON_TO_INFLATE_IT_AS_LARGE_AS_YOU_CAN_BEFORE_THE_BALLOON_BURSTS_WHEN_YOU_FEEL_LIKE_YOU_CANT_INFLATE_IT_ANYMORE_WITHOUT_IT_BURSTING_TAP_THE_BUTTON_TO_COLLECT_POINTS_THE_NUMBER_OF_TIMES_YOU_PUMPED_UP_THE_BALLOON_WILL_BE_EQUAL_TO_THE_NUMBER_OF_POINTS_YOU_GET_IF_THE_BALLOON_BURSTS_YOU_GET_NO_POINTS"
+        )}
       </div>
-      )
+    );
     return (
       <div>
         <div className="row">
           <div className="col">
-            {!this.state.no_back && <a className="icn-menu menu-left cursorPointer" onClick={this.clickBack}>
-              <ArrowBackIcon />
-            </a>}
-            <h4 style={{ marginRight: "-25px" }}>{i18n.t("BALLOON_RISK")}</h4>
+            {!this.state.no_back && (
+              <a
+                className="icn-menu menu-left cursorPointer"
+                onClick={this.clickBack}
+              >
+                <ArrowBackIcon />
+              </a>
+            )}
+            <h4 style={{ marginRight: "-25px" }}>
+              <div className="header-with-icon">
+                {i18n.t("BALLOON_RISK")}{" "}
+                <Tooltip
+                  title={
+                    this.state.isFavoriteActive
+                      ? "Tap to remove from Favorite Activities"
+                      : "Tap to add to Favorite Activities"
+                  }
+                >
+                  <Fab
+                    className={`headerTitleIcon ${
+                      this.state.isFavoriteActive ? "active" : ""
+                    }`}
+                    onClick={this.handleFavoriteClick}
+                  >
+                    <Icon>star_rounded</Icon>
+                  </Fab>
+                </Tooltip>
+              </div>
+            </h4>
             <a
               className="icn-menu menu-right cursorPointer"
               onClick={this.reloadPage}
@@ -483,7 +523,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             </p>
           </div>
         </div>
-        
+
         <div className="points">
           <div className="row">
             <div className="col-8">{i18n.t("CURRENT_POINTS")}</div>
@@ -502,60 +542,62 @@ class Balloons extends React.Component<AppProps, AppState> {
         </div>
         {instruction}
         <div className="baloon-container">
-        <BallonImageSVG
-          balloon_width={this.state.balloon_width}
-          balloon_burst={this.state.balloon_burst}
-          balloon_count_limit={
-            this.state.balloon_number > this.state.balloon_count ? true : false
-          }
-          language={i18n.language}
-        />
-        <BallonStandSVG
-          new_current_point={this.state.new_current_point}
-          balloon_number={
-            this.state.balloon_number > this.state.balloon_count
-              ? this.state.balloon_count
-              : this.state.balloon_number
-          }
-          trigger_balloon_number={this.updateBalloonNumber}
-          trigger_total_points={this.updateTotalPoints}
-          trigger_current_points={this.updateCurrentPoints}
-          trigger_enable_pump_btn={this.enablePumpBtn}
-          trigger_reset_balloon_size={this.resetBalloonSize}
-          trigger_collected_points={this.appendCollectedPoints}
-          trigger_enable_collect_btn={
-            this.state.balloon_number > this.state.balloon_count
-              ? true
-              : this.state.btn_collect_disabled
-          }
-          trigger_collect_button_class={this.state.cls_btn_collect_disabled}
-          balloon_burst={this.state.balloon_burst}
-          trigger_stop_timer={this.clickStopTimer}
-          balloon_count={this.state.balloon_count}
-          route={this.state.route}
-          reset_status={this.updateResetData}
-          reset_data={this.state.reset_data}
-          language={i18n.language}
-        />
-        <input
-          type="button"
-          name="pump_balloon"
-          id="pump_balloon"
-          value={`${i18n.t("PUMP_UP_BALLOON")}`}
-          disabled={
-            this.state.balloon_number > this.state.balloon_count ||
-            this.state.balloon_burst === true
-              ? true
-              : this.state.btn_pump_disabled
-          }
-          className={`btn ${
-            this.state.balloon_number > this.state.balloon_count ||
-            this.state.balloon_burst
-              ? "opacity_05"
-              : ""
-          }`}
-          onClick={this.pumpBalloon}
-        />
+          <BallonImageSVG
+            balloon_width={this.state.balloon_width}
+            balloon_burst={this.state.balloon_burst}
+            balloon_count_limit={
+              this.state.balloon_number > this.state.balloon_count
+                ? true
+                : false
+            }
+            language={i18n.language}
+          />
+          <BallonStandSVG
+            new_current_point={this.state.new_current_point}
+            balloon_number={
+              this.state.balloon_number > this.state.balloon_count
+                ? this.state.balloon_count
+                : this.state.balloon_number
+            }
+            trigger_balloon_number={this.updateBalloonNumber}
+            trigger_total_points={this.updateTotalPoints}
+            trigger_current_points={this.updateCurrentPoints}
+            trigger_enable_pump_btn={this.enablePumpBtn}
+            trigger_reset_balloon_size={this.resetBalloonSize}
+            trigger_collected_points={this.appendCollectedPoints}
+            trigger_enable_collect_btn={
+              this.state.balloon_number > this.state.balloon_count
+                ? true
+                : this.state.btn_collect_disabled
+            }
+            trigger_collect_button_class={this.state.cls_btn_collect_disabled}
+            balloon_burst={this.state.balloon_burst}
+            trigger_stop_timer={this.clickStopTimer}
+            balloon_count={this.state.balloon_count}
+            route={this.state.route}
+            reset_status={this.updateResetData}
+            reset_data={this.state.reset_data}
+            language={i18n.language}
+          />
+          <input
+            type="button"
+            name="pump_balloon"
+            id="pump_balloon"
+            value={`${i18n.t("PUMP_UP_BALLOON")}`}
+            disabled={
+              this.state.balloon_number > this.state.balloon_count ||
+              this.state.balloon_burst === true
+                ? true
+                : this.state.btn_pump_disabled
+            }
+            className={`btn ${
+              this.state.balloon_number > this.state.balloon_count ||
+              this.state.balloon_burst
+                ? "opacity_05"
+                : ""
+            }`}
+            onClick={this.pumpBalloon}
+          />
         </div>
       </div>
     );

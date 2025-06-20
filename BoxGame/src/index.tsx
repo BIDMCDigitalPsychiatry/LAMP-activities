@@ -12,6 +12,7 @@ import { AppContainer } from "react-hot-loader";
 import Boxes from './components/box/Boxes';
 import './index.css';
 import { createRoot } from "react-dom/client";
+
 const eventMethod = "addEventListener"
 const eventer = window[eventMethod]
 const messageEvent =  "message"

@@ -10,6 +10,7 @@ import {
   AppBar,
   Toolbar,
   Icon,
+  Tooltip,
 } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 // import VideoTutorial from "./VideoTutorial";
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "bold",
       marginTop: 40,
       [theme.breakpoints.down("sm")]: {
-        fontSize: 22
+        fontSize: 22,
       },
     },
     "& h4": {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
       [theme.breakpoints.down("xs")]: {
         fontSize: 19,
         marginTop: 20,
-      marginBottom: 20,
+        marginBottom: 20,
       },
     },
   },
@@ -72,6 +73,27 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "600",
       fontSize: 18,
       width: "calc(100% - 96px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  },
+
+  headerTitleIcon: {
+    background: "none",
+    boxShadow: "none",
+    width: 36,
+    height: 36,
+    color: "#666",
+    marginLeft: 8,
+    "& .material-icons": {
+      fontSize: "2rem",
+    },
+    "&:hover": {
+      background: "#fff",
+    },
+    "&.active": {
+      color: "#e3b303",
     },
   },
 }));
@@ -82,6 +104,9 @@ export default function Instructions({ ...props }) {
   const [view, setView] = useState("intro");
   const [level, setLevel] = useState("Easy");
   const [clickBack, setClickBack] = useState(false);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
 
   const handleNextClick = () => {
     setView("next");
@@ -89,12 +114,15 @@ export default function Instructions({ ...props }) {
 
   useEffect(() => {
     const configuration = props?.data?.configuration;
-    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");   
+    i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     setLevel(props?.data?.activity?.settings?.level ?? "Easy");
   }, [props.data]);
 
   const reloadPage = () => {
     window.location.reload();
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
   };
 
   return (
@@ -105,11 +133,34 @@ export default function Instructions({ ...props }) {
       >
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
-            <IconButton color="default" aria-label="Menu" onClick={()=>setClickBack(true)}>
+            <IconButton
+              color="default"
+              aria-label="Menu"
+              onClick={() => setClickBack(true)}
+            >
               <ArrowBackIcon />
             </IconButton>
           )}
-          <Typography variant="h5">{t("Cognitive Test")}</Typography>
+          <Typography variant="h5" className="">
+            {t("Cognitive Test")}
+            <Tooltip
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
+              }
+            >
+              <Fab
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
+                onClick={handleFavoriteClick}
+              >
+                <Icon>star_rounded</Icon>
+              </Fab>
+            </Tooltip>{" "}
+          </Typography>
+
           <IconButton color="default" aria-label="Menu" onClick={reloadPage}>
             <div className="refresh" />
           </IconButton>
@@ -148,7 +199,14 @@ export default function Instructions({ ...props }) {
         </Box>
       )}
 
-      {view === "next" && <GameInstructions language={i18n.language} clickBack={clickBack} level={level} />}
+      {view === "next" && (
+        <GameInstructions
+          language={i18n.language}
+          clickBack={clickBack}
+          level={level}
+          isFavoriteActive={isFavoriteActive}
+        />
+      )}
     </div>
   );
 }

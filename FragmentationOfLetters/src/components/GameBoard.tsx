@@ -15,7 +15,9 @@ import { checkTextInArray, getMaxValue, getSequence } from "src/functions";
 
 const GameBoard = ({ ...props }: any) => {
   const [showModalInfo, setShowModalInfo] = useState(false);
-  const startingFragmentation = parseInt(props?.startingFragmentation.split("%")[0]);
+  const startingFragmentation = parseInt(
+    props?.startingFragmentation?.split("%")[0]
+  );
   const [gameStarted, setGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ const GameBoard = ({ ...props }: any) => {
   const [routes, setRoutes] = useState<any>([]);
   const startTime = new Date().getTime();
   const [timeTaken, setTimeTaken] = useState(startTime);
-  const [falseCount, setFalseCount] = useState(0)
+  const [falseCount, setFalseCount] = useState(0);
 
   useEffect(() => {
     if (!gameStarted) {
@@ -40,17 +42,18 @@ const GameBoard = ({ ...props }: any) => {
   }, [props.clickBack]);
 
   const clickBack = () => {
-    const maxFragmentation = getMaxValue(routes,"level")
-    const sequence = getSequence(routes)
+    const maxFragmentation = getMaxValue(routes, "level");
+    const sequence = getSequence(routes);
     const route = { type: "manual_exit", value: true };
-    routes.push(route); 
+    routes.push(route);
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation+"%",
-          sequence : sequence
+          best_correct_fragmentation: maxFragmentation + "%",
+          sequence: sequence,
+          is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -70,16 +73,16 @@ const GameBoard = ({ ...props }: any) => {
     setGameStarted(false);
   };
 
-
   const sendGameResult = () => {
-    const maxFragmentation = getMaxValue(routes,"level")
-    const sequence = getSequence(routes)
+    const maxFragmentation = getMaxValue(routes, "level");
+    const sequence = getSequence(routes);
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation : maxFragmentation+"%",
-          sequence : sequence
+          best_correct_fragmentation: maxFragmentation + "%",
+          sequence: sequence,
+          is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
@@ -89,11 +92,11 @@ const GameBoard = ({ ...props }: any) => {
     resetStates();
   };
 
-  useEffect(()=>{
-    if(falseCount == 2){
-      sendGameResult()
+  useEffect(() => {
+    if (falseCount == 2) {
+      sendGameResult();
     }
-  },[falseCount])
+  }, [falseCount]);
 
   const generateNewLetter = () => {
     if (canvasRef.current != null) {
@@ -108,14 +111,16 @@ const GameBoard = ({ ...props }: any) => {
     }
   };
 
-
-  const handleRecordComplete = (text: string) => { 
+  const handleRecordComplete = (text: string) => {
     let res = false;
-    if (text.toLowerCase().includes(currentLetter.toLowerCase()) || checkTextInArray(text, currentLetter)) {
+    if (
+      text.toLowerCase().includes(currentLetter.toLowerCase()) ||
+      checkTextInArray(text, currentLetter)
+    ) {
       setFragmentation(fragmentation + 10);
-      res = true
+      res = true;
     } else {
-      setFalseCount(falseCount+1)
+      setFalseCount(falseCount + 1);
       setFragmentation(fragmentation - 5);
     }
     const route = {
@@ -136,7 +141,6 @@ const GameBoard = ({ ...props }: any) => {
     setShowModalInfo(false);
     setGameStarted(true);
   };
-
   return (
     <>
       {gameStarted ? (
@@ -147,10 +151,10 @@ const GameBoard = ({ ...props }: any) => {
               <canvas ref={canvasRef} width={300} height={300} />
             </div>
             <AudioRecorder
-            language={i18n.language}
-            handleRecordComplete={handleRecordComplete}
-          />
-          </div>          
+              language={i18n.language}
+              handleRecordComplete={handleRecordComplete}
+            />
+          </div>
         </div>
       ) : (
         <></>

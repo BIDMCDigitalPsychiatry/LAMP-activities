@@ -163,9 +163,9 @@ export function GameComponent({ ...props }) {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  },[props.language])
+  }, [props.language]);
 
   useEffect(() => {
     (async () => {
@@ -457,7 +457,7 @@ export function GameComponent({ ...props }) {
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - time,
         temporal_slices: JSON.parse(JSON.stringify(routes)),
-        static_data: {},
+        static_data: { is_favorite: props?.isFavoriteActive },
       }),
       "*"
     );
@@ -470,7 +470,7 @@ export function GameComponent({ ...props }) {
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - time,
             temporal_slices: JSON.parse(JSON.stringify(routes)),
-            static_data: {},
+            static_data: { is_favorite: props?.isFavoriteActive },
           })
         : null,
       "*"
@@ -512,7 +512,7 @@ export function GameComponent({ ...props }) {
       }
       setTimeout(() => {
         const route = {
-          duration: new Date().getTime() - time ,
+          duration: new Date().getTime() - time,
           item: currentCount,
           level: result,
           type: angle,
@@ -533,7 +533,7 @@ export function GameComponent({ ...props }) {
     if (random == 1) {
       startX = centerX + ctx.canvas.width / (isMobile ? 4 : 8);
       startY = centerY - ctx.canvas.height / (isMobile ? 7 : 8);
-    }    
+    }
     return { x: startX, y: startY };
   };
 
@@ -541,7 +541,7 @@ export function GameComponent({ ...props }) {
     if (!targetShow) {
       setTargetShow(true);
       setDone(false);
-      const targetPosition = getTargetPostion(centerX, centerY);      
+      const targetPosition = getTargetPostion(centerX, centerY);
       const image = new Image();
       image.src = hoop;
       image.onload = () => {
@@ -630,9 +630,7 @@ export function GameComponent({ ...props }) {
       />
       <div ref={divRef} className={classes.cursor}></div>
       <span ref={helpTextRef} className={classes.helpText}>
-        {mobile
-          ? t("GAME_INSTRUCTION_MOBILE")
-          : t("GAME_INSTRUCTION")}
+        {mobile ? t("GAME_INSTRUCTION_MOBILE") : t("GAME_INSTRUCTION")}
       </span>
       <span ref={warningRef} className={classes.warningText}>
         {!!warning && warningMessage}
@@ -676,5 +674,5 @@ export function GameComponent({ ...props }) {
         </Box>
       )}
     </>
-  );  
+  );
 }

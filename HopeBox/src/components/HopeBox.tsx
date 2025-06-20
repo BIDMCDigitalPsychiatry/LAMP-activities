@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
-import  HopeBoxHeader  from "./HopeBoxHeader"
-import Saved  from "./Saved"
-import i18n from "../i18n"
+import React, { useState, useEffect } from "react";
+import HopeBoxHeader from "./HopeBoxHeader";
+import Saved from "./Saved";
+import i18n from "../i18n";
 import {
   Typography,
   AppBar,
@@ -19,9 +19,11 @@ import {
   makeStyles,
   GridList,
   GridListTile,
-} from "@material-ui/core"
+  Fab,
+  Tooltip,
+} from "@material-ui/core";
 
-import ImageUploader from "react-images-upload"
+import ImageUploader from "react-images-upload";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       backgroundColor: theme.palette.background.paper,
     },
-    singletile: { padding: "0 8px 15px 8px  !important", "& div": { borderRadius: 10 } },
+    singletile: {
+      padding: "0 8px 15px 8px  !important",
+      "& div": { borderRadius: 10 },
+    },
     gridList: {
       width: "100%",
       height: "100%",
@@ -49,11 +54,24 @@ const useStyles = makeStyles((theme: Theme) =>
         width: "calc(100% - 96px)",
       },
     },
-    hopeHEader: { background: "#FBF1EF", boxShadow: "none", borderBottom: "#fff solid 65px" },
-    HopeHeadImage: { marginBottom: -80, marginLeft: "auto", marginRight: "auto" },
+    hopeHEader: {
+      background: "#FBF1EF",
+      boxShadow: "none",
+      borderBottom: "#fff solid 65px",
+    },
+    HopeHeadImage: {
+      marginBottom: -80,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
     hopeBoxContent: {
       textAlign: "center",
-      "& h4": { fontSize: 18, fontWeight: 600, lineHeight: "24px", marginBottom: 20 },
+      "& h4": {
+        fontSize: 18,
+        fontWeight: 600,
+        lineHeight: "24px",
+        marginBottom: 20,
+      },
     },
     btnpeach: {
       background: "#FFAC98",
@@ -73,7 +91,12 @@ const useStyles = makeStyles((theme: Theme) =>
         boxShadow:
           "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
       },
-      "& div": { background: "transparent !important", margin: 0, padding: 0, boxShadow: "none" },
+      "& div": {
+        background: "transparent !important",
+        margin: 0,
+        padding: 0,
+        boxShadow: "none",
+      },
       "& button": {
         margin: "0 !important",
         padding: "0 !important",
@@ -93,8 +116,18 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "0px 14px 50px 14px",
       textAlign: "center",
       position: "relative",
-      "& h4": { fontSize: 25, fontWeight: 600, marginBottom: 15, marginTop: 20 },
-      "& p": { fontSize: 16, fontWeight: 600, color: "rgba(0, 0, 0, 0.75)", lineHeight: "19px" },
+      "& h4": {
+        fontSize: 25,
+        fontWeight: 600,
+        marginBottom: 15,
+        marginTop: 20,
+      },
+      "& p": {
+        fontSize: 16,
+        fontWeight: 600,
+        color: "rgba(0, 0, 0, 0.75)",
+        lineHeight: "19px",
+      },
       "& img": { width: "100%" },
     },
 
@@ -107,63 +140,95 @@ const useStyles = makeStyles((theme: Theme) =>
       background: "rgba(255,255,255,0.7)",
       paddingTop: "30%",
     },
+    headerTitleIcon: {
+      background: "none",
+      boxShadow: "none",
+      width: 36,
+      height: 36,
+      color: "#666",
+      marginLeft: 8,
+      "& .material-icons": {
+        fontSize: "2rem",
+      },
+      "&:hover": {
+        background: "#fff",
+      },
+      "&.active": {
+        color: "#e3b303",
+      },
+    },
   })
-)
+);
 
-const tileData = []
+const tileData = [];
 export default function HopeBox({ ...props }) {
-  const classes = useStyles()
-  const [pictures, setPictures] = useState([])
-  const [openPreview, setOpenPreview] = useState(false)
-  const [imageSrc, setImageSrc] = useState("")
-  const [imgSaved, setImgSaved] = useState(false)
+  const classes = useStyles();
+  const [pictures, setPictures] = useState([]);
+  const [openPreview, setOpenPreview] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const [imgSaved, setImgSaved] = useState(false);
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
 
   const onDrop = (picture) => {
     if (picture.length > 0) {
-      setPictures([...pictures, picture])
-      setImageSrc(URL.createObjectURL(picture[0]))
-      setOpenPreview(true)
+      setPictures([...pictures, picture]);
+      setImageSrc(URL.createObjectURL(picture[0]));
+      setOpenPreview(true);
     }
-  }
-  
+  };
+
   useEffect(() => {
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    const eventer = window[eventMethod]
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+    const eventMethod = window.addEventListener
+      ? "addEventListener"
+      : "attachEvent";
+    const eventer = window[eventMethod];
+    const messageEvent =
+      eventMethod === "attachEvent" ? "onmessage" : "message";
     // Listen to message from child window
 
     eventer(
       messageEvent,
       (e: any) => {
         // const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {})
-        const configuration = e.data.configuration
+        const configuration = e.data.configuration;
         const langugae = configuration
           ? configuration.hasOwnProperty("language")
             ? configuration.language
             : "en-US"
-          : "en-US"
-        i18n.changeLanguage(langugae)       
+          : "en-US";
+        i18n.changeLanguage(langugae);
       },
       false
-    )
-  }, [])
+    );
+  }, []);
 
   const openPreviewDialog = () => {
-    setImgSaved(false)
-    setOpenPreview(true)
-  }
+    setImgSaved(false);
+    setOpenPreview(true);
+  };
   const closePreviewDialog = () => {
-    setImgSaved(false)
-    setOpenPreview(false)
-  }
+    setImgSaved(false);
+    setOpenPreview(false);
+  };
 
   const saveImage = () => {
-    setImgSaved(true)
-  }
+    setImgSaved(true);
+  };
 
   const onComplete = () => {
-    parent.postMessage(JSON.stringify({ completed: true }), "*")
-  }
+    parent.postMessage(
+      JSON.stringify({
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
+      }),
+      "*"
+    );
+  };
+  const handleFavoriteClick = () => {
+    setIsFavoriteActive((prev: boolean) => !prev);
+  };
 
   return (
     <div className={classes.root}>
@@ -172,15 +237,36 @@ export default function HopeBox({ ...props }) {
           <IconButton color="default" onClick={onComplete} aria-label="Menu">
             <Icon>arrow_back</Icon>
           </IconButton>
-          <Typography variant="h5">Hope Box</Typography>
+          <Typography variant="h5">
+            Hope Box{" "}
+            <Tooltip
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
+              }
+            >
+              <Fab
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
+                onClick={handleFavoriteClick}
+              >
+                <Icon>star_rounded</Icon>
+              </Fab>
+            </Tooltip>{" "}
+          </Typography>
         </Toolbar>
-        <HopeBoxHeader  />
+        <HopeBoxHeader />
       </AppBar>
       <Box className={classes.hopeBoxContent} px={5} pt={4}>
-        <Typography variant="h4">Save images and quotes that bring joy and hope to your life.</Typography>
+        <Typography variant="h4">
+          Save images and quotes that bring joy and hope to your life.
+        </Typography>
         <Typography variant="body1" gutterBottom>
           {" "}
-          Hope Box content will show up in your feed from time to time to inspire and uplift you.
+          Hope Box content will show up in your feed from time to time to
+          inspire and uplift you.
         </Typography>
 
         <Box textAlign="center" mt={5} pt={2}>
@@ -204,7 +290,12 @@ export default function HopeBox({ ...props }) {
         </Box>
       </Box>
 
-      <GridList cellHeight={180} spacing={2} className={classes.gridList} cols={3}>
+      <GridList
+        cellHeight={180}
+        spacing={2}
+        className={classes.gridList}
+        cols={3}
+      >
         {tileData.map((tile) => (
           <GridListTile key={tile.img} cols={1} className={classes.singletile}>
             <img src={tile.img} alt={tile.title} />
@@ -215,7 +306,11 @@ export default function HopeBox({ ...props }) {
       <Dialog fullWidth={true} open={openPreview} onClose={closePreviewDialog}>
         <Box display="flex" justifyContent="flex-end">
           <Box>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpenPreview(false)}>
+            <IconButton
+              aria-label="close"
+              className={classes.closeButton}
+              onClick={() => setOpenPreview(false)}
+            >
               <Icon>close</Icon>
             </IconButton>
           </Box>
@@ -230,12 +325,14 @@ export default function HopeBox({ ...props }) {
           </Box>
           {imgSaved === true && (
             <Box className={classes.savedMsg}>
-              <Box onClick={closePreviewDialog}><Saved /></Box>
+              <Box onClick={closePreviewDialog}>
+                <Saved />
+              </Box>
               <h4>Saved!</h4>
             </Box>
           )}
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

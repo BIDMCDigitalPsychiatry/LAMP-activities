@@ -20,23 +20,23 @@ nav a {
 
 .App {
   padding-top: 2em;
-  text-align: center
+  text-align: center;
 }
 
 .App-logo {
   -webkit-animation: App-logo-spin infinite 20s linear;
   animation: App-logo-spin infinite 20s linear;
-  height: 80px
+  height: 80px;
 }
 
 .App-header {
   height: 90px;
   padding: 20px;
-  color: #fff
+  color: #fff;
 }
 
 .App-intro {
-  font-size: large
+  font-size: large;
 }
 
 .heading {
@@ -48,9 +48,8 @@ nav a {
 
 .home-link {
   position: absolute;
-  right: 0;
   right: 15px;
-  top: 15px;
+  top: 20px;
 }
 
 .home-link svg path {
@@ -64,9 +63,8 @@ nav a {
 
 .back-link {
   position: absolute;
-  left: 0;
   left: 15px;
-  top: 15px;
+  top: 20px;
 }
 
 .back-link svg path {
@@ -107,7 +105,6 @@ nav a {
   width: 100%;
   margin-top: 20px;
   cursor: pointer;
-
 }
 
 .mt-30 {
@@ -161,7 +158,7 @@ nav a {
   padding-bottom: 10px;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   margin-right: 10px;
   accent-color: black;
 }
@@ -186,6 +183,35 @@ input[type=checkbox] {
   min-height: 60px;
   color: #359ffe;
 }
+.headerTitleIcon {
+  background: none !important;
+  box-shadow: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  color: #ccc !important;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 8px !important;
+}
+.headerTitleIcon .material-icons {
+  font-size: 2rem;
+  color: #666;
+}
+.headerTitleIcon svg {
+  width: 20px;
+  height: 20px;
+}
+.header-with-icon {
+  display: flex;
+  align-items: center;
+}
+.headerTitleIcon:hover {
+  background: #f4f4f4 !important;
+}
+.headerTitleIcon.active .material-icons {
+  color: #e3b303 !important;
+}
 
 @media only screen and (min-width: 500px) {
   .modal-content {
@@ -203,7 +229,7 @@ input[type=checkbox] {
 }
 
 .memory-outer {
-  background-color: #FFF;
+  background-color: #fff;
   padding: 15px 30px 15px 30px;
   border-radius: 5px;
   text-align: left;
@@ -283,7 +309,6 @@ input[type=checkbox] {
   flex-wrap: wrap;
   width: 100%;
   max-width: 500px;
-
 }
 
 #img-wrapper img {
@@ -292,10 +317,9 @@ input[type=checkbox] {
   width: 100%;
   margin-top: 20px;
   cursor: pointer;
-
 }
 
-#img-wrapper>div {
+#img-wrapper > div {
   flex: 0 1 50%;
   padding: 0 15px;
 }
@@ -328,10 +352,10 @@ input[type=checkbox] {
   box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.54);
 }
 
-.microphone-icon-dissable{
+.microphone-icon-dissable {
   background-color: #999;
 }
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 

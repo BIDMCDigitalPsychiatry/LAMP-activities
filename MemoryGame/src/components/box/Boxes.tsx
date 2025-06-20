@@ -15,36 +15,68 @@ interface AppState {
   autoCorrect: boolean;
   loaded: boolean;
   settings: any;
-  time:number;
+  time: number;
   noBack: boolean;
 }
 class Box extends React.Component<any, AppState> {
   constructor(props: any) {
     super(props);
-    const settings = props?.data.activity?.settings ?? (props?.data?.settings ?? {});
+    const settings =
+      props?.data.activity?.settings ?? props?.data?.settings ?? {};
     const configuration = props?.data?.configuration;
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
-    this.state ={autoCorrect: props.data.autoCorrect, settings, noBack: props.data.noBack, loaded: true, time: new Date().getTime()};         
+    this.state = {
+      autoCorrect: props.data.autoCorrect,
+      settings,
+      noBack: props.data.noBack,
+      loaded: true,
+      time: new Date().getTime(),
+    };
   }
 
   // Game render function
   render() {
     return (
       <div>
-        {this.state && !!this.state.loaded &&  Object.keys(this.state.settings).length > 0 &&  
-             (<Board 
+        {this.state &&
+          !!this.state.loaded &&
+          Object.keys(this.state.settings).length > 0 && (
+            <Board
               noBack={this.state.noBack}
-                animationInterval={!!this.state.settings?.animation_interval ? this.state.settings?.animation_interval * 1000 : 2000}
-                animationPersistance={!!this.state.settings?.animation_persistance ? this.state.settings?.animation_persistance * 1000 : 1000}
-                foils={this.state.settings?.foils ?? 2}
-                encodingTrials={this.state.settings?.encoding_trials ? this.state.settings?.encoding_trials : 3}
-                language={i18n.language}
-                seqLength={!!this.state.settings?.foils ? (this.state.settings?.foils === 1 ? 3 : 4) : 4}
-                time={this.state.time} 
-                autoCorrect={this.state.autoCorrect}
-                retrievalDelay={this.state.settings?.retrieval_delay ? this.state.settings?.retrieval_delay * 60 : 60}
-              />            
-        )}
+              animationInterval={
+                !!this.state.settings?.animation_interval
+                  ? this.state.settings?.animation_interval * 1000
+                  : 2000
+              }
+              animationPersistance={
+                !!this.state.settings?.animation_persistance
+                  ? this.state.settings?.animation_persistance * 1000
+                  : 1000
+              }
+              foils={this.state.settings?.foils ?? 2}
+              encodingTrials={
+                this.state.settings?.encoding_trials
+                  ? this.state.settings?.encoding_trials
+                  : 3
+              }
+              language={i18n.language}
+              seqLength={
+                !!this.state.settings?.foils
+                  ? this.state.settings?.foils === 1
+                    ? 3
+                    : 4
+                  : 4
+              }
+              time={this.state.time}
+              autoCorrect={this.state.autoCorrect}
+              retrievalDelay={
+                this.state.settings?.retrieval_delay
+                  ? this.state.settings?.retrieval_delay * 60
+                  : 60
+              }
+              is_favorite={this?.props?.data?.is_favorite?? false}
+            />
+          )}
       </div>
     );
   }
