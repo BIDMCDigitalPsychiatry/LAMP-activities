@@ -8,7 +8,7 @@
 import * as React from "react";
 import getImages from "./RandomImage";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faRedo, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -92,6 +92,8 @@ interface BoardState {
   playAudio: number;
   playInstructionVideo: boolean;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 interface BoardProps {
@@ -106,6 +108,7 @@ interface BoardProps {
   noBack: boolean;
   retrievalDelay: number;
   is_favorite?: boolean;
+  forward?: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -172,6 +175,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       playAudio: -1,
       playInstructionVideo: false,
       isFavoriteActive: this?.props?.is_favorite ?? false,
+      forward: this?.props?.forward ?? false,
+      isForwardButton: false,
     };
   }
 
@@ -307,6 +312,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           completedIndex: 0,
           currentTime: new Date().getTime(),
           playAudio: -1,
+          isForwardButton: this?.props?.forward ?? false,
         },
         () => {
           if (this.state.trail > 1) {
@@ -696,30 +702,31 @@ class Board extends React.Component<BoardProps, BoardState> {
         const per_round = this.createPerRoundStructure();
         const images_in_selection_grid = this.createImagesInSelectionGridStructure();
         const target_sequence = this.createTargetSequenceStructure();
-        parent.postMessage(
-          JSON.stringify({
-            "timestamp/Date+Time": new Date().getTime(),
-            "duration/total_time_taken": new Date().getTime() - this.props.time,
-            "static_data": Object.assign(this.state.staticData ?? {}, {
-              "target_sequence": target_sequence,
-              "images_in_selection_grid": images_in_selection_grid,
-              "per_round": per_round,
-              "total_learning/encoding_points": this.state.totalLearningScore,
-              "total_recall/recall_points": this.state.totalRecallScore,
-              "time_of_recall_phase": this.state.timeTakenRecall,
-              "total_questions": this.props.seqLength,
-              "point": points,
-              "locations": this.state.randomPoints,
-              "images": this.state.imageSelections,
-              "correct_answers": this.state.stateSuccessTaps,
-              "wrong_answers": this.state.stateWrongTaps,
-              "time_taken_for_each_trial": this.state.timeTakenForEachTrial,
-            }),
-            "temporal_slices": JSON.parse(this.state.states),
-            "is_favorite": this.state.isFavoriteActive,
+
+        const data = {
+          "timestamp/Date+Time": Date.now(),
+          "duration/total_time_taken": Date.now() - this.props.time,
+          "static_data": Object.assign(this.state.staticData ?? {}, {
+            "target_sequence": target_sequence,
+            "images_in_selection_grid": images_in_selection_grid,
+            "per_round": per_round,
+            "total_learning/encoding_points": this.state.totalLearningScore,
+            "total_recall/recall_points": this.state.totalRecallScore,
+            "time_of_recall_phase": this.state.timeTakenRecall,
+            "total_questions": this.props.seqLength,
+            "point": points,
+            "locations": this.state.randomPoints,
+            "images": this.state.imageSelections,
+            "correct_answers": this.state.stateSuccessTaps,
+            "wrong_answers": this.state.stateWrongTaps,
+            "time_taken_for_each_trial": this.state.timeTakenForEachTrial,
           }),
-          "*"
-        );
+          "temporal_slices": JSON.parse(this.state.states),
+          "is_favorite": this.state.isFavoriteActive,
+          ...(this.state.forward && { forward: this.state.isForwardButton }),
+        };
+
+        parent.postMessage(JSON.stringify(data), "*");
 
         clearInterval(this.timer!);
         clearInterval(this.timerBox!);
@@ -1021,6 +1028,15 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameResult(true);
+  };
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameResult(true);
   };
 
@@ -1120,6 +1136,11 @@ class Board extends React.Component<BoardProps, BoardState> {
         <nav className="home-link">
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
+        {this.state.forward &&
+          <nav className="forward-link">
+            <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
+          </nav>
+        }
         <div className="heading">
           {i18n.t("MEMORY_GAME")}{" "}
           <Tooltip

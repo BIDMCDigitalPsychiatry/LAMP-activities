@@ -743,17 +743,17 @@ function TimeSelection({ onChange, options, value, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
@@ -791,17 +791,17 @@ function TimeSelection({ onChange, options, value, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   };
   const handleHoursClose = () => {
@@ -817,10 +817,10 @@ function TimeSelection({ onChange, options, value, ...props }) {
 
   const hourvalues =
     (!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) &&
-      !!options[0] &&
-      !!options[0]?.value &&
-      options[0]?.value === "standard")
+      (Array.isArray(options) &&
+        !!options[0] &&
+        !!options[0]?.value &&
+        options[0]?.value === "standard")
       ? range(1, 13)
       : range(0, 24);
   const minutevalues = ["00", "15", "30", "45"];
@@ -933,33 +933,33 @@ function TimeSelection({ onChange, options, value, ...props }) {
             !!options[0] &&
             !!options[0]?.value &&
             options[0]?.value === "standard")) && (
-          <Grid item>
-            <List
-              component="nav"
-              className={classes.timeHours}
-              aria-label="Device settings"
-            >
-              <ListItem
-                button
-                aria-haspopup="true"
-                aria-controls="lock-menu"
-                onClick={handleClickAmPm}
+            <Grid item>
+              <List
+                component="nav"
+                className={classes.timeHours}
+                aria-label="Device settings"
               >
-                <ListItemText secondary={ampmSelectedIndex} />
-              </ListItem>
-            </List>
-            <Menu
-              id="lock-menu"
-              classes={{ paper: classes.menuPaper }}
-              anchorEl={anchorE3}
-              keepMounted
-              open={Boolean(anchorE3)}
-              onClose={handleAmPmClose}
-            >
-              {ampm}
-            </Menu>
-          </Grid>
-        )}
+                <ListItem
+                  button
+                  aria-haspopup="true"
+                  aria-controls="lock-menu"
+                  onClick={handleClickAmPm}
+                >
+                  <ListItemText secondary={ampmSelectedIndex} />
+                </ListItem>
+              </List>
+              <Menu
+                id="lock-menu"
+                classes={{ paper: classes.menuPaper }}
+                anchorEl={anchorE3}
+                keepMounted
+                open={Boolean(anchorE3)}
+                onClose={handleAmPmClose}
+              >
+                {ampm}
+              </Menu>
+            </Grid>
+          )}
       </Grid>
     </Box>
   );
@@ -1145,14 +1145,14 @@ function Rating({ onChange, options, value, ...props }) {
         valueLabelDisplay="auto"
         step={
           parseInt(options[0].value, 10) < 0 &&
-          parseInt(options[1].value ?? 10, 0) < 0
+            parseInt(options[1].value ?? 10, 0) < 0
             ? Math.abs(parseInt(options[0].value, 10)) +
-              parseInt(options[1]?.value ?? 0, 10)
+            parseInt(options[1]?.value ?? 0, 10)
             : parseInt(options[0].value, 10) < 0 &&
               parseInt(options[1].value ?? 10, 0) > 0
-            ? Math.abs(parseInt(options[0].value, 10)) -
+              ? Math.abs(parseInt(options[0].value, 10)) -
               parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[1]?.value ?? 0, 10) -
+              : parseInt(options[1]?.value ?? 0, 10) -
               parseInt(options[0].value, 10)
         }
         marks={options}
@@ -1189,7 +1189,7 @@ function Rating({ onChange, options, value, ...props }) {
             <ReactMarkdown
               children={
                 !!options[0].description &&
-                options[0].description.trim().length === 0
+                  options[0].description.trim().length === 0
                   ? options[0].value
                   : options[0].description
               }
@@ -1218,8 +1218,8 @@ function Rating({ onChange, options, value, ...props }) {
               <ReactMarkdown
                 children={
                   !!options[Math.ceil(options.length / 2) - 1].description &&
-                  options[Math.ceil(options.length / 2) - 1].description.trim()
-                    .length === 0
+                    options[Math.ceil(options.length / 2) - 1].description.trim()
+                      .length === 0
                     ? options[Math.ceil(options.length / 2) - 1].value
                     : options[Math.ceil(options.length / 2) - 1].description
                 }
@@ -1248,7 +1248,7 @@ function Rating({ onChange, options, value, ...props }) {
             <ReactMarkdown
               children={
                 !!options[options.length - 1].description &&
-                options[options.length - 1].description.trim().length === 0
+                  options[options.length - 1].description.trim().length === 0
                   ? options[options.length - 1].value
                   : options[options.length - 1].description
               }
@@ -1372,8 +1372,8 @@ function Matrix({
       parseInt(a.value, 10) > parseInt(b.value, 10)
         ? 1
         : parseInt(a.value, 10) < parseInt(b.value, 10)
-        ? -1
-        : 0
+          ? -1
+          : 0
     );
   };
 
@@ -1491,7 +1491,7 @@ function Matrix({
                                   <ReactMarkdown
                                     children={
                                       (x.description || "").length > 0 &&
-                                      (x.value || "").length > 0
+                                        (x.value || "").length > 0
                                         ? `(${t(x.value?.toString())})`
                                         : `${t(x.value?.toString())}`
                                     }
@@ -1542,10 +1542,10 @@ function Matrix({
                             />
                           </TableCell>
                           {Array.isArray(x.options) &&
-                          (x.options || []).length > 0 ? (
+                            (x.options || []).length > 0 ? (
                             x.type === "list" ||
-                            x.type === "boolean" ||
-                            x.type === "likert" ? (
+                              x.type === "boolean" ||
+                              x.type === "likert" ? (
                               (x.options || []).map((op, k) => (
                                 <TableCell className={classes.textCenter}>
                                   <FormControlLabel
@@ -1558,7 +1558,7 @@ function Matrix({
                                         disableRipple
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         color="default"
                                         size="medium"
@@ -1613,7 +1613,7 @@ function Matrix({
                                         className={classes.mradioroot}
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         onClick={() => {
                                           let values = csvParse(
@@ -1852,7 +1852,7 @@ function Matrix({
                                     value={
                                       !!responses?.current[idx + qindex]?.value
                                         ? responses?.current[idx + qindex]
-                                            ?.value
+                                          ?.value
                                         : undefined
                                     }
                                   />
@@ -2058,8 +2058,8 @@ function Question({
         parseInt(a.value, 10) > parseInt(b.value, 10)
           ? 1
           : parseInt(a.value, 10) < parseInt(b.value, 10)
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
       component = (
         <Rating
@@ -2160,19 +2160,17 @@ function Question({
             children={
               type === "slider"
                 ? t(
-                    `${options[0].value} being ${
-                      !!options[0].description &&
-                      options[0].description.trim().length > 0
-                        ? options[0].description
-                        : options[0].value
-                    }, 
-                  ${options[options.length - 1].value} being ${
-                      !!options[options.length - 1].description &&
-                      options[options.length - 1].description.trim().length > 0
-                        ? options[options.length - 1].description
-                        : options[options.length - 1].value
-                    }`
-                  )
+                  `${options[0].value} being ${!!options[0].description &&
+                    options[0].description.trim().length > 0
+                    ? options[0].description
+                    : options[0].value
+                  }, 
+                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description &&
+                    options[options.length - 1].description.trim().length > 0
+                    ? options[options.length - 1].description
+                    : options[options.length - 1].value
+                  }`
+                )
                 : !!desc && t(`${desc}`)
             }
             skipHtml={false}
@@ -2353,6 +2351,7 @@ function Section({
   isSubmit,
   isFavoriteActive,
   setIsFavoriteActive,
+  forward,
   ...props
 }) {
   const activityId = value?.id;
@@ -2593,12 +2592,12 @@ function Section({
             (element.required &&
               responses?.current[actualIndex + i]?.value !== null &&
               typeof responses?.current[actualIndex + i]?.value !==
-                "undefined" &&
+              "undefined" &&
               (typeof responses?.current[actualIndex + i]?.value !== "string" ||
                 (typeof responses?.current[actualIndex + i]?.value ===
                   "string" &&
                   responses?.current[actualIndex + i]?.value?.trim().length !==
-                    0)))
+                  0)))
           )
         ) {
           enqueueSnackbar(t("Please enter your response."), {
@@ -2646,6 +2645,26 @@ function Section({
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
+  const handleForwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }), "*"
+    );
+  };
+  const handleBackwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        ...(forward && { forward: false }),
+      }), "*"
+    );
+  };
   return (
     <Box>
       <AppBar
@@ -2654,7 +2673,7 @@ function Section({
       >
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
-            <IconButton onClick={() => onResponse(null)}>
+            <IconButton onClick={handleBackwardClick}>
               <Icon>arrow_back</Icon>
             </IconButton>
           )}
@@ -2681,15 +2700,19 @@ function Section({
               }
             >
               <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
+                className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""
+                  }`}
                 onClick={handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward &&
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          }
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
@@ -2747,6 +2770,7 @@ export default function SurveyQuestions({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [isForward, setIsForward] = useState(props?.data?.forward ?? false)
   const validator = (response) => {
     let status = true;
     const questions = activity.settings;
@@ -2799,6 +2823,7 @@ export default function SurveyQuestions({ ...props }) {
         duration: new Date().getTime() - startTime,
         static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
         timestamp: startTime,
+        ...(isForward && { forward: true }),
       };
       onResponse(result);
       setIsSubmit(!isSubmit);
@@ -2819,10 +2844,11 @@ export default function SurveyQuestions({ ...props }) {
     parent.postMessage(
       response === null
         ? JSON.stringify({
-            static_data: {
-              is_favorite: isFavoriteActive,
-            },
-          })
+          static_data: {
+            is_favorite: isFavoriteActive,
+          },
+          ...(isForward && { forward: true }),
+        })
         : JSON.stringify(response),
       "*"
     );
@@ -2952,6 +2978,7 @@ export default function SurveyQuestions({ ...props }) {
           isSubmit={isSubmit}
           isFavoriteActive={isFavoriteActive}
           setIsFavoriteActive={setIsFavoriteActive}
+          forward={isForward}
         />
       ) : null}
     </Box>

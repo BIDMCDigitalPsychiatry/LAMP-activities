@@ -25,11 +25,28 @@ h1 {
   text-align: center;
 }
 
-.heading {
+/* .heading {
   background-color: rgba(53, 159, 254, 1);
   text-align: center;
   color: white;
   padding: 15px;
+} */
+
+.heading {
+  background-color: rgba(53, 159, 254, 1);
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space between back, title, forward */
+}
+
+.heading .center-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
 }
 
 .overlay {

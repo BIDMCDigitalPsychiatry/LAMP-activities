@@ -56,13 +56,18 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .home-link {
   position: absolute;
   right: 0;
-  right: 10px;
+  right: 50px;
   top: 15px;
 }
 .back-link {
   position: absolute;
   left: 0;
   left: 10px;
+  top: 15px;
+}
+.forward-link {
+  position: absolute;
+  right: 10px;
   top: 15px;
 }
 .box-white {
