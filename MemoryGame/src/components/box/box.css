@@ -291,6 +291,35 @@ td {
   color: #e3b303 !important;
 }
 
+.headerTitleIcon {
+  background: none !important;
+  box-shadow: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  color: #ccc !important;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 8px !important;
+}
+.headerTitleIcon .material-icons {
+  font-size: 2rem;
+  color: #666;
+}
+.headerTitleIcon svg {
+  width: 20px;
+  height: 20px;
+}
+.header-with-icon {
+  display: flex;
+  align-items: center;
+}
+.headerTitleIcon:hover {
+  background: #f4f4f4 !important;
+}
+.headerTitleIcon.active .material-icons {
+  color: #e3b303 !important;
+}
 @media only screen and (min-width: 768px) {
   .box-info,
   .heading,
@@ -536,3 +565,4 @@ button.primary:hover {
 .instructionvideo h5 {
   margin: 25px 0;
 }
+

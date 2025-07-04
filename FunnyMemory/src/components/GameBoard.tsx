@@ -39,7 +39,7 @@ const GameBoard = ({ ...props }: any) => {
   const [showQuestions, setShowQuestions] = useState(false);
   const [staticdata, setStaticData] = useState(null);
   const [phase, setPhase] = useState("Trial");
-    const startTime = React.useRef(new Date().getTime());
+  const startTime = React.useRef(new Date().getTime());
   const [timeTaken, setTimeTaken] = useState(startTime.current);
   const numberOfTrials = props?.numberOfTrials;
   const delayBeforeRecall = props?.delayBeforeRecall;
@@ -50,9 +50,9 @@ const GameBoard = ({ ...props }: any) => {
   const [itemRecognized, setItemRecognized] = useState(0);
   const [correctChoice, setCorrectChoice] = useState(0);
   const [data, setData] = useState<any>({});
-  const [timeTakenForTrial, setTimeTakenForTrial] = useState(startTime.current)
-  const [timeTakenForRecall, setTimeTakenForRecall] = useState(0)
-  const [timeForRecognition1, setTimeForRecognition1] = useState(0)
+  const [timeTakenForTrial, setTimeTakenForTrial] = useState(startTime.current);
+  const [timeTakenForRecall, setTimeTakenForRecall] = useState(0);
+  const [timeForRecognition1, setTimeForRecognition1] = useState(0);
   const timeForRecognition2Ref = useRef(0);
 
   useEffect(() => {
@@ -92,15 +92,24 @@ const GameBoard = ({ ...props }: any) => {
           image_set_shown: getMonthIndex(),
           learning_trials: numberOfTrials,
           delay_time: delayBeforeRecall,
-          timeTakenForTrial : isTimestamp(timeTakenForTrial)? 0: timeTakenForTrial,
-          timeTakenForRecall : isTimestamp(timeTakenForRecall) ? 0 :timeTakenForRecall ,
-          timeForRecognition1 :  isTimestamp(timeForRecognition1) ? 0 : timeForRecognition1,
-          timeForRecognition2 : isTimestamp(timeForRecognition2Ref.current) ? 0 : timeForRecognition2Ref.current,
+          timeTakenForTrial: isTimestamp(timeTakenForTrial)
+            ? 0
+            : timeTakenForTrial,
+          timeTakenForRecall: isTimestamp(timeTakenForRecall)
+            ? 0
+            : timeTakenForRecall,
+          timeForRecognition1: isTimestamp(timeForRecognition1)
+            ? 0
+            : timeForRecognition1,
+          timeForRecognition2: isTimestamp(timeForRecognition2Ref.current)
+            ? 0
+            : timeForRecognition2Ref.current,
           number_of_correct_pairs_recalled: pairsIdentified,
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
           total_number_of_pairings_listed: currentIndex + 1,
+              is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
       }),
@@ -159,7 +168,7 @@ const GameBoard = ({ ...props }: any) => {
     return arr;
   };
 
-  const saveResult = (recorededText: any[], audio : string) => {    
+  const saveResult = (recorededText: any[], audio: string) => {
     let tempRoute: any = [];
     if (recorededText && recorededText.length > 0) {
       recorededText.length = 2;
@@ -170,7 +179,7 @@ const GameBoard = ({ ...props }: any) => {
           item: randomNumberArray.current[currentIndex],
           level: phase,
           type: checkImageIdentified(word),
-          value: index===recorededText?.length-1 ? audio :  null,
+          value: index === recorededText?.length - 1 ? audio : null,
         };
         tempRoute.push(route);
       });
@@ -217,7 +226,11 @@ const GameBoard = ({ ...props }: any) => {
               item: null,
               level: phase,
               type: imageIdentified,
-              value: index===textArray.length-1 && ind===replaceDuplicatesWithEmptyString(arr).length-1 ? audio : null,
+              value:
+                index === textArray.length - 1 &&
+                ind === replaceDuplicatesWithEmptyString(arr).length - 1
+                  ? audio
+                  : null,
             };
             tempRoute.push(route);
             if (route.type === true) {
@@ -235,8 +248,8 @@ const GameBoard = ({ ...props }: any) => {
     }
     setPhase("recognition1");
     setTimeTaken(new Date().getTime());
-    setTimeTakenForRecall(new Date().getTime()-timeTakenForRecall)
-    setTimeForRecognition1(new Date().getTime())
+    setTimeTakenForRecall(new Date().getTime() - timeTakenForRecall);
+    setTimeForRecognition1(new Date().getTime());
     setShowAudioRecorder(false);
     setTimeout(() => {
       setCurrentIndex(0);
@@ -244,7 +257,7 @@ const GameBoard = ({ ...props }: any) => {
     }, 1000);
   };
 
-  const handleRecognition1 = (text: string, audio:string) => {
+  const handleRecognition1 = (text: string, audio: string) => {
     setTimeTaken(new Date().getTime());
     const route = {
       duration: new Date().getTime() - timeTaken,
@@ -266,7 +279,7 @@ const GameBoard = ({ ...props }: any) => {
     } else {
       setPhase("recognition2");
       timeForRecognition2Ref.current = new Date().getTime();
-      setTimeForRecognition1(new Date().getTime()-timeForRecognition1)
+      setTimeForRecognition1(new Date().getTime() - timeForRecognition1);
       setCurrentIndex(0);
       setTimeTaken(new Date().getTime());
     }
@@ -283,7 +296,7 @@ const GameBoard = ({ ...props }: any) => {
     } else {
       setShowAudioRecorder(false);
       if (trial === numberOfTrials && phase.includes("Trial")) {
-        setTimeTakenForTrial(new Date().getTime()-timeTakenForTrial)
+        setTimeTakenForTrial(new Date().getTime() - timeTakenForTrial);
         setShowQuestions(true);
         setPhase("questions");
       } else {
@@ -304,7 +317,7 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  const sendGameResult = () => {             
+  const sendGameResult = () => {
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime.current,
@@ -313,15 +326,16 @@ const GameBoard = ({ ...props }: any) => {
           learning_trials: numberOfTrials,
           image_set_shown: getMonthIndex(),
           delay_time: delayBeforeRecall,
-          timeTakenForTrial : timeTakenForTrial,
-          timeTakenForRecall : timeTakenForRecall,
-          timeForRecognition1 :  timeForRecognition1,
-          timeForRecognition2 : timeForRecognition2Ref.current,
+          timeTakenForTrial: timeTakenForTrial,
+          timeTakenForRecall: timeTakenForRecall,
+          timeForRecognition1: timeForRecognition1,
+          timeForRecognition2: timeForRecognition2Ref.current,
           number_of_correct_pairs_recalled: pairsIdentified,
           number_of_correct_items_recalled: itemsIdentified,
           number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
           total_number_of_pairings_listed: currentIndex + 1,
+          is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),

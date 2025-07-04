@@ -50,7 +50,7 @@ import gfm from "remark-gfm";
 import { useSnackbar } from "notistack";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Button } from "react-bootstrap";
-
+import Image from './Image';
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
@@ -565,6 +565,10 @@ const useStyles = makeStyles((theme) => ({
       color: "#e3b303",
     },
   },
+  survayImage: {
+    maxHeight: 200,
+    borderRadius: 16
+  }
 }));
 function range(start, stop, step = 1) {
   return [...Array(stop - start).keys()].map((v, i) =>
@@ -1984,6 +1988,7 @@ function Question({
   currentIndex,
   settings,
   setSettings,
+  image,
   ...props
 }) {
   const { t } = useTranslation();
@@ -2129,6 +2134,7 @@ function Question({
       );
       break;
   }
+   console.log('options image',options)
 
   return (
     <Grid>
@@ -2155,7 +2161,8 @@ function Question({
           variant="caption"
           display="block"
           style={{ lineHeight: "0.66" }}
-        >
+        > 
+          {image && <Image src={image} alt="Survey image" className={classes.survayImage} />}
           <ReactMarkdown
             children={
               type === "slider"
@@ -2189,7 +2196,11 @@ function Question({
           />
         </Typography>
       </Box>
-      <Box className={classes.questionScroll}>{component}</Box>
+
+      <Box className={classes.questionScroll}>
+        {component}
+
+      </Box>
     </Grid>
   );
 }
@@ -2252,6 +2263,7 @@ function Questions({
                   <Question
                     text={x?.text}
                     type={x?.type}
+                    image={x?.image}
                     required={x?.required}
                     desc={x?.description ?? null}
                     options={
@@ -2859,6 +2871,9 @@ export default function SurveyQuestions({ ...props }) {
       const activity = props.data.activity ?? props.data ?? {};
       setActivity(activity);
     }
+    const activity = props.data.activity ?? props.data ?? {};
+    setActivity(activity);
+
     const configuration = props.data.configuration;
     i18n.changeLanguage(!!configuration ? configuration?.language : "en-US");
   }, []);
