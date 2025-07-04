@@ -401,7 +401,6 @@ export default function Board({ ...props }) {
     } else {
       points = points + 1;
     }
-
     let bestForward = { span: 0, duration: Infinity, details: [] as any[] };
     let bestBackward = { span: 0, duration: Infinity, details: [] as any[] };
 

@@ -46,7 +46,6 @@ const resources = {
       COLOUR : "Colour",
       MEMO : "Memo",
       PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
-
     },
   },
   "de-DE": {
@@ -93,7 +92,6 @@ const resources = {
       COLOUR : "Colour",
       MEMO : "Memo",
       PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions in your browser settings and try again."
-
     },
   },
   "en-US": {
