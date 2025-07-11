@@ -107,7 +107,8 @@ export default function Instructions({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward] = useState(props?.data?.forward ?? false);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   const handleNextClick = () => {
     setView("next");
   };
@@ -123,6 +124,18 @@ export default function Instructions({ ...props }) {
   };
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
+  };
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
   };
 
   return (
@@ -164,6 +177,11 @@ export default function Instructions({ ...props }) {
           <IconButton color="default" aria-label="Menu" onClick={reloadPage}>
             <div className="refresh" />
           </IconButton>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       {view === "intro" && (
@@ -205,6 +223,8 @@ export default function Instructions({ ...props }) {
           clickBack={clickBack}
           level={level}
           isFavoriteActive={isFavoriteActive}
+          isForwardButton={isForwardButton}
+          forward={forward}
         />
       )}
     </div>

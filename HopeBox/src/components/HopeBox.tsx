@@ -170,6 +170,8 @@ export default function HopeBox({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [forward] = useState(props?.data?.forward ?? true);
+  const [isForwardButton, setIsForwardButton] = useState(false);
 
   const onDrop = (picture) => {
     if (picture.length > 0) {
@@ -222,6 +224,7 @@ export default function HopeBox({ ...props }) {
       JSON.stringify({
         completed: true,
         static_data: { is_favorite: isFavoriteActive },
+        ...(forward && { forward: isForwardButton }),
       }),
       "*"
     );
@@ -229,12 +232,31 @@ export default function HopeBox({ ...props }) {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
 
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.hopeHEader}>
         <Toolbar className={classes.toolbardashboard}>
-          <IconButton color="default" onClick={onComplete} aria-label="Menu">
+          <IconButton
+            color="default"
+            onClick={() => {
+              onComplete();
+              setIsForwardButton(false);
+            }}
+            aria-label="Menu"
+          >
             <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">
@@ -256,6 +278,11 @@ export default function HopeBox({ ...props }) {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </Toolbar>
         <HopeBoxHeader />
       </AppBar>

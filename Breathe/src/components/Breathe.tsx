@@ -110,6 +110,8 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
       fontWeight: "600",
       fontSize: 18,
+      display: "flex",
+      alignItems: "center",
       width: "calc(100% - 96px)",
       [theme.breakpoints.up("sm")]: {
         textAlign: "left",
@@ -212,7 +214,8 @@ export default function Breathe({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite
   );
-
+  const [forward, setForward] = useState(props?.data?.forward);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   const tabDirection = (currentTab: number) => {
     return supportsSidebar ? "up" : "left";
   };
@@ -306,6 +309,7 @@ export default function Breathe({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             temporal_slices: [],
+            ...(forward && { forward: isForwardButton }),
           })
         : JSON.stringify({
             timestamp: time,
@@ -314,12 +318,24 @@ export default function Breathe({ ...props }) {
             static_data: {
               is_favorite: isFavoriteActive,
             },
+            ...(forward && { forward: isForwardButton }),
           }),
       "*"
     );
   };
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
+  };
+  const handleForwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
   };
   return (
     <div className={classes.root}>
@@ -335,6 +351,7 @@ export default function Breathe({ ...props }) {
                 audio.pause();
               }
               setAudio(null);
+              setIsForwardButton(false);
               onBreatheComplete(false);
             }}
             color="default"
@@ -361,6 +378,11 @@ export default function Breathe({ ...props }) {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>

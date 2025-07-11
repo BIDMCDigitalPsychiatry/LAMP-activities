@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import "./layout.css";
 import DialogMessage from "./DialogMessage";
 
@@ -64,7 +65,7 @@ const Layout = ({ ...props }) => {
   const [routes, setRoutes] = useState<any>([]);
   const time = new Date().getTime();
   const [buttonIndex, setButtonIndex] = useState(0);
-  const [complete, setComplete] = useState(false);
+  const [complete] = useState(false);
   const [conditionsForRed, setConditionsForRed] = useState<any>([]);
   const [conditionsForYellow, setConditionsForYellow] = useState<any>([]);
   const [conditionsForBlue, setConditionsForBlue] = useState<any>([]);
@@ -72,6 +73,7 @@ const Layout = ({ ...props }) => {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props.data?.is_favorite ?? false
   );
+  const [hasForward] = useState(props?.data?.forward ?? false);
   const highRiskConditionsLoseWheel = convertObjtoArray(
     settingsData?.high_risk[0]?.loose,
     settingsData?.high_risk[0]?.zero?.probability
@@ -137,24 +139,30 @@ const Layout = ({ ...props }) => {
   };
   useEffect(() => {
     if (complete) {
-      const route = { type: "manual_exit", value: true };
-      routes.push(route);
-      setTimeout(() => {
-        parent.postMessage(
-          routes.length > 0
-            ? JSON.stringify({
-                timestamp: new Date().getTime(),
-                duration: new Date().getTime() - time,
-                temporal_slices: JSON.parse(JSON.stringify(routes)),
-                static_data: { is_favorite: isFavoriteActive },
-              })
-            : null,
-          "*"
-        );
-      }, 2000);
+      handleComplete(false);
     }
     setOpen(true);
   }, [complete]);
+
+  const handleComplete = (isBack: boolean | undefined) => {
+    const route = { type: "manual_exit", value: true };
+    routes.push(route);
+    setTimeout(() => {
+      parent.postMessage(
+        routes.length > 0
+          ? JSON.stringify({
+              timestamp: new Date().getTime(),
+              duration: new Date().getTime() - time,
+              temporal_slices: JSON.parse(JSON.stringify(routes)),
+              static_data: { is_favorite: isFavoriteActive },
+              ...(hasForward && { forward: !isBack }),
+            })
+          : null,
+        "*"
+      );
+    }, 2000);
+    setOpen(true);
+  };
 
   useEffect(() => {
     if (isGameOver) {
@@ -167,7 +175,8 @@ const Layout = ({ ...props }) => {
                 timestamp: new Date().getTime(),
                 duration: new Date().getTime() - time,
                 temporal_slices: JSON.parse(JSON.stringify(routes)),
-                static_data: {is_favorite: isFavoriteActive},
+                static_data: { is_favorite: isFavoriteActive },
+                ...(hasForward && { forward: hasForward! }),
               })
             : null,
           "*"
@@ -213,6 +222,7 @@ const Layout = ({ ...props }) => {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
+
   return (
     <div className="layout">
       <AppBar
@@ -221,7 +231,7 @@ const Layout = ({ ...props }) => {
       >
         <Toolbar className={classes.toolbardashboard}>
           <IconButton
-            onClick={() => setComplete(true)}
+            onClick={() => handleComplete(true)}
             color="default"
             aria-label="Menu"
           >
@@ -247,6 +257,15 @@ const Layout = ({ ...props }) => {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {hasForward && (
+            <IconButton
+              onClick={() => handleComplete(false)}
+              color="default"
+              aria-label="Menu"
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <Container>

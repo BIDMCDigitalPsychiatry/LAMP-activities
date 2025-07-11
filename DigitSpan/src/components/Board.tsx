@@ -142,6 +142,8 @@ const useStyles = makeStyles((theme: Theme) =>
         textAlign: "center",
         fontWeight: "600",
         fontSize: 18,
+        display: "flex",
+        alignItems: "center",
         [theme.breakpoints.up("sm")]: {
           textAlign: "left",
         },
@@ -277,7 +279,8 @@ export default function Board({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward] = useState(props?.data?.forward ?? true);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   useEffect(() => {
     const configuration = props.data?.configuration ?? null;
     const langugae = !!configuration
@@ -401,6 +404,7 @@ export default function Board({ ...props }) {
     } else {
       points = points + 1;
     }
+
     let bestForward = { span: 0, duration: Infinity, details: [] as any[] };
     let bestBackward = { span: 0, duration: Infinity, details: [] as any[] };
 
@@ -473,6 +477,8 @@ export default function Board({ ...props }) {
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
+
+        ...(forward && { forward: isForwardButton }),
       }),
       "*"
     );
@@ -509,8 +515,22 @@ export default function Board({ ...props }) {
   const [popup, setPopup] = useState(true);
   const { t } = useTranslation();
   const [startGame, setStartGame] = useState(false);
+
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
+  };
+
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
   };
 
   return (
@@ -576,7 +596,10 @@ export default function Board({ ...props }) {
                 <Toolbar className={classes.toolbardashboard}>
                   <Grid container alignItems="center">
                     <IconButton
-                      onClick={() => sendGameResult(true)}
+                      onClick={() => {
+                        setIsForwardButton(false);
+                        sendGameResult(true);
+                      }}
                       color="default"
                       aria-label="Menu"
                     >
@@ -612,6 +635,11 @@ export default function Board({ ...props }) {
                   >
                     <Icon style={{ color: "white" }}>refresh</Icon>
                   </IconButton>
+                  {forward && (
+                    <IconButton onClick={handleForwardClick}>
+                      <Icon style={{ color: "white" }}>arrow_forward</Icon>
+                    </IconButton>
+                  )}
                 </Toolbar>
               </AppBar>
               <Box

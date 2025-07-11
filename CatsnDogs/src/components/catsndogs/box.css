@@ -31,16 +31,31 @@ nav a {
 }
 .home-link {
   position: absolute;
-  right: 0;
-  margin: 15px;
-  top: 12px;
+  right: 10px;
+  padding: 15px;
+  top: 8px;
+  cursor: pointer;
 }
-
+.home-link-forward {
+  position: absolute;
+  right: 60px;
+  padding: 15px;
+  top: 8px;
+  cursor: pointer;
+}
 .back-link {
   position: absolute;
-  left: 0;
+  left: 10px;
+  padding: 15px;
+  top: 8px;
+  cursor: pointer;
+}
+.forward-link {
+  position: absolute;
+  right: 10px;
   margin: 15px;
-  top: 12px;
+  top: 8px;
+  cursor: pointer;
 }
 .App-header {
   height: 90px;
@@ -175,48 +190,48 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 .headerTitleIcon.active .material-icons {
   color: #e3b303 !important;
 }
-.first{
-	margin-left: 11%;
-    top: 22%;
+.first {
+  margin-left: 11%;
+  top: 22%;
 }
-.second{
-	margin-left: 26%;
-    top: 64%;
+.second {
+  margin-left: 26%;
+  top: 64%;
 }
-.third{
-	margin-left: 51%;
-    top: 77%;
+.third {
+  margin-left: 51%;
+  top: 77%;
 }
-.fourth{
-	margin-left: 72%;
-    top: 72%;
+.fourth {
+  margin-left: 72%;
+  top: 72%;
 }
-.fifth{
-	margin-left: 42%;
-    top: 40%;
+.fifth {
+  margin-left: 42%;
+  top: 40%;
 }
-.sixth{
-	margin-left: 59%;
-    top: 15%;
+.sixth {
+  margin-left: 59%;
+  top: 15%;
 }
-.seventh{
-	margin-left: 26%;
-    top: 2.5%;
+.seventh {
+  margin-left: 26%;
+  top: 2.5%;
 }
-.eighth{
-	margin-left: 10%;
-    top: 85%;
+.eighth {
+  margin-left: 10%;
+  top: 85%;
 }
-.ninth{
-	margin-left: 73%;
-    top: 34%;
+.ninth {
+  margin-left: 73%;
+  top: 34%;
 }
-.tenth{
-	margin-left: 77%;
-    top: 3%;
+.tenth {
+  margin-left: 77%;
+  top: 3%;
 }
-.mt-30{
-	margin-top: 30px;
+.mt-30 {
+  margin-top: 30px;
 }
 @keyframes slidein {
   0% {

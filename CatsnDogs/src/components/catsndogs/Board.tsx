@@ -8,7 +8,11 @@
 
 import { Box } from "./Box";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { InfoModal } from "../common/InfoModal";
@@ -29,6 +33,7 @@ export interface BoardProps {
   time: number;
   noBack: boolean;
   is_favorite: boolean;
+  forward: boolean;
 }
 
 interface BoardState {
@@ -58,6 +63,8 @@ interface BoardState {
   sendResponse: boolean;
   showInstruction: boolean;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -98,6 +105,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       wrongTaps: 0,
       showInstruction: true,
       isFavoriteActive: props?.is_favorite ?? false,
+      forward: props?.forward ?? false,
+      isForwardButton: false,
     };
   }
   // Reset game state for each state
@@ -317,6 +326,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             },
             temporal_slices: JSON.parse(this.state.boxes),
             timestamp: new Date().getTime(),
+            ...(this.state.forward && { forward: this.state.isForwardButton }),
           }),
           "*"
         );
@@ -456,6 +466,15 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameResult(true);
+  };
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameResult(true);
   };
 
@@ -602,7 +621,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
           </nav>
         )}
-        <nav className="home-link">
+        <nav className={this.state.forward ? "home-link-forward" : "home-link"}>
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
         <div className="heading">
@@ -624,6 +643,11 @@ class Board extends React.Component<BoardProps, BoardState> {
             </Fab>
           </Tooltip>
         </div>
+        {this.state.forward && (
+          <nav className="forward-link">
+            <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
+          </nav>
+        )}
         <div className="game-board">
           <div>
             <div className="timer-div">{timer}</div>

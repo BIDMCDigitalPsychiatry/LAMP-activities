@@ -9,7 +9,7 @@
 import * as React from "react";
 import Recorder from "./Recorder";
 
-import { faArrowLeft, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./SpeechRecordingCSS.css";
 import i18n from "./../../i18n";
@@ -45,6 +45,7 @@ interface AppState {
   recordedData: any[];
   submitEnabled: boolean;
   isFavoriteActive: boolean;
+  forward: boolean;
 }
 
 interface AppProps {
@@ -80,6 +81,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       recordedData: [],
       submitEnabled: false,
       isFavoriteActive: props?.data?.is_favorite ?? false,
+      forward: props?.data?.forward ?? false,
     };
     i18n.changeLanguage(
       !!props?.data?.configuration?.language
@@ -134,6 +136,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
         duration: recording.duration,
       })),
       timestamp: new Date().getTime(),
+      ...(this.state.forward && { forward: true }),
     };
     parent.postMessage(JSON.stringify(submissionPayload), "*");
   };
@@ -180,9 +183,16 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
     await this.setState({ audioDetails: reset, disableUploadBtn: true });
   };
 
-  clickBack = () => {
+  clickBack = (isBack: boolean) => {
     // eslint-disable-next-line no-restricted-globals
-    parent.postMessage(JSON.stringify({ clickBack: true, static_data: { is_favorite: this.state.isFavoriteActive }}), "*");
+    parent.postMessage(
+      JSON.stringify({
+        clickBack: true,
+        static_data: { is_favorite: this.state.isFavoriteActive },
+        ...(this.state.forward && { forward: !isBack }),
+      }),
+      "*"
+    );
   };
   handleFavoriteClick = () => {
     this.setState((prevState) => ({
@@ -196,15 +206,15 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       <div id="voice-recording-body">
         <div className="heading">
           {!this.props.noBack && (
-            <div style={{ float: "left" }}>
+            <nav className="back-link">
               <FontAwesomeIcon
                 className="cursorPointer"
                 icon={faArrowLeft}
-                onClick={this.clickBack}
+                onClick={() => this.clickBack(true)}
               />
-            </div>
+            </nav>
           )}
-          <div>
+          <div className="center-title">
             {i18n.t("SPEECH_RECORDING")}{" "}
             <Tooltip
               title={
@@ -223,6 +233,15 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
               </Fab>
             </Tooltip>
           </div>
+          {this.state.forward && (
+            <nav className="forward-link">
+              <FontAwesomeIcon
+                className="cursorPointer"
+                icon={faArrowRight}
+                onClick={() => this.clickBack(false)}
+              />
+            </nav>
+          )}
         </div>
         {this.state.errorData ? (
           <div className="errorMsg">

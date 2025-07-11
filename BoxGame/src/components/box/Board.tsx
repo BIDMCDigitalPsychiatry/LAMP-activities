@@ -9,7 +9,11 @@ import * as React from "react";
 import { getRandomNumbers } from "../../functions";
 import i18n from "./../../i18n";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -48,6 +52,8 @@ interface BoardState {
   wrongTaps: number;
   sendResponse: boolean;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 interface BoardProps {
@@ -56,6 +62,7 @@ interface BoardProps {
   language: string;
   noBack: boolean;
   is_favorite: boolean;
+  forward: boolean;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -102,6 +109,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       wrongStages: 0,
       wrongTaps: 0,
       isFavoriteActive: props?.is_favorite ?? false,
+      forward: props?.forward ?? false,
+      isForwardButton: false,
     };
   }
   // On load function - set state of the gamne
@@ -357,6 +366,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             },
             temporal_slices: JSON.parse(this.state.boxes),
             timestamp: new Date().getTime(),
+            ...(this.state.forward && { forward: this.state.isForwardButton }),
           }),
           "*"
         );
@@ -486,6 +496,15 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameResult(true);
+  };
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameResult(true);
   };
   handleFavoriteClick = () => {
@@ -599,9 +618,16 @@ class Board extends React.Component<BoardProps, BoardState> {
             <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
           </nav>
         )}
-        <nav className="home-link">
+        <nav
+          className={this.state.forward ? " home-link-forward" : "home-link"}
+        >
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
+        {this.state.forward && (
+          <nav className="forward-link">
+            <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
+          </nav>
+        )}
         <div className="heading">
           {i18n.t("BOX_GAME")}{" "}
           <Tooltip

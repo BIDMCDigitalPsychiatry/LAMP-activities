@@ -2,7 +2,7 @@ import "./layout.css";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import ModalPopup from "./uielements/ModalPopup";
 import { MazeComponent } from "./MazeComponent";
@@ -26,6 +26,7 @@ const Layout = ({ ...props }: any) => {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [hasForward] = useState(props?.data?.forward ?? false);
 
   useEffect(() => {
     const configuration = props?.data?.configuration;
@@ -88,6 +89,7 @@ const Layout = ({ ...props }: any) => {
           duration: new Date().getTime() - time,
           temporal_slices: JSON.parse(JSON.stringify(routes)),
           static_data: { is_favorite: isFavoriteActive },
+          ...(hasForward && { forward: true }),
         }),
         "*"
       );
@@ -100,7 +102,7 @@ const Layout = ({ ...props }: any) => {
     }
   }, [isGameOver]);
 
-  const clickBack = () => {
+  const clickBack = (isBack: boolean) => {
     const route = { type: "manual_exit", value: true };
     routes.push(route);
     parent.postMessage(
@@ -109,6 +111,7 @@ const Layout = ({ ...props }: any) => {
         duration: new Date().getTime() - time,
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         static_data: { is_favorite: isFavoriteActive },
+        ...(hasForward && { forward: !isBack }),
       }),
       "*"
     );
@@ -152,8 +155,16 @@ const Layout = ({ ...props }: any) => {
       )}
 
       <nav className="back-link">
-        <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
+        <FontAwesomeIcon icon={faArrowLeft} onClick={() => clickBack(true)} />
       </nav>
+      {hasForward && (
+        <nav className="forward-link">
+          <FontAwesomeIcon
+            icon={faArrowRight}
+            onClick={() => clickBack(false)}
+          />
+        </nav>
+      )}
       <div className="heading">
         {i18n.t("GAME")}{" "}
         <Tooltip

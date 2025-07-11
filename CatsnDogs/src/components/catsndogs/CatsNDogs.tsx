@@ -10,7 +10,6 @@ import Board from "./Board";
 
 import i18n from "./../../i18n";
 
-
 interface AppState {
   loaded: boolean;
   time: number;
@@ -39,6 +38,7 @@ class CatsNDogs extends React.Component<any, AppState> {
             language={i18n.language}
             time={this.state.time}
             is_favorite={this.props.data.is_favorite}
+            forward={this?.props?.data?.forward ?? false}
           />
         )}
       </div>

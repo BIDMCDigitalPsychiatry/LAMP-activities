@@ -112,6 +112,7 @@ const GameBoard = ({ ...props }: any) => {
           is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
+        ...(props?.forward && { forward: false }),
       }),
       "*"
     );
@@ -339,6 +340,7 @@ const GameBoard = ({ ...props }: any) => {
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
+        ...(props?.forward && { forward: props?.isForwardButton }),
       }),
       "*"
     );
@@ -400,36 +402,41 @@ const GameBoard = ({ ...props }: any) => {
             const startDateObj = new Date(data.start_time);
             const formattedTime = `${startDateObj.getHours()}:${startDateObj.getMinutes()}`;
             const orientation_survey = {
-                    start_time: { value: formattedTime, is_correct: true },
-                    day: { value: data.day, is_correct: true },
-                    today_date: { value: data.today_date, is_correct: true },
-                    month: { value: data.month, is_correct: true },
-                    year: { value: data.year, is_correct: true },
-                    season: { value: data.season, is_correct: true },
-                  };
+              start_time: { value: formattedTime, is_correct: true },
+              day: { value: data.day, is_correct: true },
+              today_date: { value: data.today_date, is_correct: true },
+              month: { value: data.month, is_correct: true },
+              year: { value: data.year, is_correct: true },
+              season: { value: data.season, is_correct: true },
+            };
             const stateDetails = Object.assign({}, data);
             stateDetails.start_time =
               new Date(data.start_time)?.getHours() +
               ":" +
               new Date(data.start_time)?.getMinutes();
-              setStaticData((prev: any) => ({
+            setStaticData((prev: any) => ({
               ...prev,
               orientation_survey,
             }));
           }}
-          
           timeLimit={delayBeforeRecall}
           onSubmit={(data: any) => {
             const startDateObj = new Date(data.start_time);
-                  const formattedTime = `${startDateObj.getHours()}:${startDateObj.getMinutes()}`;
-                  const orientation_survey = {
-                    start_time: { value: formattedTime, is_correct: data.isValidStartTime },
-                    day: { value: data.day, is_correct: data.isValidDay },
-                    today_date: { value: data.today_date, is_correct: data.isValidDate },
-                    month: { value: data.month, is_correct: data.isValidMonth },
-                    year: { value: data.year, is_correct: data.isValidYear },
-                    season: { value: data.season, is_correct: data.isValidSeason },
-                  };
+            const formattedTime = `${startDateObj.getHours()}:${startDateObj.getMinutes()}`;
+            const orientation_survey = {
+              start_time: {
+                value: formattedTime,
+                is_correct: data.isValidStartTime,
+              },
+              day: { value: data.day, is_correct: data.isValidDay },
+              today_date: {
+                value: data.today_date,
+                is_correct: data.isValidDate,
+              },
+              month: { value: data.month, is_correct: data.isValidMonth },
+              year: { value: data.year, is_correct: data.isValidYear },
+              season: { value: data.season, is_correct: data.isValidSeason },
+            };
             const stateDetails = Object.assign({}, data);
             stateDetails.start_time =
               new Date(data.start_time)?.getHours() +

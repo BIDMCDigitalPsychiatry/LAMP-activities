@@ -38,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    padding: "0px 10px 0",
+    boxSizing: "border-box",
   },
   headerIcon: {
     marginLeft: 20,
@@ -124,7 +126,8 @@ function HomeView(props) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward, setForward] = useState(props?.data?.forward ?? false);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   useEffect(() => {
     const initalSettings = () => {
       const configuration = props?.data?.configuration;
@@ -160,6 +163,9 @@ function HomeView(props) {
       finalReport.static_data = {
         is_favorite: isFavoriteActive,
       };
+      if (forward) {
+        finalReport.forward = isForwardButton;
+      }
       window.parent.postMessage(JSON.stringify(finalReport), "*");
     }
   }, [active, time, props.report, props?.data]);
@@ -195,6 +201,18 @@ function HomeView(props) {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev) => !prev);
   };
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
 
   if (active === -1) {
     return (
@@ -214,19 +232,22 @@ function HomeView(props) {
         <div className={classes.headerContainer}>
           {!props.data?.noBack && (
             <IconButton
-              onClick={() =>
+              onClick={() => {
+                setIsForwardButton(false);
                 window.parent.postMessage(
                   JSON.stringify({
                     completed: true,
+                    forward: false,
                     static_data: { is_favorite: isFavoriteActive },
                   }),
                   "*"
-                )
-              }
+                );
+              }}
             >
               <ArrowBack />
             </IconButton>
           )}
+
           <Typography className={classes.headerTitle}>
             {t("LIFE_WORTH_LIVING_GOAL")}
             <Tooltip
@@ -246,6 +267,11 @@ function HomeView(props) {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </div>
         <div className={classes.contentBox}>
           <Typography className={classes.content}>

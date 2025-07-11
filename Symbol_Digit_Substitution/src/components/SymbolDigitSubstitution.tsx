@@ -246,6 +246,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [isForward, setIsForward] = useState(props?.data?.forward ?? false)
   const { t } = useTranslation();
 
   const generateRandomSymbolNumberPair = (symbols: Array<string>) => {
@@ -308,7 +309,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
     }
   };
 
-  const saveScore = (status?: boolean) => {
+  const saveScore = (status?: boolean, backButton?: boolean) => {
     const timeTakenMinutes = (timeLimit - timeLeft) / 60;
     const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
     const route = { type: "manual_exit", value: status ?? false };
@@ -349,14 +350,14 @@ export default function SymbolDigitSubstitution({ ...props }) {
           ),
           is_favorite: isFavoriteActive,
         },
-
+        ...(isForward && { forward: !backButton }),
         temporal_slices: item,
       }),
       "*"
     );
   };
-  const clickBack = () => {
-    saveScore(true);
+  const clickBack = (backButton) => {
+    saveScore(true, backButton);
   };
   const handleClick = (data: any) => {
     setInputText(data);
@@ -434,6 +435,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
             clickBackData={clickBack}
             isFavoriteActive={isFavoriteActive}
             setIsFavoriteActive={setIsFavoriteActive}
+            forward={isForward}
           />
           {!open && (
             <div className={classes.container}>
@@ -444,13 +446,13 @@ export default function SymbolDigitSubstitution({ ...props }) {
                       {" "}
                       {!!showMapping && showMapping === "not_at_all"
                         ? `${t(
-                            "In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit."
-                          )}`
+                          "In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit."
+                        )}`
                         : !!showMapping
-                        ? `${t(
+                          ? `${t(
                             "In this game, you will be shown a symbol in the middle of your screen, represented by a greek letter. This symbol will correspond to a numerical digit. There is a symbol-mapping legend in the top row of your screen. Use the legend to identify the digit which corresponds to your symbol. Then, press the button at the bottom of the screen which contains this digit. After you select the correct button, you will move on to a new symbol. Try to get as many symbols as you can."
                           )}`
-                        : ""}
+                          : ""}
                     </span>
                   }
                   <h4>
@@ -479,12 +481,12 @@ export default function SymbolDigitSubstitution({ ...props }) {
                       )}
                       {((showMapping === "before" && !startGame) ||
                         (timeLeft !== 0 && showMapping === "during")) && (
-                        <Box
-                          className={classes.outer}
-                          data={shuffledSymbols}
-                          boxClass={classes.box}
-                        />
-                      )}
+                          <Box
+                            className={classes.outer}
+                            data={shuffledSymbols}
+                            boxClass={classes.box}
+                          />
+                        )}
                       {!startGame && (
                         <Button
                           className={classes.startBtn}
@@ -507,8 +509,8 @@ export default function SymbolDigitSubstitution({ ...props }) {
                                 {flag === 1
                                   ? t("Right")
                                   : flag === 0 && inputText !== ""
-                                  ? t("Wrong!")
-                                  : null}
+                                    ? t("Wrong!")
+                                    : null}
                               </h5>
                             )}
                           </div>

@@ -71,8 +71,26 @@
 .back-link {
   position: absolute;
   left: 10px;
+  top: 12px;
   color: white;
-  padding-top: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+.forward-link {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 
 .error-class {

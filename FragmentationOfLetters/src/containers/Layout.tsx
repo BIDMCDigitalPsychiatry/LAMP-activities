@@ -10,14 +10,17 @@ import GameBoard from "src/components/GameBoard";
 import "./layout.css";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
 import i18n from "src/i18n";
 import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const Layout = ({ ...props }: any) => {
-
   const configuration = props?.data?.configuration;
   const settings = props?.data?.activity?.settings;
   i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
@@ -26,14 +29,27 @@ const Layout = ({ ...props }: any) => {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward] = useState(props?.data?.forward ?? false);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   const reloadPage = () => {
     window.location.reload();
   };
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
-  
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
+
   return (
     <div className="main-class">
       <nav className="back-link">
@@ -42,9 +58,14 @@ const Layout = ({ ...props }: any) => {
           onClick={() => setClickBack(true)}
         />
       </nav>
-      <nav className="home-link">
+      <nav className={forward ? " home-link-forward" : "home-link"}>
         <FontAwesomeIcon icon={faRedo} onClick={reloadPage} />
       </nav>
+      {forward && (
+        <nav className="forward-link">
+          <FontAwesomeIcon icon={faArrowRight} onClick={handleForwardClick} />
+        </nav>
+      )}
       <div className="heading">
         {i18n.t("GAME")}{" "}
         <Tooltip
@@ -70,6 +91,8 @@ const Layout = ({ ...props }: any) => {
               startingFragmentation={startingFragmentation}
               clickBack={clickBack}
               isFavoriteActive={isFavoriteActive}
+              forward={forward}
+              isForwardButton={isForwardButton}
             />
           </Col>
         </Row>

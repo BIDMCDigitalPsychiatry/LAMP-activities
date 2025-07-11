@@ -9,7 +9,7 @@
 import * as React from "react";
 import Recorder from "./Recorder";
 
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./voice_recording.css";
 import i18n from "./../../i18n";
@@ -38,6 +38,7 @@ interface AppState {
   time: number;
   settings: any;
   isFavoriteActive: boolean;
+  forward: boolean
 }
 
 interface AppProps {
@@ -68,6 +69,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
       settings: props.data.activity?.settings,
       time: new Date().getTime(),
       isFavoriteActive: props?.data?.is_favorite ?? false,
+      forward: props?.data?.forward ?? false,
     };
     i18n.changeLanguage(
       !!props?.data?.configuration?.language
@@ -111,6 +113,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
             duration: duration ? duration : this.state.audioDetails.duration,
             is_favorite: this?.state?.isFavoriteActive,
           },
+          ...(this.state.forward && { forward: this.state.forward }),
           temporal_slices: [],
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time,
@@ -142,10 +145,24 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
         static_data: {
           is_favorite: this?.state?.isFavoriteActive,
         },
+        ...(this.state.forward && { forward: false }),
       }),
       "*"
     );
   };
+  clickForward = () => {
+    // eslint-disable-next-line no-restricted-globals
+    parent.postMessage(
+      JSON.stringify({
+        forward: true,
+        static_data: {
+          is_favorite: this?.state?.isFavoriteActive,
+        },
+      }),
+      "*"
+    );
+  };
+
   handleFavoriteClick = () => {
     this.setState((prevState) => ({
       isFavoriteActive: !prevState.isFavoriteActive,
@@ -157,7 +174,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
       <div id="voice-recording-body">
         <div className="heading">
           {!this.props.noBack && (
-            <div style={{ float: "left" }}>
+            <div>
               <FontAwesomeIcon
                 className="cursorPointer"
                 icon={faArrowLeft}
@@ -165,7 +182,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
               />
             </div>
           )}
-          <div>
+          <div className="center-title">
             {i18n.t("VOICE_RECORDING")}{" "}
             <Tooltip
               title={
@@ -175,15 +192,23 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
               }
             >
               <Fab
-                className={`headerTitleIcon ${
-                  this.state.isFavoriteActive ? "active" : ""
-                }`}
+                className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
+                  }`}
                 onClick={this.handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
               </Fab>
             </Tooltip>
           </div>
+          {this.state.forward && (
+            <div>
+              <FontAwesomeIcon
+                className="cursorPointer"
+                icon={faArrowRight}
+                onClick={this.clickForward}
+              />
+            </div>
+          )}
         </div>
         {this.state.errorData ? (
           <div className="errorMsg">

@@ -48,8 +48,27 @@ nav a {
 
 .home-link {
   position: absolute;
-  right: 15px;
-  top: 20px;
+  right: 10px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+.home-link-forward {
+  position: absolute;
+  right: 60px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 
 .home-link svg path {
@@ -63,10 +82,28 @@ nav a {
 
 .back-link {
   position: absolute;
-  left: 15px;
-  top: 20px;
+  left: 10px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
-
+.forward-link {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
 .back-link svg path {
   fill: #fff;
 }

@@ -74,7 +74,8 @@ class Box extends React.Component<any, AppState> {
                   ? this.state.settings?.retrieval_delay * 60
                   : 60
               }
-              is_favorite={this?.props?.data?.is_favorite?? false}
+              is_favorite={this?.props?.data?.is_favorite ?? false}
+              forward={this?.props?.data?.forward ?? false}
             />
           )}
       </div>

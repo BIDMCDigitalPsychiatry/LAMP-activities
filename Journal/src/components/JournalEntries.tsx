@@ -164,7 +164,8 @@ export default function JournalEntries({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward] = useState(props?.data?.forward ?? false);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   const { t } = useTranslation();
   const CHARACTER_LIMIT = 800;
   const handleClickStatus = (statusVal: string) => {
@@ -197,6 +198,7 @@ export default function JournalEntries({ ...props }) {
   }, []);
 
   const saveJournal = (completed?: boolean) => {
+    debugger;
     setLoading(true);
     !!completed
       ? parent.postMessage(
@@ -209,6 +211,7 @@ export default function JournalEntries({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             temporal_slices: [],
+            ...(forward && { forward: isForwardButton }),
           }),
           "*"
         )
@@ -217,6 +220,7 @@ export default function JournalEntries({ ...props }) {
             static_data: {
               is_favorite: isFavoriteActive,
             },
+            ...(forward && { forward: false }),
           }),
           "*"
         );
@@ -279,6 +283,18 @@ export default function JournalEntries({ ...props }) {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
 
   return (
     <div className={classes.root}>
@@ -326,6 +342,11 @@ export default function JournalEntries({ ...props }) {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <Box px={2}>

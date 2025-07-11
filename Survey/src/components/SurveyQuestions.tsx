@@ -50,7 +50,7 @@ import gfm from "remark-gfm";
 import { useSnackbar } from "notistack";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Button } from "react-bootstrap";
-import Image from './Image';
+import Image from "./Image";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
@@ -567,8 +567,8 @@ const useStyles = makeStyles((theme) => ({
   },
   survayImage: {
     maxHeight: 200,
-    borderRadius: 16
-  }
+    borderRadius: 16,
+  },
 }));
 function range(start, stop, step = 1) {
   return [...Array(stop - start).keys()].map((v, i) =>
@@ -620,10 +620,11 @@ function LinkRenderer(data: any) {
   );
 }
 
-function RadioOption({ onChange, options, value, ...props }) {
+function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
   const [selectedValue, setSelectedValue] = useState(value);
   const classes = useStyles();
   const { t } = useTranslation();
+  console.log("value inside radio component", value);
 
   return (
     <FormControl component="fieldset" className={classes.radioGroup}>
@@ -713,6 +714,25 @@ function RadioOption({ onChange, options, value, ...props }) {
                       },
                     }}
                   />
+                  {optionFeedback === x.feedback_text &&
+                    x.value === selectedValue && (
+                      <ReactMarkdown
+                        children={
+                          !!x.feedback_text && ` ${x.feedback_text?.toString()}`
+                        }
+                        skipHtml={false}
+                        plugins={[gfm, emoji]}
+                        renderers={{
+                          link: LinkRenderer,
+                          sub: (props) => {
+                            return <sub>{props?.children}</sub>;
+                          },
+                          sup: (props) => {
+                            return <sup>{props.children}</sup>;
+                          },
+                        }}
+                      />
+                    )}
                 </Typography>
               </Box>
             }
@@ -969,40 +989,57 @@ function TimeSelection({ onChange, options, value, ...props }) {
   );
 }
 
-function TextSection({ onChange, charLimit, value, ...props }) {
+function TextSection({
+  onChange,
+  charLimit,
+  value,
+  feedback,
+  question,
+  ...props
+}) {
   const classes = useStyles();
   const [text, setText] = useState(value);
+  const { t } = useTranslation();
 
   return (
-    <Box className={classes.textfieldwrapper}>
-      <FormControl
-        component="fieldset"
-        classes={{
-          root: classes.textAreaControl,
-        }}
-      >
-        <TextField
-          id="standard-multiline-flexible"
-          multiline
-          rows={10}
-          variant="outlined"
-          onChange={(e) => {
-            setText(e.target.value);
-            onChange(e.target.value);
+    <>
+      <Box className={classes.textfieldwrapper}>
+        <FormControl
+          component="fieldset"
+          classes={{
+            root: classes.textAreaControl,
           }}
-          defaultValue={text}
-          helperText={
-            text
-              ? `${text.length}/${charLimit} max characters`
-              : `${charLimit} max characters`
-          }
-          inputProps={{
-            maxLength: charLimit,
-          }}
-          classes={{ root: classes.textArea }}
-        />
-      </FormControl>
-    </Box>
+        >
+          <TextField
+            id="standard-multiline-flexible"
+            multiline
+            rows={10}
+            variant="outlined"
+            onChange={(e) => {
+              setText(e.target.value);
+              onChange(e.target.value);
+            }}
+            defaultValue={text}
+            helperText={
+              text
+                ? `${text.length}/${charLimit} max characters`
+                : `${charLimit} max characters`
+            }
+            inputProps={{
+              maxLength: charLimit,
+            }}
+            classes={{ root: classes.textArea }}
+          />
+        </FormControl>
+      </Box>
+      {text?.trim() && question && feedback && (
+        <Box className={classes.questionhead}>
+          <Typography variant="caption">
+            <ReactMarkdown children={t(`${feedback}`)} />
+          </Typography>
+        </Box>
+      )}
+    </>
   );
 }
 const CssTextField = withStyles({
@@ -1065,22 +1102,44 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
               value={option.value}
             />
             {type !== "matrix" && (
-              <Typography variant="caption" className={classes.checkP}>
-                <ReactMarkdown
-                  children={t(option.description?.toString())}
-                  skipHtml={false}
-                  plugins={[gfm, emoji]}
-                  renderers={{
-                    link: LinkRenderer,
-                    sub: (props) => {
-                      return <sub>{props?.children}</sub>;
-                    },
-                    sup: (props) => {
-                      return <sup>{props.children}</sup>;
-                    },
-                  }}
-                />
-              </Typography>
+              <>
+                <Box>
+                  <Typography variant="caption" className={classes.checkP}>
+                    <ReactMarkdown
+                      children={t(option.description?.toString())}
+                      skipHtml={false}
+                      plugins={[gfm, emoji]}
+                      renderers={{
+                        link: LinkRenderer,
+                        sub: (props) => {
+                          return <sub>{props?.children}</sub>;
+                        },
+                        sup: (props) => {
+                          return <sup>{props.children}</sup>;
+                        },
+                      }}
+                    />
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" className={classes.checkP}>
+                    <ReactMarkdown
+                      children={t(option.feedback_text?.toString())}
+                      skipHtml={false}
+                      plugins={[gfm, emoji]}
+                      renderers={{
+                        link: LinkRenderer,
+                        sub: (props) => {
+                          return <sub>{props?.children}</sub>;
+                        },
+                        sup: (props) => {
+                          return <sup>{props.children}</sup>;
+                        },
+                      }}
+                    />
+                  </Typography>
+                </Box>
+              </>
             )}
           </Box>
         ))}
@@ -1776,6 +1835,12 @@ function Matrix({
                                       ? responses?.current[idx + qindex]?.value
                                       : undefined
                                   }
+                                  feedback={
+                                    !!responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]
+                                          ?.feedback
+                                      : undefined
+                                  }
                                 />
                               </Box>
                             ) : null
@@ -1829,6 +1894,13 @@ function Matrix({
                                   value={
                                     !!responses?.current[idx + qindex]?.value
                                       ? responses?.current[idx + qindex]?.value
+                                      : undefined
+                                  }
+                                  question={question.text}
+                                  feedback={
+                                    !!responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]
+                                          ?.feedback
                                       : undefined
                                   }
                                 />
@@ -1891,8 +1963,21 @@ function Matrix({
   );
 }
 
+function normalizeMultiSelectValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(String); // make sure all values are strings
+  }
+
+  if (typeof value === "string") {
+    return value.split(",").map((v) => v.replace(/["']/g, "").trim()); // remove quotes and trim
+  }
+
+  return [];
+}
+
 function MultiSelectResponse({ onChange, options, value, ...props }) {
-  const [selectedValue, setSelectedValue] = useState(value || "");
+  const normalizedValue = normalizeMultiSelectValue(value);
+  const [selectedValue, setSelectedValue] = useState(normalizedValue || "");
   const selection = csvParse(selectedValue);
   const classes = useStyles();
   const { t } = useTranslation();
@@ -1922,6 +2007,7 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                   : selection.filter((y) => y !== `${x.value}`);
                 const target = csvStringify(targetValue);
                 setSelectedValue(target);
+                console.log("target", target);
                 onChange(target);
               }}
             />
@@ -1967,6 +2053,20 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                   }}
                 />
               </Box>
+              {selection.includes(`${x.value}`) && !!x.feedback_text && (
+                <Box className={classes.lightGray}>
+                  <ReactMarkdown
+                    children={` ${x.feedback_text?.toString()}`}
+                    skipHtml={false}
+                    plugins={[gfm, emoji]}
+                    renderers={{
+                      link: LinkRenderer,
+                      sub: (props) => <sub>{props?.children}</sub>,
+                      sup: (props) => <sup>{props.children}</sup>,
+                    }}
+                  />
+                </Box>
+              )}
             </Box>
           }
           labelPlacement="end"
@@ -1980,6 +2080,7 @@ function Question({
   onResponse,
   text,
   desc,
+  feedback,
   required,
   type,
   options,
@@ -1992,23 +2093,28 @@ function Question({
   ...props
 }) {
   const { t } = useTranslation();
+  const [optionFeedback, setOptionFeedback] = useState("");
+  useEffect(() => {
+    const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
+    if (cleanedValue) {
+      const selectedOption = options?.find((opt) => opt.value === value.value);
+      if (selectedOption?.feedback_text) {
+        setOptionFeedback(selectedOption.feedback_text);
+      } else {
+        setOptionFeedback(""); // clear previous feedback if not applicable
+      }
+    }
+  }, []);
   const onChange = (value) => {
     const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
-    // let enabledActivities: { question: string; value: string }[] = [];
-    // const enabledActivitiesStr = localStorage.getItem("enabledActivities");
-    // if (enabledActivitiesStr !== null) {
-    //   enabledActivities = JSON.parse(enabledActivitiesStr);
-    // }
-    // const existingActivity = enabledActivities.find(
-    //   (activity) => activity.question === text
-    // );
-
-    // if (existingActivity && existingActivity.value !== value) {
-    //   enabledActivities = enabledActivities.filter(
-    //     (activity) => !(activity.question === text)
-    //   );
-    //   localStorage.setItem("enabledActivities", JSON.stringify(enabledActivities));
-
+    if (cleanedValue) {
+      const selectedOption = options?.find((opt) => opt.value === cleanedValue);
+      if (selectedOption?.feedback_text) {
+        setOptionFeedback(selectedOption.feedback_text);
+      } else {
+        setOptionFeedback(""); // clear previous feedback if not applicable
+      }
+    }
     if (currentIndex === settings.length - 1) {
       const selectedOption = options?.find((opt) => opt.value === cleanedValue);
       if (selectedOption?.contigencySettings?.enable_contigency) {
@@ -2095,6 +2201,7 @@ function Question({
           options={selectOptions}
           onChange={onChange}
           value={!!value ? value.value : undefined}
+          optionFeedback={optionFeedback}
         />
       );
       break;
@@ -2112,6 +2219,8 @@ function Question({
           onChange={onChange}
           charLimit={CHARACTER_LIMIT}
           value={!!value ? value.value : undefined}
+          feedback={feedback}
+          question={text}
         />
       );
       break;
@@ -2125,16 +2234,17 @@ function Question({
       );
       break;
     case "multiselect":
+      console.log("value inside case", value);
       component = (
         <MultiSelectResponse
           options={options}
           onChange={onChange}
           value={!!value ? value.value : undefined}
+          // optionFeedback={optionFeedback}
         />
       );
       break;
   }
-   console.log('options image',options)
 
   return (
     <Grid>
@@ -2161,8 +2271,14 @@ function Question({
           variant="caption"
           display="block"
           style={{ lineHeight: "0.66" }}
-        > 
-          {image && <Image src={image} alt="Survey image" className={classes.survayImage} />}
+        >
+          {image && (
+            <Image
+              src={image}
+              alt="Survey image"
+              className={classes.survayImage}
+            />
+          )}
           <ReactMarkdown
             children={
               type === "slider"
@@ -2197,10 +2313,7 @@ function Question({
         </Typography>
       </Box>
 
-      <Box className={classes.questionScroll}>
-        {component}
-
-      </Box>
+      <Box className={classes.questionScroll}>{component}</Box>
     </Grid>
   );
 }
@@ -2266,6 +2379,7 @@ function Questions({
                     image={x?.image}
                     required={x?.required}
                     desc={x?.description ?? null}
+                    feedback={x?.feedback_text ?? null}
                     options={
                       Array.isArray(x?.options)
                         ? x?.options?.map((y) => ({ ...y, label: y.value }))
@@ -2361,6 +2475,7 @@ function Section({
   isSubmit,
   isFavoriteActive,
   setIsFavoriteActive,
+  forward,
   ...props
 }) {
   const activityId = value?.id;
@@ -2654,6 +2769,28 @@ function Section({
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
+  const handleForwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
+  const handleBackwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        ...(forward && { forward: false }),
+      }),
+      "*"
+    );
+  };
   return (
     <Box>
       <AppBar
@@ -2662,7 +2799,7 @@ function Section({
       >
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
-            <IconButton onClick={() => onResponse(null)}>
+            <IconButton onClick={handleBackwardClick}>
               <Icon>arrow_back</Icon>
             </IconButton>
           )}
@@ -2698,6 +2835,11 @@ function Section({
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {forward && (
+            <IconButton onClick={handleForwardClick}>
+              <Icon>arrow_forward</Icon>
+            </IconButton>
+          )}
         </Toolbar>
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
@@ -2755,6 +2897,7 @@ export default function SurveyQuestions({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [isForward, setIsForward] = useState(props?.data?.forward ?? false);
   const validator = (response) => {
     let status = true;
     const questions = activity.settings;
@@ -2807,6 +2950,7 @@ export default function SurveyQuestions({ ...props }) {
         duration: new Date().getTime() - startTime,
         static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
         timestamp: startTime,
+        ...(isForward && { forward: true }),
       };
       onResponse(result);
       setIsSubmit(!isSubmit);
@@ -2830,6 +2974,7 @@ export default function SurveyQuestions({ ...props }) {
             static_data: {
               is_favorite: isFavoriteActive,
             },
+            ...(isForward && { forward: true }),
           })
         : JSON.stringify(response),
       "*"
@@ -2960,6 +3105,7 @@ export default function SurveyQuestions({ ...props }) {
           isSubmit={isSubmit}
           isFavoriteActive={isFavoriteActive}
           setIsFavoriteActive={setIsFavoriteActive}
+          forward={isForward}
         />
       ) : null}
     </Box>

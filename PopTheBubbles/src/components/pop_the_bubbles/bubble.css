@@ -27,12 +27,26 @@ h1 {
   color: #fff;
   margin-top: 20px;
   margin-right: 5px;
+  cursor: pointer;
+}
+.home-link-forward svg {
+  color: #fff;
+  margin-top: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 
 .back-link svg {
   color: #fff;
   margin-top: 20px;
   margin-left: 5px;
+  cursor: pointer;
+}
+.forward-link svg {
+  color: #fff;
+  margin-top: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 .App {
   padding-top: 2em;
@@ -374,10 +388,19 @@ ul {
   position: absolute;
   right: 0;
 }
+.home-link-forward {
+  position: absolute;
+  right: 40px;
+}
 .back-link {
   position: absolute;
   left: 0;
 }
+.forward-link {
+  position: absolute;
+  right: 0;
+}
+
 .heading {
   background-color: rgba(53, 159, 254, 1);
   text-align: center;

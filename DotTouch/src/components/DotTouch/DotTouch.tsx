@@ -19,6 +19,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import "./DotTouch.css";
 import { GeneralInstruction } from "./GeneralInstruction";
 import { Fab, Icon, Tooltip } from "@material-ui/core";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import "material-icons";
 
 /* eslint-disable no-restricted-globals */
@@ -45,6 +46,8 @@ interface DotState {
   showInstruction: boolean;
   mistakeCount: number;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 class DotTouch extends React.Component<any, DotState> {
@@ -87,6 +90,8 @@ class DotTouch extends React.Component<any, DotState> {
       showInstruction: true,
       mistakeCount: 0,
       isFavoriteActive: props?.data?.is_favorite ?? false,
+      forward: props?.data?.forward ?? false,
+      isForwardButton: false,
     };
     //  this.resetState()
   }
@@ -334,6 +339,7 @@ class DotTouch extends React.Component<any, DotState> {
             },
             temporal_slices: JSON.parse(this.state.route),
             timestamp: new Date().getTime(),
+            ...(this.state.forward && { forward: this.state.isForwardButton }),
           }),
           "*"
         );
@@ -384,6 +390,15 @@ class DotTouch extends React.Component<any, DotState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameResult(true);
+  };
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameResult(true);
   };
 
@@ -430,10 +445,18 @@ class DotTouch extends React.Component<any, DotState> {
           <ArrowBackIcon color="primary" onClick={this.clickBack} />
           {/* <ArrowBackIcon icon={faRedo}  onClick={this.undoAction}/> */}
         </nav>
-        <nav className="home-link">
+
+        <nav
+          className={this.state.forward ? " home-link-forward" : "home-link"}
+        >
           <RefreshRounded color="primary" onClick={this.clickHome} />
-          {/* <FontAwesomeIcon icon={faRedo}  onClick={this.undoAction}/> */}
         </nav>
+        {this.state.forward && (
+          <nav className="forward-link">
+            <ArrowForwardIcon color="primary" onClick={this.clickForward} />
+          </nav>
+        )}
+
         <div className="heading">
           Trails B
           <Tooltip

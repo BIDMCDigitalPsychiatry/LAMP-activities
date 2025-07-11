@@ -43,7 +43,9 @@
   padding: 15px;
   color: #fff;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
 }
 .home-link {
   position: absolute;
@@ -52,11 +54,27 @@
 .back-link {
   position: absolute;
   left: 10px;
-  top: 6px;
+  top: 12px;
   color: white;
-  padding-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
-
+.forward-link {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
 .error-class {
   color: red;
   font-size: 20px;

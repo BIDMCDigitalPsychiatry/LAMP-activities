@@ -49,8 +49,8 @@ export default function Header({ ...props }) {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const clickBack = () => {
-    props?.clickBackData();
+  const clickBack = (backButton) => {
+    props?.clickBackData(backButton);
   };
   const handleFavoriteClick = () => {
     props?.setIsFavoriteActive((prev) => !prev);
@@ -63,7 +63,7 @@ export default function Header({ ...props }) {
       <Toolbar className={classes.toolbardashboard}>
         {!props?.data && (
           <IconButton
-            onClick={() => clickBack()}
+            onClick={() => clickBack(true)}
             color="default"
             aria-label="Menu"
           >
@@ -89,6 +89,15 @@ export default function Header({ ...props }) {
             </Fab>
           </Tooltip>{" "}
         </Typography>
+        {props?.forward && (
+          <IconButton
+            onClick={() => clickBack(false)}
+            color="default"
+            aria-label="Menu"
+          >
+            <Icon>arrow_forward</Icon>
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

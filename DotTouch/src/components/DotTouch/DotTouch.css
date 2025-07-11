@@ -9,10 +9,10 @@
   --square-size: 84px;
   --square-font-size: 72px;
 }
-nav.home-link svg {
+/* nav.home-link svg {
   color: rgba(53, 159, 254, 1);
   margin: 16px 18px 0 10px;
-}
+} */
 body {
   background: rgba(53, 159, 254, 1);
 }
@@ -155,12 +155,31 @@ nav a {
 }
 .home-link {
   position: absolute;
-  right: 0;
+  right: 10px;
+  padding: 12px;
+  top: 8px;
+  cursor: pointer;
+}
+.home-link-forward {
+  position: absolute;
+  right: 60px;
+  padding: 12px;
+  top: 8px;
+  cursor: pointer;
 }
 .back-link {
   position: absolute;
-  left: 0;
-  top: 10px;
+  left: 10px;
+  padding: 12px;
+  top: 8px;
+  cursor: pointer;
+}
+.forward-link {
+  position: absolute;
+  right: 10px;
+  margin: 12px;
+  top: 8px;
+  cursor: pointer;
 }
 @-webkit-keyframes App-logo-spin {
   0% {

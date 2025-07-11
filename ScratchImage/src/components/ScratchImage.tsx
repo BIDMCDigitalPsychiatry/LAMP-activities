@@ -7,6 +7,8 @@ import Background05 from "./Background-05";
 import Background06 from "./Background-06";
 import i18n from "../i18n";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+
 
 import { useTranslation } from "react-i18next";
 import {
@@ -164,6 +166,9 @@ export default function ScratchImage({ ...props }) {
   const [noBack, setNoBack] = useState(false);
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
+  );
+  const [hasForward, setHasForward] = useState(
+    props?.data?.forward ?? false
   );
   const [completeTrigger, setCompleteTrigger] = useState(0);
   const classes = useStyles();
@@ -334,7 +339,12 @@ export default function ScratchImage({ ...props }) {
 
   useEffect(() => {
     if (complete) {
-      const route = { type: "manual_exit", value: complete ?? false };
+      handleComplete(false);
+    }
+  }, [completeTrigger]);
+
+  const handleComplete = (isBack:boolean) =>{
+const route = { type: "manual_exit", value: complete ?? false };
       const item = [];
       if (routes !== null) {
         const r = routes?.length > 0 ? JSON.parse(routes) : [];
@@ -350,12 +360,13 @@ export default function ScratchImage({ ...props }) {
               duration: new Date().getTime() - time,
               temporal_slices: item,
               static_data: { is_favorite: isFavoriteActive },
+              ...(hasForward && { forward: !isBack }),
             })
           : null,
         "*"
       );
-    }
-  }, [completeTrigger]);
+  }
+
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
@@ -376,10 +387,7 @@ export default function ScratchImage({ ...props }) {
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
             <IconButton
-              onClick={() => {
-                setComplete(true);
-                handleCompleteTrigger();
-              }}
+              onClick={() => handleComplete(true)}
               color="default"
               aria-label="Menu"
             >
@@ -406,6 +414,15 @@ export default function ScratchImage({ ...props }) {
               </Fab>
             </Tooltip>{" "}
           </Typography>
+          {hasForward && (
+            <IconButton
+              onClick={()=>handleComplete(false)}
+              color="default"
+              aria-label="Menu"
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <div id="canvasDiv" className={classes.background}>

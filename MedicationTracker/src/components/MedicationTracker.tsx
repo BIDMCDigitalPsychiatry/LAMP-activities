@@ -150,7 +150,7 @@ export default function MedicationTracker({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [hasForward] = useState(props?.data?.forward ?? false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -172,6 +172,7 @@ export default function MedicationTracker({ ...props }) {
         static_data: { is_favorite: isFavoriteActive },
         temporal_slices: [],
         timestamp: startTime,
+        ...(hasForward && { forward: true }),
       }),
       "*"
     );
@@ -204,6 +205,7 @@ export default function MedicationTracker({ ...props }) {
                       static_data: {
                         is_favorite: isFavoriteActive,
                       },
+                      ...(hasForward && { forward: false }),
                     }),
                     "*"
                   );
@@ -232,6 +234,25 @@ export default function MedicationTracker({ ...props }) {
                   </Fab>
                 </Tooltip>{" "}
               </Typography>
+              {hasForward && (
+                <IconButton
+                  onClick={() => {
+                    parent.postMessage(
+                      JSON.stringify({
+                        static_data: {
+                          is_favorite: isFavoriteActive,
+                        },
+                        forward: true,
+                      }),
+                      "*"
+                    );
+                  }}
+                  color="default"
+                  aria-label="Menu"
+                >
+                  <Icon>arrow_forward</Icon>
+                </IconButton>
+              )}
             </Toolbar>
           </AppBar>
 

@@ -115,15 +115,13 @@ nav a {
 }
 
 .heading {
-  text-align: center;
   color: rgba(53, 159, 254, 1);
-  padding: 15px;
+  padding: 15px 15px 15px 65px;
   background: #fff;
+  display: flex;
+  align-items: center;
 }
 .home-link {
-  position: absolute;
-  right: 10px;
-  top: 12px;
   background: #f4f4f4;
   width: 40px;
   height: 40px;
@@ -132,6 +130,23 @@ nav a {
   border-radius: 50%;
   z-index: 999;
   cursor: pointer;
+}
+.header-right-nav {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  display: flex;
+}
+.home-link-forward {
+  background: #f4f4f4;
+  width: 40px;
+  height: 40px;
+  padding: 11px 12px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  z-index: 999;
+  cursor: pointer;
+  position: relative;
 }
 .back-link {
   position: absolute;
@@ -145,6 +160,19 @@ nav a {
   border-radius: 50%;
   z-index: 999;
   cursor: pointer;
+}
+
+.forward-link {
+  position: relative;
+  background: #f4f4f4;
+  width: 40px;
+  height: 40px;
+  padding: 11px 12px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  z-index: 999;
+  cursor: pointer;
+  margin-left: 10px;
 }
 @-webkit-keyframes App-logo-spin {
   0% {
@@ -570,6 +598,14 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
   justify-content: center;
   position: absolute;
   right: 60px;
+  top: 18px;
+}
+.countdown-timer-forward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 110px;
   top: 18px;
 }
 .countdown-timer__text {

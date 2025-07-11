@@ -15,8 +15,9 @@ import i18n from "./../../i18n";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip,Fab, Icon } from "@material-ui/core";
+import { Tooltip, Fab, Icon } from "@material-ui/core";
 import "material-icons";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 interface AppState {
   balloon_width: any;
@@ -48,6 +49,8 @@ interface AppState {
   no_back: boolean;
   points: any;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 interface AppProps {
@@ -94,6 +97,8 @@ class Balloons extends React.Component<AppProps, AppState> {
       no_back: props.data.noBack,
       points: pointsArray,
       isFavoriteActive: props?.data?.is_favorite,
+      forward: props?.data?.forward ?? false,
+      isForwardButton: false,
     };
     i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
     const currentDate = this.dateFormating();
@@ -357,6 +362,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             temporal_slices: this.state.route,
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - this.state.time,
+            ...(this.state.forward && { forward: this.state.isForwardButton }),
           }),
           "*"
         );
@@ -450,6 +456,16 @@ class Balloons extends React.Component<AppProps, AppState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameData(true);
+  };
+
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameData(true);
   };
   handleFavoriteClick = () => {
@@ -501,6 +517,14 @@ class Balloons extends React.Component<AppProps, AppState> {
                 </Tooltip>
               </div>
             </h4>
+            {this.state.forward && (
+              <a
+                className="icn-menu menu-right cursorPointer"
+                onClick={this.clickForward}
+              >
+                <ArrowForwardIcon />
+              </a>
+            )}
             <a
               className="icn-menu menu-right cursorPointer"
               onClick={this.reloadPage}

@@ -9,7 +9,11 @@
 import * as React from "react";
 import { Animated } from "react-animated-css";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRandomNumbers } from "../../functions";
 
@@ -65,6 +69,7 @@ interface AppState {
   noBack: boolean;
   showDialog: boolean;
   isFavoriteActive: boolean;
+  hasForward: boolean;
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -116,6 +121,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       yPoints: this.getCoordPoints(yValues),
       showDialog: true,
       isFavoriteActive: props?.data?.is_favorite ?? false,
+      hasForward: props?.data?.forward ?? false,
     };
     this.bubbleCount = this.state.bubble_count[0];
   }
@@ -306,6 +312,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
             static_data: { is_favorite: this.state.isFavoriteActive },
             temporal_slices: temporalSlices,
             timestamp: new Date().getTime(),
+            ...(this.state.hasForward && { forward: true }),
           }),
           "*"
         );
@@ -568,7 +575,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     return infoSection;
   };
 
-  clickBack = () => {
+  clickBack = (isBack: boolean) => {
     const route = { type: "manual_exit", value: true };
     const values: any = this.state.route ?? [];
     if (typeof values[this.state.gameLevel - 1] === "undefined") {
@@ -582,6 +589,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         static_data: { is_favorite: this.state.isFavoriteActive },
         temporal_slices: temporalSlices,
         timestamp: new Date().getTime(),
+        ...(this.state.hasForward && { forward: !isBack }),
       }),
       "*"
     );
@@ -613,13 +621,28 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       <div id="pop-the-bubble-body">
         {!this.state.noBack && (
           <nav className="back-link">
-            <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              onClick={() => this.clickBack(true)}
+            />
           </nav>
         )}
 
-        <nav className="home-link">
+        <nav
+          className={`${
+            this.state.hasForward ? "home-link-forward" : "home-link"
+          }`}
+        >
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
+        {this.state.hasForward && (
+          <nav className="forward-link">
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              onClick={() => this.clickBack(false)}
+            />
+          </nav>
+        )}
         <div className="heading">
           {i18n.t("POP_THE_BUBBLES")}
           <Tooltip

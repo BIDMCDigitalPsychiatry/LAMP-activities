@@ -6,7 +6,11 @@
  * @copyright (c) 2020, ZCO
  */
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRandomNumbers } from "../../functions";
 import { InfoModal } from "./InfoModal";
@@ -58,6 +62,8 @@ interface AppState {
   winnerLine?: Array<number>;
   variant: any;
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 class Jewels extends React.Component<any, AppState> {
@@ -136,7 +142,9 @@ class Jewels extends React.Component<any, AppState> {
       totalJewelsCollected: 0,
       winnerLine: undefined,
       variant: settingsData.variant === "trails_b" ? "b" : "a",
-      isFavoriteActive: props?.data?.is_favorite ??false,
+      isFavoriteActive: props?.data?.is_favorite ?? false,
+      forward: props?.data?.forward ?? false,
+      isForwardButton: false,
     };
     this.state = state;
     this.reset(true);
@@ -452,6 +460,9 @@ class Jewels extends React.Component<any, AppState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
     this.sendDataToDashboard(2, true);
   };
 
@@ -484,6 +495,7 @@ class Jewels extends React.Component<any, AppState> {
           temporal_slices: JSON.parse(this.state.routes),
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time,
+          ...(this.state.forward && { forward: this.state.isForwardButton }),
         }),
         "*"
       );
@@ -506,6 +518,14 @@ class Jewels extends React.Component<any, AppState> {
       isFavoriteActive: !prevState.isFavoriteActive,
     }));
   };
+
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
+    this.sendDataToDashboard(2, true);
+  };
+
   render() {
     const modal =
       this.state && this.state.showModal > 0 ? (
@@ -527,9 +547,19 @@ class Jewels extends React.Component<any, AppState> {
             <nav className="back-link">
               <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
             </nav>
-            <nav className="home-link">
-              <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-            </nav>
+            <div className="header-right-nav">
+              <nav className="home-link">
+                <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+              </nav>
+              {this.state.forward && (
+                <nav className="forward-link">
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    onClick={this.clickForward}
+                  />
+                </nav>
+              )}
+            </div>
             <div className="heading">
               {i18n.t("JEWELS")}{" "}
               <Tooltip
@@ -567,6 +597,7 @@ class Jewels extends React.Component<any, AppState> {
                 sendDataToDashboard={this.sendDataToDashboard}
                 settings={this.state.settings}
                 variant={this.state.variant}
+                forward={this.state.forward}
               />
             </div>
           </div>

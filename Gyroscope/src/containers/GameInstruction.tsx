@@ -109,9 +109,7 @@ export default function Instructions({ ...props }) {
             <Grid item lg={7} sm={10} xs={12}>
               <Box p={3}>
                 <Typography variant="body1" align="center">
-                  {isMobile
-                    ? t("INSTRUCTION_MOBILE")
-                    : t("INSTRUCTION")}
+                  {isMobile ? t("INSTRUCTION_MOBILE") : t("INSTRUCTION")}
                 </Typography>
                 <Box textAlign="center" pt={3} mt={2}>
                   <Fab className={classes.btnBlue} onClick={handleNextClick}>
@@ -139,6 +137,8 @@ export default function Instructions({ ...props }) {
           clickBack={props.clickBack}
           language={i18n.language}
           isFavoriteActive={props?.isFavoriteActive}
+          isForwardButton={props?.isForwardButton}
+          forward={props?.forward}
         />
       )}
       {view === "end game" && <GameEnd />}

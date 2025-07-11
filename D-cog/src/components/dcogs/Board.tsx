@@ -8,7 +8,11 @@
 
 import { Box } from "./Box";
 
-import { faArrowLeft, faRedo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faRedo,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Timer } from "../common/Timer";
@@ -36,6 +40,7 @@ export interface BoardProps {
   time: number;
   noBack: boolean;
   is_favorite: boolean;
+  forward: boolean;
 }
 
 interface BoardState {
@@ -73,6 +78,8 @@ interface BoardState {
   outComes: number[];
   levels: number[];
   isFavoriteActive: boolean;
+  forward: boolean;
+  isForwardButton: boolean;
 }
 
 const numbers = [
@@ -153,6 +160,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       outComes: [],
       levels: [],
       isFavoriteActive: props?.is_favorite ?? false,
+      forward: props?.forward ?? false,
+      isForwardButton: false,
     };
   }
   // Reset game state for each state
@@ -477,6 +486,15 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   clickBack = () => {
+    this.setState(() => ({
+      isForwardButton: false,
+    }));
+    this.sendGameResult(true);
+  };
+  clickForward = () => {
+    this.setState(() => ({
+      isForwardButton: true,
+    }));
     this.sendGameResult(true);
   };
 
@@ -534,6 +552,23 @@ class Board extends React.Component<BoardProps, BoardState> {
       } else {
         points = points + 1;
       }
+      console.log(
+        "sendresult",
+        JSON.stringify({
+          duration: new Date().getTime() - this.props.time,
+          static_data: {
+            correct_answers: this.state.stateSuccessTaps,
+            point: points,
+            score: gameScore,
+            total_questions: this.state.questionCount,
+            wrong_answers: this.state.stateWrongTaps,
+            is_favorite: this.state.isFavoriteActive,
+          },
+          temporal_slices: JSON.parse(this.state.boxes),
+          timestamp: new Date().getTime(),
+          ...(this.state.forward && { forward: this.state.isForwardButton }),
+        })
+      );
       parent.postMessage(
         JSON.stringify({
           duration: new Date().getTime() - this.props.time,
@@ -547,6 +582,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           },
           temporal_slices: JSON.parse(this.state.boxes),
           timestamp: new Date().getTime(),
+          ...(this.state.forward && { forward: this.state.isForwardButton }),
         }),
         "*"
       );
@@ -652,7 +688,9 @@ class Board extends React.Component<BoardProps, BoardState> {
             <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
           </nav>
         )}
-        <nav className="home-link">
+        <nav
+          className={this.state.forward ? " home-link-forward" : "home-link"}
+        >
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
         <div className="heading">
@@ -674,6 +712,11 @@ class Board extends React.Component<BoardProps, BoardState> {
             </Fab>
           </Tooltip>
         </div>
+        {this.state.forward && (
+          <nav className="forward-link">
+            <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
+          </nav>
+        )}
         <div className="game-board">
           <div>
             <div className="timer-div">{timer}</div>

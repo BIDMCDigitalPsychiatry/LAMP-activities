@@ -37,7 +37,8 @@ class DCogs extends React.Component<any, AppState> {
             noBack={this.state.noBack}
             language={i18n.language}
             time={this.state.time}
-            is_favorite={this?.props.data.is_favorite}
+            is_favorite={this?.props?.data?.is_favorite}
+            forward={this?.props?.data?.forward ?? false}
           />
         )}
       </div>

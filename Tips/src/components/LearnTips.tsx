@@ -173,6 +173,7 @@ export default function LearnTips({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
+  const [isForward, setIsForward] = useState(props?.data?.forward ?? false)
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -214,6 +215,7 @@ export default function LearnTips({ ...props }) {
           sentiment: status,
           is_favorite: isFavoriteActive,
         },
+        ...(isForward && { forward: isForward }),
         temporal_slices: [],
       }),
       "*"
@@ -236,6 +238,28 @@ export default function LearnTips({ ...props }) {
     );
   };
 
+  const handleForwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
+        forward: true,
+      }),
+      "*"
+    );
+  };
+  const handleBackwardClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
+        ...(isForward && { forward: false }),
+      }),
+      "*"
+    );
+  };
+
+
   const handleSubTipBack = () => {
     if (settings?.length === 1) {
       backToParentTips();
@@ -252,7 +276,7 @@ export default function LearnTips({ ...props }) {
               <Grid item xs className={classes.rightArrow}>
                 <IconButton
                   aria-label="Back"
-                  onClick={() => backToParentTips()}
+                  onClick={handleBackwardClick}
                 >
                   <Icon>arrow_back</Icon>
                 </IconButton>
@@ -268,9 +292,8 @@ export default function LearnTips({ ...props }) {
                     }
                   >
                     <Fab
-                      className={`${classes.headerTitleIcon} ${
-                        isFavoriteActive ? "active" : ""
-                      }`}
+                      className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""
+                        }`}
                       onClick={handleFavoriteClick}
                     >
                       <Icon>star_rounded</Icon>
@@ -278,44 +301,54 @@ export default function LearnTips({ ...props }) {
                   </Tooltip>
                 </Typography>
               </Grid>
+              {isForward &&
+                <Grid item xs className={classes.rightArrow}>
+                  <IconButton
+                    aria-label="Back"
+                    onClick={handleForwardClick}
+                  >
+                    <Icon>arrow_forward</Icon>
+                  </IconButton>
+                </Grid>
+              }
             </Grid>
             <Grid container direction="row" alignItems="stretch">
               {settings?.length > 0
                 ? settings.map((detail: any, index: any) => (
-                    <Grid
-                      key={index}
-                      container
-                      direction="row"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      <Grid item lg={6} sm={12} xs={12}>
-                        <Box
-                          className={classes.tipStyle}
-                          onClick={() => {
-                            setOpenDialog(true);
-                            setTitle(detail.title);
-                            setDetails(detail.text);
-                            setImages(detail.image);
-                            // setIsFavoriteActive(detail.is_favorite);
-                          }}
-                        >
-                          <div>
-                            <Grid container spacing={3}>
-                              <Grid item xs lg>
-                                <Typography variant="h6">
-                                  {t(detail.title)}
-                                </Typography>
-                              </Grid>
-                              <Grid item xs lg className={classes.rightArrow}>
-                                <Icon>chevron_right</Icon>
-                              </Grid>
+                  <Grid
+                    key={index}
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                  >
+                    <Grid item lg={6} sm={12} xs={12}>
+                      <Box
+                        className={classes.tipStyle}
+                        onClick={() => {
+                          setOpenDialog(true);
+                          setTitle(detail.title);
+                          setDetails(detail.text);
+                          setImages(detail.image);
+                          // setIsFavoriteActive(detail.is_favorite);
+                        }}
+                      >
+                        <div>
+                          <Grid container spacing={3}>
+                            <Grid item xs lg>
+                              <Typography variant="h6">
+                                {t(detail.title)}
+                              </Typography>
                             </Grid>
-                          </div>
-                        </Box>
-                      </Grid>
+                            <Grid item xs lg className={classes.rightArrow}>
+                              <Icon>chevron_right</Icon>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </Box>
                     </Grid>
-                  ))
+                  </Grid>
+                ))
                 : ""}
             </Grid>
           </>

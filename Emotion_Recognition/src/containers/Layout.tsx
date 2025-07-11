@@ -2,7 +2,7 @@ import "./layout.css";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import { shuffleArray } from "src/functions";
@@ -44,6 +44,8 @@ const Layout = ({ ...props }: any) => {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite
   );
+  const [forward] = useState(props?.data?.forward ?? false);
+  const [isForwardButton, setIsForwardButton] = useState(false);
 
   useEffect(() => {
     const configuration = props.data.configuration;
@@ -51,7 +53,9 @@ const Layout = ({ ...props }: any) => {
       ? props.data.activity?.settings
       : null;
     let settings = (data || []).map((e: any) => e.emotion);
-    let defaultEmotions = ems?.map((e: any) => e.emotion?.toLowerCase()?.trim());
+    let defaultEmotions = ems?.map((e: any) =>
+      e.emotion?.toLowerCase()?.trim()
+    );
     let missing = (settings || []).filter(
       (item: any) => defaultEmotions.indexOf(item?.trim()?.toLowerCase()) < 0
     );
@@ -100,6 +104,7 @@ const Layout = ({ ...props }: any) => {
               duration: new Date().getTime() - time,
               temporal_slices: JSON.parse(JSON.stringify(routes)),
               static_data: { is_favorite: isFavoriteActive },
+              ...(forward && { forward: isForwardButton }),
             })
           : null,
         "*"
@@ -151,6 +156,7 @@ const Layout = ({ ...props }: any) => {
             duration: new Date().getTime() - time,
             temporal_slices: JSON.parse(JSON.stringify(routes)),
             static_data: { is_favorite: isFavoriteActive },
+            ...(forward && { forward: false }),
           })
         : null,
       "*"
@@ -159,12 +165,28 @@ const Layout = ({ ...props }: any) => {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
-
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
   return (
     <div className="main-class">
       <nav className="back-link">
         <FontAwesomeIcon icon={faArrowLeft} onClick={clickBack} />
       </nav>
+      {forward && (
+        <nav className="forward-link">
+          <FontAwesomeIcon icon={faArrowRight} onClick={handleForwardClick} />
+        </nav>
+      )}
       <div className="heading">
         {i18n.t("EMOTIONS")}{" "}
         <Tooltip

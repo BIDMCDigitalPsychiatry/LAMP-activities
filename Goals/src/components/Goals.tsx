@@ -117,6 +117,8 @@ const useStyles = makeStyles((theme: Theme) =>
         textAlign: "center",
         fontWeight: "600",
         fontSize: 18,
+        display: "flex",
+        alignItems: "center",
         width: "calc(100% - 96px)",
         [theme.breakpoints.up("sm")]: {
           textAlign: "left",
@@ -150,7 +152,8 @@ export default function Goals({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-
+  const [forward] = useState(props?.data?.forward ?? true);
+  const [isForwardButton, setIsForwardButton] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -172,6 +175,7 @@ export default function Goals({ ...props }) {
         static_data: { is_favorite: isFavoriteActive },
         temporal_slices: [],
         timestamp: startTime,
+        ...(forward && { forward: isForwardButton }),
       }),
       "*"
     );
@@ -187,7 +191,18 @@ export default function Goals({ ...props }) {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
-
+  const handleForwardClick = () => {
+    setIsForwardButton(true);
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: true,
+      }),
+      "*"
+    );
+  };
   return (
     <React.Fragment>
       {!!activity && (
@@ -204,6 +219,7 @@ export default function Goals({ ...props }) {
                       static_data: {
                         is_favorite: isFavoriteActive,
                       },
+                      ...(forward && { forward: false }),
                     }),
                     "*"
                   );
@@ -232,9 +248,13 @@ export default function Goals({ ...props }) {
                   </Fab>
                 </Tooltip>{" "}
               </Typography>
+              {forward && (
+                <IconButton onClick={handleForwardClick}>
+                  <Icon>arrow_forward</Icon>
+                </IconButton>
+              )}
             </Toolbar>
           </AppBar>
-
           <Container maxWidth={false} className={classes.mainContainer}>
             <Box className={classes.header}>
               <Box width={1} className={classes.headerIcon}>

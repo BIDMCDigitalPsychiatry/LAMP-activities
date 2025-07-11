@@ -458,6 +458,7 @@ export function GameComponent({ ...props }) {
         duration: new Date().getTime() - time,
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         static_data: { is_favorite: props?.isFavoriteActive },
+        ...(props?.forward && { forward: false }),
       }),
       "*"
     );
@@ -471,6 +472,7 @@ export function GameComponent({ ...props }) {
             duration: new Date().getTime() - time,
             temporal_slices: JSON.parse(JSON.stringify(routes)),
             static_data: { is_favorite: props?.isFavoriteActive },
+            ...(props?.forward && { forward: props?.isForwardButton }),
           })
         : null,
       "*"

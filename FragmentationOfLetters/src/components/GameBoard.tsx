@@ -56,6 +56,7 @@ const GameBoard = ({ ...props }: any) => {
           is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
+        ...(props?.forward && { forward: false }),
       }),
       "*"
     );
@@ -86,6 +87,7 @@ const GameBoard = ({ ...props }: any) => {
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
+        ...(props?.forward && { forward: props?.isForwardButton }),
       }),
       "*"
     );

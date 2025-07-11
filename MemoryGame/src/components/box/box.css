@@ -55,15 +55,47 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 }
 .home-link {
   position: absolute;
-  right: 0;
   right: 10px;
-  top: 15px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+.home-link-forward {
+  position: absolute;
+  right: 60px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 .back-link {
   position: absolute;
-  left: 0;
   left: 10px;
-  top: 15px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+.forward-link {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 .box-white {
   height: 128px;
@@ -565,4 +597,3 @@ button.primary:hover {
 .instructionvideo h5 {
   margin: 25px 0;
 }
-
