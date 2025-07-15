@@ -89,6 +89,20 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbardashboard: {
     minHeight: 65,
+    // padding: "0 10px",
+    display: "flex",
+    justifyContent: "space-between",    
+    "& h5": {
+      color: "rgba(0, 0, 0, 0.75)",
+      textAlign: "center",
+      fontWeight: "600",
+      fontSize: 18,
+      width: "calc(100% - 96px)",
+    },
+  },
+
+   toolbardashboardfwd: {
+    minHeight: 65,
     padding: "0 10px",
     "& h5": {
       color: "rgba(0, 0, 0, 0.75)",
@@ -100,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rightArrow: {
     maxWidth: 50,
-    padding: "15px 12px 11px 12px !important",
+    // padding: "15px 12px 11px 12px !important",
     "& svg": { color: "rgba(0, 0, 0, 0.5)" },
   },
   lineyellow: {
@@ -159,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   colorLine: { maxWidth: 115 },
-  titleText: { marginTop: "8px" },
+  // titleText: { marginTop: "8px" },
 }));
 
 export default function LearnTips({ ...props }) {
@@ -272,7 +286,7 @@ export default function LearnTips({ ...props }) {
       <Box pb={4}>
         {settings?.length !== 1 && (
           <>
-            <Grid container spacing={4}>
+            <Grid container alignItems="center" className={classes.toolbardashboard}>
               <Grid item xs className={classes.rightArrow}>
                 <IconButton
                   aria-label="Back"
@@ -282,7 +296,7 @@ export default function LearnTips({ ...props }) {
                 </IconButton>
               </Grid>
               <Grid item xs>
-                <Typography variant="h6" className={classes.titleText}>
+                <Typography variant="h6">
                   {activityData ? t(activityData.name) : ""}
                   <Tooltip
                     title={
@@ -375,7 +389,17 @@ export default function LearnTips({ ...props }) {
             >
               <Icon>arrow_back</Icon>
             </IconButton>
+            {isForward &&
+              <IconButton
+                onClick={() => handleForwardClick()}
+                color="default"
+                aria-label="Menu"
+              >
+                <Icon>arrow_forward</Icon>
+              </IconButton>
+          } 
           </Toolbar>
+                
         </AppBar>
         <TipNotification
           title={title}

@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme: Theme) =>
         fontWeight: 600,
         color: "rgba(0, 0, 0, 0.75)",
         textAlign: "left",
+        display: "flex",
+        alignItems: "center",
       },
     },
     tipscontentarea: {
@@ -259,11 +261,9 @@ export default function TipNotification({ ...props }) {
               <Grid xs={12}>
                 <Typography variant="caption">{t("Tip")}</Typography>
               </Grid>
-              <Grid xs={11}>
-                <Typography variant="h2">{t(props.title)}</Typography>
-              </Grid>
-              <Grid xs={1} className={classes.iconContainer}>
-                {props?.hideFavorite && (
+              <Grid xs={12}>
+                <Typography variant="h2">{t(props.title)}{props?.hideFavorite && (
+                  <Box className={classes.iconContainer}>
                   <Tooltip
                     title={
                       props?.isFavoriteActive
@@ -280,7 +280,8 @@ export default function TipNotification({ ...props }) {
                       <Icon>star_rounded</Icon>
                     </Fab>
                   </Tooltip>
-                )}
+                  </Box>
+                )}</Typography>
               </Grid>
             </Grid>
           </Grid>
