@@ -745,7 +745,7 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
   );
 }
 
-function TimeSelection({ onChange, options, value, ...props }) {
+function TimeSelection({ onChange, options, value, feedback, question, ...props }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
@@ -878,85 +878,46 @@ function TimeSelection({ onChange, options, value, ...props }) {
   }
 
   return (
-    <Box textAlign="center">
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        className={classes.timeWrapper}
-      >
-        <Grid item>
-          <List component="nav" className={classes.timeHours}>
-            <ListItem
-              button
-              aria-haspopup="true"
-              aria-controls="lock-menu"
-              onClick={handleClickHours}
-            >
-              <ListItemText secondary={hourSelectedIndex} />
-            </ListItem>
-          </List>
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleHoursClose}
-            classes={{ paper: classes.menuPaper }}
-          >
-            {hourvalues.map((option, index) => (
-              <MenuItem
-                key={option.length === 1 ? "0" + option : option}
-                selected={option === hourSelectedIndex}
-                onClick={(event) => handleMenuItemClick(event, option, 0)}
-                classes={{ selected: classes.listSelected }}
+    <>
+      <Box textAlign="center">
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.timeWrapper}
+        >
+          <Grid item>
+            <List component="nav" className={classes.timeHours}>
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="lock-menu"
+                onClick={handleClickHours}
               >
-                {option.length === 1 ? "0" + option : option}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Grid>
-        :
-        <Grid item>
-          <List
-            component="nav"
-            className={classes.timeHours}
-            aria-label="Device settings"
-          >
-            <ListItem
-              button
-              aria-haspopup="true"
-              aria-controls="lock-menu"
-              onClick={handleClickMinutes}
+                <ListItemText secondary={hourSelectedIndex} />
+              </ListItem>
+            </List>
+            <Menu
+              id="lock-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleHoursClose}
+              classes={{ paper: classes.menuPaper }}
             >
-              <ListItemText secondary={minuteSelectedIndex} />
-            </ListItem>
-          </List>
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorE2}
-            keepMounted
-            open={Boolean(anchorE2)}
-            onClose={handleMinutesClose}
-            classes={{ paper: classes.menuPaper }}
-          >
-            {minutevalues.map((option, index) => (
-              <MenuItem
-                key={option.length === 1 ? "0" + option : option}
-                selected={option === minuteSelectedIndex}
-                onClick={(event) => handleMenuItemClick(event, option, 1)}
-                classes={{ selected: classes.listSelected }}
-              >
-                {option.length === 1 ? "0" + option : option}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Grid>
-        {((!!options?.timePattern && options?.timePattern === "standard") ||
-          (Array.isArray(options) &&
-            !!options[0] &&
-            !!options[0]?.value &&
-            options[0]?.value === "standard")) && (
+              {hourvalues.map((option, index) => (
+                <MenuItem
+                  key={option.length === 1 ? "0" + option : option}
+                  selected={option === hourSelectedIndex}
+                  onClick={(event) => handleMenuItemClick(event, option, 0)}
+                  classes={{ selected: classes.listSelected }}
+                >
+                  {option.length === 1 ? "0" + option : option}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Grid>
+          :
           <Grid item>
             <List
               component="nav"
@@ -967,25 +928,73 @@ function TimeSelection({ onChange, options, value, ...props }) {
                 button
                 aria-haspopup="true"
                 aria-controls="lock-menu"
-                onClick={handleClickAmPm}
+                onClick={handleClickMinutes}
               >
-                <ListItemText secondary={ampmSelectedIndex} />
+                <ListItemText secondary={minuteSelectedIndex} />
               </ListItem>
             </List>
             <Menu
               id="lock-menu"
-              classes={{ paper: classes.menuPaper }}
-              anchorEl={anchorE3}
+              anchorEl={anchorE2}
               keepMounted
-              open={Boolean(anchorE3)}
-              onClose={handleAmPmClose}
+              open={Boolean(anchorE2)}
+              onClose={handleMinutesClose}
+              classes={{ paper: classes.menuPaper }}
             >
-              {ampm}
+              {minutevalues.map((option, index) => (
+                <MenuItem
+                  key={option.length === 1 ? "0" + option : option}
+                  selected={option === minuteSelectedIndex}
+                  onClick={(event) => handleMenuItemClick(event, option, 1)}
+                  classes={{ selected: classes.listSelected }}
+                >
+                  {option.length === 1 ? "0" + option : option}
+                </MenuItem>
+              ))}
             </Menu>
           </Grid>
-        )}
-      </Grid>
-    </Box>
+          {((!!options?.timePattern && options?.timePattern === "standard") ||
+            (Array.isArray(options) &&
+              !!options[0] &&
+              !!options[0]?.value &&
+              options[0]?.value === "standard")) && (
+              <Grid item>
+                <List
+                  component="nav"
+                  className={classes.timeHours}
+                  aria-label="Device settings"
+                >
+                  <ListItem
+                    button
+                    aria-haspopup="true"
+                    aria-controls="lock-menu"
+                    onClick={handleClickAmPm}
+                  >
+                    <ListItemText secondary={ampmSelectedIndex} />
+                  </ListItem>
+                </List>
+                <Menu
+                  id="lock-menu"
+                  classes={{ paper: classes.menuPaper }}
+                  anchorEl={anchorE3}
+                  keepMounted
+                  open={Boolean(anchorE3)}
+                  onClose={handleAmPmClose}
+                >
+                  {ampm}
+                </Menu>
+              </Grid>
+            )}
+        </Grid>
+      </Box>
+      {value?.trim() && question && feedback && (
+        <Box className={classes.questionhead}>
+          <Typography variant="caption">
+            <ReactMarkdown children={t(`${feedback}`)} />
+          </Typography>
+        </Box>
+      )}
+    </>
   );
 }
 
@@ -1059,26 +1068,37 @@ const CssTextField = withStyles({
   },
 })(InputBase);
 
-function ShortTextSection({ onChange, value, ...props }) {
+function ShortTextSection({ onChange, value, feedback, question, ...props }) {
   const classes = useStyles();
   const [text, setText] = useState(value);
+  const { t } = useTranslation();
+
 
   return (
-    <Box className={classes.textfieldwrapper}>
-      <FormControl component="fieldset">
-        <CssTextField
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            onChange(e.target.value);
-          }}
-        />
-      </FormControl>
-    </Box>
+    <>
+      <Box className={classes.textfieldwrapper}>
+        <FormControl component="fieldset">
+          <CssTextField
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              onChange(e.target.value);
+            }}
+          />
+        </FormControl>
+      </Box>
+      {text?.trim() && question && feedback && (
+        <Box className={classes.questionhead}>
+          <Typography variant="caption">
+            <ReactMarkdown children={t(`${feedback}`)} />
+          </Typography>
+        </Box>
+      )}
+    </>
   );
 }
 
-function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
+function RadioRating({ onChange, options, value, mtValue, type, optionFeedback, ...props }) {
   const [val, setValue] = useState(value);
   const { t } = useTranslation();
 
@@ -1121,24 +1141,26 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
                     />
                   </Typography>
                 </Box>
-                <Box>
-                  <Typography variant="caption" className={classes.checkP}>
-                    <ReactMarkdown
-                      children={t(option.feedback_text?.toString())}
-                      skipHtml={false}
-                      plugins={[gfm, emoji]}
-                      renderers={{
-                        link: LinkRenderer,
-                        sub: (props) => {
-                          return <sub>{props?.children}</sub>;
-                        },
-                        sup: (props) => {
-                          return <sup>{props.children}</sup>;
-                        },
-                      }}
-                    />
-                  </Typography>
-                </Box>
+                {(optionFeedback === option.feedback_text && option.value === val) &&
+                  <Box>
+                    <Typography variant="caption" className={classes.checkP}>
+                      <ReactMarkdown
+                        children={t(option.feedback_text?.toString())}
+                        skipHtml={false}
+                        plugins={[gfm, emoji]}
+                        renderers={{
+                          link: LinkRenderer,
+                          sub: (props) => {
+                            return <sub>{props?.children}</sub>;
+                          },
+                          sup: (props) => {
+                            return <sup>{props.children}</sup>;
+                          },
+                        }}
+                      />
+                    </Typography>
+                  </Box>
+                }
               </>
             )}
           </Box>
@@ -1148,7 +1170,8 @@ function RadioRating({ onChange, options, value, mtValue, type, ...props }) {
   );
 }
 
-function Rating({ onChange, options, value, ...props }) {
+function Rating({ onChange, options, value, optionFeedback, ...props }) {
+
   const classes = useStyles();
   const getText = (val) => {
     let sliderValue = null;
@@ -1328,6 +1351,105 @@ function Rating({ onChange, options, value, ...props }) {
               }}
             />
           </Typography>
+        </Grid>
+        <Grid
+          container
+          className={classes.sliderValueLabel}
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item>
+            {(optionFeedback === options[0].feedback_text && options[0].value == sliderValue) &&
+              <Typography
+                variant="caption"
+                className={classes.textCaption}
+                display="block"
+                gutterBottom
+              >
+                <ReactMarkdown
+                  children={
+                    !!options[0].feedback_text &&
+                      options[0].feedback_text.trim().length === 0
+                      ? options[0].value
+                      : options[0].feedback_text
+                  }
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props?.children}</sup>;
+                    },
+                  }}
+                />
+              </Typography>}
+          </Grid>
+          <Grid item>
+            {options.length > 2 && (
+              (optionFeedback === options[Math.ceil(options.length / 2) - 1].feedback_text && options[Math.ceil(options.length / 2) - 1].value == sliderValue) &&
+              <Typography
+                variant="caption"
+                className={classes.textCaption}
+                display="block"
+                gutterBottom
+              >
+                <ReactMarkdown
+                  children={
+                    !!options[Math.ceil(options.length / 2) - 1].feedback_text &&
+                      options[Math.ceil(options.length / 2) - 1].feedback_text.trim()
+                        .length === 0
+                      ? options[Math.ceil(options.length / 2) - 1].value
+                      : options[Math.ceil(options.length / 2) - 1].feedback_text
+                  }
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props.children}</sup>;
+                    },
+                  }}
+                />
+              </Typography>
+            )}
+          </Grid>
+          <Grid item>
+            <Typography
+              variant="caption"
+              className={classes.textCaption}
+              display="block"
+              gutterBottom
+            >
+              {(optionFeedback === options[options.length - 1].feedback_text && options[options.length - 1].value == sliderValue) &&
+                <ReactMarkdown
+                  children={
+                    !!options[options.length - 1].feedback_text &&
+                      options[options.length - 1].feedback_text.trim().length === 0
+                      ? options[options.length - 1].value
+                      : options[options.length - 1].feedback_text
+                  }
+                  skipHtml={false}
+                  plugins={[gfm, emoji]}
+                  renderers={{
+                    link: LinkRenderer,
+                    sub: (props) => {
+                      return <sub>{props?.children}</sub>;
+                    },
+                    sup: (props) => {
+                      return <sup>{props.children}</sup>;
+                    },
+                  }}
+                />
+              }
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
       <Box className={classes.sliderResponse}>
@@ -1764,6 +1886,9 @@ function Matrix({
                                     );
                                     onResponse(data);
                                   }}
+                                  optionFeedback={!!selectedValue[idx + qindex]?.feedback_text
+                                    ? selectedValue[idx + qindex]?.feedback_text
+                                    : undefined}
                                   value={
                                     csvParse(
                                       selectedValue[idx + qindex]?.value || []
@@ -1835,12 +1960,10 @@ function Matrix({
                                       ? responses?.current[idx + qindex]?.value
                                       : undefined
                                   }
-                                  feedback={
-                                    !!responses?.current[idx + qindex]?.feedback
-                                      ? responses?.current[idx + qindex]
-                                          ?.feedback
-                                      : undefined
-                                  }
+                                  question={question.text}
+                                  feedback={!!responses?.current[idx + qindex]?.feedback
+                                    ? responses?.current[idx + qindex]?.feedback
+                                    : undefined}
                                 />
                               </Box>
                             ) : null
@@ -1870,6 +1993,10 @@ function Matrix({
                                       ? responses?.current[idx + qindex]?.value
                                       : undefined
                                   }
+                                  question={question.text}
+                                  feedback={!!responses?.current[idx + qindex]?.feedback
+                                    ? responses?.current[idx + qindex]?.feedback
+                                    : undefined}
                                 />
                               ) : x.type === "text" ? (
                                 <TextSection
@@ -1931,6 +2058,10 @@ function Matrix({
                                             ?.value
                                         : undefined
                                     }
+                                    question={question.text}
+                                    feedback={!!responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]?.feedback
+                                      : undefined}
                                   />
                                 </Box>
                               ) : null}
@@ -2177,6 +2308,7 @@ function Question({
           options={options}
           onChange={onChange}
           value={!!value ? value.value : undefined}
+          optionFeedback={optionFeedback}
         />
       );
       break;
@@ -2188,6 +2320,7 @@ function Question({
           mtValue={!supportsSidebar ? 0 : 5}
           onChange={onChange}
           value={!!value ? value.value : undefined}
+          optionFeedback={optionFeedback}
         />
       );
       break;
@@ -2210,6 +2343,8 @@ function Question({
         <ShortTextSection
           onChange={onChange}
           value={!!value ? value.value : undefined}
+          feedback={feedback}
+          question={text}
         />
       );
       break;
@@ -2230,6 +2365,8 @@ function Question({
           onChange={onChange}
           options={options}
           value={!!value ? value.value : undefined}
+          feedback={feedback}
+          question={text}
         />
       );
       break;
@@ -2951,6 +3088,7 @@ export default function SurveyQuestions({ ...props }) {
         static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
         timestamp: startTime,
         ...(isForward && { forward: true }),
+        done:true,
       };
       onResponse(result);
       setIsSubmit(!isSubmit);
@@ -2975,6 +3113,7 @@ export default function SurveyQuestions({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             ...(isForward && { forward: true }),
+            done:true,
           })
         : JSON.stringify(response),
       "*"

@@ -31,25 +31,13 @@ const Layout = ({ ...props }: any) => {
   );
   const [forward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
+
   const reloadPage = () => {
     window.location.reload();
   };
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
-  const handleForwardClick = () => {
-    setIsForwardButton(true);
-    parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
-        forward: true,
-      }),
-      "*"
-    );
-  };
-
   return (
     <div className="main-class">
       <nav className="back-link">
@@ -63,7 +51,10 @@ const Layout = ({ ...props }: any) => {
       </nav>
       {forward && (
         <nav className="forward-link">
-          <FontAwesomeIcon icon={faArrowRight} onClick={handleForwardClick} />
+          <FontAwesomeIcon
+            icon={faArrowRight}
+            onClick={() => setIsForwardButton(true)}
+          />
         </nav>
       )}
       <div className="heading">

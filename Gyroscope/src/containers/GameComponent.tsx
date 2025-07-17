@@ -447,7 +447,10 @@ export function GameComponent({ ...props }) {
     if (props.clickBack === true) {
       clickBack();
     }
-  }, [props.clickBack]);
+    if (props.isForwardButton === true) {
+      handleForwardClick();
+    }
+  }, [props.clickBack, props.isForwardButton]);
 
   const clickBack = () => {
     const route = { type: "manual_exit", value: true };
@@ -464,6 +467,20 @@ export function GameComponent({ ...props }) {
     );
   };
 
+  const handleForwardClick = () => {
+    const route = { type: "manual_exit", value: true };
+    routes.push(route);
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - time,
+        temporal_slices: JSON.parse(JSON.stringify(routes)),
+        static_data: { is_favorite: props?.isFavoriteActive },
+        ...(props?.forward && { forward: true }),
+      }),
+      "*"
+    );
+  };
   const sentResult = () => {
     parent.postMessage(
       routes.length > 0
@@ -473,6 +490,7 @@ export function GameComponent({ ...props }) {
             temporal_slices: JSON.parse(JSON.stringify(routes)),
             static_data: { is_favorite: props?.isFavoriteActive },
             ...(props?.forward && { forward: props?.isForwardButton }),
+            done: true,
           })
         : null,
       "*"

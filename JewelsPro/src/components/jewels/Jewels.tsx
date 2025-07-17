@@ -496,6 +496,7 @@ class Jewels extends React.Component<any, AppState> {
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time,
           ...(this.state.forward && { forward: this.state.isForwardButton }),
+          ...(!status && { done: true }),
         }),
         "*"
       );
@@ -508,7 +509,14 @@ class Jewels extends React.Component<any, AppState> {
     } else {
       this.state.showModal === 1
         ? window.location.reload()
-        : parent.postMessage(null, "*");
+        : parent.postMessage(
+            JSON.stringify({
+              completed: true,
+              static_data: { is_favorite: this.state.isFavoriteActive },
+              done: true,
+            }),
+            "*"
+          );
     }
     this.setState({ showModal: 0 });
   };

@@ -80,6 +80,7 @@ interface BoardState {
   isFavoriteActive: boolean;
   forward: boolean;
   isForwardButton: boolean;
+  done: boolean;
 }
 
 const numbers = [
@@ -162,6 +163,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       isFavoriteActive: props?.is_favorite ?? false,
       forward: props?.forward ?? false,
       isForwardButton: false,
+      done: false,
     };
   }
   // Reset game state for each state
@@ -320,6 +322,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       {
         endTime: new Date(),
         timeout: true,
+        done: true,
       },
       () => {
         this.updateStateWithTaps();
@@ -488,12 +491,14 @@ class Board extends React.Component<BoardProps, BoardState> {
   clickBack = () => {
     this.setState(() => ({
       isForwardButton: false,
+      done: false,
     }));
     this.sendGameResult(true);
   };
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
+      done: false,
     }));
     this.sendGameResult(true);
   };
@@ -567,6 +572,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           temporal_slices: JSON.parse(this.state.boxes),
           timestamp: new Date().getTime(),
           ...(this.state.forward && { forward: this.state.isForwardButton }),
+          ...(this.state.done && { done: true }),
         })
       );
       parent.postMessage(
@@ -583,11 +589,13 @@ class Board extends React.Component<BoardProps, BoardState> {
           temporal_slices: JSON.parse(this.state.boxes),
           timestamp: new Date().getTime(),
           ...(this.state.forward && { forward: this.state.isForwardButton }),
+          ...(this.state.done && { done: true }),
         }),
         "*"
       );
       this.setState({
         sendResponse: true,
+        done: false, 
       });
     });
   };

@@ -176,6 +176,7 @@ export default function Goals({ ...props }) {
         temporal_slices: [],
         timestamp: startTime,
         ...(forward && { forward: isForwardButton }),
+        done: true,
       }),
       "*"
     );

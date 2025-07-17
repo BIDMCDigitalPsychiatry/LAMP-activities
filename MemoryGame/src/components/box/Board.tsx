@@ -675,7 +675,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
 
   // Call the API to pass game result
-  sendGameResult = (status?: boolean) => {
+  sendGameResult = (status?: boolean, isNavigationBtn?:boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     const states = [];
     if (this.state.states !== null) {
@@ -724,6 +724,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           "temporal_slices": JSON.parse(this.state.states),
           "is_favorite": this.state.isFavoriteActive,
           ...(this.state.forward && { forward: this.state.isForwardButton }),
+          ...(!isNavigationBtn && { done: true }),
         };
 
         parent.postMessage(JSON.stringify(data), "*");
@@ -1031,13 +1032,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true,true);
   };
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true,true);
   };
 
   // To set the game board table size based on screen resolution

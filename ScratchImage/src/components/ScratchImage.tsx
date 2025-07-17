@@ -339,11 +339,11 @@ export default function ScratchImage({ ...props }) {
 
   useEffect(() => {
     if (complete) {
-      handleComplete(false);
+      handleComplete(false, false);
     }
   }, [completeTrigger]);
 
-  const handleComplete = (isBack:boolean) =>{
+  const handleComplete = (isBack:boolean, isNavigationBtn?:boolean) =>{
 const route = { type: "manual_exit", value: complete ?? false };
       const item = [];
       if (routes !== null) {
@@ -361,6 +361,7 @@ const route = { type: "manual_exit", value: complete ?? false };
               temporal_slices: item,
               static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
+              ...(!isNavigationBtn && { done: true}),
             })
           : null,
         "*"
@@ -387,7 +388,7 @@ const route = { type: "manual_exit", value: complete ?? false };
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
             <IconButton
-              onClick={() => handleComplete(true)}
+              onClick={() => handleComplete(true,true)}
               color="default"
               aria-label="Menu"
             >
@@ -416,7 +417,7 @@ const route = { type: "manual_exit", value: complete ?? false };
           </Typography>
           {hasForward && (
             <IconButton
-              onClick={()=>handleComplete(false)}
+              onClick={()=>handleComplete(false, true)}
               color="default"
               aria-label="Menu"
             >

@@ -137,6 +137,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
       })),
       timestamp: new Date().getTime(),
       ...(this.state.forward && { forward: true }),
+      done:true,
     };
     parent.postMessage(JSON.stringify(submissionPayload), "*");
   };

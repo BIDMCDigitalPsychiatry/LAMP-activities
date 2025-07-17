@@ -90,6 +90,7 @@ const Layout = ({ ...props }: any) => {
           temporal_slices: JSON.parse(JSON.stringify(routes)),
           static_data: { is_favorite: isFavoriteActive },
           ...(hasForward && { forward: true }),
+          done:true
         }),
         "*"
       );

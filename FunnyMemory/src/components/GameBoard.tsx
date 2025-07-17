@@ -78,7 +78,10 @@ const GameBoard = ({ ...props }: any) => {
     if (props.clickBack === true) {
       clickBack();
     }
-  }, [props.clickBack]);
+    if (props.isForwardButton === true) {
+      handleForwardClick();
+    }
+  }, [props.clickBack, props.isForwardButton]);
 
   const clickBack = () => {
     const route = { type: "manual_exit", value: true };
@@ -113,6 +116,45 @@ const GameBoard = ({ ...props }: any) => {
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         ...(props?.forward && { forward: false }),
+      }),
+      "*"
+    );
+    resetStates();
+  };
+
+  const handleForwardClick = () => {
+    const route = { type: "manual_exit", value: true };
+    routes.push(route);
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - startTime.current,
+        static_data: Object.assign(staticdata ?? {}, {
+          image_exposure_time: imageExposureTime,
+          image_set_shown: getMonthIndex(),
+          learning_trials: numberOfTrials,
+          delay_time: delayBeforeRecall,
+          timeTakenForTrial: isTimestamp(timeTakenForTrial)
+            ? 0
+            : timeTakenForTrial,
+          timeTakenForRecall: isTimestamp(timeTakenForRecall)
+            ? 0
+            : timeTakenForRecall,
+          timeForRecognition1: isTimestamp(timeForRecognition1)
+            ? 0
+            : timeForRecognition1,
+          timeForRecognition2: isTimestamp(timeForRecognition2Ref.current)
+            ? 0
+            : timeForRecognition2Ref.current,
+          number_of_correct_pairs_recalled: pairsIdentified,
+          number_of_correct_items_recalled: itemsIdentified,
+          number_of_correct_recognized: itemRecognized,
+          number_of_correct_force_choice: correctChoice,
+          total_number_of_pairings_listed: currentIndex + 1,
+          is_favorite: props?.isFavoriteActive,
+        }),
+        temporal_slices: JSON.parse(JSON.stringify(routes)),
+        ...(props?.forward && { forward: true }),
       }),
       "*"
     );
@@ -341,6 +383,7 @@ const GameBoard = ({ ...props }: any) => {
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
         ...(props?.forward && { forward: props?.isForwardButton }),
+        done: true,
       }),
       "*"
     );

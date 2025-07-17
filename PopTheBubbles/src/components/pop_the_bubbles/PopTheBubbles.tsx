@@ -313,6 +313,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
             temporal_slices: temporalSlices,
             timestamp: new Date().getTime(),
             ...(this.state.hasForward && { forward: true }),
+            done:true,
           }),
           "*"
         );

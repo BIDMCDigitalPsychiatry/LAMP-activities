@@ -327,6 +327,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             temporal_slices: JSON.parse(this.state.boxes),
             timestamp: new Date().getTime(),
             ...(this.state.forward && { forward: this.state.isForwardButton }),
+            ...(!status && { done: true }),
           }),
           "*"
         );

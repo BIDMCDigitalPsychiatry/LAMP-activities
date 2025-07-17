@@ -114,6 +114,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
             is_favorite: this?.state?.isFavoriteActive,
           },
           ...(this.state.forward && { forward: this.state.forward }),
+          done: true,
           temporal_slices: [],
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - this.state.time,

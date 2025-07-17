@@ -309,7 +309,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
     }
   };
 
-  const saveScore = (status?: boolean, backButton?: boolean) => {
+  const saveScore = (status?: boolean, backButton?: boolean,isnavigationBtn?:boolean) => {
     const timeTakenMinutes = (timeLimit - timeLeft) / 60;
     const correctResponsesPerMinute = Math.round(score / timeTakenMinutes);
     const route = { type: "manual_exit", value: status ?? false };
@@ -351,13 +351,31 @@ export default function SymbolDigitSubstitution({ ...props }) {
           is_favorite: isFavoriteActive,
         },
         ...(isForward && { forward: !backButton }),
+        ...(!isnavigationBtn && { done: true }),
         temporal_slices: item,
       }),
       "*"
     );
+    console.log("done",{
+        timestamp: time,
+        static_data: {
+          score: correctResponsesPerMinute,
+          number_of_symbols: displayedSymbol?.length,
+          number_of_correct_responses: trueCount,
+          number_of_incorrect_responses: falseCount,
+          avg_correct_response_time: Math.round(trueDurationSum / data.length),
+          avg_incorrect_response_time: Math.round(
+            falseDurationSum / data.length
+          ),
+          is_favorite: isFavoriteActive,
+        },
+        ...(isForward && { forward: !backButton }),
+        ...(!isnavigationBtn && { done: true }),
+        temporal_slices: item,
+      })
   };
-  const clickBack = (backButton) => {
-    saveScore(true, backButton);
+  const clickBack = (backButton,isnavigationBtn) => {
+    saveScore(true, backButton,isnavigationBtn);
   };
   const handleClick = (data: any) => {
     setInputText(data);

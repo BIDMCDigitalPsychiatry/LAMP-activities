@@ -126,7 +126,6 @@ export default function Instructions({ ...props }) {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
   const handleForwardClick = () => {
-    setIsForwardButton(true);
     parent.postMessage(
       JSON.stringify({
         static_data: {
@@ -178,7 +177,7 @@ export default function Instructions({ ...props }) {
             <div className="refresh" />
           </IconButton>
           {forward && (
-            <IconButton onClick={handleForwardClick}>
+            <IconButton onClick={() => setIsForwardButton(true)}>
               <Icon>arrow_forward</Icon>
             </IconButton>
           )}

@@ -170,7 +170,7 @@ export default function HopeBox({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-  const [forward] = useState(props?.data?.forward ?? true);
+  const [forward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
 
   const onDrop = (picture) => {
@@ -225,6 +225,7 @@ export default function HopeBox({ ...props }) {
         completed: true,
         static_data: { is_favorite: isFavoriteActive },
         ...(forward && { forward: isForwardButton }),
+        done: true,
       }),
       "*"
     );
@@ -236,10 +237,20 @@ export default function HopeBox({ ...props }) {
     setIsForwardButton(true);
     parent.postMessage(
       JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
         forward: true,
+      }),
+      "*"
+    );
+  };
+  const handleBackClick = () => {
+    setIsForwardButton(false);
+    parent.postMessage(
+      JSON.stringify({
+        completed: true,
+        static_data: { is_favorite: isFavoriteActive },
+        forward: false,
       }),
       "*"
     );
@@ -251,10 +262,7 @@ export default function HopeBox({ ...props }) {
         <Toolbar className={classes.toolbardashboard}>
           <IconButton
             color="default"
-            onClick={() => {
-              onComplete();
-              setIsForwardButton(false);
-            }}
+            onClick={handleBackClick}
             aria-label="Menu"
           >
             <Icon>arrow_back</Icon>

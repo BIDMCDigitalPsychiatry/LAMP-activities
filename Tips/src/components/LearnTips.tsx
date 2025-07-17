@@ -230,6 +230,7 @@ export default function LearnTips({ ...props }) {
           is_favorite: isFavoriteActive,
         },
         ...(isForward && { forward: isForward }),
+        done:true,
         temporal_slices: [],
       }),
       "*"

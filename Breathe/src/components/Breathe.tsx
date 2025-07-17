@@ -310,6 +310,7 @@ export default function Breathe({ ...props }) {
             },
             temporal_slices: [],
             ...(forward && { forward: isForwardButton }),
+            
           })
         : JSON.stringify({
             timestamp: time,
@@ -319,6 +320,7 @@ export default function Breathe({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             ...(forward && { forward: isForwardButton }),
+            ...(!statusVal && { done: true })
           }),
       "*"
     );

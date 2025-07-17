@@ -340,6 +340,7 @@ class DotTouch extends React.Component<any, DotState> {
             temporal_slices: JSON.parse(this.state.route),
             timestamp: new Date().getTime(),
             ...(this.state.forward && { forward: this.state.isForwardButton }),
+            ...(!status && { done: true }),
           }),
           "*"
         );

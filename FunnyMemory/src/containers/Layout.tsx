@@ -64,7 +64,7 @@ const Layout = ({ ...props }: any) => {
       </nav>
       {forward && (
         <nav className="forward-link">
-          <FontAwesomeIcon icon={faArrowRight} onClick={handleForwardClick} />
+          <FontAwesomeIcon icon={faArrowRight}   onClick={() => setIsForwardButton(true)}/>
         </nav>
       )}
       <div className="heading">

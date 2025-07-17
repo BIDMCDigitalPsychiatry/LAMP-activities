@@ -477,8 +477,8 @@ export default function Board({ ...props }) {
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
-
         ...(forward && { forward: isForwardButton }),
+          ...(!status && { done: true })
       }),
       "*"
     );

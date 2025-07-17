@@ -39,7 +39,10 @@ const GameBoard = ({ ...props }: any) => {
     if (props.clickBack === true) {
       clickBack();
     }
-  }, [props.clickBack]);
+    if (props.isForwardButton === true) {
+      handleForwardClick();
+    }
+  }, [props.clickBack, props.isForwardButton]);
 
   const clickBack = () => {
     const maxFragmentation = getMaxValue(routes, "level");
@@ -62,7 +65,27 @@ const GameBoard = ({ ...props }: any) => {
     );
     resetStates();
   };
-
+  const handleForwardClick = () => {
+    const maxFragmentation = getMaxValue(routes, "level");
+    const sequence = getSequence(routes);
+    const route = { type: "manual_exit", value: true };
+    routes.push(route);
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - startTime,
+        static_data: Object.assign({
+          best_correct_fragmentation: maxFragmentation + "%",
+          sequence: sequence,
+          is_favorite: props?.isFavoriteActive,
+        }),
+        temporal_slices: JSON.parse(JSON.stringify(routes)),
+        ...(props?.forward && { forward: true }),
+      }),
+      "*"
+    );
+    resetStates();
+  };
   useEffect(() => {
     if (gameStarted && canvasRef.current) {
       generateNewLetter();
@@ -88,6 +111,7 @@ const GameBoard = ({ ...props }: any) => {
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
         ...(props?.forward && { forward: props?.isForwardButton }),
+        done: true,
       }),
       "*"
     );

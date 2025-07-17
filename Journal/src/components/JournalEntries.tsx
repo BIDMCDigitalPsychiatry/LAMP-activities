@@ -164,7 +164,7 @@ export default function JournalEntries({ ...props }) {
   const [isFavoriteActive, setIsFavoriteActive] = useState(
     props?.data?.is_favorite ?? false
   );
-  const [forward] = useState(props?.data?.forward ?? false);
+  const [forward] = useState(props?.data?.forward ?? true);
   const [isForwardButton, setIsForwardButton] = useState(false);
   const { t } = useTranslation();
   const CHARACTER_LIMIT = 800;
@@ -198,7 +198,6 @@ export default function JournalEntries({ ...props }) {
   }, []);
 
   const saveJournal = (completed?: boolean) => {
-    debugger;
     setLoading(true);
     !!completed
       ? parent.postMessage(
@@ -212,6 +211,7 @@ export default function JournalEntries({ ...props }) {
             },
             temporal_slices: [],
             ...(forward && { forward: isForwardButton }),
+            done: true,
           }),
           "*"
         )
@@ -220,10 +220,11 @@ export default function JournalEntries({ ...props }) {
             static_data: {
               is_favorite: isFavoriteActive,
             },
-            ...(forward && { forward: false }),
+            ...(forward && { forward: isForwardButton }),
           }),
           "*"
         );
+
     setLoading(false);
   };
 
@@ -283,18 +284,6 @@ export default function JournalEntries({ ...props }) {
   const handleFavoriteClick = () => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
-  const handleForwardClick = () => {
-    setIsForwardButton(true);
-    parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
-        forward: true,
-      }),
-      "*"
-    );
-  };
 
   return (
     <div className={classes.root}>
@@ -316,7 +305,10 @@ export default function JournalEntries({ ...props }) {
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
             <IconButton
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setOpen(true);
+                setIsForwardButton(false);
+              }}
               color="default"
               aria-label="Menu"
             >
@@ -343,7 +335,12 @@ export default function JournalEntries({ ...props }) {
             </Tooltip>{" "}
           </Typography>
           {forward && (
-            <IconButton onClick={handleForwardClick}>
+            <IconButton
+              onClick={() => {
+                setOpen(true);
+                setIsForwardButton(true);
+              }}
+            >
               <Icon>arrow_forward</Icon>
             </IconButton>
           )}

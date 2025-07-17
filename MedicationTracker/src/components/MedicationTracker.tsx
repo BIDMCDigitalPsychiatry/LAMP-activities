@@ -173,6 +173,7 @@ export default function MedicationTracker({ ...props }) {
         temporal_slices: [],
         timestamp: startTime,
         ...(hasForward && { forward: true }),
+        done:true,
       }),
       "*"
     );

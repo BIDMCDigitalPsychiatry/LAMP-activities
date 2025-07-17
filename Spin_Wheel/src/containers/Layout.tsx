@@ -139,12 +139,12 @@ const Layout = ({ ...props }) => {
   };
   useEffect(() => {
     if (complete) {
-      handleComplete(false);
+      handleComplete(false,false);
     }
     setOpen(true);
   }, [complete]);
 
-  const handleComplete = (isBack: boolean | undefined) => {
+  const handleComplete = (isBack: boolean | undefined,isNavigationBtn?:boolean) => {
     const route = { type: "manual_exit", value: true };
     routes.push(route);
     setTimeout(() => {
@@ -156,6 +156,7 @@ const Layout = ({ ...props }) => {
               temporal_slices: JSON.parse(JSON.stringify(routes)),
               static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
+              ...(!isNavigationBtn && { done: true }),
             })
           : null,
         "*"
@@ -177,6 +178,7 @@ const Layout = ({ ...props }) => {
                 temporal_slices: JSON.parse(JSON.stringify(routes)),
                 static_data: { is_favorite: isFavoriteActive },
                 ...(hasForward && { forward: hasForward! }),
+                done:true,
               })
             : null,
           "*"
@@ -231,7 +233,7 @@ const Layout = ({ ...props }) => {
       >
         <Toolbar className={classes.toolbardashboard}>
           <IconButton
-            onClick={() => handleComplete(true)}
+            onClick={() => handleComplete(true,true)}
             color="default"
             aria-label="Menu"
           >
@@ -259,7 +261,7 @@ const Layout = ({ ...props }) => {
           </Typography>
           {hasForward && (
             <IconButton
-              onClick={() => handleComplete(false)}
+              onClick={() => handleComplete(false,true)}
               color="default"
               aria-label="Menu"
             >

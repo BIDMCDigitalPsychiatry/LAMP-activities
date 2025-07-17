@@ -163,6 +163,7 @@ function HomeView(props) {
       finalReport.static_data = {
         is_favorite: isFavoriteActive,
       };
+      finalReport.done = true;
       if (forward) {
         finalReport.forward = isForwardButton;
       }

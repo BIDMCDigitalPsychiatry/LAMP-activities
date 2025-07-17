@@ -363,6 +363,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - this.state.time,
             ...(this.state.forward && { forward: this.state.isForwardButton }),
+            ...(!status && { done: true })
           }),
           "*"
         );
