@@ -463,10 +463,10 @@ class Jewels extends React.Component<any, AppState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendDataToDashboard(2, true);
+    this.sendDataToDashboard(2, true, true);
   };
 
-  sendDataToDashboard = (pointVal: number, status?: boolean) => {
+  sendDataToDashboard = (pointVal: number, status?: boolean, isback?:boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     let routeData: any[] = [];
 
@@ -497,6 +497,7 @@ class Jewels extends React.Component<any, AppState> {
           duration: new Date().getTime() - this.state.time,
           ...(this.state.forward && { forward: this.state.isForwardButton }),
           ...(!status && { done: true }),
+          ...(isback && { clickBack: true }),
         }),
         "*"
       );
@@ -531,7 +532,7 @@ class Jewels extends React.Component<any, AppState> {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendDataToDashboard(2, true);
+    this.sendDataToDashboard(2, true, false);
   };
 
   render() {

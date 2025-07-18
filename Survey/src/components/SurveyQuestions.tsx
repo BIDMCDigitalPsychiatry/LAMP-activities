@@ -624,7 +624,6 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
   const [selectedValue, setSelectedValue] = useState(value);
   const classes = useStyles();
   const { t } = useTranslation();
-  console.log("value inside radio component", value);
 
   return (
     <FormControl component="fieldset" className={classes.radioGroup}>
@@ -767,17 +766,17 @@ function TimeSelection({ onChange, options, value, feedback, question, ...props 
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
@@ -815,17 +814,17 @@ function TimeSelection({ onChange, options, value, feedback, question, ...props 
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   };
   const handleHoursClose = () => {
@@ -841,10 +840,10 @@ function TimeSelection({ onChange, options, value, feedback, question, ...props 
 
   const hourvalues =
     (!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) &&
-      !!options[0] &&
-      !!options[0]?.value &&
-      options[0]?.value === "standard")
+      (Array.isArray(options) &&
+        !!options[0] &&
+        !!options[0]?.value &&
+        options[0]?.value === "standard")
       ? range(1, 13)
       : range(0, 24);
   const minutevalues = ["00", "15", "30", "45"];
@@ -1041,11 +1040,13 @@ function TextSection({
           />
         </FormControl>
       </Box>
-      {text?.trim() && question && feedback && (
+      {feedback && text?.trim() && question && (
         <Box className={classes.questionhead}>
-          <Typography variant="caption">
-            <ReactMarkdown children={t(`${feedback}`)} />
-          </Typography>
+          <Tooltip title={t(`${feedback}`)}>
+            <Typography variant="caption">
+              <ReactMarkdown children={t(`${feedback}`).slice(0, 70) + '...'} />
+            </Typography>
+          </Tooltip>
         </Box>
       )}
     </>
@@ -1231,14 +1232,14 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
         valueLabelDisplay="auto"
         step={
           parseInt(options[0].value, 10) < 0 &&
-          parseInt(options[1].value ?? 10, 0) < 0
+            parseInt(options[1].value ?? 10, 0) < 0
             ? Math.abs(parseInt(options[0].value, 10)) +
-              parseInt(options[1]?.value ?? 0, 10)
+            parseInt(options[1]?.value ?? 0, 10)
             : parseInt(options[0].value, 10) < 0 &&
               parseInt(options[1].value ?? 10, 0) > 0
-            ? Math.abs(parseInt(options[0].value, 10)) -
+              ? Math.abs(parseInt(options[0].value, 10)) -
               parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[1]?.value ?? 0, 10) -
+              : parseInt(options[1]?.value ?? 0, 10) -
               parseInt(options[0].value, 10)
         }
         marks={options}
@@ -1275,7 +1276,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
             <ReactMarkdown
               children={
                 !!options[0].description &&
-                options[0].description.trim().length === 0
+                  options[0].description.trim().length === 0
                   ? options[0].value
                   : options[0].description
               }
@@ -1304,8 +1305,8 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
               <ReactMarkdown
                 children={
                   !!options[Math.ceil(options.length / 2) - 1].description &&
-                  options[Math.ceil(options.length / 2) - 1].description.trim()
-                    .length === 0
+                    options[Math.ceil(options.length / 2) - 1].description.trim()
+                      .length === 0
                     ? options[Math.ceil(options.length / 2) - 1].value
                     : options[Math.ceil(options.length / 2) - 1].description
                 }
@@ -1334,7 +1335,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
             <ReactMarkdown
               children={
                 !!options[options.length - 1].description &&
-                options[options.length - 1].description.trim().length === 0
+                  options[options.length - 1].description.trim().length === 0
                   ? options[options.length - 1].value
                   : options[options.length - 1].description
               }
@@ -1557,8 +1558,8 @@ function Matrix({
       parseInt(a.value, 10) > parseInt(b.value, 10)
         ? 1
         : parseInt(a.value, 10) < parseInt(b.value, 10)
-        ? -1
-        : 0
+          ? -1
+          : 0
     );
   };
 
@@ -1676,7 +1677,7 @@ function Matrix({
                                   <ReactMarkdown
                                     children={
                                       (x.description || "").length > 0 &&
-                                      (x.value || "").length > 0
+                                        (x.value || "").length > 0
                                         ? `(${t(x.value?.toString())})`
                                         : `${t(x.value?.toString())}`
                                     }
@@ -1727,10 +1728,10 @@ function Matrix({
                             />
                           </TableCell>
                           {Array.isArray(x.options) &&
-                          (x.options || []).length > 0 ? (
+                            (x.options || []).length > 0 ? (
                             x.type === "list" ||
-                            x.type === "boolean" ||
-                            x.type === "likert" ? (
+                              x.type === "boolean" ||
+                              x.type === "likert" ? (
                               (x.options || []).map((op, k) => (
                                 <TableCell className={classes.textCenter}>
                                   <FormControlLabel
@@ -1743,7 +1744,7 @@ function Matrix({
                                         disableRipple
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         color="default"
                                         size="medium"
@@ -1798,7 +1799,7 @@ function Matrix({
                                         className={classes.mradioroot}
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         onClick={() => {
                                           let values = csvParse(
@@ -2027,7 +2028,7 @@ function Matrix({
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
                                       ? responses?.current[idx + qindex]
-                                          ?.feedback
+                                        ?.feedback
                                       : undefined
                                   }
                                 />
@@ -2055,7 +2056,7 @@ function Matrix({
                                     value={
                                       !!responses?.current[idx + qindex]?.value
                                         ? responses?.current[idx + qindex]
-                                            ?.value
+                                          ?.value
                                         : undefined
                                     }
                                     question={question.text}
@@ -2138,7 +2139,6 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
                   : selection.filter((y) => y !== `${x.value}`);
                 const target = csvStringify(targetValue);
                 setSelectedValue(target);
-                console.log("target", target);
                 onChange(target);
               }}
             />
@@ -2300,8 +2300,8 @@ function Question({
         parseInt(a.value, 10) > parseInt(b.value, 10)
           ? 1
           : parseInt(a.value, 10) < parseInt(b.value, 10)
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
       component = (
         <Rating
@@ -2371,13 +2371,11 @@ function Question({
       );
       break;
     case "multiselect":
-      console.log("value inside case", value);
       component = (
         <MultiSelectResponse
           options={options}
           onChange={onChange}
           value={!!value ? value.value : undefined}
-          // optionFeedback={optionFeedback}
         />
       );
       break;
@@ -2420,19 +2418,17 @@ function Question({
             children={
               type === "slider"
                 ? t(
-                    `${options[0].value} being ${
-                      !!options[0].description &&
-                      options[0].description.trim().length > 0
-                        ? options[0].description
-                        : options[0].value
-                    }, 
-                  ${options[options.length - 1].value} being ${
-                      !!options[options.length - 1].description &&
-                      options[options.length - 1].description.trim().length > 0
-                        ? options[options.length - 1].description
-                        : options[options.length - 1].value
-                    }`
-                  )
+                  `${options[0].value} being ${!!options[0].description &&
+                    options[0].description.trim().length > 0
+                    ? options[0].description
+                    : options[0].value
+                  }, 
+                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description &&
+                    options[options.length - 1].description.trim().length > 0
+                    ? options[options.length - 1].description
+                    : options[options.length - 1].value
+                  }`
+                )
                 : !!desc && t(`${desc}`)
             }
             skipHtml={false}
@@ -2853,12 +2849,12 @@ function Section({
             (element.required &&
               responses?.current[actualIndex + i]?.value !== null &&
               typeof responses?.current[actualIndex + i]?.value !==
-                "undefined" &&
+              "undefined" &&
               (typeof responses?.current[actualIndex + i]?.value !== "string" ||
                 (typeof responses?.current[actualIndex + i]?.value ===
                   "string" &&
                   responses?.current[actualIndex + i]?.value?.trim().length !==
-                    0)))
+                  0)))
           )
         ) {
           enqueueSnackbar(t("Please enter your response."), {
@@ -2920,6 +2916,7 @@ function Section({
   const handleBackwardClick = () => {
     parent.postMessage(
       JSON.stringify({
+        clickBack : true,
         static_data: {
           is_favorite: isFavoriteActive,
         },
@@ -2963,9 +2960,8 @@ function Section({
               }
             >
               <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
+                className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""
+                  }`}
                 onClick={handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
@@ -3088,7 +3084,7 @@ export default function SurveyQuestions({ ...props }) {
         static_data: { totalScore: totalScore, is_favorite: isFavoriteActive },
         timestamp: startTime,
         ...(isForward && { forward: true }),
-        done:true,
+        done: true,
       };
       onResponse(result);
       setIsSubmit(!isSubmit);
@@ -3109,12 +3105,12 @@ export default function SurveyQuestions({ ...props }) {
     parent.postMessage(
       response === null
         ? JSON.stringify({
-            static_data: {
-              is_favorite: isFavoriteActive,
-            },
-            ...(isForward && { forward: true }),
-            done:true,
-          })
+          static_data: {
+            is_favorite: isFavoriteActive,
+          },
+          ...(isForward && { forward: true }),
+          done: true,
+        })
         : JSON.stringify(response),
       "*"
     );

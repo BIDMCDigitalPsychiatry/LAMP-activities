@@ -60,6 +60,7 @@ const GameBoard = ({ ...props }: any) => {
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         ...(props?.forward && { forward: false }),
+        clickBack:true,
       }),
       "*"
     );

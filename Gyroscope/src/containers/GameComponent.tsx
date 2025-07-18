@@ -462,6 +462,7 @@ export function GameComponent({ ...props }) {
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         static_data: { is_favorite: props?.isFavoriteActive },
         ...(props?.forward && { forward: false }),
+        clickBack:true,
       }),
       "*"
     );

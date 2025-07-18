@@ -310,7 +310,7 @@ export default function Breathe({ ...props }) {
             },
             temporal_slices: [],
             ...(forward && { forward: isForwardButton }),
-            
+            done: true,
           })
         : JSON.stringify({
             timestamp: time,
@@ -320,7 +320,6 @@ export default function Breathe({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             ...(forward && { forward: isForwardButton }),
-            ...(!statusVal && { done: true })
           }),
       "*"
     );
@@ -331,10 +330,28 @@ export default function Breathe({ ...props }) {
   const handleForwardClick = () => {
     parent.postMessage(
       JSON.stringify({
+        timestamp: time,
+        duration: new Date().getTime() - time,
+        temporal_slices: [],
         static_data: {
           is_favorite: isFavoriteActive,
         },
         forward: true,
+      }),
+      "*"
+    );
+  };
+  const handleBackClick = () => {
+    parent.postMessage(
+      JSON.stringify({
+        timestamp: time,
+        duration: new Date().getTime() - time,
+        temporal_slices: [],
+        static_data: {
+          is_favorite: isFavoriteActive,
+        },
+        forward: false,
+        clickBack: true,
       }),
       "*"
     );
@@ -354,7 +371,7 @@ export default function Breathe({ ...props }) {
               }
               setAudio(null);
               setIsForwardButton(false);
-              onBreatheComplete(false);
+              handleBackClick();
             }}
             color="default"
             aria-label="Menu"

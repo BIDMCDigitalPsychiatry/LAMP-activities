@@ -240,6 +240,7 @@ function HomeView(props) {
                     completed: true,
                     forward: false,
                     static_data: { is_favorite: isFavoriteActive },
+                    clickBack : true 
                   }),
                   "*"
                 );

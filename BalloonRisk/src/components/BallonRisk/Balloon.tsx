@@ -331,7 +331,7 @@ class Balloons extends React.Component<AppProps, AppState> {
     ];
   };
 
-  sendGameData = async (status?: boolean) => {
+  sendGameData = async (status?: boolean, isBack?:boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     this.setState(
       (prevState) => ({
@@ -363,7 +363,8 @@ class Balloons extends React.Component<AppProps, AppState> {
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - this.state.time,
             ...(this.state.forward && { forward: this.state.isForwardButton }),
-            ...(!status && { done: true })
+            ...(!status && { done: true }),
+            ...(isBack && { clickBack : true }),
           }),
           "*"
         );
@@ -460,14 +461,14 @@ class Balloons extends React.Component<AppProps, AppState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendGameData(true);
+    this.sendGameData(true, true);
   };
 
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendGameData(true);
+    this.sendGameData(true, false);
   };
   handleFavoriteClick = () => {
     this.setState((prevState) => ({

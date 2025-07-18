@@ -362,6 +362,7 @@ const route = { type: "manual_exit", value: complete ?? false };
               static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
               ...(!isNavigationBtn && { done: true}),
+              ...(isBack && { clickBack : true}),
             })
           : null,
         "*"

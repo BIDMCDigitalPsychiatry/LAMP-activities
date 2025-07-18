@@ -280,7 +280,6 @@ export default function Board({ ...props }) {
     props?.data?.is_favorite ?? false
   );
   const [forward] = useState(props?.data?.forward ?? true);
-  const [isForwardButton, setIsForwardButton] = useState(false);
   useEffect(() => {
     const configuration = props.data?.configuration ?? null;
     const langugae = !!configuration
@@ -386,7 +385,7 @@ export default function Board({ ...props }) {
   };
 
   // Call the API to pass game result
-  const sendGameResult = (status?: boolean) => {
+  const sendGameResult = (status?: boolean, isBack?: Boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     const boxes: any[] = [];
     if (routes !== null) {
@@ -477,8 +476,9 @@ export default function Board({ ...props }) {
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
-        ...(forward && { forward: isForwardButton }),
-          ...(!status && { done: true })
+        ...(forward && { forward: !isBack }),
+        ...(!status && { done: true }),
+        ...(isBack && { clickBack: true }),
       }),
       "*"
     );
@@ -521,16 +521,7 @@ export default function Board({ ...props }) {
   };
 
   const handleForwardClick = () => {
-    setIsForwardButton(true);
-    parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
-        forward: true,
-      }),
-      "*"
-    );
+    sendGameResult(true, false);
   };
 
   return (
@@ -597,8 +588,8 @@ export default function Board({ ...props }) {
                   <Grid container alignItems="center">
                     <IconButton
                       onClick={() => {
-                        setIsForwardButton(false);
-                        sendGameResult(true);
+                      
+                        sendGameResult(true, true);
                       }}
                       color="default"
                       aria-label="Menu"

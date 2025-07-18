@@ -191,6 +191,7 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
         clickBack: true,
         static_data: { is_favorite: this.state.isFavoriteActive },
         ...(this.state.forward && { forward: !isBack }),
+        ...(isBack && { clickBack : true }),
       }),
       "*"
     );

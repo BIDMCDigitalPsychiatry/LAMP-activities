@@ -246,8 +246,10 @@ export default function LearnTips({ ...props }) {
     /*eslint no-restricted-globals: ["error", "event"]*/
     parent.postMessage(
       JSON.stringify({
+        clickBack : true,
         completed: true,
         static_data: { is_favorite: isFavoriteActive },
+        ...(isForward && { forward: false }),
       }),
       "*"
     );
@@ -266,6 +268,7 @@ export default function LearnTips({ ...props }) {
   const handleBackwardClick = () => {
     parent.postMessage(
       JSON.stringify({
+        clickBack : true,
         completed: true,
         static_data: { is_favorite: isFavoriteActive },
         ...(isForward && { forward: false }),

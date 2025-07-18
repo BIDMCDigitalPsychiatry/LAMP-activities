@@ -157,6 +157,7 @@ const Layout = ({ ...props }) => {
               static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
               ...(!isNavigationBtn && { done: true }),
+              ...(isBack && { clickBack : true }),
             })
           : null,
         "*"

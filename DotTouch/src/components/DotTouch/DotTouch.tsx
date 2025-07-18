@@ -298,7 +298,7 @@ class DotTouch extends React.Component<any, DotState> {
   };
 
   // Call the API to pass game result
-  sendGameResult = (status?: boolean) => {
+  sendGameResult = (status?: boolean, isBack?:Boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
     // if (this.state.route !== null) {
@@ -341,6 +341,7 @@ class DotTouch extends React.Component<any, DotState> {
             timestamp: new Date().getTime(),
             ...(this.state.forward && { forward: this.state.isForwardButton }),
             ...(!status && { done: true }),
+            ...(isBack && { clickBack : true }),
           }),
           "*"
         );
@@ -394,13 +395,13 @@ class DotTouch extends React.Component<any, DotState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true, true);
   };
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true, false);
   };
 
   // To refresh the game

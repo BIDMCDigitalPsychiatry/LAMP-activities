@@ -352,6 +352,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
         },
         ...(isForward && { forward: !backButton }),
         ...(!isnavigationBtn && { done: true }),
+        ...(backButton && { clickBack : true }),
         temporal_slices: item,
       }),
       "*"

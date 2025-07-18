@@ -203,6 +203,7 @@ export default function MedicationTracker({ ...props }) {
                 onClick={() => {
                   parent.postMessage(
                     JSON.stringify({
+                      clickBack : true,
                       static_data: {
                         is_favorite: isFavoriteActive,
                       },

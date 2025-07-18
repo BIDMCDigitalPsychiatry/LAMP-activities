@@ -81,6 +81,7 @@ interface BoardState {
   forward: boolean;
   isForwardButton: boolean;
   done: boolean;
+  isBack: boolean;
 }
 
 const numbers = [
@@ -164,6 +165,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       forward: props?.forward ?? false,
       isForwardButton: false,
       done: false,
+      isBack: false,
     };
   }
   // Reset game state for each state
@@ -492,6 +494,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState(() => ({
       isForwardButton: false,
       done: false,
+      isBack: true,
     }));
     this.sendGameResult(true);
   };
@@ -590,12 +593,14 @@ class Board extends React.Component<BoardProps, BoardState> {
           timestamp: new Date().getTime(),
           ...(this.state.forward && { forward: this.state.isForwardButton }),
           ...(this.state.done && { done: true }),
+          ...(this.state.isBack && { clickBack : true }),
         }),
         "*"
       );
       this.setState({
         sendResponse: true,
-        done: false, 
+        done: false,
+        isBack:false
       });
     });
   };

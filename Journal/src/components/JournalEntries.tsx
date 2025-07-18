@@ -166,6 +166,7 @@ export default function JournalEntries({ ...props }) {
   );
   const [forward] = useState(props?.data?.forward ?? true);
   const [isForwardButton, setIsForwardButton] = useState(false);
+  const [isBackButton, setIsBackButton] = useState(false);
   const { t } = useTranslation();
   const CHARACTER_LIMIT = 800;
   const handleClickStatus = (statusVal: string) => {
@@ -210,7 +211,7 @@ export default function JournalEntries({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             temporal_slices: [],
-            ...(forward && { forward: isForwardButton }),
+            ...(forward && { forward: true }),
             done: true,
           }),
           "*"
@@ -221,10 +222,11 @@ export default function JournalEntries({ ...props }) {
               is_favorite: isFavoriteActive,
             },
             ...(forward && { forward: isForwardButton }),
+            ...(isBackButton && { clickBack: true }),
           }),
           "*"
         );
-
+        setIsBackButton(false);
     setLoading(false);
   };
 
@@ -306,8 +308,9 @@ export default function JournalEntries({ ...props }) {
           {!noBack && (
             <IconButton
               onClick={() => {
-                setOpen(true);
                 setIsForwardButton(false);
+                setIsBackButton(true);
+                setOpen(true);
               }}
               color="default"
               aria-label="Menu"
@@ -337,8 +340,9 @@ export default function JournalEntries({ ...props }) {
           {forward && (
             <IconButton
               onClick={() => {
-                setOpen(true);
                 setIsForwardButton(true);
+                setIsBackButton(false);
+                setOpen(true);
               }}
             >
               <Icon>arrow_forward</Icon>

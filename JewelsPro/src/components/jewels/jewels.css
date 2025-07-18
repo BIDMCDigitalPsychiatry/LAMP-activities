@@ -121,6 +121,7 @@ nav a {
   display: flex;
   align-items: center;
 }
+
 .home-link {
   background: #f4f4f4;
   width: 40px;
@@ -662,6 +663,12 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 @media only screen and (min-width: 1000px) {
   .modal-content {
     margin-left: 20%;
+  }
+
+}
+@media only screen and (min-width: 768px) {
+    .heading {
+    justify-content: center;
   }
 }
 .level {

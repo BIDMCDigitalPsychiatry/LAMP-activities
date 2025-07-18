@@ -221,6 +221,7 @@ export default function Goals({ ...props }) {
                         is_favorite: isFavoriteActive,
                       },
                       ...(forward && { forward: false }),
+                      clickBack:true,
                     }),
                     "*"
                   );

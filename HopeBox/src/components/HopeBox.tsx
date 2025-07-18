@@ -251,6 +251,7 @@ export default function HopeBox({ ...props }) {
         completed: true,
         static_data: { is_favorite: isFavoriteActive },
         forward: false,
+        clickBack:true,
       }),
       "*"
     );

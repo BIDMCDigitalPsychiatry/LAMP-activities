@@ -292,7 +292,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // Call the API to pass game result
-  sendGameResult = (status?: boolean) => {
+  sendGameResult = (status?: boolean, isBack?:boolean, isNavigationBtn?:boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
     if (this.state.boxes !== null) {
@@ -326,8 +326,10 @@ class Board extends React.Component<BoardProps, BoardState> {
             },
             temporal_slices: JSON.parse(this.state.boxes),
             timestamp: new Date().getTime(),
-            ...(this.state.forward && { forward: this.state.isForwardButton }),
-            ...(!status && { done: true }),
+            ...(this.state.forward && { forward: !isBack }),
+            ...(!isNavigationBtn && { done: true }),
+            ...(isBack && { clickBack: true }),
+
           }),
           "*"
         );
@@ -470,13 +472,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true,true,true);
   };
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendGameResult(true);
+    this.sendGameResult(true,false,true);
   };
 
   handleCloseInstructionModal = () => {
