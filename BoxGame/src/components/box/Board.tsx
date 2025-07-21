@@ -393,7 +393,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       : this.state.boxCount;
     const gameStateVal = this.state.gameState;
     const showWaitVal =
-      statePassed && this.state.failureCount + 1 < 2
+      (statePassed && this.state.failureCount + 1 < 2)
         ? this.state.showWait
         : false;
     const failureCountVal =
@@ -425,7 +425,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         nextButton: false,
         orderNumber: this.props.reverse ? rP.length : -1,
         randomPoints: rP,
-        showWait: showWaitVal,
+        showWait: false,
         successTaps: 0,
         wrongTaps: 0,
       });
