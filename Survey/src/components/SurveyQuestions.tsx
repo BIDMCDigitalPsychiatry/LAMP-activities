@@ -744,7 +744,7 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
   );
 }
 
-function TimeSelection({ onChange, options, value, feedback, question, ...props }) {
+function TimeSelection({ onChange, options, value, question, ...props }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
@@ -986,13 +986,6 @@ function TimeSelection({ onChange, options, value, feedback, question, ...props 
             )}
         </Grid>
       </Box>
-      {value?.trim() && question && feedback && (
-        <Box className={classes.questionhead}>
-          <Typography variant="caption">
-            <ReactMarkdown children={t(`${feedback}`)} />
-          </Typography>
-        </Box>
-      )}
     </>
   );
 }
@@ -1172,7 +1165,6 @@ function RadioRating({ onChange, options, value, mtValue, type, optionFeedback, 
 }
 
 function Rating({ onChange, options, value, optionFeedback, ...props }) {
-
   const classes = useStyles();
   const getText = (val) => {
     let sliderValue = null;
@@ -2239,7 +2231,7 @@ function Question({
   const onChange = (value) => {
     const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
     if (cleanedValue) {
-      const selectedOption = options?.find((opt) => opt.value === cleanedValue);
+      const selectedOption = options?.find((opt) => String(opt.value) === String(cleanedValue));
       if (selectedOption?.feedback_text) {
         setOptionFeedback(selectedOption.feedback_text);
       } else {
@@ -2365,7 +2357,6 @@ function Question({
           onChange={onChange}
           options={options}
           value={!!value ? value.value : undefined}
-          feedback={feedback}
           question={text}
         />
       );
@@ -2916,7 +2907,7 @@ function Section({
   const handleBackwardClick = () => {
     parent.postMessage(
       JSON.stringify({
-        clickBack : true,
+        clickBack: true,
         static_data: {
           is_favorite: isFavoriteActive,
         },
