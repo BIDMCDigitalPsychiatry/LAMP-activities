@@ -39,18 +39,7 @@ const Layout = ({ ...props }: any) => {
     setIsFavoriteActive((prev: boolean) => !prev);
   };
 
-  const handleForwardClick = () => {
-    setIsForwardButton(true);
-    parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
-        forward: true,
-      }),
-      "*"
-    );
-  };
+
   return (
     <div className="main-class">
       <nav className="back-link">
