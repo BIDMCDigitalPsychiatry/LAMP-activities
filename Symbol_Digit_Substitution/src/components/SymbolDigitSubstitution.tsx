@@ -357,23 +357,6 @@ export default function SymbolDigitSubstitution({ ...props }) {
       }),
       "*"
     );
-    console.log("done",{
-        timestamp: time,
-        static_data: {
-          score: correctResponsesPerMinute,
-          number_of_symbols: displayedSymbol?.length,
-          number_of_correct_responses: trueCount,
-          number_of_incorrect_responses: falseCount,
-          avg_correct_response_time: Math.round(trueDurationSum / data.length),
-          avg_incorrect_response_time: Math.round(
-            falseDurationSum / data.length
-          ),
-          is_favorite: isFavoriteActive,
-        },
-        ...(isForward && { forward: !backButton }),
-        ...(!isnavigationBtn && { done: true }),
-        temporal_slices: item,
-      })
   };
   const clickBack = (backButton,isnavigationBtn) => {
     saveScore(true, backButton,isnavigationBtn);

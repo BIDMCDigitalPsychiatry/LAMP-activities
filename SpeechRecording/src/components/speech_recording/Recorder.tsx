@@ -184,7 +184,6 @@ class Recorder extends Component<AppProps, AppState> {
       };
     } else {
       this.setState({ medianotFound: true });
-      console.log("Media Devices will work only with SSL.....");
     }
   }
 

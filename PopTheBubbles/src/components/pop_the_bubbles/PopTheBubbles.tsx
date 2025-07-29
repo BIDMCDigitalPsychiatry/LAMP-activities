@@ -271,7 +271,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     levelVal: number,
     route: any
   ) => {
-    console.log(route);
     this.setState((prevState) => ({
       completed,
       correctGoCount,

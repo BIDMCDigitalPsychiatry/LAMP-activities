@@ -539,7 +539,6 @@ export function GameComponent({ ...props }) {
           type: angle,
           value: null,
         };
-        console.log("route", route);
         setRoutes([...routes, route]);
         if (currentCount + 1 >= 100) {
           sentResult();

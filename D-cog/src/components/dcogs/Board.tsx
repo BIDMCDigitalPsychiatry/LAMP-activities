@@ -560,24 +560,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       } else {
         points = points + 1;
       }
-      console.log(
-        "sendresult",
-        JSON.stringify({
-          duration: new Date().getTime() - this.props.time,
-          static_data: {
-            correct_answers: this.state.stateSuccessTaps,
-            point: points,
-            score: gameScore,
-            total_questions: this.state.questionCount,
-            wrong_answers: this.state.stateWrongTaps,
-            is_favorite: this.state.isFavoriteActive,
-          },
-          temporal_slices: JSON.parse(this.state.boxes),
-          timestamp: new Date().getTime(),
-          ...(this.state.forward && { forward: this.state.isForwardButton }),
-          ...(this.state.done && { done: true }),
-        })
-      );
       parent.postMessage(
         JSON.stringify({
           duration: new Date().getTime() - this.props.time,

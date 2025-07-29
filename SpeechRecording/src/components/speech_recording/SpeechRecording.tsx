@@ -155,7 +155,6 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
   //         duration: qn_duration,
   //       },
   //     ];
-  //     console.log(temporalSlices)
   //     parent.postMessage(
   //       JSON.stringify({
   //         static_data: {

@@ -18,6 +18,7 @@ const eventMethod = window.addEventListener
   : "attachEvent";
 const eventer = window[eventMethod];
 const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+
 eventer(
   messageEvent,
   (e) => {

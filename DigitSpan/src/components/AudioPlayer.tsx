@@ -13,7 +13,6 @@ const AudioPlayer = ({ ...props }) => {
         const unlockAudioContext = () => {
             if (audioContextRef.current?.state === "suspended") {
                 audioContextRef.current.resume().then(() => {
-                    console.log("AudioContext resumed");
                 });
             }
 

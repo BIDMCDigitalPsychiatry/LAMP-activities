@@ -163,7 +163,6 @@ class Recorder extends Component<AppProps, AppState> {
       };
     } else {
       this.setState({ medianotFound: true });
-      console.log("Media Decives will work only with SSL.....");
     }
   }
 

@@ -190,7 +190,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       case 3:
         success =
           this.state.randomPoints.indexOf(i) > -1 &&
-          type === this.state.itemToCheck
+            type === this.state.itemToCheck
             ? true
             : false;
         break;
@@ -292,7 +292,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   // Call the API to pass game result
-  sendGameResult = (status?: boolean, isBack?:boolean, isNavigationBtn?:boolean) => {
+  sendGameResult = (status?: boolean, isBack?: boolean, isNavigationBtn?: boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
     if (this.state.boxes !== null) {
@@ -472,13 +472,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.setState(() => ({
       isForwardButton: false,
     }));
-    this.sendGameResult(true,true,true);
+    this.sendGameResult(true, true, true);
   };
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
     }));
-    this.sendGameResult(true,false,true);
+    this.sendGameResult(true, false, true);
   };
 
   handleCloseInstructionModal = () => {
@@ -546,7 +546,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           case 1:
             enableStatus =
               this.state.enableTap &&
-              this.state.successTaps + this.state.wrongTaps <
+                this.state.successTaps + this.state.wrongTaps <
                 this.state.randomPoints.length
                 ? true
                 : false;
@@ -554,7 +554,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           case 2:
             enableStatus =
               this.state.enableTap &&
-              this.state.successTaps + this.state.wrongTaps <
+                this.state.successTaps + this.state.wrongTaps <
                 this.state.dogCount
                 ? true
                 : false;
@@ -562,7 +562,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           case 3:
             enableStatus =
               this.state.enableTap &&
-              this.state.successTaps + this.state.wrongTaps <
+                this.state.successTaps + this.state.wrongTaps <
                 this.state.catCount
                 ? true
                 : false;
@@ -588,8 +588,8 @@ class Board extends React.Component<BoardProps, BoardState> {
     // Timer to be shown or not
     const timer =
       !this.state.timeout &&
-      !this.state.gameOver &&
-      this.state.gameState > 0 ? (
+        !this.state.gameOver &&
+        this.state.gameState > 0 ? (
         <Timer
           passTimerUpdate={this.passTimerUpdate}
           startTimeInSeconds={this.state.startTimer}
@@ -637,9 +637,8 @@ class Board extends React.Component<BoardProps, BoardState> {
             }
           >
             <Fab
-              className={`headerTitleIcon ${
-                this.state.isFavoriteActive ? "active" : ""
-              }`}
+              className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
+                }`}
               onClick={this.handleFavoriteClick}
             >
               <Icon>star_rounded</Icon>
