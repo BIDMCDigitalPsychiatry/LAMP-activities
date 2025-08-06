@@ -628,6 +628,8 @@ function range(start, stop, step = 1) {
   );
 }
 const CHARACTER_LIMIT = 800;
+const SHORT_CHARACTER_LIMIT = 5;
+
 
 const scrollBox = (offset) => {
   const box = document.getElementById("scrollBox");
@@ -1046,9 +1048,9 @@ const CssTextField = withStyles({
     textAlign: "left",
     background: "#f9f9f9",
   },
-})(InputBase);
+})(TextField);
 
-function ShortTextSection({ onChange, value, feedback, question, ...props }) {
+function ShortTextSection({ onChange, value, charLimit, feedback, question, ...props }) {
   const classes = useStyles();
   const [text, setText] = useState(value);
   const { t } = useTranslation();
@@ -1061,6 +1063,10 @@ function ShortTextSection({ onChange, value, feedback, question, ...props }) {
             value={text}
             multiline
             rows={4}
+            helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
+            inputProps={{
+              maxLength: charLimit,
+            }}
             onChange={(e) => {
               setText(e.target.value);
               onChange(e.target.value);
@@ -1800,6 +1806,7 @@ function Matrix({
                                     );
                                     onResponse(data);
                                   }}
+                                  charLimit={SHORT_CHARACTER_LIMIT}
                                   value={
                                     !!responses?.current[idx + qindex]?.value
                                       ? responses?.current[idx + qindex]?.value
@@ -2060,7 +2067,7 @@ function Question({
   useEffect(() => {
     const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
     if (cleanedValue) {
-      const selectedOption = options?.find((opt) => opt.value === value.value);
+      const selectedOption = options?.find((opt) => opt.value === value);
       if (selectedOption?.feedback_text) {
         setOptionFeedback(selectedOption.feedback_text);
       } else {
@@ -2167,6 +2174,7 @@ function Question({
           value={!!value ? value.value : undefined}
           feedback={feedback}
           question={text}
+          charLimit={SHORT_CHARACTER_LIMIT}
         />
       );
       break;
@@ -2276,6 +2284,21 @@ function Questions({
   const classes = useStyles();
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
   const { t } = useTranslation();
+  const valStr = localStorage.getItem("activity-survey-" + (activityId ?? ""));
+  let parsedVal: any[] = [];
+
+  try {
+    parsedVal = JSON.parse(valStr ?? "[]");
+  } catch (e) {
+    console.error("Error parsing saved survey data:", e);
+    parsedVal = [];
+  }
+
+  const base = parsedVal.map((x, index) =>
+    parsedVal[index]
+      ? parsedVal[index]
+      : { item: x.text, value: null, duration: 0 }
+  );
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
@@ -2301,7 +2324,7 @@ function Questions({
                     desc={x?.description ?? null}
                     feedback={x?.feedback_text ?? null}
                     options={Array.isArray(x?.options) ? x?.options?.map((y) => ({ ...y, label: y.value })) : x.options}
-                    value={responses.current[idx] ?? null}
+                    value={base[idx] ?? null}
                     onResponse={(response) => {
                       const data = updateResponses(
                         x,
@@ -2376,10 +2399,41 @@ function Section({
   ...props
 }) {
   const activityId = value?.id;
-  const base = value.settings.map((x, index) =>
-    !!activityVal && activityVal[index] ? activityVal[index] : { item: x.text, value: null, duration: 0 }
-  );
-  const responses = useRef(base);
+  const responses = useRef([]);
+
+  useEffect(() => {
+    const valStr = localStorage.getItem("activity-survey-" + (activityId ?? ""));
+    let parsedVal = [];
+
+    try {
+      parsedVal = JSON.parse(valStr ?? "[]");
+    } catch (e) {
+      parsedVal = [];
+    }
+
+    const newBase = value.settings.map((x, index) => {
+      const existing = parsedVal[index];
+      return existing && typeof existing === "object"
+        ? {
+          item: x.text,
+          value: existing.value ?? null,
+          duration: existing.duration ?? 0,
+        }
+        : {
+          item: x.text,
+          value: null,
+          duration: 0,
+        };
+    });
+
+    responses.current = newBase;
+  }, [activityVal]);
+
+
+
+
+
+
   const [activeStep, setActiveStep] = useState(0);
   const classes = useStyles();
   const [tab, setTab] = useState(0);
@@ -2824,6 +2878,8 @@ export default function SurveyQuestions({ ...props }) {
       setResponses(JSON.parse(val));
     } else {
       localStorage.setItem("activity-survey-" + (props.data?.activity?.id ?? ""), "");
+      setActivityVal([]);
+      setResponses([]);
     }
     const activity = props.data.activity ?? props.data ?? {};
     setActivity(activity);

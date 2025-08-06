@@ -21,7 +21,6 @@ export const drawCircle = (
   // ctx?.clearRect(0, 0, rectDims.w, rectDims.h);
   ctx.lineWidth = lineWidth;
   ctx.strokeStyle = strokeStyle;
-console.log(startX, startY)
   ctx?.beginPath();
   ctx?.arc(startX, startY, radius, 0, Math.PI * 2, true);
   ctx?.stroke();
