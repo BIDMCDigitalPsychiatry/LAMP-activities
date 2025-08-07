@@ -565,7 +565,7 @@ class Recorder extends Component<AppProps, AppState> {
                     {i18n.t("CLEAR_BTN")}
                   </button>
                   <br></br>
-                  {this.state.index + 1 === this.props.questions?.length ? (
+                  {this.state.index + 1 === this.props.questions?.length || !this.props.questions ? (
                     <button
                       onClick={() =>
                         this.props.handleSubmit(this.state.recordedData)

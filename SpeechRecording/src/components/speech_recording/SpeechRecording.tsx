@@ -110,8 +110,9 @@ class SpeechRecording extends React.Component<AppProps, AppState> {
     let file = new File([data], currentDateTime + ".mp3");
     const newFileName = file;
     let audioBase64Url = await this.fileToBase64(newFileName);
+    const noQuestion = this.state.questions?.[this.state.index]?.question || "No question";
     const newRecording = {
-      question: question || this.state.questions[this.state.index]?.question,
+      question: question || noQuestion,
       audioData: audioBase64Url,
       duration: qn_duration,
     };
