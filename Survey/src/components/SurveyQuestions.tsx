@@ -181,7 +181,8 @@ const useStyles = makeStyles((theme) => ({
     height: 24,
     border: "#C6C6C6 solid 2px",
     backgroundColor: "#fff",
-    backgroundImage: "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
     [theme.breakpoints.down("sm")]: {
       width: 20,
       height: 20,
@@ -205,7 +206,8 @@ const useStyles = makeStyles((theme) => ({
   checkedIcon: {
     backgroundColor: "#2F9D7E",
     borderColor: "#2F9D7E",
-    backgroundImage: "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
     "&:before": {
       display: "block",
       width: 32,
@@ -503,7 +505,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 16px 0",
     border: "#92E7CA solid 1px",
     borderRadius: 8,
-    padding: "16px 16px 8px 0px",
+    padding: "24px 16px 10px 8px",
     "& p": {
       margin: "0 0 2px 0",
       fontSize: "0.85rem",
@@ -524,7 +526,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 16px 0",
     border: "#92E7CA solid 1px",
     borderRadius: 8,
-    padding: "16px 16px 8px 0px",
+    padding: "24px 16px 10px 8px",
     "& .MuiTypography-body2 ": {},
     "& p": {
       margin: "0 0 4px 0",
@@ -630,7 +632,6 @@ function range(start, stop, step = 1) {
 const CHARACTER_LIMIT = 800;
 const SHORT_CHARACTER_LIMIT = 5;
 
-
 const scrollBox = (offset) => {
   const box = document.getElementById("scrollBox");
   box.scrollBy({ top: offset, behavior: "smooth" });
@@ -640,7 +641,10 @@ function RateAnswer({ checked, onChange, value }) {
   const classes = useStyles();
 
   return (
-    <div onClick={() => onChange(value)} className={checked ? classes.checkedContainer : classes.uncheckContainer}>
+    <div
+      onClick={() => onChange(value)}
+      className={checked ? classes.checkedContainer : classes.uncheckContainer}
+    >
       {checked && (
         <Typography className={classes.checkText}>
           <ReactMarkdown
@@ -692,7 +696,10 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
             key={x.label}
             value={`${x.value}`}
             style={{
-              alignItems: x.value.length > 25 && !!x.description ? "flex-start" : undefined,
+              alignItems:
+                x.value.length > 25 && !!x.description
+                  ? "flex-start"
+                  : undefined,
             }}
             control={
               <Radio
@@ -706,12 +713,22 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
                     onChange(undefined);
                   }
                 }}
-                checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
+                checkedIcon={
+                  <span
+                    className={classnames(classes.icon, classes.checkedIcon)}
+                  />
+                }
                 icon={<span className={classes.icon} />}
               />
             }
             label={
-              <Box className={selectedValue === x.value ? classes.radioSelect : classes.radioNormal}>
+              <Box
+                className={
+                  selectedValue === x.value
+                    ? classes.radioSelect
+                    : classes.radioNormal
+                }
+              >
                 <Typography variant="body2">
                   <ReactMarkdown
                     children={t(x.label?.toString())}
@@ -728,9 +745,15 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
                     }}
                   />
                 </Typography>
-                <Typography component="span" variant="caption" className={classes.lightGray}>
+                <Typography
+                  component="span"
+                  variant="caption"
+                  className={classes.lightGray}
+                >
                   <ReactMarkdown
-                    children={!!x.description && ` ${x.description?.toString()}`}
+                    children={
+                      !!x.description && ` ${x.description?.toString()}`
+                    }
                     skipHtml={false}
                     plugins={[gfm, emoji]}
                     renderers={{
@@ -775,27 +798,32 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
                       }}
                     />
                   )}
-                  {optionFeedback === x.feedback_text && x.value === selectedValue && (
-                    <ReactMarkdown
-                      children={!!x.feedback_text && ` ${x.feedback_text?.toString()}`}
-                      skipHtml={false}
-                      plugins={[gfm, emoji]}
-                      renderers={{
-                        link: LinkRenderer,
-                        sub: (props) => {
-                          return <sub>{props?.children}</sub>;
-                        },
-                        sup: (props) => {
-                          return <sup>{props.children}</sup>;
-                        },
-                      }}
-                    />
-                  )}
+                  {optionFeedback === x.feedback_text &&
+                    x.value === selectedValue && (
+                      <ReactMarkdown
+                        children={
+                          !!x.feedback_text && ` ${x.feedback_text?.toString()}`
+                        }
+                        skipHtml={false}
+                        plugins={[gfm, emoji]}
+                        renderers={{
+                          link: LinkRenderer,
+                          sub: (props) => {
+                            return <sub>{props?.children}</sub>;
+                          },
+                          sup: (props) => {
+                            return <sup>{props.children}</sup>;
+                          },
+                        }}
+                      />
+                    )}
                 </Typography>
               </Box>
             }
             labelPlacement="end"
-            className={`${classes.radioLabel} ${x.value === selectedValue ? "active" : ""}`}
+            className={`${classes.radioLabel} ${
+              x.value === selectedValue ? "active" : ""
+            }`}
           />
         ))}
       </RadioGroup>
@@ -809,20 +837,33 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
   const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
   const [anchorE3, setAnchorE3] = React.useState<null | HTMLElement>(null);
   const currentValue = !!value ? value?.split(":") : "";
-  const [hourSelectedIndex, setHourSelectedIndex] = React.useState(!!value ? currentValue[0] : "01");
-  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(!!value ? currentValue[1].substr(0, 2) : "00");
-  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(!!value ? currentValue[1].substr(2, 3) ?? "" : "AM");
+  const [hourSelectedIndex, setHourSelectedIndex] = React.useState(
+    !!value ? currentValue[0] : "01"
+  );
+  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(
+    !!value ? currentValue[1].substr(0, 2) : "00"
+  );
+  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(
+    !!value ? currentValue[1].substr(2, 3) ?? "" : "AM"
+  );
   const { t } = useTranslation();
 
   useEffect(() => {
     onChange(
-      (hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
-      ":" +
-      (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
-        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")
-        ? ampmSelectedIndex
-        : "")
+      (hourSelectedIndex.length === 1
+        ? "0" + hourSelectedIndex
+        : hourSelectedIndex) +
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
+        (Array.isArray(options) &&
+          !!options[0] &&
+          !!options[0]?.value &&
+          options[0]?.value === "standard")
+          ? ampmSelectedIndex
+          : "")
     );
   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
@@ -837,7 +878,11 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
     setAnchorE3(event.currentTarget);
   };
 
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: any, type: number) => {
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    index: any,
+    type: number
+  ) => {
     switch (type) {
       case 0:
         setHourSelectedIndex(index);
@@ -853,13 +898,20 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
         break;
     }
     onChange(
-      (hourSelectedIndex.length === 1 ? "0" + hourSelectedIndex : hourSelectedIndex) +
-      ":" +
-      (minuteSelectedIndex.length === 1 ? "0" + minuteSelectedIndex : minuteSelectedIndex) +
-      ((!!options?.timePattern && options?.timePattern === "standard") ||
-        (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")
-        ? ampmSelectedIndex
-        : "")
+      (hourSelectedIndex.length === 1
+        ? "0" + hourSelectedIndex
+        : hourSelectedIndex) +
+        ":" +
+        (minuteSelectedIndex.length === 1
+          ? "0" + minuteSelectedIndex
+          : minuteSelectedIndex) +
+        ((!!options?.timePattern && options?.timePattern === "standard") ||
+        (Array.isArray(options) &&
+          !!options[0] &&
+          !!options[0]?.value &&
+          options[0]?.value === "standard")
+          ? ampmSelectedIndex
+          : "")
     );
   };
   const handleHoursClose = () => {
@@ -875,13 +927,19 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
 
   const hourvalues =
     (!!options?.timePattern && options?.timePattern === "standard") ||
-      (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")
+    (Array.isArray(options) &&
+      !!options[0] &&
+      !!options[0]?.value &&
+      options[0]?.value === "standard")
       ? range(1, 13)
       : range(0, 24);
   const minutevalues = ["00", "15", "30", "45"];
   if (
     (!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")
+    (Array.isArray(options) &&
+      !!options[0] &&
+      !!options[0]?.value &&
+      options[0]?.value === "standard")
   ) {
     ampm.push(
       <MenuItem
@@ -908,10 +966,20 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
   return (
     <>
       <Box textAlign="center">
-        <Grid container justify="center" alignItems="center" className={classes.timeWrapper}>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.timeWrapper}
+        >
           <Grid item>
             <List component="nav" className={classes.timeHours}>
-              <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickHours}>
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="lock-menu"
+                onClick={handleClickHours}
+              >
                 <ListItemText secondary={hourSelectedIndex} />
               </ListItem>
             </List>
@@ -937,8 +1005,17 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
           </Grid>
           :
           <Grid item>
-            <List component="nav" className={classes.timeHours} aria-label="Device settings">
-              <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickMinutes}>
+            <List
+              component="nav"
+              className={classes.timeHours}
+              aria-label="Device settings"
+            >
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="lock-menu"
+                onClick={handleClickMinutes}
+              >
                 <ListItemText secondary={minuteSelectedIndex} />
               </ListItem>
             </List>
@@ -963,32 +1040,51 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
             </Menu>
           </Grid>
           {((!!options?.timePattern && options?.timePattern === "standard") ||
-            (Array.isArray(options) && !!options[0] && !!options[0]?.value && options[0]?.value === "standard")) && (
-              <Grid item>
-                <List component="nav" className={classes.timeHours} aria-label="Device settings">
-                  <ListItem button aria-haspopup="true" aria-controls="lock-menu" onClick={handleClickAmPm}>
-                    <ListItemText secondary={ampmSelectedIndex} />
-                  </ListItem>
-                </List>
-                <Menu
-                  id="lock-menu"
-                  classes={{ paper: classes.menuPaper }}
-                  anchorEl={anchorE3}
-                  keepMounted
-                  open={Boolean(anchorE3)}
-                  onClose={handleAmPmClose}
+            (Array.isArray(options) &&
+              !!options[0] &&
+              !!options[0]?.value &&
+              options[0]?.value === "standard")) && (
+            <Grid item>
+              <List
+                component="nav"
+                className={classes.timeHours}
+                aria-label="Device settings"
+              >
+                <ListItem
+                  button
+                  aria-haspopup="true"
+                  aria-controls="lock-menu"
+                  onClick={handleClickAmPm}
                 >
-                  {ampm}
-                </Menu>
-              </Grid>
-            )}
+                  <ListItemText secondary={ampmSelectedIndex} />
+                </ListItem>
+              </List>
+              <Menu
+                id="lock-menu"
+                classes={{ paper: classes.menuPaper }}
+                anchorEl={anchorE3}
+                keepMounted
+                open={Boolean(anchorE3)}
+                onClose={handleAmPmClose}
+              >
+                {ampm}
+              </Menu>
+            </Grid>
+          )}
         </Grid>
       </Box>
     </>
   );
 }
 
-function TextSection({ onChange, charLimit, value, feedback, question, ...props }) {
+function TextSection({
+  onChange,
+  charLimit,
+  value,
+  feedback,
+  question,
+  ...props
+}) {
   const classes = useStyles();
   const [text, setText] = useState(value);
   const { t } = useTranslation();
@@ -1012,7 +1108,11 @@ function TextSection({ onChange, charLimit, value, feedback, question, ...props 
               onChange(e.target.value);
             }}
             defaultValue={text}
-            helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
+            helperText={
+              text
+                ? `${text.length}/${charLimit} max characters`
+                : `${charLimit} max characters`
+            }
             inputProps={{
               maxLength: charLimit,
             }}
@@ -1050,7 +1150,14 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-function ShortTextSection({ onChange, value, charLimit, feedback, question, ...props }) {
+function ShortTextSection({
+  onChange,
+  value,
+  charLimit,
+  feedback,
+  question,
+  ...props
+}) {
   const classes = useStyles();
   const [text, setText] = useState(value);
   const { t } = useTranslation();
@@ -1063,7 +1170,11 @@ function ShortTextSection({ onChange, value, charLimit, feedback, question, ...p
             value={text}
             multiline
             rows={4}
-            helperText={text ? `${text.length}/${charLimit} max characters` : `${charLimit} max characters`}
+            helperText={
+              text
+                ? `${text.length}/${charLimit} max characters`
+                : `${charLimit} max characters`
+            }
             inputProps={{
               maxLength: charLimit,
             }}
@@ -1085,14 +1196,27 @@ function ShortTextSection({ onChange, value, charLimit, feedback, question, ...p
   );
 }
 
-function RadioRating({ onChange, options, value, mtValue, type, optionFeedback, ...props }) {
+function RadioRating({
+  onChange,
+  options,
+  value,
+  mtValue,
+  type,
+  optionFeedback,
+  ...props
+}) {
   const [val, setValue] = useState(value);
   const { t } = useTranslation();
 
   const classes = useStyles();
   return (
     <Box textAlign="center" mt={mtValue}>
-      <Grid direction="row" container justify="center" style={{ alignItems: "top" }}>
+      <Grid
+        direction="row"
+        container
+        justify="center"
+        style={{ alignItems: "top" }}
+      >
         {options.map((option) => (
           <Box mr={1}>
             <RateAnswer
@@ -1123,26 +1247,27 @@ function RadioRating({ onChange, options, value, mtValue, type, optionFeedback, 
                     />
                   </Typography>
                 </Box>
-                {optionFeedback === option.feedback_text && option.value === val && (
-                  <Box>
-                    <Typography variant="caption" className={classes.checkP}>
-                      <ReactMarkdown
-                        children={t(option.feedback_text?.toString())}
-                        skipHtml={false}
-                        plugins={[gfm, emoji]}
-                        renderers={{
-                          link: LinkRenderer,
-                          sub: (props) => {
-                            return <sub>{props?.children}</sub>;
-                          },
-                          sup: (props) => {
-                            return <sup>{props.children}</sup>;
-                          },
-                        }}
-                      />
-                    </Typography>
-                  </Box>
-                )}
+                {optionFeedback === option.feedback_text &&
+                  option.value === val && (
+                    <Box>
+                      <Typography variant="caption" className={classes.checkP}>
+                        <ReactMarkdown
+                          children={t(option.feedback_text?.toString())}
+                          skipHtml={false}
+                          plugins={[gfm, emoji]}
+                          renderers={{
+                            link: LinkRenderer,
+                            sub: (props) => {
+                              return <sub>{props?.children}</sub>;
+                            },
+                            sup: (props) => {
+                              return <sup>{props.children}</sup>;
+                            },
+                          }}
+                        />
+                      </Typography>
+                    </Box>
+                  )}
               </>
             )}
           </Box>
@@ -1158,7 +1283,10 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
     let sliderValue = null;
     options.map((mark) => {
       if (mark.value === val) {
-        sliderValue = !!mark.description && mark.description.trim().length > 0 ? mark.description : mark.value;
+        sliderValue =
+          !!mark.description && mark.description.trim().length > 0
+            ? mark.description
+            : mark.value;
       }
     });
     return sliderValue;
@@ -1166,9 +1294,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
 
   const { t } = useTranslation();
 
-  const [valueText, setValueText] = useState(
-    !!value ? getText(value) : null
-  );
+  const [valueText, setValueText] = useState(!!value ? getText(value) : null);
   const [sliderValue, setSliderValue] = useState(!!value ? value : null);
 
   useEffect(() => {
@@ -1183,7 +1309,10 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
     const slValue = val;
     options.map((mark) => {
       if (parseInt(mark.value, 10) === slValue) {
-        sliderValue = !!mark.description && mark.description.trim().length > 0 ? mark.description : mark.value;
+        sliderValue =
+          !!mark.description && mark.description.trim().length > 0
+            ? mark.description
+            : mark.value;
       }
     });
     setSliderValue(val);
@@ -1200,11 +1329,16 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={
-          parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) < 0
-            ? Math.abs(parseInt(options[0].value, 10)) + parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[0].value, 10) < 0 && parseInt(options[1].value ?? 10, 0) > 0
-              ? Math.abs(parseInt(options[0].value, 10)) - parseInt(options[1]?.value ?? 0, 10)
-              : parseInt(options[1]?.value ?? 0, 10) - parseInt(options[0].value, 10)
+          parseInt(options[0].value, 10) < 0 &&
+          parseInt(options[1].value ?? 10, 0) < 0
+            ? Math.abs(parseInt(options[0].value, 10)) +
+              parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[0].value, 10) < 0 &&
+              parseInt(options[1].value ?? 10, 0) > 0
+            ? Math.abs(parseInt(options[0].value, 10)) -
+              parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[1]?.value ?? 0, 10) -
+              parseInt(options[0].value, 10)
         }
         marks={options}
         min={parseInt(options[0].value, 10)}
@@ -1214,19 +1348,33 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
           root: classes.slider,
           rail: classes.centerBar,
           mark: classes.customTrack,
-          thumb: classes.customThumb + (sliderValue !== null ? "" : " " + classes.noInitialVal),
+          thumb:
+            classes.customThumb +
+            (sliderValue !== null ? "" : " " + classes.noInitialVal),
           valueLabel: classes.countlabel,
         }}
         onChange={(evt, val) => {
           getSliderValue(val);
         }}
       />
-      <Grid container className={classes.sliderValueLabel} direction="row" justify="space-between" alignItems="center">
+      <Grid
+        container
+        className={classes.sliderValueLabel}
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
         <Grid item>
-          <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
+          <Typography
+            variant="caption"
+            className={classes.textCaption}
+            display="block"
+            gutterBottom
+          >
             <ReactMarkdown
               children={
-                !!options[0].description && options[0].description.trim().length === 0
+                !!options[0].description &&
+                options[0].description.trim().length === 0
                   ? options[0].value
                   : options[0].description
               }
@@ -1246,11 +1394,17 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
         </Grid>
         <Grid item>
           {options.length > 2 && (
-            <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
+            <Typography
+              variant="caption"
+              className={classes.textCaption}
+              display="block"
+              gutterBottom
+            >
               <ReactMarkdown
                 children={
                   !!options[Math.ceil(options.length / 2) - 1].description &&
-                    options[Math.ceil(options.length / 2) - 1].description.trim().length === 0
+                  options[Math.ceil(options.length / 2) - 1].description.trim()
+                    .length === 0
                     ? options[Math.ceil(options.length / 2) - 1].value
                     : options[Math.ceil(options.length / 2) - 1].description
                 }
@@ -1270,10 +1424,16 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
           )}
         </Grid>
         <Grid item>
-          <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
+          <Typography
+            variant="caption"
+            className={classes.textCaption}
+            display="block"
+            gutterBottom
+          >
             <ReactMarkdown
               children={
-                !!options[options.length - 1].description && options[options.length - 1].description.trim().length === 0
+                !!options[options.length - 1].description &&
+                options[options.length - 1].description.trim().length === 0
                   ? options[options.length - 1].value
                   : options[options.length - 1].description
               }
@@ -1299,40 +1459,58 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
           alignItems="center"
         >
           <Grid item>
-            {optionFeedback === options[0].feedback_text && options[0].value == sliderValue && (
-              <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
-                <ReactMarkdown
-                  children={
-                    !!options[0].feedback_text && options[0].feedback_text.trim().length === 0
-                      ? options[0].value
-                      : options[0].feedback_text
-                  }
-                  skipHtml={false}
-                  plugins={[gfm, emoji]}
-                  renderers={{
-                    link: LinkRenderer,
-                    sub: (props) => {
-                      return <sub>{props?.children}</sub>;
-                    },
-                    sup: (props) => {
-                      return <sup>{props?.children}</sup>;
-                    },
-                  }}
-                />
-              </Typography>
-            )}
+            {optionFeedback === options[0].feedback_text &&
+              options[0].value == sliderValue && (
+                <Typography
+                  variant="caption"
+                  className={classes.textCaption}
+                  display="block"
+                  gutterBottom
+                >
+                  <ReactMarkdown
+                    children={
+                      !!options[0].feedback_text &&
+                      options[0].feedback_text.trim().length === 0
+                        ? options[0].value
+                        : options[0].feedback_text
+                    }
+                    skipHtml={false}
+                    plugins={[gfm, emoji]}
+                    renderers={{
+                      link: LinkRenderer,
+                      sub: (props) => {
+                        return <sub>{props?.children}</sub>;
+                      },
+                      sup: (props) => {
+                        return <sup>{props?.children}</sup>;
+                      },
+                    }}
+                  />
+                </Typography>
+              )}
           </Grid>
           <Grid item>
             {options.length > 2 &&
-              optionFeedback === options[Math.ceil(options.length / 2) - 1].feedback_text &&
-              options[Math.ceil(options.length / 2) - 1].value == sliderValue && (
-                <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
+              optionFeedback ===
+                options[Math.ceil(options.length / 2) - 1].feedback_text &&
+              options[Math.ceil(options.length / 2) - 1].value ==
+                sliderValue && (
+                <Typography
+                  variant="caption"
+                  className={classes.textCaption}
+                  display="block"
+                  gutterBottom
+                >
                   <ReactMarkdown
                     children={
-                      !!options[Math.ceil(options.length / 2) - 1].feedback_text &&
-                        options[Math.ceil(options.length / 2) - 1].feedback_text.trim().length === 0
+                      !!options[Math.ceil(options.length / 2) - 1]
+                        .feedback_text &&
+                      options[
+                        Math.ceil(options.length / 2) - 1
+                      ].feedback_text.trim().length === 0
                         ? options[Math.ceil(options.length / 2) - 1].value
-                        : options[Math.ceil(options.length / 2) - 1].feedback_text
+                        : options[Math.ceil(options.length / 2) - 1]
+                            .feedback_text
                     }
                     skipHtml={false}
                     plugins={[gfm, emoji]}
@@ -1350,13 +1528,19 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
               )}
           </Grid>
           <Grid item>
-            <Typography variant="caption" className={classes.textCaption} display="block" gutterBottom>
+            <Typography
+              variant="caption"
+              className={classes.textCaption}
+              display="block"
+              gutterBottom
+            >
               {optionFeedback === options[options.length - 1].feedback_text &&
                 options[options.length - 1].value == sliderValue && (
                   <ReactMarkdown
                     children={
                       !!options[options.length - 1].feedback_text &&
-                        options[options.length - 1].feedback_text.trim().length === 0
+                      options[options.length - 1].feedback_text.trim()
+                        .length === 0
                         ? options[options.length - 1].value
                         : options[options.length - 1].feedback_text
                     }
@@ -1408,9 +1592,13 @@ const csvParse = (x) => {
     if (Array.isArray(x)) return x;
     if (typeof x !== "string") return [];
     const unescaped = x.replace(/\\"/g, '"');
-    const wrapped = unescaped.trim().startsWith("[") ? unescaped : `[${unescaped}]`;
+    const wrapped = unescaped.trim().startsWith("[")
+      ? unescaped
+      : `[${unescaped}]`;
     let parsed = JSON.parse(wrapped);
-    parsed = parsed.map((item) => (typeof item === "string" ? item.replace(/^"+|"+$/g, "") : item));
+    parsed = parsed.map((item) =>
+      typeof item === "string" ? item.replace(/^"+|"+$/g, "") : item
+    );
 
     return parsed;
   } catch (e) {
@@ -1418,7 +1606,8 @@ const csvParse = (x) => {
     return [];
   }
 };
-const csvStringify = (x) => (Array?.isArray(x) ? JSON.stringify(x).slice(1, -1) : "");
+const csvStringify = (x) =>
+  Array?.isArray(x) ? JSON.stringify(x).slice(1, -1) : "";
 
 function Matrix({
   x,
@@ -1439,10 +1628,16 @@ function Matrix({
   const classes = useStyles();
   const { t } = useTranslation();
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
-  const [selectedValue, setSelectedValue] = useState(responses?.current ?? null);
+  const [selectedValue, setSelectedValue] = useState(
+    responses?.current ?? null
+  );
   const getSorted = (options) => {
     return options.sort((a, b) =>
-      parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
+      parseInt(a.value, 10) > parseInt(b.value, 10)
+        ? 1
+        : parseInt(a.value, 10) < parseInt(b.value, 10)
+        ? -1
+        : 0
     );
   };
 
@@ -1450,12 +1645,20 @@ function Matrix({
     <Grid>
       <Box style={{ marginTop: "100px" }}>
         <Box textAlign="center">
-          <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-            {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span> {settingsQuestions}
+          <Typography
+            gutterBottom
+            align="center"
+            classes={{ root: classes.questionTrack }}
+          >
+            {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span>{" "}
+            {settingsQuestions}
           </Typography>
         </Box>
         <Box className="carouselContainer">
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(-100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
             <KeyboardArrowUpIcon />
           </Button>
           <div className={classes.scrollBox} id="scrollBox">
@@ -1478,13 +1681,22 @@ function Matrix({
                   />
                 </Typography>
               </Box>
-              <Grid container direction="row" justify="center" alignItems="flex-start">
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+              >
                 <Grid
                   item
                   lg={4}
                   sm={10}
                   xs={12}
-                  className={classes.surveyQuestionAlign + " " + classes.surveyQuestionMatrixAlign}
+                  className={
+                    classes.surveyQuestionAlign +
+                    " " +
+                    classes.surveyQuestionMatrixAlign
+                  }
                 >
                   <Box className={classes.questionScroll}>
                     <Table className={classes.matrix}>
@@ -1496,12 +1708,16 @@ function Matrix({
                           x.type === "boolean" ||
                           x.type === "multiselect") && (
                           <TableRow className={classes.firstTr}>
-                            <TableCell style={{ minWidth: "30%" }}>{null}</TableCell>
+                            <TableCell style={{ minWidth: "30%" }}>
+                              {null}
+                            </TableCell>
                             {(x.options || []).map((x) => (
                               <TableCell className={classes.textCenter}>
                                 {(x.description || "").length > 0 && (
                                   <ReactMarkdown
-                                    children={` ${t(x.description?.toString())}`}
+                                    children={` ${t(
+                                      x.description?.toString()
+                                    )}`}
                                     skipHtml={false}
                                     plugins={[gfm, emoji]}
                                     renderers={{
@@ -1528,14 +1744,18 @@ function Matrix({
                             x.type === "boolean" ||
                             x.type === "multiselect") && (
                             <TableRow className={classes.secondTr}>
-                              <TableCell style={{ minWidth: "30%" }} className={classes.thStick}>
+                              <TableCell
+                                style={{ minWidth: "30%" }}
+                                className={classes.thStick}
+                              >
                                 {null}
                               </TableCell>
                               {(x.options || []).map((x) => (
                                 <TableCell className={classes.textCenter}>
                                   <ReactMarkdown
                                     children={
-                                      (x.description || "").length > 0 && (x.value || "").length > 0
+                                      (x.description || "").length > 0 &&
+                                      (x.value || "").length > 0
                                         ? `(${t(x.value?.toString())})`
                                         : `${t(x.value?.toString())}`
                                     }
@@ -1562,10 +1782,15 @@ function Matrix({
                             borderBottom: "1px solid rgba(224, 224, 224, 1)",
                           }}
                         >
-                          <TableCell className={classes.required} style={{ minWidth: "30%", maxWidth: "150px" }}>
+                          <TableCell
+                            className={classes.required}
+                            style={{ minWidth: "30%", maxWidth: "150px" }}
+                          >
                             <ReactMarkdown
                               children={
-                                question.required ? `${t(question?.text) + "<span> *</span>"}` : `${t(question?.text)}`
+                                question.required
+                                  ? `${t(question?.text) + "<span> *</span>"}`
+                                  : `${t(question?.text)}`
                               }
                               allowDangerousHtml={true}
                               plugins={[gfm, emoji]}
@@ -1580,8 +1805,11 @@ function Matrix({
                               }}
                             />
                           </TableCell>
-                          {Array.isArray(x.options) && (x.options || []).length > 0 ? (
-                            x.type === "list" || x.type === "boolean" || x.type === "likert" ? (
+                          {Array.isArray(x.options) &&
+                          (x.options || []).length > 0 ? (
+                            x.type === "list" ||
+                            x.type === "boolean" ||
+                            x.type === "likert" ? (
                               (x.options || []).map((op, k) => (
                                 <TableCell className={classes.textCenter}>
                                   <FormControlLabel
@@ -1592,10 +1820,20 @@ function Matrix({
                                       <Radio
                                         className={classes.mradioroot}
                                         disableRipple
-                                        checked={csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
                                         color="default"
                                         size="medium"
-                                        checkedIcon={<span className={classnames(classes.icon, classes.checkedIcon)} />}
+                                        checkedIcon={
+                                          <span
+                                            className={classnames(
+                                              classes.icon,
+                                              classes.checkedIcon
+                                            )}
+                                          />
+                                        }
                                         icon={<span className={classes.icon} />}
                                         onClick={() => {
                                           setSelectedValue({
@@ -1637,17 +1875,32 @@ function Matrix({
                                     control={
                                       <GreenCheckbox
                                         className={classes.mradioroot}
-                                        checked={csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
+                                        checked={csvParse(
+                                          selectedValue[idx + qindex]?.value ||
+                                            []
+                                        ).includes(op.value)}
                                         onClick={() => {
-                                          let values = csvParse(selectedValue[idx + qindex]?.value || []);
+                                          let values = csvParse(
+                                            selectedValue[idx + qindex]
+                                              ?.value || []
+                                          );
 
-                                          if (!csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)) {
+                                          if (
+                                            !csvParse(
+                                              selectedValue[idx + qindex]
+                                                ?.value || []
+                                            ).includes(op.value)
+                                          ) {
                                             values.push(op.value);
-                                            values = (values || []).filter((elem, i, self) => {
-                                              return i === self.indexOf(elem);
-                                            });
+                                            values = (values || []).filter(
+                                              (elem, i, self) => {
+                                                return i === self.indexOf(elem);
+                                              }
+                                            );
                                           } else {
-                                            const key = values.indexOf(op.value);
+                                            const key = values.indexOf(
+                                              op.value
+                                            );
                                             if (key !== -1) {
                                               values.splice(key, 1);
                                             }
@@ -1695,7 +1948,10 @@ function Matrix({
                                     });
                                     const response = {
                                       item: question.text,
-                                      value: val !== null ? csvStringify([val]) : null,
+                                      value:
+                                        val !== null
+                                          ? csvStringify([val])
+                                          : null,
                                     };
                                     const data = updateResponses(
                                       x,
@@ -1711,17 +1967,24 @@ function Matrix({
                                   }}
                                   optionFeedback={
                                     !!selectedValue[idx + qindex]?.feedback_text
-                                      ? selectedValue[idx + qindex]?.feedback_text
+                                      ? selectedValue[idx + qindex]
+                                          ?.feedback_text
                                       : undefined
                                   }
-                                  value={csvParse(selectedValue[idx + qindex]?.value || [])[0] ?? null}
+                                  value={
+                                    csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    )[0] ?? null
+                                  }
                                 />
                               </TableCell>
                             ) : x.type === "rating" ? (
                               (x.options || []).map((op, j) => (
                                 <TableCell className={classes.textCenter}>
                                   <RateAnswer
-                                    checked={csvParse(selectedValue[idx + qindex]?.value || []).includes(op.value)}
+                                    checked={csvParse(
+                                      selectedValue[idx + qindex]?.value || []
+                                    ).includes(op.value)}
                                     onChange={(val) => {
                                       setSelectedValue({
                                         ...selectedValue,
@@ -1732,7 +1995,10 @@ function Matrix({
                                       });
                                       const response = {
                                         item: question.text,
-                                        value: val !== null ? csvStringify([val]) : null,
+                                        value:
+                                          val !== null
+                                            ? csvStringify([val])
+                                            : null,
                                       };
                                       const data = updateResponses(
                                         x,
@@ -1779,7 +2045,8 @@ function Matrix({
                                   question={question.text}
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
-                                      ? responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]
+                                          ?.feedback
                                       : undefined
                                   }
                                 />
@@ -1815,7 +2082,8 @@ function Matrix({
                                   question={question.text}
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
-                                      ? responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]
+                                          ?.feedback
                                       : undefined
                                   }
                                 />
@@ -1847,7 +2115,8 @@ function Matrix({
                                   question={question.text}
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
-                                      ? responses?.current[idx + qindex]?.feedback
+                                      ? responses?.current[idx + qindex]
+                                          ?.feedback
                                       : undefined
                                   }
                                 />
@@ -1874,13 +2143,16 @@ function Matrix({
                                     options={x.options}
                                     value={
                                       !!responses?.current[idx + qindex]?.value
-                                        ? responses?.current[idx + qindex]?.value
+                                        ? responses?.current[idx + qindex]
+                                            ?.value
                                         : undefined
                                     }
                                     question={question.text}
                                     feedback={
-                                      !!responses?.current[idx + qindex]?.feedback
-                                        ? responses?.current[idx + qindex]?.feedback
+                                      !!responses?.current[idx + qindex]
+                                        ?.feedback
+                                        ? responses?.current[idx + qindex]
+                                            ?.feedback
                                         : undefined
                                     }
                                   />
@@ -1896,7 +2168,10 @@ function Matrix({
               </Grid>
             </Box>
           </div>
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
             <KeyboardArrowDownIcon />
           </Button>
         </Box>
@@ -1933,11 +2208,14 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
     >
       {options.map((x) => (
         <FormControlLabel
-          className={`${classes.checkLabel} ${selection.includes(`${x.value}`) ? "active" : ""}`}
+          className={`${classes.checkLabel} ${
+            selection.includes(`${x.value}`) ? "active" : ""
+          }`}
           key={x.label}
           value={`${x.value}`}
           style={{
-            alignItems: x.value.length > 20 && !!x.description ? "flex-start" : undefined,
+            alignItems:
+              x.value.length > 20 && !!x.description ? "flex-start" : undefined,
           }}
           control={
             <GreenCheckbox
@@ -2063,12 +2341,14 @@ function Question({
 }) {
   const { t } = useTranslation();
   const [optionFeedback, setOptionFeedback] = useState("");
-  
-    const normalVal = typeof value === 'object' && value !== null ? value.value : value;
+
+  const normalVal =
+    typeof value === "object" && value !== null ? value.value : value;
 
   useEffect(() => {
     // const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
-    const cleanedValue = typeof value === 'object' && value !== null ? value.value : value;
+    const cleanedValue =
+      typeof value === "object" && value !== null ? value.value : value;
     if (cleanedValue) {
       const selectedOption = options?.find((opt) => opt.value === cleanedValue);
       if (selectedOption?.feedback_text) {
@@ -2081,7 +2361,9 @@ function Question({
   const onChange = (value) => {
     const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
     if (cleanedValue) {
-      const selectedOption = options?.find((opt) => String(opt.value) === String(cleanedValue));
+      const selectedOption = options?.find(
+        (opt) => String(opt.value) === String(cleanedValue)
+      );
       if (selectedOption?.feedback_text) {
         setOptionFeedback(selectedOption.feedback_text);
       } else {
@@ -2093,7 +2375,8 @@ function Question({
       if (selectedOption?.contigencySettings?.enable_contigency) {
         if (selectedOption.contigencySettings.contigency_type === "activity") {
           let enabledActivities: { question: string; value: string }[] = [];
-          const enabledActivitiesStr = localStorage.getItem("enabledActivities");
+          const enabledActivitiesStr =
+            localStorage.getItem("enabledActivities");
 
           if (enabledActivitiesStr !== null) {
             enabledActivities = JSON.parse(enabledActivitiesStr);
@@ -2108,7 +2391,10 @@ function Question({
               question: text,
               value: value,
             });
-            localStorage.setItem("enabledActivities", JSON.stringify(enabledActivities));
+            localStorage.setItem(
+              "enabledActivities",
+              JSON.stringify(enabledActivities)
+            );
           }
           if (typeof window !== "undefined" && window.parent) {
             localStorage.setItem("lastAnsweredIndex", currentIndex);
@@ -2133,7 +2419,11 @@ function Question({
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
-        parseInt(a.value, 10) > parseInt(b.value, 10) ? 1 : parseInt(a.value, 10) < parseInt(b.value, 10) ? -1 : 0
+        parseInt(a.value, 10) > parseInt(b.value, 10)
+          ? 1
+          : parseInt(a.value, 10) < parseInt(b.value, 10)
+          ? -1
+          : 0
       );
       component = (
         <Rating
@@ -2204,7 +2494,11 @@ function Question({
       break;
     case "multiselect":
       component = (
-        <MultiSelectResponse options={options} onChange={onChange} value={!!value ? normalVal : undefined} />
+        <MultiSelectResponse
+          options={options}
+          onChange={onChange}
+          value={!!value ? normalVal : undefined}
+        />
       );
       break;
   }
@@ -2230,22 +2524,35 @@ function Question({
         </Typography>
       </Box>
       <Box className={classes.questionhead}>
-        <Typography variant="caption" display="block" style={{ lineHeight: "0.66" }}>
-          {image && <Image src={image} alt="Survey image" className={classes.survayImage} />}
+        <Typography
+          variant="caption"
+          display="block"
+          style={{ lineHeight: "0.66" }}
+        >
+          {image && (
+            <Image
+              src={image}
+              alt="Survey image"
+              className={classes.survayImage}
+            />
+          )}
           <ReactMarkdown
             children={
               type === "slider"
                 ? t(
-                  `${options[0].value} being ${!!options[0].description && options[0].description.trim().length > 0
-                    ? options[0].description
-                    : options[0].value
-                  }, 
-                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description &&
-                    options[options.length - 1].description.trim().length > 0
-                    ? options[options.length - 1].description
-                    : options[options.length - 1].value
-                  }`
-                )
+                    `${options[0].value} being ${
+                      !!options[0].description &&
+                      options[0].description.trim().length > 0
+                        ? options[0].description
+                        : options[0].value
+                    }, 
+                  ${options[options.length - 1].value} being ${
+                      !!options[options.length - 1].description &&
+                      options[options.length - 1].description.trim().length > 0
+                        ? options[options.length - 1].description
+                        : options[options.length - 1].value
+                    }`
+                  )
                 : !!desc && t(`${desc}`)
             }
             skipHtml={false}
@@ -2305,19 +2612,38 @@ function Questions({
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
-        <Typography gutterBottom align="center" classes={{ root: classes.questionTrack }}>
-          {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span> {settings.length}
+        <Typography
+          gutterBottom
+          align="center"
+          classes={{ root: classes.questionTrack }}
+        >
+          {`${t("Question")}`} {index + 1} <span>{`${t("of")}`}</span>{" "}
+          {settings.length}
         </Typography>
       </Box>
 
       <Box className={classes.questionScroll}>
         <Box className="carouselContainer">
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(-100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(-100)}
+          >
             <KeyboardArrowUpIcon />
           </Button>
           <div className={classes.scrollBox} id="scrollBox">
-            <Grid container direction="row" justify="center" alignItems="flex-start">
-              <Grid item lg={4} sm={10} xs={12} className={classes.surveyQuestionAlign}>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+            >
+              <Grid
+                item
+                lg={4}
+                sm={10}
+                xs={12}
+                className={classes.surveyQuestionAlign}
+              >
                 {x && (
                   <Question
                     text={x?.text}
@@ -2326,7 +2652,11 @@ function Questions({
                     required={x?.required}
                     desc={x?.description ?? null}
                     feedback={x?.feedback_text ?? null}
-                    options={Array.isArray(x?.options) ? x?.options?.map((y) => ({ ...y, label: y.value })) : x.options}
+                    options={
+                      Array.isArray(x?.options)
+                        ? x?.options?.map((y) => ({ ...y, label: y.value }))
+                        : x.options
+                    }
                     value={base[idx] ?? null}
                     onResponse={(response) => {
                       const data = updateResponses(
@@ -2350,7 +2680,10 @@ function Questions({
               </Grid>
             </Grid>
           </div>
-          <Button className={classes.scrollArrow} onClick={() => scrollBox(100)}>
+          <Button
+            className={classes.scrollArrow}
+            onClick={() => scrollBox(100)}
+          >
             <KeyboardArrowDownIcon />
           </Button>
         </Box>
@@ -2359,7 +2692,16 @@ function Questions({
   );
 }
 
-const updateResponses = (x, response, activityId, responses, idx, startTime, setActiveStep, total) => {
+const updateResponses = (
+  x,
+  response,
+  activityId,
+  responses,
+  idx,
+  startTime,
+  setActiveStep,
+  total
+) => {
   responses.current[idx] = response;
   if (x.type !== "multiselect") {
     setActiveStep((prev) => prev + 1);
@@ -2405,7 +2747,9 @@ function Section({
   const responses = useRef([]);
 
   useEffect(() => {
-    const valStr = localStorage.getItem("activity-survey-" + (activityId ?? ""));
+    const valStr = localStorage.getItem(
+      "activity-survey-" + (activityId ?? "")
+    );
     let parsedVal = [];
 
     try {
@@ -2418,24 +2762,19 @@ function Section({
       const existing = parsedVal[index];
       return existing && typeof existing === "object"
         ? {
-          item: x.text,
-          value: existing.value ?? null,
-          duration: existing.duration ?? 0,
-        }
+            item: x.text,
+            value: existing.value ?? null,
+            duration: existing.duration ?? 0,
+          }
         : {
-          item: x.text,
-          value: null,
-          duration: 0,
-        };
+            item: x.text,
+            value: null,
+            duration: 0,
+          };
     });
 
     responses.current = newBase;
   }, [activityVal]);
-
-
-
-
-
 
   const [activeStep, setActiveStep] = useState(0);
   const classes = useStyles();
@@ -2511,7 +2850,11 @@ function Section({
     const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
     if (lastIndexStr !== null) {
       const lastIndex = parseInt(lastIndexStr);
-      if (!isNaN(lastIndex) && lastIndex < slideElements.length && lastIndex != slideElements.length) {
+      if (
+        !isNaN(lastIndex) &&
+        lastIndex < slideElements.length &&
+        lastIndex != slideElements.length
+      ) {
         setIndex(lastIndex);
         setTab(lastIndex);
         const val = (100 / settings.length) * (lastIndex + 1);
@@ -2520,7 +2863,6 @@ function Section({
     }
 
     setSlideElements(slideElements);
-
   }, [settings]);
 
   const isComplete = (idx) => !!responses.current[idx]?.value;
@@ -2533,13 +2875,20 @@ function Section({
   const slideElementChange = (type: number) => {
     setElementIn(false);
     setTimeout(() => {
-      type === 0 ? setIndex((index - 1) % slideElements.length) : setIndex((index + 1) % slideElements.length);
+      type === 0
+        ? setIndex((index - 1) % slideElements.length)
+        : setIndex((index + 1) % slideElements.length);
       setElementIn(true);
     }, 100);
     // }
     type === 0 ? setTab(tab - 1) : setTab(tab + 1);
-    const val = type === 0 ? progressValue - 100 / settings.length : progressValue + 100 / settings.length;
-    type === 0 ? setProgressValue(val > 0 ? val : 100 / settings.length) : setProgressValue(val > 100 ? 100 : val);
+    const val =
+      type === 0
+        ? progressValue - 100 / settings.length
+        : progressValue + 100 / settings.length;
+    type === 0
+      ? setProgressValue(val > 0 ? val : 100 / settings.length)
+      : setProgressValue(val > 100 ? 100 : val);
   };
 
   const handleContingencyQuestion = (selectedOption, actualIndex) => {
@@ -2573,7 +2922,9 @@ function Section({
       }
 
       const alreadyEnabled = enabledActivities.some(
-        (activity) => activity.question === currentQuestion.text && activity.value === selectedOption.value
+        (activity) =>
+          activity.question === currentQuestion.text &&
+          activity.value === selectedOption.value
       );
 
       if (alreadyEnabled) {
@@ -2583,7 +2934,10 @@ function Section({
           question: currentQuestion.text,
           value: selectedOption.value,
         });
-        localStorage.setItem("enabledActivities", JSON.stringify(enabledActivities));
+        localStorage.setItem(
+          "enabledActivities",
+          JSON.stringify(enabledActivities)
+        );
 
         if (typeof window !== "undefined" && window.parent) {
           const lastIndex = actualIndex ? actualIndex : 0;
@@ -2613,7 +2967,10 @@ function Section({
 
     if (selectedOption?.contigencySettings?.enable_contigency) {
       if (currentQuestion?.revisited == undefined) {
-        contingencyArray = handleContingencyQuestion(selectedOption, actualIndex);
+        contingencyArray = handleContingencyQuestion(
+          selectedOption,
+          actualIndex
+        );
         if (contingencyArray[actualIndex]?.visited == false) {
           contingencyArray[actualIndex].visited = true;
         }
@@ -2646,10 +3003,13 @@ function Section({
             !element.required ||
             (element.required &&
               responses?.current[actualIndex + i]?.value !== null &&
-              typeof responses?.current[actualIndex + i]?.value !== "undefined" &&
+              typeof responses?.current[actualIndex + i]?.value !==
+                "undefined" &&
               (typeof responses?.current[actualIndex + i]?.value !== "string" ||
-                (typeof responses?.current[actualIndex + i]?.value === "string" &&
-                  responses?.current[actualIndex + i]?.value?.trim().length !== 0)))
+                (typeof responses?.current[actualIndex + i]?.value ===
+                  "string" &&
+                  responses?.current[actualIndex + i]?.value?.trim().length !==
+                    0)))
           )
         ) {
           enqueueSnackbar(t("Please enter your response."), {
@@ -2715,7 +3075,10 @@ function Section({
   };
   return (
     <Box>
-      <AppBar position="fixed" style={{ background: "#E7F8F2", boxShadow: "none" }}>
+      <AppBar
+        position="fixed"
+        style={{ background: "#E7F8F2", boxShadow: "none" }}
+      >
         <Toolbar className={classes.toolbardashboard}>
           {!noBack && (
             <IconButton onClick={handleBackwardClick}>
@@ -2738,10 +3101,16 @@ function Section({
               }}
             />
             <Tooltip
-              title={isFavoriteActive ? "Tap to remove from Favorite Activities" : "Tap to add to Favorite Activities"}
+              title={
+                isFavoriteActive
+                  ? "Tap to remove from Favorite Activities"
+                  : "Tap to add to Favorite Activities"
+              }
             >
               <Fab
-                className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""}`}
+                className={`${classes.headerTitleIcon} ${
+                  isFavoriteActive ? "active" : ""
+                }`}
                 onClick={handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
@@ -2757,8 +3126,17 @@ function Section({
         <BorderLinearProgress variant="determinate" value={progressValue} />
       </AppBar>
       <Box>
-        <Slide in={elementIn} direction={tabDirection(index)} mountOnEnter unmountOnExit>
-          <Box>{!!slideElements && !!slideElements[index] ? slideElements[index] : null}</Box>
+        <Slide
+          in={elementIn}
+          direction={tabDirection(index)}
+          mountOnEnter
+          unmountOnExit
+        >
+          <Box>
+            {!!slideElements && !!slideElements[index]
+              ? slideElements[index]
+              : null}
+          </Box>
         </Slide>
         <Box className={classes.surveyQuestionNav}>
           {index > 0 && (
@@ -2767,7 +3145,10 @@ function Section({
             </Fab>
           )}
           <Fab
-            onClick={elementIn && (index === settings.length - 1 ? onComplete : handleNext)}
+            onClick={
+              elementIn &&
+              (index === settings.length - 1 ? onComplete : handleNext)
+            }
             className={classes.btngreen}
             disabled={isSubmit}
           >
@@ -2792,8 +3173,12 @@ export default function SurveyQuestions({ ...props }) {
   const [confirm, setConfirm] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const lastIndexStr = localStorage.getItem("lastAnsweredIndex");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(lastIndexStr != null ? lastIndexStr : 0);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(props?.data?.is_favorite ?? false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    lastIndexStr != null ? lastIndexStr : 0
+  );
+  const [isFavoriteActive, setIsFavoriteActive] = useState(
+    props?.data?.is_favorite ?? false
+  );
   const [isForward, setIsForward] = useState(props?.data?.forward ?? false);
   const validator = (response) => {
     let status = true;
@@ -2811,7 +3196,8 @@ export default function SurveyQuestions({ ...props }) {
           response[i]?.value !== null &&
           typeof response[i]?.value !== "undefined" &&
           (typeof response[i]?.value !== "string" ||
-            (typeof response[i]?.value === "string" && response[i]?.value?.trim().length !== 0)))
+            (typeof response[i]?.value === "string" &&
+              response[i]?.value?.trim().length !== 0)))
       ) {
         status = true;
       } else {
@@ -2854,21 +3240,26 @@ export default function SurveyQuestions({ ...props }) {
       localStorage.removeItem("enabledActivities");
       localStorage.removeItem("lastAnsweredIndex");
     } else {
-      enqueueSnackbar(t("Some responses are missing. Please complete all required questions before submitting."), {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        t(
+          "Some responses are missing. Please complete all required questions before submitting."
+        ),
+        {
+          variant: "error",
+        }
+      );
     }
   };
   const onResponse = (response) => {
     parent.postMessage(
       response === null
         ? JSON.stringify({
-          static_data: {
-            is_favorite: isFavoriteActive,
-          },
-          ...(isForward && { forward: true }),
-          done: true,
-        })
+            static_data: {
+              is_favorite: isFavoriteActive,
+            },
+            ...(isForward && { forward: true }),
+            done: true,
+          })
         : JSON.stringify(response),
       "*"
     );
@@ -2876,11 +3267,16 @@ export default function SurveyQuestions({ ...props }) {
 
   const loadData = (statusVal: boolean) => {
     if (!!statusVal) {
-      const val = localStorage.getItem("activity-survey-" + (props.data?.activity?.id ?? ""));
+      const val = localStorage.getItem(
+        "activity-survey-" + (props.data?.activity?.id ?? "")
+      );
       setActivityVal(JSON.parse(val));
       setResponses(JSON.parse(val));
     } else {
-      localStorage.setItem("activity-survey-" + (props.data?.activity?.id ?? ""), "");
+      localStorage.setItem(
+        "activity-survey-" + (props.data?.activity?.id ?? ""),
+        ""
+      );
       setActivityVal([]);
       setResponses([]);
     }
@@ -2894,8 +3290,12 @@ export default function SurveyQuestions({ ...props }) {
     setCurrentQuestionIndex(lastIndexStr);
 
     if (
-      typeof localStorage.getItem("activity-survey-" + (props.data?.activity?.id ?? "")) !== "undefined" &&
-      (localStorage.getItem("activity-survey-" + (props.data?.activity?.id ?? ""))?.trim()?.length ?? 0) > 0
+      typeof localStorage.getItem(
+        "activity-survey-" + (props.data?.activity?.id ?? "")
+      ) !== "undefined" &&
+      (localStorage
+        .getItem("activity-survey-" + (props.data?.activity?.id ?? ""))
+        ?.trim()?.length ?? 0) > 0
     ) {
       setConfirm(true);
     } else {
@@ -2920,7 +3320,10 @@ export default function SurveyQuestions({ ...props }) {
     const processed = [];
     (activity.settings || []).map((question, index) => {
       if (!processed.includes(index)) {
-        if (activity.settings[index + 1]?.type === "matrix" || (index === 0 && question?.type === "matrix")) {
+        if (
+          activity.settings[index + 1]?.type === "matrix" ||
+          (index === 0 && question?.type === "matrix")
+        ) {
           const desc = question?.description ?? "";
           const options = question?.options ?? [];
           const questions = [];
@@ -2936,7 +3339,8 @@ export default function SurveyQuestions({ ...props }) {
               break;
             }
           }
-          const type = index === 0 && question?.type === "matrix" ? "text" : question.type;
+          const type =
+            index === 0 && question?.type === "matrix" ? "text" : question.type;
           settings.push({
             type,
             subType: "matrix",
@@ -2962,12 +3366,16 @@ export default function SurveyQuestions({ ...props }) {
         onClose={() => setConfirm(false)}
         open={confirm}
         confirmAction={loadData}
-        confirmationMsg={t("Would you like to resume this activity where you left off?")}
+        confirmationMsg={t(
+          "Would you like to resume this activity where you left off?"
+        )}
       />
 
       {activity !== null && settings !== null ? (
         <Section
-          onResponse={(response) => (response === null ? onResponse(null) : setResponses(response))}
+          onResponse={(response) =>
+            response === null ? onResponse(null) : setResponses(response)
+          }
           value={activity}
           activityVal={activityVal}
           settings={settings}
