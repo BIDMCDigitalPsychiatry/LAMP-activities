@@ -2441,7 +2441,7 @@ function Question({
           type="normal"
           mtValue={!supportsSidebar ? 0 : 5}
           onChange={onChange}
-          value={!!value ? normalVal : undefined}
+          value={!!normalVal ? normalVal : undefined}
           optionFeedback={optionFeedback}
         />
       );
