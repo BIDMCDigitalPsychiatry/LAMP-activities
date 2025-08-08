@@ -352,7 +352,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#f5f5f5",
     borderRadius: 10,
     marginBottom: 45,
-    "& p": { position: "absolute", bottom: 15, right: 0 },
+    "& p": { position: "relative", bottom: 1, right: 0 },
   },
   textArea: {
     borderRadius: "10px",
@@ -2063,11 +2063,14 @@ function Question({
 }) {
   const { t } = useTranslation();
   const [optionFeedback, setOptionFeedback] = useState("");
+  
+    const normalVal = typeof value === 'object' && value !== null ? value.value : value;
 
   useEffect(() => {
-    const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
+    // const cleanedValue = String(value).replace(/^"(.*)"$/, "$1");
+    const cleanedValue = typeof value === 'object' && value !== null ? value.value : value;
     if (cleanedValue) {
-      const selectedOption = options?.find((opt) => opt.value === value);
+      const selectedOption = options?.find((opt) => opt.value === cleanedValue);
       if (selectedOption?.feedback_text) {
         setOptionFeedback(selectedOption.feedback_text);
       } else {
@@ -2136,7 +2139,7 @@ function Question({
         <Rating
           options={options}
           onChange={onChange}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           optionFeedback={optionFeedback}
         />
       );
@@ -2148,7 +2151,7 @@ function Question({
           type="normal"
           mtValue={!supportsSidebar ? 0 : 5}
           onChange={onChange}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           optionFeedback={optionFeedback}
         />
       );
@@ -2162,7 +2165,7 @@ function Question({
         <RadioOption
           options={selectOptions}
           onChange={onChange}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           optionFeedback={optionFeedback}
         />
       );
@@ -2171,7 +2174,7 @@ function Question({
       component = (
         <ShortTextSection
           onChange={onChange}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           feedback={feedback}
           question={text}
           charLimit={SHORT_CHARACTER_LIMIT}
@@ -2183,7 +2186,7 @@ function Question({
         <TextSection
           onChange={onChange}
           charLimit={CHARACTER_LIMIT}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           feedback={feedback}
           question={text}
         />
@@ -2194,14 +2197,14 @@ function Question({
         <TimeSelection
           onChange={onChange}
           options={options}
-          value={!!value ? value.value : undefined}
+          value={!!value ? normalVal : undefined}
           question={text}
         />
       );
       break;
     case "multiselect":
       component = (
-        <MultiSelectResponse options={options} onChange={onChange} value={!!value ? value.value : undefined} />
+        <MultiSelectResponse options={options} onChange={onChange} value={!!value ? normalVal : undefined} />
       );
       break;
   }
