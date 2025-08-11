@@ -340,7 +340,7 @@ class Recorder extends Component<AppProps, AppState> {
           <Alert severity="error" className="mT25">
             {i18n.t("ERROR_MAX_RECORD_TIME_REACHED")}
           </Alert>
-        ) : (
+        ) : ( this.props.data?.activity?.settings?.length > 0 &&
           <Alert severity="info" className="mT25 information">
             {i18n.t("INFO_MAX_RECORD_TIME_REACHED")}
           </Alert>
@@ -424,7 +424,7 @@ class Recorder extends Component<AppProps, AppState> {
               </div>
             ) : null}
 
-            {!medianotFound ? (
+            {this.props.questions?.length > 0 && !medianotFound ? (
               <div className="record_section">
                 <div className="duration_section">
                   <div className="audio_section">
@@ -565,7 +565,7 @@ class Recorder extends Component<AppProps, AppState> {
                     {i18n.t("CLEAR_BTN")}
                   </button>
                   <br></br>
-                  {this.state.index + 1 === this.props.questions?.length || !this.props.questions ? (
+                  {this.state.index + 1 === this.props.questions?.length ? (
                     <button
                       onClick={() =>
                         this.props.handleSubmit(this.state.recordedData)
