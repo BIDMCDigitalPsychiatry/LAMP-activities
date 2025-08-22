@@ -33,6 +33,7 @@ const AudioRecorder = ({ ...props }) => {
       mediaRecorderRef.current.ondataavailable = handleDataAvailable;
       mediaRecorderRef.current.onstop = handleStopRecording;
       mediaRecorderRef.current.start();
+      setIsTimeOut(false);    
       setIsRecording(true);
       audioChunksRef.current = []; // Clear any previous chunks
     } catch (err) {
@@ -46,6 +47,8 @@ const AudioRecorder = ({ ...props }) => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
+    setIsTimeOut(true);    
+    setStartTimer(30);
   };
 
   // Handle available data from recorder
@@ -76,7 +79,7 @@ const AudioRecorder = ({ ...props }) => {
   const passTimerUpdate = (timerValue: number) => {
     if (timerValue === 1) {
       setTimeout(() => {
-        // stopListening();
+        stopRecording();
         setIsTimeOut(true);
       }, 1000);
     } else {
