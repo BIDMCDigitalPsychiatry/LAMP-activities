@@ -10,82 +10,76 @@ import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
 import { Timer } from "./common/Timer";
-import { getStringAfterWord } from "src/functions";
-import AlertModal from "./uielements/AlertModal";
 
 const AudioRecorder = ({ ...props }) => {
   const { handleRecordComplete } = props;
-  const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
-  const [recordedText, setRecordedText] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(30);
-  const [showAlert, setShowAlert] = useState(false);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
-  const [transcript, setTranscript] = useState(''); 
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
-  useEffect(()=>{
-    ;(window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({})
-  },[])
-  // Initialize speech recognition
   useEffect(() => {
-    const SpeechRecognition =
-      window.SpeechRecognition || (window as any).webkitSpeechRecognition || (window as any).mozSpeechRecognition ||
-      (window as any).msSpeechRecognition || (window as any).oSpeechRecognition;
+    (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
+  }, []);
 
-    if (!SpeechRecognition) {
-      alert(i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED"));
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US"; // Set language to English
-    recognition.continuous = true; // Keep recognition going even after pauses
-    recognition.interimResults = true; // Capture interim results
-
-    // When speech recognition returns a result
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const latestTranscript = Array.from(event.results)
-        .map((result: SpeechRecognitionResult) => result[0].transcript)
-        .join(" ");
-      setTranscript(latestTranscript);
-    };
-
-    // Handle errors
-    recognition.onerror = (event) => {
-      alert(i18n.t("PERMISSION_DENIED"));
-    };
-
-    // Start/stop listening based on `isListening` state
-    if (isListening) {
-      recognition.start();
-    } else {
-      recognition.stop();
-    }
-
-    return () => {
-      // Cleanup when component unmounts
-      recognition.stop();
-    };
-  }, [isListening]);
-
-  const startListening = () => {
-      setIsListening(true);
-      setTranscript("")
+  // Start recording
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = handleDataAvailable;
+      mediaRecorderRef.current.onstop = handleStopRecording;
+      mediaRecorderRef.current.start();
       setIsTimeOut(false);    
+      setIsRecording(true);
+      audioChunksRef.current = []; // Clear any previous chunks
+    } catch (err) {
+      alert(i18n.t("PERMISSION_DENIED"));
+    }
   };
 
-  const stopListening = () => {
-      setIsListening(false);
-      setIsTimeOut(true);
-      setStartTimer(30);
-      handleRecordComplete(getStringAfterWord(recordedText));
+  // Stop recording
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+    setIsTimeOut(true);    
+    setStartTimer(30);
+  };
+
+  // Handle available data from recorder
+  const handleDataAvailable = (event: { data: any }) => {
+    audioChunksRef.current.push(event.data);
+  };
+
+  // Handle the stop event and convert audio to base64
+  const handleStopRecording = async () => {
+    const blob = new Blob(audioChunksRef.current, { type: "audio/*" });
+    convertBlobToBase64(blob);
+  };
+
+  // Convert the Blob into a base64 string
+  const convertBlobToBase64 = (blob: Blob) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        const base64String = (reader.result as string).split(",")[1]; // Get base64 string from Data URL
+        handleRecordComplete(base64String);
+      } else {
+        handleRecordComplete(null);
+      }
+    };
+    reader.readAsDataURL(blob);
   };
 
   const passTimerUpdate = (timerValue: number) => {
     if (timerValue === 1) {
       setTimeout(() => {
-        stopListening();
+        stopRecording();
         setIsTimeOut(true);
       }, 1000);
     } else {
@@ -93,20 +87,20 @@ const AudioRecorder = ({ ...props }) => {
     }
   };
 
-  useEffect(()=>{
-    setRecordedText(transcript);
-  },[transcript])
-
   return (
     <div>
       <h5>{i18n.t("INSTRUCTION_TEXT")}</h5>
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
-            className={isListening ? "microphone-icon microphone-icon-dissable" : "microphone-icon cursor-pointer"}
+            className={
+              isRecording
+                ? "microphone-icon microphone-icon-dissable"
+                : "microphone-icon cursor-pointer"
+            }
             ref={microphoneRef}
             onClick={(e) => {
-              startListening();
+              startRecording();
             }}
           >
             <Microphone />
@@ -119,16 +113,15 @@ const AudioRecorder = ({ ...props }) => {
             />
           ) : null}
           <div className="microphone-status">
-            {isListening ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
+            {isRecording ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
           </div>
-          {isListening && (
+          {isRecording && (
             <>
               <Button
                 className="btn-cancel"
                 variant="primary"
                 onClick={(e) => {
-                  setIsListening(false);
-                  setTranscript("");
+                  setIsRecording(false);
                   setIsTimeOut(true);
                   setStartTimer(30);
                 }}
@@ -139,11 +132,12 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 className="btn-stop"
                 onClick={(e) => {
-                  e.stopPropagation();  
-                  if(recordedText==''){
-                    setShowAlert(true)
-                  }           
-                  else {stopListening()}
+                  e.stopPropagation();
+                  // if(recordedText==''){
+                  //   setShowAlert(true)
+                  // }
+                  // else {stopListening()}
+                  stopRecording();
                 }}
               >
                 {i18n.t("DONE")}
@@ -151,11 +145,11 @@ const AudioRecorder = ({ ...props }) => {
             </>
           )}
         </div>
-      </div>  
-      <AlertModal
+      </div>
+      {/* <AlertModal
       show={showAlert}
       close={()=>setShowAlert(false)}
-      />    
+      />     */}
     </div>
   );
 };

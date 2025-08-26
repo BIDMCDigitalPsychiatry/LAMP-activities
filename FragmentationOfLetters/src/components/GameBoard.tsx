@@ -11,13 +11,15 @@ import i18n from "src/i18n";
 import AudioRecorder from "./AudioRecorder";
 import InfoModal from "./uielements/InfoModal";
 import { createLetterImage, fragmentImage } from "src/utils/FragmentationUtils";
-import { checkTextInArray, getMaxValue, getSequence } from "src/functions";
+import { getMaxValue, getSequence } from "src/functions";
 
 const GameBoard = ({ ...props }: any) => {
   const [showModalInfo, setShowModalInfo] = useState(false);
   const startingFragmentation = parseInt(
     props?.startingFragmentation?.split("%")[0]
   );
+  const totalLevels = 10; // Total levels in the game
+  const [level, setLevel] = useState(0); // Current level
   const [gameStarted, setGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,6 @@ const GameBoard = ({ ...props }: any) => {
   const [routes, setRoutes] = useState<any>([]);
   const startTime = new Date().getTime();
   const [timeTaken, setTimeTaken] = useState(startTime);
-  const [falseCount, setFalseCount] = useState(0);
 
   useEffect(() => {
     if (!gameStarted) {
@@ -45,8 +46,6 @@ const GameBoard = ({ ...props }: any) => {
   }, [props.clickBack, props.isForwardButton]);
 
   const clickBack = () => {
-    const maxFragmentation = getMaxValue(routes, "level");
-    const sequence = getSequence(routes);
     const route = { type: "manual_exit", value: true };
     routes.push(route);
     parent.postMessage(
@@ -54,13 +53,11 @@ const GameBoard = ({ ...props }: any) => {
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation: maxFragmentation + "%",
-          sequence: sequence,
           is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         ...(props?.forward && { forward: false }),
-        clickBack:true,
+        clickBack: true,
       }),
       "*"
     );
@@ -96,17 +93,16 @@ const GameBoard = ({ ...props }: any) => {
   const resetStates = () => {
     setCurrentLetter("");
     setGameStarted(false);
+    setLevel(0);
+    setFragmentation(startingFragmentation);
+    setRoutes([]);
   };
 
   const sendGameResult = () => {
-    const maxFragmentation = getMaxValue(routes, "level");
-    const sequence = getSequence(routes);
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
         static_data: Object.assign({
-          best_correct_fragmentation: maxFragmentation + "%",
-          sequence: sequence,
           is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
@@ -118,12 +114,6 @@ const GameBoard = ({ ...props }: any) => {
     );
     resetStates();
   };
-
-  useEffect(() => {
-    if (falseCount == 2) {
-      sendGameResult();
-    }
-  }, [falseCount]);
 
   const generateNewLetter = () => {
     if (canvasRef.current != null) {
@@ -138,34 +128,34 @@ const GameBoard = ({ ...props }: any) => {
     }
   };
 
-  const handleRecordComplete = (text: string) => {
-    let res = false;
-    if (
-      text.toLowerCase().includes(currentLetter.toLowerCase()) ||
-      checkTextInArray(text, currentLetter)
-    ) {
-      setFragmentation(fragmentation + 10);
-      res = true;
-    } else {
-      setFalseCount(falseCount + 1);
-      setFragmentation(fragmentation - 5);
+  useEffect(() => {
+    if (routes.length === totalLevels) {
+      sendGameResult();
     }
+  }, [routes]);
+
+  const handleRecordComplete = (audioText: string) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
       item: currentLetter,
       level: fragmentation,
-      type: res,
-      value: null,
+      type: null,
+      value: `data:audio/mpeg;base64,${audioText}`,
     };
     setRoutes([...routes, route]);
     setTimeTaken(new Date().getTime());
     setTimeout(() => {
-      generateNewLetter();
+      if (level + 1 <= totalLevels) {
+        setLevel(level + 1);
+        setFragmentation(fragmentation + 10); // Increase fragmentation by 10% for next level
+        generateNewLetter();
+      }
     }, 100);
   };
 
   const handleClose = () => {
     setShowModalInfo(false);
+    setLevel(1);
     setGameStarted(true);
   };
   return (
