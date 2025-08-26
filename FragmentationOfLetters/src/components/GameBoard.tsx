@@ -128,6 +128,12 @@ const GameBoard = ({ ...props }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (routes.length === totalLevels) {
+      sendGameResult();
+    }
+  }, [routes]);
+
   const handleRecordComplete = (audioText: string) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
@@ -139,12 +145,10 @@ const GameBoard = ({ ...props }: any) => {
     setRoutes([...routes, route]);
     setTimeTaken(new Date().getTime());
     setTimeout(() => {
-      if (level < totalLevels) {
+      if (level + 1 <= totalLevels) {
         setLevel(level + 1);
         setFragmentation(fragmentation + 10); // Increase fragmentation by 10% for next level
         generateNewLetter();
-      } else {
-        sendGameResult();
       }
     }, 100);
   };
