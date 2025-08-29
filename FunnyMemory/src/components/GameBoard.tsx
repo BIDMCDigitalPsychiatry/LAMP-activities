@@ -8,16 +8,13 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  checkIsStringInArray,
   getMonthIndex,
   getRandomNumbers,
   isTimestamp,
-  replaceDuplicatesWithEmptyString,
   shuffleArray,
-  stringCleanUp,
 } from "src/functions";
 import i18n from "src/i18n";
-import { getDataForIndex, getIdentificationList } from "./data";
+import { getDataForIndex } from "./data";
 import AudioRecorder from "./AudioRecorder";
 import Questions from "./Questions";
 import InfoModal from "./uielements/InfoModal";
@@ -44,16 +41,14 @@ const GameBoard = ({ ...props }: any) => {
   const numberOfTrials = props?.numberOfTrials;
   const delayBeforeRecall = props?.delayBeforeRecall;
   const [routes, setRoutes] = useState<any>([]);
-  const [identificationList, setIdentificationList] = useState<any>([]);
-  const [pairsIdentified, setPairsIdentified] = useState(0);
-  const [itemsIdentified, setItemsIdentified] = useState(0);
-  const [itemRecognized, setItemRecognized] = useState(0);
   const [correctChoice, setCorrectChoice] = useState(0);
   const [data, setData] = useState<any>({});
   const [timeTakenForTrial, setTimeTakenForTrial] = useState(startTime.current);
   const [timeTakenForRecall, setTimeTakenForRecall] = useState(0);
   const [timeForRecognition1, setTimeForRecognition1] = useState(0);
   const timeForRecognition2Ref = useRef(0);
+  const [recognitionPhase2Completed, setRecognitionPhase2Completed] =
+    useState(false);
 
   useEffect(() => {
     if (trial === 0) {
@@ -69,12 +64,6 @@ const GameBoard = ({ ...props }: any) => {
   }, [currentIndex]);
 
   useEffect(() => {
-    if (randomNumberArray && randomNumberArray.current.length > 0) {
-      setIdentificationList(getIdentificationList(randomNumberArray.current));
-    }
-  }, [randomNumberArray]);
-
-  useEffect(() => {
     if (props.clickBack === true) {
       clickBack();
     }
@@ -83,6 +72,7 @@ const GameBoard = ({ ...props }: any) => {
     }
   }, [props.clickBack, props.isForwardButton]);
 
+  //Function to handle back button click
   const clickBack = () => {
     const route = { type: "manual_exit", value: true };
     routes.push(route);
@@ -107,9 +97,6 @@ const GameBoard = ({ ...props }: any) => {
           timeForRecognition2: isTimestamp(timeForRecognition2Ref.current)
             ? 0
             : timeForRecognition2Ref.current,
-          number_of_correct_pairs_recalled: pairsIdentified,
-          number_of_correct_items_recalled: itemsIdentified,
-          number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
           total_number_of_pairings_listed: currentIndex + 1,
           is_favorite: props?.isFavoriteActive,
@@ -122,7 +109,7 @@ const GameBoard = ({ ...props }: any) => {
     );
     resetStates();
   };
-
+  //Function to handle forward button click for group activity
   const handleForwardClick = () => {
     const route = { type: "manual_exit", value: true };
     routes.push(route);
@@ -147,9 +134,6 @@ const GameBoard = ({ ...props }: any) => {
           timeForRecognition2: isTimestamp(timeForRecognition2Ref.current)
             ? 0
             : timeForRecognition2Ref.current,
-          number_of_correct_pairs_recalled: pairsIdentified,
-          number_of_correct_items_recalled: itemsIdentified,
-          number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
           total_number_of_pairings_listed: currentIndex + 1,
           is_favorite: props?.isFavoriteActive,
@@ -161,6 +145,8 @@ const GameBoard = ({ ...props }: any) => {
     );
     resetStates();
   };
+
+  //Function to reset states
   const resetStates = () => {
     setTrial(0);
     setPhase("");
@@ -169,168 +155,21 @@ const GameBoard = ({ ...props }: any) => {
     setCurrentIndex(-1);
   };
 
-  const checkImageIdentified = (text: string) => {
-    if (phase === "recall") {
-      let valueExists = false;
-      for (let i = 0; i < identificationList.length; i++) {
-        for (let j = 0; j < identificationList[i].length; j++) {
-          if (stringCleanUp(identificationList[i][j]) === stringCleanUp(text)) {
-            valueExists = true;
-            break;
-          }
-        }
-      }
-      return valueExists;
-    } else {
-      const isEqual = data.images.find(
-        (word: string) => stringCleanUp(word) === stringCleanUp(text)
-      );
-      if (isEqual) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  };
-
-  const validateStrings = (array: string[]) => {
-    let found = false;
-    const arr = array.map((str: string) => {
-      if (!found) {
-        if (
-          data.missingItem.find(
-            (itm: string) => stringCleanUp(itm) === stringCleanUp(str)
-          )
-        ) {
-          found = true;
-        }
-        return str;
-      } else {
-        return "";
-      }
-    });
-    return arr;
-  };
-
-  const saveResult = (recorededText: any[], audio: string) => {
-    let tempRoute: any = [];
-    if (recorededText && recorededText.length > 0) {
-      recorededText.length = 2;
-      const validatedArray = validateStrings(recorededText);
-      validatedArray.map((word, index) => {
-        const route = {
-          duration: new Date().getTime() - timeTaken,
-          item: randomNumberArray.current[currentIndex],
-          level: phase,
-          type: checkImageIdentified(word),
-          value: index === recorededText?.length - 1 ? audio : null,
-        };
-        tempRoute.push(route);
-      });
-    }
-    setRoutes(routes.concat(tempRoute));
-  };
-
-  const handleRecall = (textArray: string[][], audio: string) => {
-    let tempRoute: any = [];
-    let itemCount = 0;
-    let pairCount = 0;
-    if (textArray && textArray.length > 0) {
-      textArray.forEach((arr: any[], index) => {
-        if (arr && arr.length > 0) {
-          let firstIndex: number[] = [];
-          let secondIndex: number[] = [];
-          replaceDuplicatesWithEmptyString(arr).forEach((str: string, ind) => {
-            let imageIdentified = false;
-            for (let i = 0; i < identificationList.length; i++) {
-              for (let j = 0; j < identificationList[i].length; j++) {
-                if (
-                  stringCleanUp(identificationList[i][j]) === stringCleanUp(str)
-                ) {
-                  if (firstIndex.length > 0) {
-                    if (
-                      i === firstIndex[0] &&
-                      (j === 0 || secondIndex[0] === 0)
-                    ) {
-                      imageIdentified = true;
-                    } else {
-                      imageIdentified = false;
-                    }
-                  } else {
-                    imageIdentified = true;
-                  }
-                  firstIndex.push(i);
-                  secondIndex.push(j);
-                  break;
-                }
-              }
-            }
-            const route = {
-              duration: new Date().getTime() - timeTaken,
-              item: null,
-              level: phase,
-              type: imageIdentified,
-              value:
-                index === textArray.length - 1 &&
-                ind === replaceDuplicatesWithEmptyString(arr).length - 1
-                  ? audio
-                  : null,
-            };
-            tempRoute.push(route);
-            if (route.type === true) {
-              itemCount++;
-            }
-          });
-          if (firstIndex[0] === firstIndex[1] && secondIndex.includes(0)) {
-            pairCount++;
-          }
-        }
-      });
-      setPairsIdentified(pairCount);
-      setItemsIdentified(itemCount);
-      setRoutes(routes.concat(tempRoute));
-    }
-    setPhase("recognition1");
-    setTimeTaken(new Date().getTime());
-    setTimeTakenForRecall(new Date().getTime() - timeTakenForRecall);
-    setTimeForRecognition1(new Date().getTime());
-    setShowAudioRecorder(false);
-    setTimeout(() => {
-      setCurrentIndex(0);
-      setShowImage(true);
-    }, 1000);
-  };
-
-  const handleRecognition1 = (text: string, audio: string) => {
-    setTimeTaken(new Date().getTime());
+  //Function to save result
+  const saveResult = (audio: string) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
       item: randomNumberArray.current[currentIndex],
       level: phase,
-      type: checkIsStringInArray(data.missingItem, text) ? true : false,
-      value: audio,
+      type: null,
+      value: `data:audio/mpeg;base64,${audio}`,
     };
-    if (route.type === true) {
-      setItemRecognized(itemRecognized + 1);
-    }
-    setRoutes([...routes, route]);
-
-    setShowAudioRecorder(false);
-    if (currentIndex < number_of_images_in_trial - 1) {
-      setData({});
-      setCurrentIndex(currentIndex + 1);
-      setShowImage(true);
-    } else {
-      setPhase("recognition2");
-      timeForRecognition2Ref.current = new Date().getTime();
-      setTimeForRecognition1(new Date().getTime() - timeForRecognition1);
-      setCurrentIndex(0);
-      setTimeTaken(new Date().getTime());
-    }
+    setRoutes(routes.concat(route));
   };
 
-  const handleRecordComplete = (text: any[], audio: string) => {
-    saveResult(text, audio);
+  //Function to handle audio recording complete
+  const handleRecordComplete = (audio: string) => {
+    saveResult(audio);
     setTimeTaken(new Date().getTime());
     if (currentIndex < number_of_images_in_trial - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -339,21 +178,35 @@ const GameBoard = ({ ...props }: any) => {
       setShowAudioRecorder(false);
     } else {
       setShowAudioRecorder(false);
-      if (trial === numberOfTrials && phase.includes("Trial")) {
-        setTimeTakenForTrial(new Date().getTime() - timeTakenForTrial);
-        setShowQuestions(true);
-        setPhase("questions");
-      } else {
-        setTimeout(() => {
-          setCurrentIndex(0);
-          setShowImage(true);
-        }, 1000);
-        setTrial(trial + 1);
-        setPhase("Trial" + (trial + 1).toString());
+      if (phase.includes("Trial")) {
+        if (trial === numberOfTrials) {
+          setTimeTakenForTrial(new Date().getTime() - timeTakenForTrial);
+          setShowQuestions(true);
+          setPhase("questions");
+        } else {
+          setTimeout(() => {
+            setCurrentIndex(0);
+            setShowImage(true);
+          }, 1000);
+          setTrial(trial + 1);
+          setPhase("Trial" + (trial + 1).toString());
+        }
+      } else if (phase === "recall") {
+        setPhase("recognition1");
+        setTimeForRecognition1(new Date().getTime());
+        setTimeTakenForRecall(new Date().getTime() - timeTakenForRecall);
+        setCurrentIndex(0);
+        setShowImage(true);
+      } else if (phase === "recognition1") {
+        setPhase("recognition2");
+        timeForRecognition2Ref.current = new Date().getTime();
+        setTimeForRecognition1(new Date().getTime() - timeForRecognition1);
+        setCurrentIndex(0);
       }
     }
   };
 
+  //Function to handle modal close
   const handleClose = () => {
     setShowModalInfo(false);
     setTrial(1);
@@ -361,7 +214,8 @@ const GameBoard = ({ ...props }: any) => {
     setShowImage(true);
   };
 
-  const sendGameResult = () => {
+  //Function to send gane data to parent
+  const sendGameResult = () => {    
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime.current,
@@ -374,9 +228,6 @@ const GameBoard = ({ ...props }: any) => {
           timeTakenForRecall: timeTakenForRecall,
           timeForRecognition1: timeForRecognition1,
           timeForRecognition2: timeForRecognition2Ref.current,
-          number_of_correct_pairs_recalled: pairsIdentified,
-          number_of_correct_items_recalled: itemsIdentified,
-          number_of_correct_recognized: itemRecognized,
           number_of_correct_force_choice: correctChoice,
           total_number_of_pairings_listed: currentIndex + 1,
           is_favorite: props?.isFavoriteActive,
@@ -391,6 +242,21 @@ const GameBoard = ({ ...props }: any) => {
     resetStates();
   };
 
+  useEffect(() => {
+    if (
+      recognitionPhase2Completed &&
+      currentIndex === number_of_images_in_trial - 1
+    ) {
+      const updatedTime = new Date().getTime() - timeForRecognition2Ref.current;
+      timeForRecognition2Ref.current = updatedTime;
+      setTimeout(() => {
+        sendGameResult();
+        setTrial(0);
+      }, 300);
+    }
+  }, [recognitionPhase2Completed, currentIndex]);
+
+  //funtion to handle Image selection in recognition phase 2
   const handleImageSelection = (img: any) => {
     const route = {
       duration: new Date().getTime() - timeTaken,
@@ -408,14 +274,11 @@ const GameBoard = ({ ...props }: any) => {
       setData({});
       setTimeTaken(new Date().getTime());
     } else {
-      const updatedTime = new Date().getTime() - timeForRecognition2Ref.current;
-      timeForRecognition2Ref.current = updatedTime;
-      setTimeout(() => {
-        sendGameResult();
-        setTrial(0);
-      }, 300);
+      setRecognitionPhase2Completed(true);
     }
   };
+
+  //Function to handle render content based on phase
   const renderContent = () => {
     if (showImage) {
       return (
@@ -433,8 +296,6 @@ const GameBoard = ({ ...props }: any) => {
         <AudioRecorder
           handleRecordComplete={handleRecordComplete}
           phase={phase}
-          handleRecall={handleRecall}
-          handleRecognition1={handleRecognition1}
           language={i18n.language}
         />
       );
@@ -495,6 +356,7 @@ const GameBoard = ({ ...props }: any) => {
               setShowQuestions(false);
               setShowAudioRecorder(true);
               setPhase("recall");
+              setTimeTakenForRecall(new Date().getTime());
             }, 1000);
           }}
         />
@@ -513,6 +375,8 @@ const GameBoard = ({ ...props }: any) => {
       return <></>;
     }
   };
+
+  //Function to get phase title
   const getPhaseTitle = () => {
     if (phase.includes("Trial") && trial > 0) {
       return i18n.t("TRIAL") + " " + trial;

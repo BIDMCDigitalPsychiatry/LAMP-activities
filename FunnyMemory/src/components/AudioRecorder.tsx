@@ -6,39 +6,24 @@
  * @copyright (c) 2024, ZCO
  */
 import React, { useEffect, useRef, useState } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
 import { Timer } from "./common/Timer";
 
 const AudioRecorder = ({ ...props }) => {
-  const { phase } = props;
-  const { transcript, resetTranscript } = useSpeechRecognition();
-  const [isListening, setIsListening] = useState(false);
+  const { phase } = props;  
   const microphoneRef = useRef(null);
   const [isTimeOut, setIsTimeOut] = useState(true);
-  const [startTimer, setStartTimer] = useState(45);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
-  const recordedTextRef = useRef("");
-
+  const [startTimer, setStartTimer] = useState(45);  
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
   useEffect(() => {
     (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
   }, []);
-
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return (
-      <div className="mircophone-container">
-        {i18n.t("SPEECH_RECOGNITION_NOT_SUPPORTED")}
-      </div>
-    );
-  }
 
   const getTextForPhase = () => {
     if (phase === "recall") {
@@ -62,82 +47,61 @@ const AudioRecorder = ({ ...props }) => {
     }
   };
 
-  useEffect(() => {
-    if (transcript && transcript !== "") {
-      recordedTextRef.current = transcript;
-    }
-  }, [transcript]);
-  const handleListening = async () => {
+  // Function to handle start recording
+  const startRecording = async () => {
     try {
-      setIsListening(true);
-      setIsTimeOut(false);
-
-      SpeechRecognition.startListening({ continuous: true });
-
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      setMediaRecorder(recorder);
-
-      const chunks: Blob[] = [];
-
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/mpeg" });
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Audio = reader.result?.toString() || null;
-
-          const processAudio = (base64Audio: string | null) => {
-            const currentText = recordedTextRef.current;
-            if (phase === "recall") {
-              const textArray = currentText.split("next");
-              const finalArray: string[][] = textArray.map((text) =>
-                text.split("and")
-              );
-              props.handleRecall(finalArray, base64Audio);
-            } else if (phase === "recognition1") {
-              props.handleRecognition1(currentText, base64Audio);
-            } else {
-              props.handleRecordComplete(currentText.split("and"), base64Audio);
-            }
-          };
-
-          processAudio(base64Audio);
-        };
-
-        reader.readAsDataURL(blob); // Convert blob to Base64
-      };
-
-      recorder.start();
-    } catch (error: any) {
-      console.error("Microphone access denied or failed", error);
-      setIsListening(false);
-      setIsTimeOut(true);
-
-      // Show alert or custom UI message
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = handleDataAvailable;
+      setIsTimeOut(false);
+      mediaRecorderRef.current.onstop = handleStopRecording;
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+      audioChunksRef.current = [];
+    } catch (err) {
       alert(i18n.t("PERMISSION_DENIED"));
-
-      // Optional: You can also show a UI banner or toast instead of alert
     }
   };
 
-  const stopHandle = () => {
-    setIsListening(false);
-    SpeechRecognition.stopListening();
-
-    if (mediaRecorder) {
-      mediaRecorder.stop();
+  // Function to handle stop recording
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
     }
+    setIsTimeOut(true);
+    setStartTimer(30);
+  };
 
-    resetTranscript();
+  // Function to handle data available event
+  const handleDataAvailable = (event: { data: any }) => {
+    audioChunksRef.current.push(event.data);
+  };
+
+  // Handle the stop event and convert audio to base64
+  const handleStopRecording = async () => {
+    const blob = new Blob(audioChunksRef.current, { type: "audio/*" });
+    convertBlobToBase64(blob);
+  };
+
+  // Convert the Blob into a base64 string
+  const convertBlobToBase64 = (blob: Blob) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        const base64String = (reader.result as string).split(",")[1];
+        props.handleRecordComplete(base64String);
+      } else {
+        props.handleRecordComplete(null);
+      }
+    };
+    reader.readAsDataURL(blob);
   };
 
   const passTimerUpdate = (timerValue: number) => {
     if (timerValue === 1) {
       setTimeout(() => {
-        stopHandle();
+        stopRecording();
         setIsTimeOut(true);
       }, 1000);
     } else {
@@ -152,14 +116,14 @@ const AudioRecorder = ({ ...props }) => {
         <div className="mircophone-container">
           <div
             className={
-              isListening
+              isRecording
                 ? "microphone-icon microphone-icon-dissable"
                 : "microphone-icon cursor-pointer"
             }
             ref={microphoneRef}
             onClick={(e) => {
               e.stopPropagation();
-              handleListening();
+              startRecording();
             }}
           >
             <Microphone />
@@ -172,17 +136,15 @@ const AudioRecorder = ({ ...props }) => {
             />
           ) : null}
           <div className="microphone-status">
-            {isListening ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
+            {isRecording ? i18n.t("RECORDING") : i18n.t("START_RECORDING")}
           </div>
-          {isListening && (
+          {isRecording && (
             <>
               <Button
                 className="btn-cancel"
                 variant="primary"
                 onClick={(e) => {
-                  setIsListening(false);
-                  SpeechRecognition.stopListening();
-                  resetTranscript();
+                  setIsRecording(false);
                   setIsTimeOut(true);
                   setStartTimer(45);
                 }}
@@ -194,7 +156,7 @@ const AudioRecorder = ({ ...props }) => {
                 className="btn-stop"
                 onClick={(e) => {
                   e.stopPropagation();
-                  stopHandle();
+                  stopRecording();
                 }}
               >
                 {i18n.t("DONE")}
