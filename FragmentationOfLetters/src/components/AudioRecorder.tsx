@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2024, ZCO
  */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
@@ -16,23 +16,27 @@ const AudioRecorder = ({ ...props }) => {
   const microphoneRef = useRef(null);
   const [isTimeOut, setIsTimeOut] = useState(true);
   const [startTimer, setStartTimer] = useState(30);
-  i18n.changeLanguage(!props.language ? "en-US" : props.language);
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const mediaStreamRef = useRef<MediaStream | null>(null); 
 
-  useEffect(() => {
-    (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
-  }, []);
+  i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
-  // Start recording
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      let stream = mediaStreamRef.current;
+
+      if (!stream || !stream.active) {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaStreamRef.current = stream;
+      }
+
       mediaRecorderRef.current = new MediaRecorder(stream);
       mediaRecorderRef.current.ondataavailable = handleDataAvailable;
       mediaRecorderRef.current.onstop = handleStopRecording;
       mediaRecorderRef.current.start();
+
       setIsTimeOut(false);    
       setIsRecording(true);
       audioChunksRef.current = []; // Clear any previous chunks
@@ -41,33 +45,29 @@ const AudioRecorder = ({ ...props }) => {
     }
   };
 
-  // Stop recording
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      setIsRecording(false);
     }
+    setIsRecording(false);
     setIsTimeOut(true);    
     setStartTimer(30);
   };
 
-  // Handle available data from recorder
   const handleDataAvailable = (event: { data: any }) => {
     audioChunksRef.current.push(event.data);
   };
 
-  // Handle the stop event and convert audio to base64
-  const handleStopRecording = async () => {
+  const handleStopRecording = () => {
     const blob = new Blob(audioChunksRef.current, { type: "audio/*" });
     convertBlobToBase64(blob);
   };
 
-  // Convert the Blob into a base64 string
   const convertBlobToBase64 = (blob: Blob) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (reader.result) {
-        const base64String = (reader.result as string).split(",")[1]; // Get base64 string from Data URL
+        const base64String = (reader.result as string).split(",")[1];
         handleRecordComplete(base64String);
       } else {
         handleRecordComplete(null);
@@ -80,7 +80,6 @@ const AudioRecorder = ({ ...props }) => {
     if (timerValue === 1) {
       setTimeout(() => {
         stopRecording();
-        setIsTimeOut(true);
       }, 1000);
     } else {
       setStartTimer(timerValue);
@@ -132,11 +131,7 @@ const AudioRecorder = ({ ...props }) => {
                 variant="primary"
                 className="btn-stop"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  // if(recordedText==''){
-                  //   setShowAlert(true)
-                  // }
-                  // else {stopListening()}
+                  e.stopPropagation();                  
                   stopRecording();
                 }}
               >
@@ -145,11 +140,7 @@ const AudioRecorder = ({ ...props }) => {
             </>
           )}
         </div>
-      </div>
-      {/* <AlertModal
-      show={showAlert}
-      close={()=>setShowAlert(false)}
-      />     */}
+      </div>      
     </div>
   );
 };

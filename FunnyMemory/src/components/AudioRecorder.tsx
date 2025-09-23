@@ -5,7 +5,7 @@
  * @author ZCO Engineer
  * @copyright (c) 2024, ZCO
  */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import i18n from "src/i18n";
 import Microphone from "./images/MicroPhoneImage";
 import { Button } from "react-bootstrap";
@@ -19,11 +19,9 @@ const AudioRecorder = ({ ...props }) => {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
-  useEffect(() => {
-    (window as any)?.webkit?.messageHandlers?.allowSpeech?.postMessage?.({});
-  }, []);
 
   const getTextForPhase = () => {
     if (phase === "recall") {
@@ -50,7 +48,12 @@ const AudioRecorder = ({ ...props }) => {
   // Function to handle start recording
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+       let stream = mediaStreamRef.current;
+
+      if (!stream || !stream.active) {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaStreamRef.current = stream;
+      }
       mediaRecorderRef.current = new MediaRecorder(stream);
       mediaRecorderRef.current.ondataavailable = handleDataAvailable;
       setIsTimeOut(false);
