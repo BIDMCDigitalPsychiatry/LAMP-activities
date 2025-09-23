@@ -26,8 +26,8 @@ const GameBoard = ({ ...props }: any) => {
   const [currentLetter, setCurrentLetter] = useState("");
   const [fragmentation, setFragmentation] = useState(startingFragmentation); // Starting fragmentation
   const [routes, setRoutes] = useState<any>([]);
-  const startTime = new Date().getTime();
-  const [timeTaken, setTimeTaken] = useState(startTime);
+  const startTime = React.useRef(new Date().getTime());
+  const [timeTaken, setTimeTaken] = useState(startTime.current);
 
   useEffect(() => {
     if (!gameStarted) {
@@ -51,7 +51,7 @@ const GameBoard = ({ ...props }: any) => {
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTime.current,
         static_data: Object.assign({
           is_favorite: props?.isFavoriteActive,
         }),
@@ -71,7 +71,7 @@ const GameBoard = ({ ...props }: any) => {
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTime.current,
         static_data: Object.assign({
           best_correct_fragmentation: maxFragmentation + "%",
           sequence: sequence,
@@ -101,7 +101,7 @@ const GameBoard = ({ ...props }: any) => {
   const sendGameResult = () => {
     parent.postMessage(
       JSON.stringify({
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTime.current,
         static_data: Object.assign({
           is_favorite: props?.isFavoriteActive,
         }),

@@ -215,7 +215,7 @@ const GameBoard = ({ ...props }: any) => {
   };
 
   //Function to send gane data to parent
-  const sendGameResult = () => {    
+  const sendGameResult = () => {   
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime.current,
