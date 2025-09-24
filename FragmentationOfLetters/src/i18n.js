@@ -15,7 +15,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "de-DE": {
@@ -31,7 +31,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
 
     },
   },
@@ -48,7 +48,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "es-ES": {
@@ -64,7 +64,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "fr-FR": {
@@ -80,7 +80,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "hi-IN": {
@@ -96,7 +96,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button.",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "it-IT": {
@@ -112,7 +112,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "ko-KR": {
@@ -128,7 +128,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "zh-CN": {
@@ -144,7 +144,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
   "zh-HK": {
@@ -160,7 +160,7 @@ const resources = {
       NOT_RECORDED_MESSAGE : "Sorry, we could not catch that! Please say it out louder.",
       QUESTION : "What letter is this image?",
       INSTRUCTION_TEXT : "Say the word ‘Letter’ before saying the actual letter shown, then press the Done button..",
-      PERMISSION_DENIED : "Microphone Permission not allowed"
+      PERMISSION_DENIED : "Microphone access denied. Please allow microphone permissions and try again."
     },
   },
 };

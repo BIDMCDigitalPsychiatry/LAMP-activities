@@ -20,6 +20,8 @@ const AudioRecorder = ({ ...props }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const mediaStreamRef = useRef<MediaStream | null>(null);
+  const [permissionNotGranted, setPermissionNotGranted] = useState(false);
+
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
 
@@ -62,7 +64,7 @@ const AudioRecorder = ({ ...props }) => {
       setIsRecording(true);
       audioChunksRef.current = [];
     } catch (err) {
-      alert(i18n.t("PERMISSION_DENIED"));
+      setPermissionNotGranted(true);
     }
   };
 
@@ -115,6 +117,7 @@ const AudioRecorder = ({ ...props }) => {
     <div className="box-game mt-30">
       <p>{getTextForPhase()}</p>
       <h6>{getInstructionText()}</h6>
+      {permissionNotGranted ? <h6 style={{"color" : "red"}}>{i18n.t("PERMISSION_DENIED")}</h6> :<></>}
       <div className="microphone-wrapper">
         <div className="mircophone-container">
           <div
