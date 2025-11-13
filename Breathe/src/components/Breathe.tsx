@@ -380,7 +380,7 @@ export default function Breathe({ ...props }) {
           </IconButton>
           <Typography variant="h5">
             {t("Breathe")}{" "}
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -395,7 +395,7 @@ export default function Breathe({ ...props }) {
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>

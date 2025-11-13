@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import "./voice_recording.css";
+import "./voice_recording_new.css";
 import Alert from "@material-ui/lab/Alert";
 import i18n from "./../../i18n";
 import ReactMarkdown from "react-markdown";

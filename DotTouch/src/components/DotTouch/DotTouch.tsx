@@ -461,7 +461,7 @@ class DotTouch extends React.Component<any, DotState> {
 
         <div className="heading">
           Trails B
-          <Tooltip
+          {/* <Tooltip
             title={
               this.state.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -476,7 +476,7 @@ class DotTouch extends React.Component<any, DotState> {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         <div className="game-board">
           <div>

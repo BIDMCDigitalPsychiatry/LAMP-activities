@@ -821,9 +821,8 @@ function RadioOption({ onChange, options, value, optionFeedback, ...props }) {
               </Box>
             }
             labelPlacement="end"
-            className={`${classes.radioLabel} ${
-              x.value === selectedValue ? "active" : ""
-            }`}
+            className={`${classes.radioLabel} ${x.value === selectedValue ? "active" : ""
+              }`}
           />
         ))}
       </RadioGroup>
@@ -840,12 +839,17 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
   const [hourSelectedIndex, setHourSelectedIndex] = React.useState(
     !!value ? currentValue[0] : "01"
   );
-  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(
-    !!value ? currentValue[1].substr(0, 2) : "00"
-  );
-  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(
-    !!value ? currentValue[1].substr(2, 3) ?? "" : "AM"
-  );
+  // const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(
+  //   !!value ? currentValue[1].substr(0, 2) : "00"
+  // );
+  // const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(
+  //   !!value ? currentValue[1].substr(2, 3) ?? "" : "AM"
+  // );
+  const minutePart = currentValue[1]?.substr(0, 2) || "00";
+  const ampmPart = currentValue[1]?.substr(2, 3) || "AM";
+
+  const [minuteSelectedIndex, setMinuteSelectedIndex] = React.useState(minutePart);
+  const [ampmSelectedIndex, setAmPmSelectedIndex] = React.useState(ampmPart);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -853,17 +857,17 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   }, [hourSelectedIndex, minuteSelectedIndex, ampmSelectedIndex]);
 
@@ -901,17 +905,17 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
       (hourSelectedIndex.length === 1
         ? "0" + hourSelectedIndex
         : hourSelectedIndex) +
-        ":" +
-        (minuteSelectedIndex.length === 1
-          ? "0" + minuteSelectedIndex
-          : minuteSelectedIndex) +
-        ((!!options?.timePattern && options?.timePattern === "standard") ||
+      ":" +
+      (minuteSelectedIndex.length === 1
+        ? "0" + minuteSelectedIndex
+        : minuteSelectedIndex) +
+      ((!!options?.timePattern && options?.timePattern === "standard") ||
         (Array.isArray(options) &&
           !!options[0] &&
           !!options[0]?.value &&
           options[0]?.value === "standard")
-          ? ampmSelectedIndex
-          : "")
+        ? ampmSelectedIndex
+        : "")
     );
   };
   const handleHoursClose = () => {
@@ -927,10 +931,10 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
 
   const hourvalues =
     (!!options?.timePattern && options?.timePattern === "standard") ||
-    (Array.isArray(options) &&
-      !!options[0] &&
-      !!options[0]?.value &&
-      options[0]?.value === "standard")
+      (Array.isArray(options) &&
+        !!options[0] &&
+        !!options[0]?.value &&
+        options[0]?.value === "standard")
       ? range(1, 13)
       : range(0, 24);
   const minutevalues = ["00", "15", "30", "45"];
@@ -1044,33 +1048,33 @@ function TimeSelection({ onChange, options, value, question, ...props }) {
               !!options[0] &&
               !!options[0]?.value &&
               options[0]?.value === "standard")) && (
-            <Grid item>
-              <List
-                component="nav"
-                className={classes.timeHours}
-                aria-label="Device settings"
-              >
-                <ListItem
-                  button
-                  aria-haspopup="true"
-                  aria-controls="lock-menu"
-                  onClick={handleClickAmPm}
+              <Grid item>
+                <List
+                  component="nav"
+                  className={classes.timeHours}
+                  aria-label="Device settings"
                 >
-                  <ListItemText secondary={ampmSelectedIndex} />
-                </ListItem>
-              </List>
-              <Menu
-                id="lock-menu"
-                classes={{ paper: classes.menuPaper }}
-                anchorEl={anchorE3}
-                keepMounted
-                open={Boolean(anchorE3)}
-                onClose={handleAmPmClose}
-              >
-                {ampm}
-              </Menu>
-            </Grid>
-          )}
+                  <ListItem
+                    button
+                    aria-haspopup="true"
+                    aria-controls="lock-menu"
+                    onClick={handleClickAmPm}
+                  >
+                    <ListItemText secondary={ampmSelectedIndex} />
+                  </ListItem>
+                </List>
+                <Menu
+                  id="lock-menu"
+                  classes={{ paper: classes.menuPaper }}
+                  anchorEl={anchorE3}
+                  keepMounted
+                  open={Boolean(anchorE3)}
+                  onClose={handleAmPmClose}
+                >
+                  {ampm}
+                </Menu>
+              </Grid>
+            )}
         </Grid>
       </Box>
     </>
@@ -1330,14 +1334,14 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
         valueLabelDisplay="auto"
         step={
           parseInt(options[0].value, 10) < 0 &&
-          parseInt(options[1].value ?? 10, 0) < 0
+            parseInt(options[1].value ?? 10, 0) < 0
             ? Math.abs(parseInt(options[0].value, 10)) +
-              parseInt(options[1]?.value ?? 0, 10)
+            parseInt(options[1]?.value ?? 0, 10)
             : parseInt(options[0].value, 10) < 0 &&
               parseInt(options[1].value ?? 10, 0) > 0
-            ? Math.abs(parseInt(options[0].value, 10)) -
+              ? Math.abs(parseInt(options[0].value, 10)) -
               parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[1]?.value ?? 0, 10) -
+              : parseInt(options[1]?.value ?? 0, 10) -
               parseInt(options[0].value, 10)
         }
         marks={options}
@@ -1374,7 +1378,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
             <ReactMarkdown
               children={
                 !!options[0].description &&
-                options[0].description.trim().length === 0
+                  options[0].description.trim().length === 0
                   ? options[0].value
                   : options[0].description
               }
@@ -1403,8 +1407,8 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
               <ReactMarkdown
                 children={
                   !!options[Math.ceil(options.length / 2) - 1].description &&
-                  options[Math.ceil(options.length / 2) - 1].description.trim()
-                    .length === 0
+                    options[Math.ceil(options.length / 2) - 1].description.trim()
+                      .length === 0
                     ? options[Math.ceil(options.length / 2) - 1].value
                     : options[Math.ceil(options.length / 2) - 1].description
                 }
@@ -1433,7 +1437,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
             <ReactMarkdown
               children={
                 !!options[options.length - 1].description &&
-                options[options.length - 1].description.trim().length === 0
+                  options[options.length - 1].description.trim().length === 0
                   ? options[options.length - 1].value
                   : options[options.length - 1].description
               }
@@ -1470,7 +1474,7 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
                   <ReactMarkdown
                     children={
                       !!options[0].feedback_text &&
-                      options[0].feedback_text.trim().length === 0
+                        options[0].feedback_text.trim().length === 0
                         ? options[0].value
                         : options[0].feedback_text
                     }
@@ -1492,9 +1496,9 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
           <Grid item>
             {options.length > 2 &&
               optionFeedback ===
-                options[Math.ceil(options.length / 2) - 1].feedback_text &&
+              options[Math.ceil(options.length / 2) - 1].feedback_text &&
               options[Math.ceil(options.length / 2) - 1].value ==
-                sliderValue && (
+              sliderValue && (
                 <Typography
                   variant="caption"
                   className={classes.textCaption}
@@ -1505,12 +1509,12 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
                     children={
                       !!options[Math.ceil(options.length / 2) - 1]
                         .feedback_text &&
-                      options[
-                        Math.ceil(options.length / 2) - 1
-                      ].feedback_text.trim().length === 0
+                        options[
+                          Math.ceil(options.length / 2) - 1
+                        ].feedback_text.trim().length === 0
                         ? options[Math.ceil(options.length / 2) - 1].value
                         : options[Math.ceil(options.length / 2) - 1]
-                            .feedback_text
+                          .feedback_text
                     }
                     skipHtml={false}
                     plugins={[gfm, emoji]}
@@ -1539,8 +1543,8 @@ function Rating({ onChange, options, value, optionFeedback, ...props }) {
                   <ReactMarkdown
                     children={
                       !!options[options.length - 1].feedback_text &&
-                      options[options.length - 1].feedback_text.trim()
-                        .length === 0
+                        options[options.length - 1].feedback_text.trim()
+                          .length === 0
                         ? options[options.length - 1].value
                         : options[options.length - 1].feedback_text
                     }
@@ -1636,8 +1640,8 @@ function Matrix({
       parseInt(a.value, 10) > parseInt(b.value, 10)
         ? 1
         : parseInt(a.value, 10) < parseInt(b.value, 10)
-        ? -1
-        : 0
+          ? -1
+          : 0
     );
   };
 
@@ -1755,7 +1759,7 @@ function Matrix({
                                   <ReactMarkdown
                                     children={
                                       (x.description || "").length > 0 &&
-                                      (x.value || "").length > 0
+                                        (x.value || "").length > 0
                                         ? `(${t(x.value?.toString())})`
                                         : `${t(x.value?.toString())}`
                                     }
@@ -1806,10 +1810,10 @@ function Matrix({
                             />
                           </TableCell>
                           {Array.isArray(x.options) &&
-                          (x.options || []).length > 0 ? (
+                            (x.options || []).length > 0 ? (
                             x.type === "list" ||
-                            x.type === "boolean" ||
-                            x.type === "likert" ? (
+                              x.type === "boolean" ||
+                              x.type === "likert" ? (
                               (x.options || []).map((op, k) => (
                                 <TableCell className={classes.textCenter}>
                                   <FormControlLabel
@@ -1822,7 +1826,7 @@ function Matrix({
                                         disableRipple
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         color="default"
                                         size="medium"
@@ -1877,7 +1881,7 @@ function Matrix({
                                         className={classes.mradioroot}
                                         checked={csvParse(
                                           selectedValue[idx + qindex]?.value ||
-                                            []
+                                          []
                                         ).includes(op.value)}
                                         onClick={() => {
                                           let values = csvParse(
@@ -1968,7 +1972,7 @@ function Matrix({
                                   optionFeedback={
                                     !!selectedValue[idx + qindex]?.feedback_text
                                       ? selectedValue[idx + qindex]
-                                          ?.feedback_text
+                                        ?.feedback_text
                                       : undefined
                                   }
                                   value={
@@ -2046,7 +2050,7 @@ function Matrix({
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
                                       ? responses?.current[idx + qindex]
-                                          ?.feedback
+                                        ?.feedback
                                       : undefined
                                   }
                                 />
@@ -2083,7 +2087,7 @@ function Matrix({
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
                                       ? responses?.current[idx + qindex]
-                                          ?.feedback
+                                        ?.feedback
                                       : undefined
                                   }
                                 />
@@ -2116,7 +2120,7 @@ function Matrix({
                                   feedback={
                                     !!responses?.current[idx + qindex]?.feedback
                                       ? responses?.current[idx + qindex]
-                                          ?.feedback
+                                        ?.feedback
                                       : undefined
                                   }
                                 />
@@ -2144,7 +2148,7 @@ function Matrix({
                                     value={
                                       !!responses?.current[idx + qindex]?.value
                                         ? responses?.current[idx + qindex]
-                                            ?.value
+                                          ?.value
                                         : undefined
                                     }
                                     question={question.text}
@@ -2152,7 +2156,7 @@ function Matrix({
                                       !!responses?.current[idx + qindex]
                                         ?.feedback
                                         ? responses?.current[idx + qindex]
-                                            ?.feedback
+                                          ?.feedback
                                         : undefined
                                     }
                                   />
@@ -2208,9 +2212,8 @@ function MultiSelectResponse({ onChange, options, value, ...props }) {
     >
       {options.map((x) => (
         <FormControlLabel
-          className={`${classes.checkLabel} ${
-            selection.includes(`${x.value}`) ? "active" : ""
-          }`}
+          className={`${classes.checkLabel} ${selection.includes(`${x.value}`) ? "active" : ""
+            }`}
           key={x.label}
           value={`${x.value}`}
           style={{
@@ -2416,14 +2419,30 @@ function Question({
 
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
 
+  const binaryOpts = [
+    { label: t("Yes"), value: "Yes" /* true */ },
+    { label: t("No"), value: "No" /* false */ },
+  ]
+  const ternaryOpts = [
+    { label: t("Yes"), value: "Yes" /* true */ },
+    { label: t("No"), value: "No" /* false */ },
+    { label: t("N/A"), value: null /* null */ },
+  ]
+  const likertOpts = [
+    { label: t("Nearly All the Time"), value: 3 },
+    { label: t("More than Half the Time"), value: 2 },
+    { label: t("Several Times"), value: 1 },
+    { label: t("Not at all"), value: 0 },
+  ]
+
   switch (type) {
     case "slider":
       options = options.sort((a, b) =>
         parseInt(a.value, 10) > parseInt(b.value, 10)
           ? 1
           : parseInt(a.value, 10) < parseInt(b.value, 10)
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
       component = (
         <Rating
@@ -2450,7 +2469,8 @@ function Question({
     case "boolean":
     case "select":
     case "list":
-      const selectOptions = options;
+      // const selectOptions = options;
+      const selectOptions = (options == undefined || options.length === 0) && type === "boolean" ? binaryOpts : (options == undefined || options.length === 0) && type === "likert" ? likertOpts : options
       component = (
         <RadioOption
           options={selectOptions}
@@ -2540,19 +2560,17 @@ function Question({
             children={
               type === "slider"
                 ? t(
-                    `${options[0].value} being ${
-                      !!options[0].description &&
-                      options[0].description.trim().length > 0
-                        ? options[0].description
-                        : options[0].value
-                    }, 
-                  ${options[options.length - 1].value} being ${
-                      !!options[options.length - 1].description &&
-                      options[options.length - 1].description.trim().length > 0
-                        ? options[options.length - 1].description
-                        : options[options.length - 1].value
-                    }`
-                  )
+                  `${options[0].value} being ${!!options[0].description &&
+                    options[0].description.trim().length > 0
+                    ? options[0].description
+                    : options[0].value
+                  }, 
+                  ${options[options.length - 1].value} being ${!!options[options.length - 1].description &&
+                    options[options.length - 1].description.trim().length > 0
+                    ? options[options.length - 1].description
+                    : options[options.length - 1].value
+                  }`
+                )
                 : !!desc && t(`${desc}`)
             }
             skipHtml={false}
@@ -2732,10 +2750,14 @@ function Section({
   value,
   activityVal,
   settings,
+  initialSettings,
+  contingencySettings,
   onComplete,
   totalQuestions,
   noBack,
   setSettings,
+  setInitialSettings,
+  setContingencySettings,
   orginalSettings,
   isSubmit,
   isFavoriteActive,
@@ -2758,23 +2780,25 @@ function Section({
       parsedVal = [];
     }
 
-    const newBase = value.settings.map((x, index) => {
+    const newBase = settings.map((x, index) => {
       const existing = parsedVal[index];
       return existing && typeof existing === "object"
         ? {
-            item: x.text,
-            value: existing.value ?? null,
-            duration: existing.duration ?? 0,
-          }
+          item: x.text,
+          value: existing.value ?? null,
+          duration: existing.duration ?? 0,
+        }
         : {
-            item: x.text,
-            value: null,
-            duration: 0,
-          };
+          item: x.text,
+          value: null,
+          duration: 0,
+        };
     });
 
     responses.current = newBase;
   }, [activityVal]);
+
+
 
   const [activeStep, setActiveStep] = useState(0);
   const classes = useStyles();
@@ -2788,7 +2812,6 @@ function Section({
   const { enqueueSnackbar } = useSnackbar();
   let settingsCopy = [...settings];
   let contingencyArray = [];
-
   const calcIndex = (idx) => {
     let index = 0;
     (settings || []).map((x, i) => {
@@ -2804,6 +2827,21 @@ function Section({
   };
   useEffect(() => {
     let index = 0;
+
+    const existingResponses = [...responses.current];
+    const reorderedResponses = settings.map((setting) => {
+      const match = existingResponses.find((res) => res.item === setting.text);
+      return match
+        ? match
+        : {
+          item: setting.text,
+          value: null,
+          duration: 0,
+        };
+    });
+
+    responses.current = reorderedResponses;
+
     const slideElements = (settings || []).map((x, idx) => {
       setElementIn(true);
       index = calcIndex(idx);
@@ -2892,14 +2930,9 @@ function Section({
   };
 
   const handleContingencyQuestion = (selectedOption, actualIndex) => {
-    let settingsCopyy = value.settings;
-    const currentQuestion = settingsCopyy[actualIndex];
-    if (currentQuestion?.visited == undefined) {
-      settingsCopyy = settingsCopyy.map((question, index) => ({
-        ...question,
-        visited: false,
-      }));
-    }
+    let settingsCopyy = [...initialSettings];
+    let currentSettingCopy = [...settings];
+    const currentQuestion = currentSettingCopy[actualIndex];
     if (selectedOption.contigencySettings.contigency_type === "question") {
       const targetIndex = selectedOption.contigencySettings.question_index - 1;
       if (targetIndex >= settingsCopyy.length) {
@@ -2910,7 +2943,10 @@ function Section({
       if (targetIndex < actualIndex) {
         questionToMove.revisited = true;
       }
-      settingsCopyy.splice(index + 1, 0, questionToMove);
+      settingsCopyy.splice(targetIndex, 1);
+      const insertIndex = targetIndex < actualIndex ? actualIndex : actualIndex + 1;
+      settingsCopyy.splice(insertIndex, 0, questionToMove);
+
       return settingsCopyy;
     }
     if (selectedOption.contigencySettings.contigency_type === "activity") {
@@ -2928,7 +2964,7 @@ function Section({
       );
 
       if (alreadyEnabled) {
-        return settingsCopyy;
+        return currentSettingCopy;
       } else {
         enabledActivities.push({
           question: currentQuestion.text,
@@ -2951,22 +2987,17 @@ function Section({
           );
         }
 
-        return settingsCopyy;
+        return currentSettingCopy;
       }
     }
   };
 
-  const handleQuestionFlow = (actualIndex, selectedOption) => {
-    const currentQuestion = settingsCopy[actualIndex];
-    if (currentQuestion?.visited == undefined) {
-      settingsCopy = settingsCopy.map((question, index) => ({
-        ...question,
-        visited: false,
-      }));
-    }
 
-    if (selectedOption?.contigencySettings?.enable_contigency) {
-      if (currentQuestion?.revisited == undefined) {
+  const handleQuestionFlow = (actualIndex, selectedOption) => {
+    let updatedSettings = [];
+    const currentQuestion = settingsCopy[actualIndex];
+    if (!currentQuestion?.visited) {
+      if (selectedOption?.contigencySettings?.enable_contigency) {
         contingencyArray = handleContingencyQuestion(
           selectedOption,
           actualIndex
@@ -2974,18 +3005,100 @@ function Section({
         if (contingencyArray[actualIndex]?.visited == false) {
           contingencyArray[actualIndex].visited = true;
         }
+        updatedSettings = contingencyArray;
+        setContingencySettings(contingencyArray);
+        setSettings(contingencyArray)
+      } else {
+        if (settingsCopy[actualIndex]?.visited == false) {
+          settingsCopy[actualIndex].visited = true;
+        }
+        updatedSettings = [...settingsCopy]
+        setSettings([...settingsCopy]);
+      }
+      setContingencySettings([]);
+    }
+    else {
+      if (selectedOption?.contigencySettings?.enable_contigency) {
+        setContingencySettings([]);
+        contingencyArray = handleContingencyQuestion(
+          selectedOption,
+          actualIndex
+        );
+        if (contingencyArray[actualIndex]?.visited == false) {
+          contingencyArray[actualIndex].visited = true;
+        }
+        updatedSettings = contingencyArray;
+        setContingencySettings(contingencyArray);
         setSettings(contingencyArray);
       }
-    } else {
-      if (currentQuestion?.visited == true) {
-        setSettings(value.settings);
-      } else {
-        const updatedQuestion = { ...currentQuestion, visited: true };
-        settingsCopy[actualIndex] = updatedQuestion;
-        setSettings(settingsCopy);
+      else {
+        const currentQuestionFlow = settings.map((q) => q.text).join('|');
+        const baseFlow = initialSettings.map((q) => q.text).join('|');
+
+        if (currentQuestionFlow !== baseFlow && contingencySettings.length === 0) {
+          updatedSettings = [...initialSettings];
+          setSettings([...initialSettings]);
+        } else {
+          updatedSettings = [...settings];
+        }
+
+        setContingencySettings([]);
       }
-    }
-  };
+    };
+
+
+    if (updatedSettings.length > 0) {
+      const sectionSettings = [...updatedSettings];
+
+      const localRaw = localStorage.getItem("activity-survey-" + (activityId ?? ""));
+
+      let localVal: {
+        item: string;
+        value: any;
+        duration: number;
+        endTime: number | null;
+        type: any;
+        level: any;
+      }[] = [];
+
+      if (localRaw) {
+        try {
+          localVal = JSON.parse(localRaw);
+        } catch (e) {
+          console.error("Failed to parse local storage data:", e);
+        }
+      }
+
+      const dedupedMap = new Map<string, typeof localVal[0]>();
+
+      for (const entry of localVal) {
+        const existing = dedupedMap.get(entry.item);
+        if (
+          !existing ||
+          (entry.value !== null && existing.value === null) ||
+          (entry.duration > existing.duration)
+        ) {
+          dedupedMap.set(entry.item, entry);
+        }
+      }
+
+      const result = sectionSettings.map(setting => {
+        const text = setting.text;
+        const localEntry = dedupedMap.get(text);
+
+        return {
+          item: text,
+          value: localEntry?.value ?? null,
+          duration: localEntry?.duration ?? 0,
+          endTime: localEntry?.endTime ?? null,
+          type: localEntry?.type ?? null,
+          level: localEntry?.level ?? null,
+        };
+      });
+
+      localStorage.setItem("activity-survey-" + (activityId ?? ""), JSON.stringify(result));
+    };
+  }
 
   const handleNext = () => {
     const actualIndex = calcIndex(index);
@@ -3004,12 +3117,12 @@ function Section({
             (element.required &&
               responses?.current[actualIndex + i]?.value !== null &&
               typeof responses?.current[actualIndex + i]?.value !==
-                "undefined" &&
+              "undefined" &&
               (typeof responses?.current[actualIndex + i]?.value !== "string" ||
                 (typeof responses?.current[actualIndex + i]?.value ===
                   "string" &&
                   responses?.current[actualIndex + i]?.value?.trim().length !==
-                    0)))
+                  0)))
           )
         ) {
           enqueueSnackbar(t("Please enter your response."), {
@@ -3100,7 +3213,7 @@ function Section({
                 },
               }}
             />
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -3108,14 +3221,13 @@ function Section({
               }
             >
               <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
+                className={`${classes.headerTitleIcon} ${isFavoriteActive ? "active" : ""
+                  }`}
                 onClick={handleFavoriteClick}
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>
@@ -3168,6 +3280,8 @@ export default function SurveyQuestions({ ...props }) {
   const [activityVal, setActivityVal] = useState(null);
 
   const [settings, setSettings] = useState(null);
+  const [initialSettings, setInitialSettings] = useState([]);
+  const [contingencySettings, setContingencySettings] = useState([]);
   const [startTime, setStartTime] = useState(new Date().getTime());
   const { enqueueSnackbar } = useSnackbar();
   const [confirm, setConfirm] = useState(false);
@@ -3180,6 +3294,9 @@ export default function SurveyQuestions({ ...props }) {
     props?.data?.is_favorite ?? false
   );
   const [isForward, setIsForward] = useState(props?.data?.forward ?? false);
+
+
+
   const validator = (response) => {
     let status = true;
     const questions = activity.settings;
@@ -3254,12 +3371,12 @@ export default function SurveyQuestions({ ...props }) {
     parent.postMessage(
       response === null
         ? JSON.stringify({
-            static_data: {
-              is_favorite: isFavoriteActive,
-            },
-            ...(isForward && { forward: true }),
-            done: true,
-          })
+          static_data: {
+            is_favorite: isFavoriteActive,
+          },
+          ...(isForward && { forward: true }),
+          done: true,
+        })
         : JSON.stringify(response),
       "*"
     );
@@ -3315,6 +3432,18 @@ export default function SurveyQuestions({ ...props }) {
     }
   }, [activity]);
 
+  const binaryOpts = [
+    { description: t("Yes"), value: "Yes" /* true */ },
+    { description: t("No"), value: "No" /* false */ },
+  ]
+
+  const likertOpts = [
+    { description: t("Nearly All the Time"), value: 3 },
+    { description: t("More than Half the Time"), value: 2 },
+    { description: t("Several Times"), value: 1 },
+    { description: t("Not at all"), value: 0 },
+  ]
+
   const setQuestions = () => {
     const settings = [];
     const processed = [];
@@ -3325,7 +3454,8 @@ export default function SurveyQuestions({ ...props }) {
           (index === 0 && question?.type === "matrix")
         ) {
           const desc = question?.description ?? "";
-          const options = question?.options ?? [];
+          // const options = question?.options ?? [];
+          const options = (question?.options == undefined || question?.options.length === 0) && question?.type === "boolean" ? binaryOpts : (question?.options == undefined || question?.options.length === 0) && question?.type === "likert" ? likertOpts : question?.options ?? []
           const questions = [];
 
           for (let k = index; k < activity.settings.length; k++) {
@@ -3353,11 +3483,12 @@ export default function SurveyQuestions({ ...props }) {
         }
       }
     });
-    const updatedArray = activity.settings.map((question, index) => ({
+    const updatedArray = settings.map((question, index) => ({
       ...question,
       visited: false,
     }));
     setSettings(updatedArray);
+    setInitialSettings(updatedArray);
   };
 
   return (
@@ -3379,12 +3510,16 @@ export default function SurveyQuestions({ ...props }) {
           value={activity}
           activityVal={activityVal}
           settings={settings}
+          initialSettings={initialSettings}
+          contingencySettings={contingencySettings}
           totalQuestions={(activity?.settings || []).length}
           noBack={props.data.noBack}
           onComplete={() => {
             postSubmit(responses);
           }}
           setSettings={setSettings}
+          setInitialSettings={setInitialSettings}
+          setContingencySettings={setContingencySettings}
           orginalSettings={activity?.settings}
           isSubmit={isSubmit}
           isFavoriteActive={isFavoriteActive}

@@ -72,7 +72,7 @@ export default function Header({ ...props }) {
         )}
         <Typography variant="h5">
           {`${t("Symbol-Digit Substitution")}`}{" "}
-          <Tooltip
+          {/* <Tooltip
             title={
               props?.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -87,7 +87,7 @@ export default function Header({ ...props }) {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>{" "}
+          </Tooltip>{" "} */}
         </Typography>
         {props?.forward && (
           <IconButton

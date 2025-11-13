@@ -233,7 +233,7 @@ export default function Goals({ ...props }) {
               </IconButton>
               <Typography variant="h5">
                 {!!activity ? t(activity?.name ?? "") : ""}
-                <Tooltip
+                {/* <Tooltip
                   title={
                     isFavoriteActive
                       ? "Tap to remove from Favorite Activities"
@@ -248,7 +248,7 @@ export default function Goals({ ...props }) {
                   >
                     <Icon>star_rounded</Icon>
                   </Fab>
-                </Tooltip>{" "}
+                </Tooltip>{" "} */}
               </Typography>
               {forward && (
                 <IconButton onClick={handleForwardClick}>

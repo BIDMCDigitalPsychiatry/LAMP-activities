@@ -399,7 +399,7 @@ const route = { type: "manual_exit", value: complete ?? false };
 
           <Typography variant="h5">
             {t("Scratch card")}
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -414,7 +414,7 @@ const route = { type: "manual_exit", value: complete ?? false };
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {hasForward && (
             <IconButton

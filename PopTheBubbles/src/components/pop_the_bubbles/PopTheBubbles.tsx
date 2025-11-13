@@ -646,7 +646,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
         )}
         <div className="heading">
           {i18n.t("POP_THE_BUBBLES")}
-          <Tooltip
+          {/* <Tooltip
             title={
               this.state.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -661,7 +661,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         {infoSection}
         {instructionModal}

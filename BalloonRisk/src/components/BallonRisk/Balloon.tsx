@@ -501,7 +501,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             <h4 style={{ marginRight: "-25px" }}>
               <div className="header-with-icon">
                 {i18n.t("BALLOON_RISK")}{" "}
-                <Tooltip
+                {/* <Tooltip
                   title={
                     this.state.isFavoriteActive
                       ? "Tap to remove from Favorite Activities"
@@ -516,7 +516,7 @@ class Balloons extends React.Component<AppProps, AppState> {
                   >
                     <Icon>star_rounded</Icon>
                   </Fab>
-                </Tooltip>
+                </Tooltip> */}
               </div>
             </h4>
             {this.state.forward && (

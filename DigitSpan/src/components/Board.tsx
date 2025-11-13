@@ -598,7 +598,7 @@ export default function Board({ ...props }) {
                     </IconButton>
                     <Typography variant="h5">
                       Digit Span{" "}
-                      <Tooltip
+                      {/* <Tooltip
                         title={
                           isFavoriteActive
                             ? "Tap to remove from Favorite Activities"
@@ -613,7 +613,7 @@ export default function Board({ ...props }) {
                         >
                           <Icon>star_rounded</Icon>
                         </Fab>
-                      </Tooltip>{" "}
+                      </Tooltip>{" "} */}
                     </Typography>
                   </Grid>
 

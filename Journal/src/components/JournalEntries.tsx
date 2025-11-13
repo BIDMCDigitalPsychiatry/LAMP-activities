@@ -320,7 +320,7 @@ export default function JournalEntries({ ...props }) {
           )}
           <Typography variant="h5">
             {t("New journal entry")}{" "}
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -335,7 +335,7 @@ export default function JournalEntries({ ...props }) {
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {forward && (
             <IconButton

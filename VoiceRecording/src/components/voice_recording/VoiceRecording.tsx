@@ -185,7 +185,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
           )}
           <div className="center-title">
             {i18n.t("VOICE_RECORDING")}{" "}
-            <Tooltip
+            {/* <Tooltip
               title={
                 this.state.isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -199,7 +199,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>
+            </Tooltip> */}
           </div>
           {this.state.forward && (
             <div>

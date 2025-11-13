@@ -302,7 +302,7 @@ export default function LearnTips({ ...props }) {
               <Grid item xs>
                 <Typography variant="h6">
                   {activityData ? t(activityData.name) : ""}
-                  <Tooltip
+                  {/* <Tooltip
                     title={
                       isFavoriteActive
                         ? "Tap to remove from Favorite Activities"
@@ -316,7 +316,7 @@ export default function LearnTips({ ...props }) {
                     >
                       <Icon>star_rounded</Icon>
                     </Fab>
-                  </Tooltip>
+                  </Tooltip> */}
                 </Typography>
               </Grid>
               {isForward &&

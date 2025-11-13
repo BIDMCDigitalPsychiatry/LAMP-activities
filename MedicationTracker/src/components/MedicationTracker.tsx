@@ -219,7 +219,7 @@ export default function MedicationTracker({ ...props }) {
               </IconButton>
               <Typography variant="h5">
                 {!!activity ? t(activity?.name ?? "") : ""}{" "}
-                <Tooltip
+                {/* <Tooltip
                   title={
                     isFavoriteActive
                       ? "Tap to remove from Favorite Activities"
@@ -234,7 +234,7 @@ export default function MedicationTracker({ ...props }) {
                   >
                     <Icon>star_rounded</Icon>
                   </Fab>
-                </Tooltip>{" "}
+                </Tooltip>{" "} */}
               </Typography>
               {hasForward && (
                 <IconButton

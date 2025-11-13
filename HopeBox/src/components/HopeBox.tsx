@@ -270,7 +270,7 @@ export default function HopeBox({ ...props }) {
           </IconButton>
           <Typography variant="h5">
             Hope Box{" "}
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -285,7 +285,7 @@ export default function HopeBox({ ...props }) {
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>

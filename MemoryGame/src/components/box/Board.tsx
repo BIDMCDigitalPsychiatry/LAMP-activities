@@ -1145,7 +1145,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         }
         <div className="heading">
           {i18n.t("MEMORY_GAME")}{" "}
-          <Tooltip
+          {/* <Tooltip
             title={
               this.state.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -1159,7 +1159,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         <div className="game-board">
           <div>

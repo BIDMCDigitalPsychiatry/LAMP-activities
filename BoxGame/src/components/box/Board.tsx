@@ -393,7 +393,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       : this.state.boxCount;
     const gameStateVal = this.state.gameState;
     const showWaitVal =
-      (statePassed && this.state.failureCount + 1 < 2)
+      statePassed && this.state.failureCount + 1 < 2
         ? this.state.showWait
         : false;
     const failureCountVal =
@@ -425,7 +425,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         nextButton: false,
         orderNumber: this.props.reverse ? rP.length : -1,
         randomPoints: rP,
-        showWait: false,
+        showWait: showWaitVal,
         successTaps: 0,
         wrongTaps: 0,
       });
@@ -632,7 +632,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         )}
         <div className="heading">
           {i18n.t("BOX_GAME")}{" "}
-          <Tooltip
+          {/* <Tooltip
             title={
               this.state.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -647,7 +647,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         <div className="game-board">
           <div>

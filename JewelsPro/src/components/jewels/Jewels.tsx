@@ -571,7 +571,7 @@ class Jewels extends React.Component<any, AppState> {
             </div>
             <div className="heading">
               {i18n.t("JEWELS")}{" "}
-              <Tooltip
+              {/* <Tooltip
                 title={
                   this.state.isFavoriteActive
                     ? "Tap to remove from Favorite Activities"
@@ -586,7 +586,7 @@ class Jewels extends React.Component<any, AppState> {
                 >
                   <Icon>star_rounded</Icon>
                 </Fab>
-              </Tooltip>
+              </Tooltip> */}
             </div>
             <div className="game-board">
               <Board

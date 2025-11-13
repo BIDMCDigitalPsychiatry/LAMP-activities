@@ -629,7 +629,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         </nav>
         <div className="heading">
           {i18n.t("CATS_AND_DOGS")}
-          <Tooltip
+          {/* <Tooltip
             title={
               this.state.isFavoriteActive
                 ? "Tap to remove from Favorite Activities"
@@ -643,7 +643,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             >
               <Icon>star_rounded</Icon>
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         {this.state.forward && (
           <nav className="forward-link">
