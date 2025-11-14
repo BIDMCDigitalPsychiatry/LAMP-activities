@@ -1,12 +1,7 @@
-import React from "react";
-import {
-  useState,
-  useRef,
-  useEffect,
-  Suspense,
-  Component,
-  ReactNode,
-} from "react";
+
+
+import React from "react"
+import { useState, useRef, useEffect, Suspense, Component, ReactNode } from "react"
 import {
   Icon,
   Typography,
@@ -19,28 +14,24 @@ import {
   Box,
   Fab,
   Container,
-  Tooltip,
-} from "@material-ui/core";
-import classnames from "classnames";
-import { useTranslation } from "react-i18next";
-import ReactMarkdown from "react-markdown";
-import ReactPlayer from "react-player";
-import "material-icons";
+} from "@material-ui/core"
+import classnames from "classnames"
+import { useTranslation } from "react-i18next"
+import ReactMarkdown from "react-markdown"
+import ReactPlayer from "react-player"
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     header: {
       background: "#FFF9E5",
       padding: 20,
-      // [theme.breakpoints.up("sm")]: {
-      //   textAlign: "center",
-      // },
+      [theme.breakpoints.up("sm")]: {
+        textAlign: "center",
+      },
       "& h2": {
         fontSize: 25,
         fontWeight: 600,
         color: "rgba(0, 0, 0, 0.75)",
-        textAlign: "left",
-        display: "flex",
-        alignItems: "center",
       },
     },
     tipscontentarea: {
@@ -111,13 +102,7 @@ const useStyles = makeStyles((theme: Theme) =>
           "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
       },
     },
-    howFeel: {
-      fontSize: 14,
-      color: "rgba(0, 0, 0, 0.5)",
-      fontStyle: "italic",
-      textAlign: "center",
-      marginBottom: 10,
-    },
+    howFeel: { fontSize: 14, color: "rgba(0, 0, 0, 0.5)", fontStyle: "italic", textAlign: "center", marginBottom: 10 },
     colorLine: { maxWidth: 115 },
     headerIcon: {
       textAlign: "center",
@@ -126,11 +111,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     mainContainer: { padding: 0 },
     tipsdetails: {
-      "& blockquote": {
-        borderLeft: "5px solid #ccc",
-        margin: "1.5em 10px",
-        padding: "0.5em 10px",
-      },
+      "& blockquote": { borderLeft: "5px solid #ccc", margin: "1.5em 10px", padding: "0.5em 10px" },
       "& code": {
         padding: ".2rem .5rem",
         margin: "0 .2rem",
@@ -146,32 +127,9 @@ const useStyles = makeStyles((theme: Theme) =>
       // [theme.breakpoints.down("md")]: {
       //   height: 250,
       // }
-    },
-    iconContainer: {
-      color: "#FFD645",
-      "& span": {
-        fontSize: 30,
-      },
-    },
-    headerTitleIcon: {
-      background: "none",
-      boxShadow: "none",
-      width: 36,
-      height: 36,
-      color: "#666",
-      marginLeft: 8,
-      "& .material-icons": {
-        fontSize: "2rem",
-      },
-      "&:hover": {
-        background: "#fff",
-      },
-      "&.active": {
-        color: "#e3b303",
-      },
-    },
+    }
   })
-);
+)
 
 function LinkRenderer(props: any) {
   // return (
@@ -196,20 +154,14 @@ function LinkRenderer(props: any) {
 }
 
 function VideoRenderer({ url }: { url: string }) {
-  const [videoUrl, setVideoUrl] = useState<string>();
-
-  const classes = useStyles();
+  const [videoUrl, setVideoUrl] = useState<string>()
+  const classes = useStyles()
   useEffect(() => {
-    setVideoUrl(
-      url.indexOf("vimeo.com") > 0
-        ? url.replace("vimeo.com", "player.vimeo.com/video")
-        : url.indexOf("youtube") > 0
-        ? url.replace("watch?v=", "embed/")
-        : url.indexOf("www.dailymotion.com/video") > 0
-        ? url.replace("video", "embed/video")
-        : url
-    );
-  }, [url]);
+    setVideoUrl(url.indexOf("vimeo.com") > 0 ? url.replace("vimeo.com", "player.vimeo.com/video") :
+      url.indexOf("youtube") > 0 ? url.replace("watch?v=", "embed/") :
+        url.indexOf("www.dailymotion.com/video") > 0 ? url.replace("video", "embed/video") :
+          url)
+  }, [url])
 
   return (
     <div>
@@ -226,103 +178,44 @@ function VideoRenderer({ url }: { url: string }) {
 }
 
 export default function TipNotification({ ...props }) {
-  const classes = useStyles();
-  const [status, setStatus] = useState("Yes");
-
-  const { t } = useTranslation();
+  const classes = useStyles()
+  const [status, setStatus] = useState("Yes")
+  const { t } = useTranslation()
   const handleClickStatus = (statusVal: string) => {
-    setStatus(statusVal);
-  };
+    setStatus(statusVal)
+  }
 
   const completeMarkingTips = () => {
-    props.onComplete(status, props?.isFavoriteActive);
-  };
-  const handleFavoriteClick = () => {
-    props?.setIsFavoriteActive((prev: boolean) => !prev);
-  };
+    props.onComplete(status)
+  }
 
   return (
     <Container maxWidth={false} className={classes.mainContainer}>
       <Box className={classes.header}>
         <Box width={1} className={classes.headerIcon}>
-          {!!props.icon ? (
-            <img
-              src={!!props.icon ? props.icon : undefined}
-              alt={props.title}
-            />
-          ) : (
-            ""
-          )}
+          {!!props.icon ? <img src={!!props.icon ? props.icon : undefined} alt={props.title} /> : ""}
         </Box>
-
-        <Box justifyContent="center" display="flex">
-          <Grid item lg={4} sm={10} xs={12}>
-            <Grid container>
-              <Grid xs={12}>
-                <Typography variant="caption">{t("Tip")}</Typography>
-              </Grid>
-              <Grid xs={12}>
-                <Typography variant="h2">{t(props.title)}{props?.hideFavorite && (
-                  <Box className={classes.iconContainer}>
-                  <Tooltip
-                    title={
-                      props?.isFavoriteActive
-                        ? "Tap to remove from Favorite Activities"
-                        : "Tap to add to Favorite Activities"
-                    }
-                  >
-                    <Fab
-                      className={`${classes.headerTitleIcon} ${
-                        props?.isFavoriteActive ? "active" : ""
-                      }`}
-                      onClick={handleFavoriteClick}
-                    >
-                      <Icon>star_rounded</Icon>
-                    </Fab>
-                  </Tooltip>
-                  </Box>
-                )}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Box>
+        <Typography variant="caption">{t("Tip")}</Typography>
+        <Typography variant="h2">{t(props.title)}</Typography>
       </Box>
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid item lg={4} sm={10} xs={12}>
           <CardContent className={classes.tipscontentarea}>
             {!!props.images ? <img src={props.images} alt={props.title} /> : ""}
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              component="p"
-              className={classes.tipsdetails}
-            >
-              {!!props.details ? (
-                <ReactMarkdown
-                  children={props.details}
-                  allowDangerousHtml={true}
-                  renderers={{
-                    link: LinkRenderer,
-                    span: (props) => {
-                      return <sub>{props?.children}</sub>;
-                    },
-                    sup: (props) => {
-                      return <sup>{props.children}</sup>;
-                    },
-                  }}
-                />
-              ) : (
-                ""
-              )}
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.tipsdetails} >
+              {!!props.details ?
+                <ReactMarkdown children={props.details} allowDangerousHtml={true} renderers={{
+                  link: LinkRenderer, span: (props) => {
+                    return <sub>{props?.children}</sub>;
+                  }, sup: (props) => {
+                    return <sup>{props.children}</sup>;
+                  }
+                }} />
+                : ""}
             </Typography>
             <Box mt={4} mb={2}>
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid container className={classes.colorLine} spacing={0}>
+              <Grid container direction="row" justify="center" alignItems="center">
+                <Grid container className={classes.colorLine} spacing={0} >
                   <Grid item xs={3} lg={3} className={classes.lineyellow} />
                   <Grid item xs={3} lg={3} className={classes.linegreen} />
                   <Grid item xs={3} lg={3} className={classes.linered} />
@@ -330,51 +223,35 @@ export default function TipNotification({ ...props }) {
                 </Grid>
               </Grid>
             </Box>
-            <Box className={classes.howFeel}>
-              {t("Was this helpful today?")}
-            </Box>
+            <Box className={classes.howFeel}>{t("Was this helpful today?")}</Box>
             <Box textAlign="center">
               <IconButton
                 onClick={() => handleClickStatus("Yes")}
-                className={
-                  status === "Yes"
-                    ? classnames(classes.likebtn, classes.active)
-                    : classes.likebtn
-                }
+                className={status === "Yes" ? classnames(classes.likebtn, classes.active) : classes.likebtn}
               >
                 <Icon>thumb_up_off_alt</Icon>
                 <label>{t("Yes")}</label>
               </IconButton>
               <IconButton
                 onClick={() => handleClickStatus("No")}
-                className={
-                  status === "No"
-                    ? classnames(classes.likebtn, classes.active)
-                    : classes.likebtn
-                }
+                className={status === "No" ? classnames(classes.likebtn, classes.active) : classes.likebtn}
               >
                 <Icon>thumb_down_off_alt</Icon>
                 <label>{t("No")}</label>
               </IconButton>
             </Box>
 
-            {!!props.onComplete ? (
+            {!!props.onComplete ?
               <Box textAlign="center">
-                <Fab
-                  variant="extended"
-                  color="primary"
-                  className={classes.btnyellow}
-                  onClick={() => completeMarkingTips()}
-                >
+                <Fab variant="extended" color="primary" className={classes.btnyellow} onClick={() => completeMarkingTips()} > {/*  */}
                   {t("Mark complete")}
                 </Fab>
               </Box>
-            ) : (
-              ""
-            )}
+              : ""}
+
           </CardContent>
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }
