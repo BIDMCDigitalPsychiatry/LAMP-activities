@@ -10,9 +10,9 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  Fab,
-  Icon,
-  Tooltip,
+  // Fab,
+  // Icon,
+  // Tooltip,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -222,9 +222,9 @@ const Layout = ({ ...props }) => {
       }
     }
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  // const handleFavoriteClick = () => {
+  //   setIsFavoriteActive((prev: boolean) => !prev);
+  // };
 
   return (
     <div className="layout">
