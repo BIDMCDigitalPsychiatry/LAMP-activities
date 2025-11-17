@@ -170,7 +170,7 @@ const Layout = ({ ...props }: any) => {
       )}
       <div className="heading">
         {i18n.t("GAME")}{" "}
-        <Tooltip
+        {/* <Tooltip
           title={
             isFavoriteActive
               ? "Tap to remove from Favorite Activities"
@@ -183,7 +183,7 @@ const Layout = ({ ...props }: any) => {
           >
             <Icon>star_rounded</Icon>
           </Fab>
-        </Tooltip>{" "}
+        </Tooltip>{" "} */}
       </div>
 
       <Container>

@@ -252,22 +252,22 @@ function HomeView(props) {
 
           <Typography className={classes.headerTitle}>
             {t("LIFE_WORTH_LIVING_GOAL")}
-            <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "}
+            // <Tooltip
+            //   title={
+            //     isFavoriteActive
+            //       ? "Tap to remove from Favorite Activities"
+            //       : "Tap to add to Favorite Activities"
+            //   }
+            // >
+            //   <Fab
+            //     className={`${classes.headerTitleIcon} ${
+            //       isFavoriteActive ? "active" : ""
+            //     }`}
+            //     onClick={handleFavoriteClick}
+            //   >
+            //     <Icon>star_rounded</Icon>
+            //   </Fab>
+            // </Tooltip>{" "}
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>
@@ -393,3 +393,4 @@ export default connect(
     updateReport,
   }
 )(HomeView);
+

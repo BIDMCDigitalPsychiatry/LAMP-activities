@@ -243,7 +243,7 @@ const Layout = ({ ...props }) => {
 
           <Typography variant="h5">
             {i18n.t("GAME")}{" "}
-            <Tooltip
+            {/* <Tooltip
               title={
                 isFavoriteActive
                   ? "Tap to remove from Favorite Activities"
@@ -258,7 +258,7 @@ const Layout = ({ ...props }) => {
               >
                 <Icon>star_rounded</Icon>
               </Fab>
-            </Tooltip>{" "}
+            </Tooltip>{" "} */}
           </Typography>
           {hasForward && (
             <IconButton
