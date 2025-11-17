@@ -189,9 +189,9 @@ export default function Goals({ ...props }) {
       </a>
     );
   }
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  // const handleFavoriteClick = () => {
+  //   setIsFavoriteActive((prev: boolean) => !prev);
+  // };
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
