@@ -31,7 +31,7 @@ import { InfoModal } from "../common/InfoModal";
 import "./box.css";
 import AudioPlayer from "../common/AudioPlayer";
 import InstructionVideo from "../common/InstructionVideo";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const failAudio =

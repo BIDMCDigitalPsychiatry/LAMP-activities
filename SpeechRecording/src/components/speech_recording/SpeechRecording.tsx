@@ -13,7 +13,7 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./SpeechRecordingCSS.css";
 import i18n from "./../../i18n";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 interface AudioDuration {

@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Timer } from "../common/Timer";
 import "./box.css";
-import { Tooltip, Fab, Icon } from "@material-ui/core";
+// import { Tooltip, Fab, Icon } from "@material-ui/core";
 import "material-icons";
 
 interface BoardState {

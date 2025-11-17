@@ -13,7 +13,7 @@ import {
   Container,
   AppBar,
   Toolbar,
-  Tooltip,
+  // Tooltip,
 } from "@material-ui/core";
 
 import i18n from "../i18n";

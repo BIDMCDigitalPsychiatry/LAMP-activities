@@ -26,7 +26,7 @@ import "./box.css";
 import { InstructionModal } from "./InstructionModal";
 import AudioPlayer from "../common/AudioPlayer";
 import { Questionnaire } from "./Questionnaire";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const failAudio =

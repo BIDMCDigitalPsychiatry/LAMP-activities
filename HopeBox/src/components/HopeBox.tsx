@@ -19,8 +19,8 @@ import {
   makeStyles,
   GridList,
   GridListTile,
-  Fab,
-  Tooltip,
+  // Fab,
+  // Tooltip,
 } from "@material-ui/core";
 
 import ImageUploader from "react-images-upload";

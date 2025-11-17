@@ -16,8 +16,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Fab,
-  Tooltip,
+  // Fab,
+  // Tooltip,
 } from "@material-ui/core";
 
 import i18n from "../i18n";

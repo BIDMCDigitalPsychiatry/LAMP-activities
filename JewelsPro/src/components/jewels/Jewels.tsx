@@ -21,7 +21,7 @@ import "./jewels.css";
 import * as React from "react";
 // import { isUndefined } from "util";
 import Board from "./Board";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 /* eslint-disable no-restricted-globals */

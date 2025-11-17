@@ -22,7 +22,7 @@ import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
 import { InstructionModal } from "./InstructionModal";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 interface AppProps {

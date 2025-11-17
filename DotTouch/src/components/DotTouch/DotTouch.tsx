@@ -18,7 +18,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 // import { Timer } from '../common/Timer';
 import "./DotTouch.css";
 import { GeneralInstruction } from "./GeneralInstruction";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import "material-icons";
 

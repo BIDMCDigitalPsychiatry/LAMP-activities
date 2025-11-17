@@ -25,7 +25,7 @@ import i18n from "./../../i18n";
 import * as React from "react";
 import "./box.css";
 import { InstructionModal } from "./InstructionModal";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 export interface BoardProps {
