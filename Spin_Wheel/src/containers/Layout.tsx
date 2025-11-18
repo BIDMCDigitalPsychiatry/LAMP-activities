@@ -9,10 +9,7 @@ import {
   AppBar,
   IconButton,
   Toolbar,
-  Typography,
-  // Fab,
-  // Icon,
-  // Tooltip,
+  Typography
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -69,10 +66,7 @@ const Layout = ({ ...props }) => {
   const [conditionsForRed, setConditionsForRed] = useState<any>([]);
   const [conditionsForYellow, setConditionsForYellow] = useState<any>([]);
   const [conditionsForBlue, setConditionsForBlue] = useState<any>([]);
-  const [conditionsForGreen, setConditionsForGreen] = useState<any>([]);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props.data?.is_favorite ?? false
-  );
+  const [conditionsForGreen, setConditionsForGreen] = useState<any
   const [hasForward] = useState(props?.data?.forward ?? false);
   const highRiskConditionsLoseWheel = convertObjtoArray(
     settingsData?.high_risk[0]?.loose,
@@ -222,9 +216,6 @@ const Layout = ({ ...props }) => {
       }
     }
   };
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
 
   return (
     <div className="layout">
@@ -242,23 +233,7 @@ const Layout = ({ ...props }) => {
           </IconButton>
 
           <Typography variant="h5">
-            {i18n.t("GAME")}{" "}
-            {/* <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "} */}
+            {i18n.t("GAME")}
           </Typography>
           {hasForward && (
             <IconButton
