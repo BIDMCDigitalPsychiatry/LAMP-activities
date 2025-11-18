@@ -17,7 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
 import i18n from "src/i18n";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const Layout = ({ ...props }: any) => {
@@ -26,18 +25,13 @@ const Layout = ({ ...props }: any) => {
   i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
   const startingFragmentation = settings?.startingFragmentation; // in percentatge
   const [clickBack, setClickBack] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
   const [forward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
 
   const reloadPage = () => {
     window.location.reload();
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
   return (
     <div className="main-class">
       <nav className="back-link">
@@ -58,21 +52,7 @@ const Layout = ({ ...props }: any) => {
         </nav>
       )}
       <div className="heading">
-        {i18n.t("GAME")}{" "}
-        {/* <Tooltip
-          title={
-            isFavoriteActive
-              ? "Tap to remove from Favorite Activities"
-              : "Tap to add to Favorite Activities"
-          }
-        >
-          <Fab
-            className={`headerTitleIcon ${isFavoriteActive ? "active" : ""}`}
-            onClick={handleFavoriteClick}
-          >
-            <Icon>star_rounded</Icon>
-          </Fab>
-        </Tooltip>{" "} */}
+        {i18n.t("GAME")}
       </div>
       <Container>
         <Row>
