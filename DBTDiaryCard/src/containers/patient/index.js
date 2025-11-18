@@ -122,9 +122,6 @@ function HomeView(props) {
   const [time, setTime] = useState(null);
   const { t, i18n } = useTranslation();
   const [confirm, setConfirm] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
   const [forward, setForward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
   useEffect(() => {
@@ -374,6 +371,7 @@ export default connect(
     updateReport,
   }
 )(HomeView);
+
 
 
 
