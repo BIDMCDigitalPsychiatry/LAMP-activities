@@ -16,7 +16,6 @@ import SkillHelpView from "./6_skillhelp";
 import { useTranslation } from "react-i18next";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import actions from "../home/action";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const { updateReport, createReport } = actions;
@@ -251,23 +250,7 @@ function HomeView(props) {
           )}
 
           <Typography className={classes.headerTitle}>
-            {t("LIFE_WORTH_LIVING_GOAL")}
-            // <Tooltip
-            //   title={
-            //     isFavoriteActive
-            //       ? "Tap to remove from Favorite Activities"
-            //       : "Tap to add to Favorite Activities"
-            //   }
-            // >
-            //   <Fab
-            //     className={`${classes.headerTitleIcon} ${
-            //       isFavoriteActive ? "active" : ""
-            //     }`}
-            //     onClick={handleFavoriteClick}
-            //   >
-            //     <Icon>star_rounded</Icon>
-            //   </Fab>
-            // </Tooltip>{" "}
+            {t("LIFE_WORTH_LIVING_GOAL")}            
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>
@@ -393,4 +376,5 @@ export default connect(
     updateReport,
   }
 )(HomeView);
+
 
