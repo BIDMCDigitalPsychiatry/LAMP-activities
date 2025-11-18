@@ -84,7 +84,6 @@ const Layout = ({ ...props }: any) => {
           timestamp: new Date().getTime(),
           duration: new Date().getTime() - time,
           temporal_slices: JSON.parse(JSON.stringify(routes)),
-          static_data: { is_favorite: isFavoriteActive },
           ...(hasForward && { forward: true }),
           done:true
         }),
@@ -107,7 +106,6 @@ const Layout = ({ ...props }: any) => {
         timestamp: new Date().getTime(),
         duration: new Date().getTime() - time,
         temporal_slices: JSON.parse(JSON.stringify(routes)),
-        static_data: { is_favorite: isFavoriteActive },
         ...(hasForward && { forward: !isBack }),
         ...(isBack && { clickBack : true }),
 

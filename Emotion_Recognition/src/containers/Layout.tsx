@@ -99,7 +99,6 @@ const Layout = ({ ...props }: any) => {
               timestamp: new Date().getTime(),
               duration: new Date().getTime() - time,
               temporal_slices: JSON.parse(JSON.stringify(routes)),
-              static_data: { is_favorite: isFavoriteActive },
               ...(forward && { forward: isForwardButton }),
               done: true,
             })
@@ -152,7 +151,6 @@ const Layout = ({ ...props }: any) => {
             timestamp: new Date().getTime(),
             duration: new Date().getTime() - time,
             temporal_slices: JSON.parse(JSON.stringify(routes)),
-            static_data: { is_favorite: isFavoriteActive },
             ...(forward && { forward: false }),
             clickBack: true,
           })
@@ -164,10 +162,7 @@ const Layout = ({ ...props }: any) => {
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+      JSON.stringify({        
         forward: true,
       }),
       "*"

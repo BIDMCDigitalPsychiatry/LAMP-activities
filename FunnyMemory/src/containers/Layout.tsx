@@ -60,7 +60,6 @@ const Layout = ({ ...props }: any) => {
               imageExposureTime={imageExposureTime}
               numberOfTrials={numberOfTrials}
               clickBack={clickBack}
-              isFavoriteActive={isFavoriteActive}
               forward={forward}
               isForwardButton={isForwardButton}
             />

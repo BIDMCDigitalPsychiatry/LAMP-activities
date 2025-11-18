@@ -61,7 +61,6 @@ const Layout = ({ ...props }: any) => {
               language={i18n.language}
               startingFragmentation={startingFragmentation}
               clickBack={clickBack}
-              isFavoriteActive={isFavoriteActive}
               forward={forward}
               isForwardButton={isForwardButton}
             />
