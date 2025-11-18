@@ -198,9 +198,7 @@ function HomeView(props) {
     setSettings(settings);
     setConfirm(false);
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev) => !prev);
-  };
+ 
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
@@ -376,5 +374,6 @@ export default connect(
     updateReport,
   }
 )(HomeView);
+
 
 
