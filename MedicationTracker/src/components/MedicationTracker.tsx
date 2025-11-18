@@ -181,9 +181,7 @@ export default function MedicationTracker({ ...props }) {
       </a>
     );
   }
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
+  
 
   return (
     <React.Fragment>

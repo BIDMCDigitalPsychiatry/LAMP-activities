@@ -509,9 +509,7 @@ export default function Board({ ...props }) {
   const { t } = useTranslation();
   const [startGame, setStartGame] = useState(false);
 
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
+  
 
   const handleForwardClick = () => {
     sendGameResult(true, false);

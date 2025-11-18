@@ -275,9 +275,7 @@ export default function JournalEntries({ ...props }) {
     setLoading(false);
     setConfirm(false);
   };
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
+  
 
   return (
     <div className={classes.root}>
