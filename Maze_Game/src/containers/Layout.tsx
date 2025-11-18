@@ -7,7 +7,6 @@ import i18n from "../i18n";
 import ModalPopup from "./uielements/ModalPopup";
 import { MazeComponent } from "./MazeComponent";
 import DialogMessage from "./DialogMessage";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const Layout = ({ ...props }: any) => {
@@ -23,9 +22,6 @@ const Layout = ({ ...props }: any) => {
   const [startGame, setStartGame] = useState(false);
   const [showStartButton, setShowStartButton] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
   const [hasForward] = useState(props?.data?.forward ?? false);
 
   useEffect(() => {
@@ -119,10 +115,7 @@ const Layout = ({ ...props }: any) => {
       "*"
     );
   };
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
-
+  
   return (
     <div className="main-class">
       {confirmModalShow && (
@@ -169,21 +162,7 @@ const Layout = ({ ...props }: any) => {
         </nav>
       )}
       <div className="heading">
-        {i18n.t("GAME")}{" "}
-        {/* <Tooltip
-          title={
-            isFavoriteActive
-              ? "Tap to remove from Favorite Activities"
-              : "Tap to add to Favorite Activities"
-          }
-        >
-          <Fab
-            className={`headerTitleIcon ${isFavoriteActive ? "active" : ""}`}
-            onClick={handleFavoriteClick}
-          >
-            <Icon>star_rounded</Icon>
-          </Fab>
-        </Tooltip>{" "} */}
+        {i18n.t("GAME")}
       </div>
 
       <Container>
