@@ -21,7 +21,6 @@ import "./jewels.css";
 import * as React from "react";
 // import { isUndefined } from "util";
 import Board from "./Board";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 /* eslint-disable no-restricted-globals */
@@ -520,13 +519,7 @@ class Jewels extends React.Component<any, AppState> {
           );
     }
     this.setState({ showModal: 0 });
-  };
-
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  };  
 
   clickForward = () => {
     this.setState(() => ({
@@ -570,23 +563,7 @@ class Jewels extends React.Component<any, AppState> {
               )}
             </div>
             <div className="heading">
-              {i18n.t("JEWELS")}{" "}
-              {/* <Tooltip
-                title={
-                  this.state.isFavoriteActive
-                    ? "Tap to remove from Favorite Activities"
-                    : "Tap to add to Favorite Activities"
-                }
-              >
-                <Fab
-                  className={`headerTitleIcon ${
-                    this.state.isFavoriteActive ? "active" : ""
-                  }`}
-                  onClick={this.handleFavoriteClick}
-                >
-                  <Icon>star_rounded</Icon>
-                </Fab>
-              </Tooltip> */}
+              {i18n.t("JEWELS")}{" "}              
             </div>
             <div className="game-board">
               <Board

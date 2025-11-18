@@ -15,7 +15,6 @@ import i18n from "./../../i18n";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip, Fab, Icon } from "@material-ui/core";
 import "material-icons";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
@@ -469,12 +468,7 @@ class Balloons extends React.Component<AppProps, AppState> {
       isForwardButton: true,
     }));
     this.sendGameData(true, false);
-  };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  };  
 
   // Game render function
   render() {
@@ -500,23 +494,7 @@ class Balloons extends React.Component<AppProps, AppState> {
             )}
             <h4 style={{ marginRight: "-25px" }}>
               <div className="header-with-icon">
-                {i18n.t("BALLOON_RISK")}{" "}
-                {/* <Tooltip
-                  title={
-                    this.state.isFavoriteActive
-                      ? "Tap to remove from Favorite Activities"
-                      : "Tap to add to Favorite Activities"
-                  }
-                >
-                  <Fab
-                    className={`headerTitleIcon ${
-                      this.state.isFavoriteActive ? "active" : ""
-                    }`}
-                    onClick={this.handleFavoriteClick}
-                  >
-                    <Icon>star_rounded</Icon>
-                  </Fab>
-                </Tooltip> */}
+                {i18n.t("BALLOON_RISK")}{" "}                
               </div>
             </h4>
             {this.state.forward && (

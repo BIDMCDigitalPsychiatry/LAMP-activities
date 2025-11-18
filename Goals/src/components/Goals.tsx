@@ -13,7 +13,6 @@ import {
   Container,
   AppBar,
   Toolbar,
-  // Tooltip,
 } from "@material-ui/core";
 
 import i18n from "../i18n";
@@ -148,10 +147,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Goals({ ...props }) {
   const classes = useStyles();
   const [activity, setActivity] = useState<any>(null);
-  const [startTime, setStartTime] = useState(new Date().getTime());
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [startTime, setStartTime] = useState(new Date().getTime());  
   const [forward] = useState(props?.data?.forward ?? true);
   const [isForwardButton, setIsForwardButton] = useState(false);
   const { t } = useTranslation();
@@ -172,7 +168,6 @@ export default function Goals({ ...props }) {
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - startTime,
-        static_data: { is_favorite: isFavoriteActive },
         temporal_slices: [],
         timestamp: startTime,
         ...(forward && { forward: isForwardButton }),
@@ -189,16 +184,11 @@ export default function Goals({ ...props }) {
       </a>
     );
   }
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+      JSON.stringify({        
         forward: true,
       }),
       "*"
@@ -216,10 +206,7 @@ export default function Goals({ ...props }) {
               <IconButton
                 onClick={() => {
                   parent.postMessage(
-                    JSON.stringify({
-                      static_data: {
-                        is_favorite: isFavoriteActive,
-                      },
+                    JSON.stringify({                      
                       ...(forward && { forward: false }),
                       clickBack:true,
                     }),
@@ -232,23 +219,7 @@ export default function Goals({ ...props }) {
                 <Icon>arrow_back</Icon>
               </IconButton>
               <Typography variant="h5">
-                {!!activity ? t(activity?.name ?? "") : ""}
-                {/* <Tooltip
-                  title={
-                    isFavoriteActive
-                      ? "Tap to remove from Favorite Activities"
-                      : "Tap to add to Favorite Activities"
-                  }
-                >
-                  <Fab
-                    className={`${classes.headerTitleIcon} ${
-                      isFavoriteActive ? "active" : ""
-                    }`}
-                    onClick={handleFavoriteClick}
-                  >
-                    <Icon>star_rounded</Icon>
-                  </Fab>
-                </Tooltip>{" "} */}
+                {!!activity ? t(activity?.name ?? "") : ""}                
               </Typography>
               {forward && (
                 <IconButton onClick={handleForwardClick}>

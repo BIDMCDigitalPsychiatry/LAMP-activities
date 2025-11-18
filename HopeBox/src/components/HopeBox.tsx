@@ -19,8 +19,6 @@ import {
   makeStyles,
   GridList,
   GridListTile,
-  // Fab,
-  // Tooltip,
 } from "@material-ui/core";
 
 import ImageUploader from "react-images-upload";
@@ -166,10 +164,7 @@ export default function HopeBox({ ...props }) {
   const [pictures, setPictures] = useState([]);
   const [openPreview, setOpenPreview] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const [imgSaved, setImgSaved] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [imgSaved, setImgSaved] = useState(false);  
   const [forward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
 
@@ -223,22 +218,18 @@ export default function HopeBox({ ...props }) {
     parent.postMessage(
       JSON.stringify({
         completed: true,
-        static_data: { is_favorite: isFavoriteActive },
         ...(forward && { forward: isForwardButton }),
         done: true,
       }),
       "*"
     );
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
       JSON.stringify({
         completed: true,
-        static_data: { is_favorite: isFavoriteActive },
         forward: true,
       }),
       "*"
@@ -249,7 +240,6 @@ export default function HopeBox({ ...props }) {
     parent.postMessage(
       JSON.stringify({
         completed: true,
-        static_data: { is_favorite: isFavoriteActive },
         forward: false,
         clickBack:true,
       }),
@@ -269,23 +259,7 @@ export default function HopeBox({ ...props }) {
             <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">
-            Hope Box{" "}
-            {/* <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "} */}
+            Hope Box{" "}            
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>

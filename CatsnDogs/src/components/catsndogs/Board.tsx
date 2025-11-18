@@ -25,7 +25,6 @@ import i18n from "./../../i18n";
 import * as React from "react";
 import "./box.css";
 import { InstructionModal } from "./InstructionModal";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 export interface BoardProps {
@@ -484,11 +483,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   handleCloseInstructionModal = () => {
     this.setState({ showInstruction: false });
   };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  
 
   // Render the game board
   render() {
@@ -628,22 +623,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
         <div className="heading">
-          {i18n.t("CATS_AND_DOGS")}
-          {/* <Tooltip
-            title={
-              this.state.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
-                }`}
-              onClick={this.handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip> */}
+          {i18n.t("CATS_AND_DOGS")}          
         </div>
         {this.state.forward && (
           <nav className="forward-link">

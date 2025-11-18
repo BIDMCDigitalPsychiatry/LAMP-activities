@@ -16,14 +16,12 @@ import {
   makeStyles,
   Box,
   AppBar,
-  // Icon,
   IconButton,
   Toolbar,
   Backdrop,
   CircularProgress,
   Link,
   Fab,
-  // Tooltip,
 } from "@material-ui/core";
 import "material-icons";
 const useStyles = makeStyles((theme) => ({
@@ -163,10 +161,7 @@ export default function ScratchImage({ ...props }) {
   const [imageTime, setImageTime] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const [routes, setRoutes] = useState<any>([]);
-  const [noBack, setNoBack] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [noBack, setNoBack] = useState(false);  
   const [hasForward, setHasForward] = useState(
     props?.data?.forward ?? false
   );
@@ -359,7 +354,6 @@ const route = { type: "manual_exit", value: complete ?? false };
               timestamp: time,
               duration: new Date().getTime() - time,
               temporal_slices: item,
-              static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
               ...(!isNavigationBtn && { done: true}),
               ...(isBack && { clickBack : true}),
@@ -369,9 +363,7 @@ const route = { type: "manual_exit", value: complete ?? false };
       );
   }
 
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
   const handleCompleteTrigger = () => {
     setCompleteTrigger((prev) => prev + 1); // triggers useEffect every time
   };
@@ -398,23 +390,7 @@ const route = { type: "manual_exit", value: complete ?? false };
           )}
 
           <Typography variant="h5">
-            {t("Scratch card")}
-            {/* <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "} */}
+            {t("Scratch card")}            
           </Typography>
           {hasForward && (
             <IconButton

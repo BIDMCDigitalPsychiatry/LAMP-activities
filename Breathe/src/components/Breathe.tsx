@@ -211,9 +211,6 @@ export default function Breathe({ ...props }) {
   const [time, setTime] = useState(new Date().getTime());
   const { t } = useTranslation();
   const [settings, setSettings] = useState(null);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite
-  );
   const [forward, setForward] = useState(props?.data?.forward);
   const [isForwardButton, setIsForwardButton] = useState(false);
   const tabDirection = (currentTab: number) => {
@@ -306,7 +303,6 @@ export default function Breathe({ ...props }) {
             duration: new Date().getTime() - time,
             static_data: {
               sentiment: status,
-              is_favorite: isFavoriteActive,
             },
             temporal_slices: [],
             ...(forward && { forward: isForwardButton }),
@@ -315,27 +311,19 @@ export default function Breathe({ ...props }) {
         : JSON.stringify({
             timestamp: time,
             duration: new Date().getTime() - time,
-            temporal_slices: [],
-            static_data: {
-              is_favorite: isFavoriteActive,
-            },
+            temporal_slices: [],            
             ...(forward && { forward: isForwardButton }),
           }),
       "*"
     );
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
   const handleForwardClick = () => {
     parent.postMessage(
       JSON.stringify({
         timestamp: time,
         duration: new Date().getTime() - time,
-        temporal_slices: [],
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+        temporal_slices: [],        
         forward: true,
       }),
       "*"
@@ -346,10 +334,7 @@ export default function Breathe({ ...props }) {
       JSON.stringify({
         timestamp: time,
         duration: new Date().getTime() - time,
-        temporal_slices: [],
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+        temporal_slices: [],        
         forward: false,
         clickBack: true,
       }),
@@ -379,23 +364,7 @@ export default function Breathe({ ...props }) {
             <Icon>arrow_back</Icon>
           </IconButton>
           <Typography variant="h5">
-            {t("Breathe")}{" "}
-            {/* <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "} */}
+            {t("Breathe")}{" "}            
           </Typography>
           {forward && (
             <IconButton onClick={handleForwardClick}>

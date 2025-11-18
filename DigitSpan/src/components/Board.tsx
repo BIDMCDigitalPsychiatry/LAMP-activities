@@ -12,12 +12,9 @@ import {
   Grid,
   Button,
   Dialog,
-  // DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
-  // Fab,
-  // Tooltip,
 } from "@material-ui/core";
 
 import i18n from "../i18n";
@@ -275,10 +272,7 @@ export default function Board({ ...props }) {
   const [totalQuestions, setTotal] = useState(3);
   const [mode, setMode] = useState(0);
   const [showOverlay, setShowOverlay] = useState(false);
-  const [questions, setQuestions] = useState<string[]>([]);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [questions, setQuestions] = useState<string[]>([]);  
   const [forward] = useState(props?.data?.forward ?? true);
   useEffect(() => {
     const configuration = props.data?.configuration ?? null;
@@ -472,7 +466,6 @@ export default function Board({ ...props }) {
           bestForwardDigitSpan: bestForward.details,
           bestBackwardDigitSpan: bestBackward.details,
           question_sequences: questions,
-          is_favorite: isFavoriteActive,
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
@@ -516,9 +509,7 @@ export default function Board({ ...props }) {
   const { t } = useTranslation();
   const [startGame, setStartGame] = useState(false);
 
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
 
   const handleForwardClick = () => {
     sendGameResult(true, false);
@@ -597,23 +588,7 @@ export default function Board({ ...props }) {
                       <Icon style={{ color: "white" }}>arrow_back</Icon>
                     </IconButton>
                     <Typography variant="h5">
-                      Digit Span{" "}
-                      {/* <Tooltip
-                        title={
-                          isFavoriteActive
-                            ? "Tap to remove from Favorite Activities"
-                            : "Tap to add to Favorite Activities"
-                        }
-                      >
-                        <Fab
-                          className={`${classes.headerTitleIcon} ${
-                            isFavoriteActive ? "active" : ""
-                          }`}
-                          onClick={handleFavoriteClick}
-                        >
-                          <Icon>star_rounded</Icon>
-                        </Fab>
-                      </Tooltip>{" "} */}
+                      Digit Span{" "}                      
                     </Typography>
                   </Grid>
 

@@ -31,7 +31,6 @@ import { InfoModal } from "../common/InfoModal";
 import "./box.css";
 import AudioPlayer from "../common/AudioPlayer";
 import InstructionVideo from "../common/InstructionVideo";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const failAudio =
@@ -1048,11 +1047,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     const styles = { width: `${size}px` };
     return styles;
   };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  
   // Render the game board
   render() {
     let board;
@@ -1144,22 +1139,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           </nav>
         }
         <div className="heading">
-          {i18n.t("MEMORY_GAME")}{" "}
-          {/* <Tooltip
-            title={
-              this.state.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
-                }`}
-              onClick={this.handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip> */}
+          {i18n.t("MEMORY_GAME")}{" "}          
         </div>
         <div className="game-board">
           <div>

@@ -13,7 +13,6 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./voice_recording.css";
 import i18n from "./../../i18n";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 interface AudioDuration {
   h: number | null;
   m: number | null;
@@ -163,12 +162,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
       "*"
     );
   };
-
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  
   // Game render function
   render() {
     return (
@@ -184,22 +178,7 @@ class VoiceRecording extends React.Component<AppProps, AppState> {
             </div>
           )}
           <div className="center-title">
-            {i18n.t("VOICE_RECORDING")}{" "}
-            {/* <Tooltip
-              title={
-                this.state.isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`headerTitleIcon ${this.state.isFavoriteActive ? "active" : ""
-                  }`}
-                onClick={this.handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip> */}
+            {i18n.t("VOICE_RECORDING")}{" "}            
           </div>
           {this.state.forward && (
             <div>

@@ -51,10 +51,7 @@ const GameBoard = ({ ...props }: any) => {
     parent.postMessage(
       JSON.stringify({
         timestamp: new Date().getTime(),
-        duration: new Date().getTime() - startTime.current,
-        static_data: Object.assign({
-          is_favorite: props?.isFavoriteActive,
-        }),
+        duration: new Date().getTime() - startTime.current,        
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         ...(props?.forward && { forward: false }),
         clickBack: true,
@@ -75,7 +72,6 @@ const GameBoard = ({ ...props }: any) => {
         static_data: Object.assign({
           best_correct_fragmentation: maxFragmentation + "%",
           sequence: sequence,
-          is_favorite: props?.isFavoriteActive,
         }),
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         ...(props?.forward && { forward: true }),
@@ -101,10 +97,7 @@ const GameBoard = ({ ...props }: any) => {
   const sendGameResult = () => {
     parent.postMessage(
       JSON.stringify({
-        duration: new Date().getTime() - startTime.current,
-        static_data: Object.assign({
-          is_favorite: props?.isFavoriteActive,
-        }),
+        duration: new Date().getTime() - startTime.current,        
         temporal_slices: JSON.parse(JSON.stringify(routes)),
         timestamp: new Date().getTime(),
         ...(props?.forward && { forward: props?.isForwardButton }),

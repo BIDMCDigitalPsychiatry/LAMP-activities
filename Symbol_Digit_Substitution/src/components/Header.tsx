@@ -7,8 +7,6 @@ import {
   Toolbar,
   IconButton,
   Icon,
-  // Fab,
-  // Tooltip,
 } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
@@ -52,9 +50,7 @@ export default function Header({ ...props }) {
   const clickBack = (backButton, isnavigationBtn) => {
     props?.clickBackData(backButton,isnavigationBtn);
   };
-  const handleFavoriteClick = () => {
-    props?.setIsFavoriteActive((prev) => !prev);
-  };
+    
   return (
     <AppBar
       position="static"
@@ -71,23 +67,7 @@ export default function Header({ ...props }) {
           </IconButton>
         )}
         <Typography variant="h5">
-          {`${t("Symbol-Digit Substitution")}`}{" "}
-          {/* <Tooltip
-            title={
-              props?.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`${classes.headerTitleIcon} ${
-                props?.isFavoriteActive ? "active" : ""
-              }`}
-              onClick={handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip>{" "} */}
+          {`${t("Symbol-Digit Substitution")}`}{" "}          
         </Typography>
         {props?.forward && (
           <IconButton

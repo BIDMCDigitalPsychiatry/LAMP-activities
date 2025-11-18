@@ -242,10 +242,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
   );
   const [startGame, setStartGame] = useState(false);
   const [random, setRandom] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [open, setOpen] = useState(false);  
   const [isForward, setIsForward] = useState(props?.data?.forward ?? false)
   const { t } = useTranslation();
 
@@ -348,7 +345,6 @@ export default function SymbolDigitSubstitution({ ...props }) {
           avg_incorrect_response_time: Math.round(
             falseDurationSum / data.length
           ),
-          is_favorite: isFavoriteActive,
         },
         ...(isForward && { forward: !backButton }),
         ...(!isnavigationBtn && { done: true }),
@@ -435,8 +431,6 @@ export default function SymbolDigitSubstitution({ ...props }) {
           <Header
             data={noBack}
             clickBackData={clickBack}
-            isFavoriteActive={isFavoriteActive}
-            setIsFavoriteActive={setIsFavoriteActive}
             forward={isForward}
           />
           {!open && (

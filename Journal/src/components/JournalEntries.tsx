@@ -17,7 +17,6 @@ import {
   Backdrop,
   CircularProgress,
   Icon,
-  // Tooltip,
 } from "@material-ui/core";
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
@@ -160,10 +159,7 @@ export default function JournalEntries({ ...props }) {
   const [time, setTime] = useState(new Date().getTime());
   const [noBack, setNoBack] = useState(false);
   const [id, setId] = useState(null);
-  const [confirm, setConfirm] = useState(false);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite ?? false
-  );
+  const [confirm, setConfirm] = useState(false);  
   const [forward] = useState(props?.data?.forward ?? true);
   const [isForwardButton, setIsForwardButton] = useState(false);
   const [isBackButton, setIsBackButton] = useState(false);
@@ -208,7 +204,6 @@ export default function JournalEntries({ ...props }) {
             static_data: {
               text: journalValue,
               sentiment: status,
-              is_favorite: isFavoriteActive,
             },
             temporal_slices: [],
             ...(forward && { forward: true }),
@@ -217,10 +212,7 @@ export default function JournalEntries({ ...props }) {
           "*"
         )
       : parent.postMessage(
-          JSON.stringify({
-            static_data: {
-              is_favorite: isFavoriteActive,
-            },
+          JSON.stringify({            
             ...(forward && { forward: isForwardButton }),
             ...(isBackButton && { clickBack: true }),
           }),
@@ -283,9 +275,7 @@ export default function JournalEntries({ ...props }) {
     setLoading(false);
     setConfirm(false);
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  
 
   return (
     <div className={classes.root}>
@@ -319,23 +309,7 @@ export default function JournalEntries({ ...props }) {
             </IconButton>
           )}
           <Typography variant="h5">
-            {t("New journal entry")}{" "}
-            {/* <Tooltip
-              title={
-                isFavoriteActive
-                  ? "Tap to remove from Favorite Activities"
-                  : "Tap to add to Favorite Activities"
-              }
-            >
-              <Fab
-                className={`${classes.headerTitleIcon} ${
-                  isFavoriteActive ? "active" : ""
-                }`}
-                onClick={handleFavoriteClick}
-              >
-                <Icon>star_rounded</Icon>
-              </Fab>
-            </Tooltip>{" "} */}
+            {t("New journal entry")}{" "}            
           </Typography>
           {forward && (
             <IconButton

@@ -22,7 +22,6 @@ import Board from "./Board";
 import { Bubble } from "./Bubble";
 import "./bubble.css";
 import { InstructionModal } from "./InstructionModal";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 interface AppProps {
@@ -598,12 +597,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
   handleCloseInstructionModal = () => {
     this.setState({ showDialog: false });
-  };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  };  
 
   // Game render function
   render() {
@@ -645,23 +639,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
           </nav>
         )}
         <div className="heading">
-          {i18n.t("POP_THE_BUBBLES")}
-          {/* <Tooltip
-            title={
-              this.state.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`headerTitleIcon ${
-                this.state.isFavoriteActive ? "active" : ""
-              }`}
-              onClick={this.handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip> */}
+          {i18n.t("POP_THE_BUBBLES")}          
         </div>
         {infoSection}
         {instructionModal}

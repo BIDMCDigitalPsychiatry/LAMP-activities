@@ -19,7 +19,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Timer } from "../common/Timer";
 import "./box.css";
-// import { Tooltip, Fab, Icon } from "@material-ui/core";
 import "material-icons";
 
 interface BoardState {
@@ -508,12 +507,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       isForwardButton: true,
     }));
     this.sendGameResult(true, false);
-  };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
+  };  
 
   // Render the game board
   render() {
@@ -631,23 +625,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           </nav>
         )}
         <div className="heading">
-          {i18n.t("BOX_GAME")}{" "}
-          {/* <Tooltip
-            title={
-              this.state.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`headerTitleIcon ${
-                this.state.isFavoriteActive ? "active" : ""
-              }`}
-              onClick={this.handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip> */}
+          {i18n.t("BOX_GAME")}{" "}          
         </div>
         <div className="game-board">
           <div>

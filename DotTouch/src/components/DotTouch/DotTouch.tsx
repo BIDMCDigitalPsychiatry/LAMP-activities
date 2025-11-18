@@ -18,7 +18,6 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 // import { Timer } from '../common/Timer';
 import "./DotTouch.css";
 import { GeneralInstruction } from "./GeneralInstruction";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import "material-icons";
 
@@ -412,12 +411,7 @@ class DotTouch extends React.Component<any, DotState> {
   handleCloseInstructionModal = () => {
     this.setState({ showInstruction: false });
   };
-  handleFavoriteClick = () => {
-    this.setState((prevState) => ({
-      isFavoriteActive: !prevState.isFavoriteActive,
-    }));
-  };
-
+  
   // Render the game board
   render() {
     const alertMsg = this.state.gameOver
@@ -460,23 +454,7 @@ class DotTouch extends React.Component<any, DotState> {
         )}
 
         <div className="heading">
-          Trails B
-          {/* <Tooltip
-            title={
-              this.state.isFavoriteActive
-                ? "Tap to remove from Favorite Activities"
-                : "Tap to add to Favorite Activities"
-            }
-          >
-            <Fab
-              className={`headerTitleIcon ${
-                this.state.isFavoriteActive ? "active" : ""
-              }`}
-              onClick={this.handleFavoriteClick}
-            >
-              <Icon>star_rounded</Icon>
-            </Fab>
-          </Tooltip> */}
+          Trails B          
         </div>
         <div className="game-board">
           <div>
