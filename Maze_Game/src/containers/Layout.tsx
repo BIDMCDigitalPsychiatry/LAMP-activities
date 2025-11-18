@@ -7,7 +7,7 @@ import i18n from "../i18n";
 import ModalPopup from "./uielements/ModalPopup";
 import { MazeComponent } from "./MazeComponent";
 import DialogMessage from "./DialogMessage";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const Layout = ({ ...props }: any) => {
@@ -119,9 +119,9 @@ const Layout = ({ ...props }: any) => {
       "*"
     );
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  // const handleFavoriteClick = () => {
+  //   setIsFavoriteActive((prev: boolean) => !prev);
+  // };
 
   return (
     <div className="main-class">

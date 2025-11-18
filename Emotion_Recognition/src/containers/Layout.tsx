@@ -6,7 +6,7 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import { shuffleArray } from "src/functions";
-import { Fab, Icon, Tooltip } from "@material-ui/core";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const ems: any = [
@@ -164,9 +164,9 @@ const Layout = ({ ...props }: any) => {
       "*"
     );
   };
-  const handleFavoriteClick = () => {
-    setIsFavoriteActive((prev: boolean) => !prev);
-  };
+  // const handleFavoriteClick = () => {
+  //   setIsFavoriteActive((prev: boolean) => !prev);
+  // };
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
