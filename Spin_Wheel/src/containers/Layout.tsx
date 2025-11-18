@@ -66,7 +66,7 @@ const Layout = ({ ...props }) => {
   const [conditionsForRed, setConditionsForRed] = useState<any>([]);
   const [conditionsForYellow, setConditionsForYellow] = useState<any>([]);
   const [conditionsForBlue, setConditionsForBlue] = useState<any>([]);
-  const [conditionsForGreen, setConditionsForGreen] = useState<any
+  const [conditionsForGreen, setConditionsForGreen] = useState<any>([]);
   const [hasForward] = useState(props?.data?.forward ?? false);
   const highRiskConditionsLoseWheel = convertObjtoArray(
     settingsData?.high_risk[0]?.loose,
@@ -148,7 +148,6 @@ const Layout = ({ ...props }) => {
               timestamp: new Date().getTime(),
               duration: new Date().getTime() - time,
               temporal_slices: JSON.parse(JSON.stringify(routes)),
-              static_data: { is_favorite: isFavoriteActive },
               ...(hasForward && { forward: !isBack }),
               ...(!isNavigationBtn && { done: true }),
               ...(isBack && { clickBack : true }),
@@ -171,7 +170,6 @@ const Layout = ({ ...props }) => {
                 timestamp: new Date().getTime(),
                 duration: new Date().getTime() - time,
                 temporal_slices: JSON.parse(JSON.stringify(routes)),
-                static_data: { is_favorite: isFavoriteActive },
                 ...(hasForward && { forward: hasForward! }),
                 done:true,
               })
