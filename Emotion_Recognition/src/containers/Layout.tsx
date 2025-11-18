@@ -6,7 +6,6 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import i18n from "../i18n";
 import Emotions from "src/components/Emotions";
 import { shuffleArray } from "src/functions";
-// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const ems: any = [
@@ -41,9 +40,6 @@ const Layout = ({ ...props }: any) => {
   const [settings, setSettings] = useState<any>(null);
   const [totalLevels, setTotalLevels] = useState(0);
   const [emotions, setEmotions] = useState(ems);
-  const [isFavoriteActive, setIsFavoriteActive] = useState(
-    props?.data?.is_favorite
-  );
   const [forward] = useState(props?.data?.forward ?? false);
   const [isForwardButton, setIsForwardButton] = useState(false);
 
@@ -164,9 +160,7 @@ const Layout = ({ ...props }: any) => {
       "*"
     );
   };
-  // const handleFavoriteClick = () => {
-  //   setIsFavoriteActive((prev: boolean) => !prev);
-  // };
+  
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
@@ -190,21 +184,7 @@ const Layout = ({ ...props }: any) => {
         </nav>
       )}
       <div className="heading">
-        {i18n.t("EMOTIONS")}{" "}
-        {/* <Tooltip
-          title={
-            isFavoriteActive
-              ? "Tap to remove from Favorite Activities"
-              : "Tap to add to Favorite Activities"
-          }
-        >
-          <Fab
-            className={`headerTitleIcon ${isFavoriteActive ? "active" : ""}`}
-            onClick={handleFavoriteClick}
-          >
-            <Icon>star_rounded</Icon>
-          </Fab>
-        </Tooltip>{" "} */}
+        {i18n.t("EMOTIONS")}       
       </div>
       <Container>
         <Row>
