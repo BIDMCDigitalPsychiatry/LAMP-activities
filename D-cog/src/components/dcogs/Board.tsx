@@ -26,6 +26,7 @@ import "./box.css";
 import { InstructionModal } from "./InstructionModal";
 import AudioPlayer from "../common/AudioPlayer";
 import { Questionnaire } from "./Questionnaire";
+// import { Fab, Icon, Tooltip } from "@material-ui/core";
 import "material-icons";
 
 const failAudio =
@@ -120,6 +121,7 @@ const numbers = [
 // ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
+  private roundAppending: boolean = false; // small guard to avoid accidental double-appends
 
   constructor(props: BoardProps) {
     super(props);
@@ -401,7 +403,8 @@ class Board extends React.Component<BoardProps, BoardState> {
       const route = {
         duration: lastclickTime,
         item: boxNo,
-        level: this.state.gameState,
+        // level: this.state.gameState,
+        level: this.state.dogCount, // per-tap level - number of dogs (difficulty)
         type: statusVal,
         value: null,
       };
@@ -413,50 +416,82 @@ class Board extends React.Component<BoardProps, BoardState> {
         lastClickTime: new Date().getTime(),
       },
       () => {
-        let statusOutComes = this.state.outComes;
-        !statusVal ? statusOutComes.push(0) : statusOutComes.push(1);
-        let levels = this.state.levels;
-        levels.push(this.state.randomPoints.length);
-        if (
-          !statusVal ||
-          this.state.successTaps === this.state.randomPoints.length
-        ) {
-          this.setState(
-            {
-              successCompletion:
-                this.state.successTaps === this.state.randomPoints.length,
-              outComes: statusOutComes,
-              levels: levels,
-            },
-            () => {
-              setTimeout(() => {
-                this.resetBoxClass();
-                this.resetState();
-              }, 250);
-            }
-          );
-        } else {
-          setTimeout(() => {
-            if (
-              new Date().getTime() - this.state.tapTime > 4000 &&
-              new Date().getTime() - this.state.lastClickTime > 4000 &&
-              this.state.startTimer != 0
-            ) {
-              this.setState(
-                {
-                  successCompletion:
-                    this.state.successTaps === this.state.randomPoints.length,
-                  outComes: statusOutComes,
-                  levels: levels,
-                },
-                () => {
+        // let statusOutComes = this.state.outComes;
+        // !statusVal ? statusOutComes.push(0) : statusOutComes.push(1);
+        // let levels = this.state.levels;
+        // levels.push(this.state.randomPoints.length);
+        // update successCompletion flag
+        this.setState(
+          {
+            successCompletion:
+              this.state.successTaps === this.state.randomPoints.length,
+          },
+          () => {
+            const roundEnded =
+              !statusVal ||
+              this.state.successTaps === this.state.randomPoints.length;
+
+            if (roundEnded) {
+              // Append a single round summary (immutable update) and then continue with existing flow.
+              // Use functional setState to avoid direct mutation.
+              try {
+                if (!this.roundAppending) {
+                  this.roundAppending = true;
+                  this.setState(
+                    (prev) => ({
+                      levels: [...(prev.levels || []), prev.dogCount],
+                      outComes: [
+                        ...(prev.outComes || []),
+                        prev.successTaps === prev.randomPoints.length ? 1 : 0,
+                      ],
+                    }),
+                    () => {
+                      // small delay to keep UX identical, then reset boxes and go to next round
+                      setTimeout(() => {
+                        this.resetBoxClass();
+                        this.resetState();
+                        this.roundAppending = false;
+                      }, 250);
+                    }
+                  );
+                } else {
+                  // if already appending, still follow existing flow
+                  setTimeout(() => {
+                    this.resetBoxClass();
+                    this.resetState();
+                  }, 250);
+                }
+              } catch (e) {
+                // fallback to original flow on error
+                setTimeout(() => {
                   this.resetBoxClass();
                   this.resetState();
+                }, 250);
+              }
+            } else {
+              // Not ended — original timeout fallback
+              setTimeout(() => {
+                if (
+                  new Date().getTime() - this.state.tapTime > 4000 &&
+                  new Date().getTime() - this.state.lastClickTime > 4000 &&
+                  this.state.startTimer != 0
+                ) {
+                  this.setState(
+                    {
+                      successCompletion:
+                        this.state.successTaps ===
+                        this.state.randomPoints.length,
+                    },
+                    () => {
+                      this.resetBoxClass();
+                      this.resetState();
+                    }
+                  );
                 }
-              );
+              }, 4000);
             }
-          }, 4000);
-        }
+          }
+        );
       }
     );
   };
@@ -584,7 +619,12 @@ class Board extends React.Component<BoardProps, BoardState> {
         isBack:false
       });
     });
-  };  
+  };
+  // handleFavoriteClick = () => {
+  //   this.setState((prevState) => ({
+  //     isFavoriteActive: !prevState.isFavoriteActive,
+  //   }));
+  // };
 
   // Render the game board
   render() {
@@ -683,7 +723,23 @@ class Board extends React.Component<BoardProps, BoardState> {
           <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
         </nav>
         <div className="heading">
-          {i18n.t("D-Cog")}          
+          {i18n.t("D-Cog")}
+          {/*<Tooltip
+            title={
+              this.state.isFavoriteActive
+                ? "Tap to remove from Favorite Activities"
+                : "Tap to add to Favorite Activities"
+            }
+          >
+            <Fab
+              className={`headerTitleIcon ${
+                this.state.isFavoriteActive ? "active" : ""
+              }`}
+              onClick={this.handleFavoriteClick}
+            >
+              <Icon>star_rounded</Icon>
+            </Fab>
+          </Tooltip>*/}
         </div>
         {this.state.forward && (
           <nav className="forward-link">

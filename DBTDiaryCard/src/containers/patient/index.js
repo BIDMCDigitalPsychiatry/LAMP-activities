@@ -196,10 +196,7 @@ function HomeView(props) {
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+      JSON.stringify({        
         forward: true,
       }),
       "*"
