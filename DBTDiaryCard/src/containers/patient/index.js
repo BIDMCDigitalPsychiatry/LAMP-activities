@@ -155,10 +155,7 @@ function HomeView(props) {
   useEffect(() => {
     if (active === 8) {
       let finalReport = createReport(props.report, props?.data?.activity?.id);
-      finalReport.duration = new Date().getTime() - time;
-      finalReport.static_data = {
-        is_favorite: isFavoriteActive,
-      };
+      finalReport.duration = new Date().getTime() - time;      
       finalReport.done = true;
       if (forward) {
         finalReport.forward = isForwardButton;
@@ -199,10 +196,7 @@ function HomeView(props) {
   const handleForwardClick = () => {
     setIsForwardButton(true);
     parent.postMessage(
-      JSON.stringify({
-        static_data: {
-          is_favorite: isFavoriteActive,
-        },
+      JSON.stringify({        
         forward: true,
       }),
       "*"
@@ -233,7 +227,6 @@ function HomeView(props) {
                   JSON.stringify({
                     completed: true,
                     forward: false,
-                    static_data: { is_favorite: isFavoriteActive },
                     clickBack : true 
                   }),
                   "*"
