@@ -443,7 +443,7 @@ export default function Breathe({ ...props }) {
             )}
             <Grid item className={classes.videoNav}>
               <video
-                src="./videos/Lotus.mp4"
+                src="https://github.com/BIDMCDigitalPsychiatry/LAMP-activities/raw/refs/heads/dist/misc/Lotus.mp4"
                 autoPlay={true}
                 onLoadedData={() => {
                   videoLoaded();
