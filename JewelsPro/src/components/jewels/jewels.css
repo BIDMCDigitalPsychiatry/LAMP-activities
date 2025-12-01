@@ -134,7 +134,7 @@ nav a {
 }
 .header-right-nav {
   position: absolute;
-  top: 12px;
+  top: 6px;
   right: 10px;
   display: flex;
 }
@@ -152,7 +152,7 @@ nav a {
 .back-link {
   position: absolute;
   left: 10px;
-  top: 12px;
+  top: 6px;
   background: #f4f4f4;
   width: 40px;
   height: 40px;
