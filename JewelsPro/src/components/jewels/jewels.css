@@ -606,8 +606,8 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 110px;
-  top: 18px;
+  right: 60px;
+  top: 11px;
 }
 .countdown-timer__text {
   color: rgba(53, 159, 254, 1) !important;
@@ -650,11 +650,11 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
 }
 
 @media only screen and (max-width: 460px) {
-  .countdown-timer__text {
+  /* .countdown-timer__text {
     position: fixed;
     left: 50px;
     top: 13px;
-  }
+  } */
 
   .footer-cls {
     margin-top: 30px;
