@@ -16,12 +16,17 @@ import './index.css';
 import { createRoot } from "react-dom/client";
 
 
-const rootElement = document.getElementById("root") as HTMLElement;
-const root = rootElement ? createRoot(rootElement) : null;
+let root: ReturnType<typeof createRoot> | null = null;
 
 window.addEventListener(
     "message", (e: any) => {
-      if(root) {
+      if (!root) {
+        const rootElement = document.getElementById("root");
+        if (rootElement) {
+          root = createRoot(rootElement);
+        }
+      }
+      if (root) {
         root.render(<AppContainer>
           <DCogs data={e.data}/>
         </AppContainer>);
