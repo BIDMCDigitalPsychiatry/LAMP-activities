@@ -28,15 +28,14 @@ export class Box extends React.Component<BoxProps> {
 
   // Box render with conditions passed from Board.tsx
   render() {
-    const classN =
-      this.props.img !== null && this.props.animateStatus === true
-        ? this.props.boxSQClass + " dog-cover"
-        : this.props.boxSQClass ;
+    // All boxes always get dog-cover (blue). Cover fades out during memorization phase
+    // so all boxes look identical (white) except dog boxes which show the dog image.
+    const classN = this.props.boxSQClass + " dog-cover" +
+      (!this.props.animateStatus ? " dog-cover-revealed" : "");
 
     return (
       <div
-        key="this.props.index"
-        className={this.props.boxClass }
+        className={this.props.boxClass}
         onClick={this.onClick}
       >
         <div className={classN} />

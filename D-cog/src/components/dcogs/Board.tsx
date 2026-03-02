@@ -121,7 +121,19 @@ const numbers = [
 // ];
 class Board extends React.Component<BoardProps, BoardState> {
   private timer: any;
+  private revealTimeout: ReturnType<typeof setTimeout> | null = null;
+  private autoAdvanceTimeout: ReturnType<typeof setTimeout> | null = null;
+  private tapAdvanceTimeout: ReturnType<typeof setTimeout> | null = null;
+  private timerCheckInterval: ReturnType<typeof setInterval> | null = null;
   private roundAppending: boolean = false; // small guard to avoid accidental double-appends
+
+  // Clear all pending timeouts/intervals to prevent orphaned state changes
+  clearAllTimeouts = () => {
+    if (this.revealTimeout) { clearTimeout(this.revealTimeout); this.revealTimeout = null; }
+    if (this.autoAdvanceTimeout) { clearTimeout(this.autoAdvanceTimeout); this.autoAdvanceTimeout = null; }
+    if (this.tapAdvanceTimeout) { clearTimeout(this.tapAdvanceTimeout); this.tapAdvanceTimeout = null; }
+    if (this.timerCheckInterval) { clearInterval(this.timerCheckInterval); this.timerCheckInterval = null; }
+  };
 
   constructor(props: BoardProps) {
     super(props);
@@ -169,13 +181,19 @@ class Board extends React.Component<BoardProps, BoardState> {
       isBack: false,
     };
   }
+  componentWillUnmount() {
+    this.clearAllTimeouts();
+    if (this.timer) { clearInterval(this.timer); }
+  }
+
   // Reset game state for each state
   resetState = () => {
+    // Clear any pending timeouts from previous round
+    this.clearAllTimeouts();
+
     if (this.state.startTimer <= 6) {
       this.finishGame();
     } else {
-      // var refreshIntervalId: any = undefined
-      // if ((new Date().getTime() - this.state.tapTime) > 4000 && (new Date().getTime() - this.state.lastClickTime) > 4000 && this.state.startTimer != 0) {
       let dogTempCount = this.state.successCompletion
         ? this.state.dogCount + 1
         : this.state.dogCount > 1
@@ -207,8 +225,10 @@ class Board extends React.Component<BoardProps, BoardState> {
 
       const rP = getRandomNumbers(dogTempCount, 1, boxCount);
       const newGameState = this.state.gameState + 1;
+
+      // Phase 1: Show dogs (animate: false = no dog-cover = dogs visible)
       this.setState({
-        animate: true,
+        animate: false,
         boxClass: ["box-square"],
         dogCount: dogTempCount,
         enableTap: false,
@@ -224,11 +244,9 @@ class Board extends React.Component<BoardProps, BoardState> {
         numbers: this.shuffleArray(numbers),
         gameState: newGameState,
       });
-      this.setState({
-        animate: false,
-      });
 
-      setTimeout(() => {
+      // Phase 2: After 1s, hide dogs and enable tapping (animate: true = dog-cover = dogs hidden)
+      this.revealTimeout = setTimeout(() => {
         this.setState(
           {
             animate: true,
@@ -236,7 +254,8 @@ class Board extends React.Component<BoardProps, BoardState> {
             enableTap: true,
           },
           () => {
-            setTimeout(() => {
+            // Phase 3: Auto-advance if no taps after 4s
+            this.autoAdvanceTimeout = setTimeout(() => {
               if (
                 new Date().getTime() - this.state.tapTime > 4000 &&
                 new Date().getTime() - this.state.lastClickTime > 4000 &&
@@ -250,7 +269,6 @@ class Board extends React.Component<BoardProps, BoardState> {
         );
       }, 1000);
       this.checkStatus();
-      // }
     }
   };
   // Rest box styles after each load
@@ -321,6 +339,7 @@ class Board extends React.Component<BoardProps, BoardState> {
   };
 
   finishGame = () => {
+    this.clearAllTimeouts();
     this.setState(
       {
         endTime: new Date(),
@@ -343,8 +362,16 @@ class Board extends React.Component<BoardProps, BoardState> {
       ) {
         this.finishGame();
       } else {
-        setInterval(() => {
-          this.passTimerUpdate(0);
+        // Use a tracked single-shot timeout instead of leaked setInterval
+        if (this.timerCheckInterval) { clearInterval(this.timerCheckInterval); this.timerCheckInterval = null; }
+        this.timerCheckInterval = setInterval(() => {
+          if (
+            new Date().getTime() - this.state.tapTime > 4000 &&
+            new Date().getTime() - this.state.lastClickTime > 4000
+          ) {
+            if (this.timerCheckInterval) { clearInterval(this.timerCheckInterval); this.timerCheckInterval = null; }
+            this.finishGame();
+          }
         }, 1000);
       }
     }
@@ -446,31 +473,31 @@ class Board extends React.Component<BoardProps, BoardState> {
                       ],
                     }),
                     () => {
-                      // small delay to keep UX identical, then reset boxes and go to next round
-                      setTimeout(() => {
+                      // Brief delay for visual feedback, then advance to next round
+                      this.tapAdvanceTimeout = setTimeout(() => {
                         this.resetBoxClass();
                         this.resetState();
                         this.roundAppending = false;
-                      }, 250);
+                      }, 500);
                     }
                   );
                 } else {
                   // if already appending, still follow existing flow
-                  setTimeout(() => {
+                  this.tapAdvanceTimeout = setTimeout(() => {
                     this.resetBoxClass();
                     this.resetState();
-                  }, 250);
+                  }, 500);
                 }
               } catch (e) {
                 // fallback to original flow on error
-                setTimeout(() => {
+                this.tapAdvanceTimeout = setTimeout(() => {
                   this.resetBoxClass();
                   this.resetState();
-                }, 250);
+                }, 500);
               }
             } else {
-              // Not ended — original timeout fallback
-              setTimeout(() => {
+              // Not ended — auto-advance timeout if no further taps
+              this.autoAdvanceTimeout = setTimeout(() => {
                 if (
                   new Date().getTime() - this.state.tapTime > 4000 &&
                   new Date().getTime() - this.state.lastClickTime > 4000 &&

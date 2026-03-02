@@ -32,20 +32,25 @@ export class InstructionModal extends React.Component<Props, State> {
     } 
      
     // Modal render function
-    render() {   
-         return (            
-          <Modal show={this.state.showStatus} onHide={this.handleClose} 
+    render() {
+         return (
+          <Modal show={this.state.showStatus} onHide={this.handleClose}
           animation={false}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
-          centered={true}>               
-              <Modal.Body className='modal-body-section'>{this.props.msg}</Modal.Body>
-              <Modal.Footer className=''>              
-                  <Button onClick={this.handleClose}>
-                    {i18n.t("OK")}
+          centered={true}>
+              <Modal.Header className='instruction-modal-header'>
+                <Modal.Title className='instruction-modal-title'>
+                  {i18n.t("Instructions")}
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body className='instruction-modal-body'>{this.props.msg}</Modal.Body>
+              <Modal.Footer className='instruction-modal-footer'>
+                  <Button className='instruction-modal-btn' onClick={this.handleClose}>
+                    {i18n.t("Start")}
                   </Button>
             </Modal.Footer>
-         </Modal>    
+         </Modal>
         );
     }
 }
