@@ -16,19 +16,16 @@ import './index.css';
 import { createRoot } from "react-dom/client";
 
 
-const eventMethod = "addEventListener"
-const eventer = window[eventMethod]
-const messageEvent =  "message"
-eventer(
-    messageEvent, (e: any) => { 
 const rootElement = document.getElementById("root") as HTMLElement;
+const root = rootElement ? createRoot(rootElement) : null;
 
-if(!!rootElement) { 
-const root = createRoot(rootElement);
-      root.render(<AppContainer>
-        <DCogs data={e.data}/>
-      </AppContainer>);
-}
-},
-false
+window.addEventListener(
+    "message", (e: any) => {
+      if(root) {
+        root.render(<AppContainer>
+          <DCogs data={e.data}/>
+        </AppContainer>);
+      }
+    },
+    false
 )
