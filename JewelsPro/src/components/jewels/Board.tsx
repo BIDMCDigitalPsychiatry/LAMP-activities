@@ -1,9 +1,6 @@
 /**
  * @file   Board.tsx
- * @brief  Board component to load jewels game
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
+ * @brief  Board component — game logic for JewelsPro
  */
 import * as React from "react";
 import { Timer } from "../common/Timer";
@@ -37,7 +34,6 @@ export interface BoardProps {
 interface DiamondState {
   activeDiamond: string;
   clickedItems: any;
-  bottomHelp: boolean;
   displayNegativePoints: boolean;
   endTime: any;
   gameOver: boolean;
@@ -57,10 +53,8 @@ interface DiamondState {
 class Board extends React.Component<BoardProps, DiamondState> {
   constructor(props: BoardProps) {
     super(props);
-    // Initailise state values
     this.state = {
       activeDiamond: this.props.currentDiamond[0],
-      bottomHelp: true,
       clickedItems: [],
       displayNegativePoints: false,
       endTime: null,
@@ -79,7 +73,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
     };
     i18n.changeLanguage(props.language);
   }
-  // Each dimaond click is handled here
+
+  // Each diamond click is handled here
   handleClick = (e: any, i: number, diamondStyle: string) => {
     this.setState({
       tapCount: this.state.startTimer > 0 ? this.state.tapCount + 1 : 0,
@@ -104,10 +99,8 @@ class Board extends React.Component<BoardProps, DiamondState> {
         diamondStyle === this.props.currentDiamond[0]
       ) {
         const timerVal = this.props.gameTime ?? 90;
-        // state updation for diamond 1 click
         this.setState(
           {
-            // startTime: new Date(),
             startTimer: timerVal,
             showInstruction: false,
           },
@@ -116,22 +109,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           }
         );
       } else {
-        // Update the state values for each tas other than diamond 1
-        if (
-          this.state.stepNumber === this.props.currentDiamond.length - 1 &&
-          i === 1
-        ) {
-          this.setState(
-            {
-              bottomHelp: false,
-            },
-            () => {
-              this.updateStateWithTaps(i, true, diamondStyle);
-            }
-          );
-        } else {
-          this.updateStateWithTaps(i, true, diamondStyle);
-        }
+        this.updateStateWithTaps(i, true, diamondStyle);
       }
       const item =
         e.target.className === "number-text"
@@ -150,14 +128,12 @@ class Board extends React.Component<BoardProps, DiamondState> {
           (item: any) => item.item === i && item.style === diamondStyle
         ).length === 0
       ) {
-        // When wrong diamond is tapped, update the negative point
         const negPoints = 2;
         this.setState({
           displayNegativePoints: true,
           negativePoints: this.state.negativePoints - negPoints,
         });
 
-        // Show the negative point for 3 seconds
         setTimeout(() => {
           this.setState({
             displayNegativePoints: false,
@@ -166,7 +142,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
       }
     }
   };
-  // To track the timer expiring
+
   passTimerUpdate = (timerVal: number) => {
     if (timerVal === 0) {
       this.setState(
@@ -183,7 +159,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
     });
   };
 
-  // Update the state values for each taps other than jewel 1
   updateStateWithTaps = (
     i: number,
     statusVal: boolean,
@@ -252,7 +227,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
           statusVal === true &&
           this.props.diamondNumbers.length === this.state.stepNumber
         ) {
-          // this.sendGameResult(2);
           this.setState({ showConfirmModal: true });
         }
       }
@@ -269,16 +243,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
     let p = 0;
     const rows = 9;
     const cols = 6;
-    const height =
-      (window.innerHeight - (window.innerHeight * 15) / 100) / 12.5;
-    // let diamondStyle = this.props.currentDiamond[0]
-    // Outer loop to create parent
     for (let i = 0; i < rows; i++) {
       const children = [];
-      // Inner loop to create children
       for (let j = 0; j < cols; j++) {
         if (this.props.diamondSpots.indexOf(p) > -1) {
-          //  diamondStyle = k >= Math.ceil(this.props.diamondNumbers.length / 2) ?  this.props.currentDiamond[1] :this.props.currentDiamond[0]
           children.push(
             <td key={p}>
               <Diamond
@@ -295,17 +263,11 @@ class Board extends React.Component<BoardProps, DiamondState> {
         }
         p++;
       }
-      // Create the parent and add the children
-      table.push(
-        <tr style={{ height: `${height}px` }} key={i}>
-          {children}
-        </tr>
-      );
+      table.push(<tr key={i}>{children}</tr>);
     }
     return table;
   };
 
-  // Call the API to pass game result
   sendGameResult = (pointVal: number) => {
     const totalBonusCollected =
       this.state.stepNumber === this.props.totalDiamonds
@@ -333,29 +295,31 @@ class Board extends React.Component<BoardProps, DiamondState> {
 
   getTotalLevels = () => {
     const maxBonusPoints = 1000;
-    const bonusPointsPerLevel = this.props.settings?.bonus_point_count ?? 40; // Default value
+    const bonusPointsPerLevel = this.props.settings?.bonus_point_count ?? 40;
     if (!bonusPointsPerLevel || bonusPointsPerLevel <= 0) {
-      console.error("Invalid or missing bonus_point_count in settings");
       return 0;
     }
-    const totalLevels = Math.ceil(maxBonusPoints / bonusPointsPerLevel);
-    return totalLevels;
+    return Math.ceil(maxBonusPoints / bonusPointsPerLevel);
   };
-  // Render the game board
+
+  formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
+  };
+
   render() {
     let board;
     let negSection = null;
-    let jewelInfo = null;
     let timer;
-    // const { showInstruction } = this.state;
+
     if (this.state.gameOver === false && this.state.timeout === false) {
-      // loading game
       board = (
         <table className="game-table">
           <tbody>{this.createTable()}</tbody>
         </table>
       );
-      // When wrong diamond is tapped
+
       timer =
         this.state.startTimer > 0 ? (
           <Timer
@@ -363,42 +327,24 @@ class Board extends React.Component<BoardProps, DiamondState> {
             startTimeInSeconds={this.state.startTimer}
             startTimer={1}
           />
-        ) : null;
+        ) : (
+          <span>{this.formatTime(this.props.gameTime ?? 90)}</span>
+        );
+
       negSection =
         this.state.negativePoints < 0 && this.state.displayNegativePoints ? (
           <NegativePoints startPoints={this.state.negativePoints} />
         ) : null;
-      // negSection =  <NegativePoints startPoints={this.state.negativePoints} />
-      // Jewel info in the bottom for the inital state
-      const classVal =
-        this.props.currentDiamond[this.state.stepNumber] +
-        " " +
-        this.props.currentDiamond[this.state.stepNumber] +
-        "-" +
-        this.props.diamondColor;
-      jewelInfo = this.state.bottomHelp ? (
-        <div className="jewel-info">
-          <span className="info-text">{i18n.t("JEWELS")}</span>
-          <div className={classVal}>
-            <span className="number-text"> 1</span>
-          </div>
-        </div>
-      ) : null;
     } else {
-      // When timer expires or successfully completed
-      board =
-        this.state.timeout === false ? (
-          <div className="game-over">{i18n.t("CONGRATS")} !!!</div>
-        ) : (
-          <div className="game-over">{i18n.t("TIMEOUT")} !!!</div>
-        );
+      board = null;
     }
+
     const confirmModal =
       this.state && this.state.showConfirmModal === true ? (
         <InfoModal
           show={this.state.showConfirmModal === true}
           modalClose={this.handleConfirmClose}
-          msg={i18n.t("CONTINUE")}
+          msg={i18n.t("CONGRATS") + "!\n" + i18n.t("CONTINUE")}
           language={i18n.language}
         />
       ) : null;
@@ -406,41 +352,32 @@ class Board extends React.Component<BoardProps, DiamondState> {
     const instructionModal = this.state.showInstruction ? (
       <InstructionModal
         show={true}
-        longTxt={this.props.variant === "a" ? false : true}
         modalClose={this.handleCloseInstructionModal}
         msg={
           this.props.variant === "a"
-            ? i18n.t("TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1")
-            : i18n.t(
-                "LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED"
-              )
+            ? i18n.t("INSTRUCTIONS_A")
+            : i18n.t("INSTRUCTIONS_B")
         }
         language={i18n.language}
       />
     ) : null;
 
     return (
-      <div>
-        <div className={this?.props?.forward ? " countdown-timer-forward" : "countdown-timer"}>
-          <div>{timer}</div>
-          <div className="level">
-            {i18n.t("LEVEL")}
-            {this.props.level}/{this.state.totalLevels.toString()}
+      <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+        {/* Status bar */}
+        <div className="status-bar">
+          <div className="timer-display">
+            {timer}
+          </div>
+          <div className="level-badge">
+            {i18n.t("LEVEL")} {this.props.level}/{this.state.totalLevels.toString()}
           </div>
         </div>
+
         {instructionModal}
-        {/* {showInstruction && this.props.variant==='a' && (
-        //   <div className="instruction1">{i18n.t("TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1")}</div>
-        // )}
-        // {showInstruction && this.props.variant==='b' &&  (
-          <div className="instruction2">
-            <p>
-            {i18n.t("LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED")}</p></div>
-        )} */}
         {negSection}
         {confirmModal}
         {board}
-        {jewelInfo}
       </div>
     );
   }
