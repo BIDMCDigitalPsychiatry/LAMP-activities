@@ -245,7 +245,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         gameState: newGameState,
       });
 
-      // Phase 2: After 1s, hide dogs and enable tapping (animate: true = dog-cover = dogs hidden)
+      // Phase 2: After 2s, hide dogs and enable tapping (animate: true = dog-cover = dogs hidden)
       this.revealTimeout = setTimeout(() => {
         this.setState(
           {
@@ -267,7 +267,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             }, 4000);
           }
         );
-      }, 1000);
+      }, 2000);
       this.checkStatus();
     }
   };
