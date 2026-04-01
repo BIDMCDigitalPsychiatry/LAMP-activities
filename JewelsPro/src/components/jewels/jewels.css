@@ -111,6 +111,25 @@
   padding: 2px;
 }
 
+/* ===== Shape Guide (trails_b) ===== */
+.shape-guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #e0e0e0;
+}
+.shape-guide-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+.shape-guide-gem {
+  transform: scale(0.8);
+}
+
 /* ===== Diamond Styles ===== */
 .diamond-wrapper {
   position: relative;

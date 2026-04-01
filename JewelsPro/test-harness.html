@@ -54,6 +54,8 @@
         var mode = parseInt(document.getElementById('mode-select').value, 10);
         var diamonds = parseInt(document.getElementById('diamond-select').value, 10);
         var seconds = parseInt(document.getElementById('time-select').value, 10);
+        var levels = parseInt(document.getElementById('levels-select').value, 10);
+        var timeDecrease = parseInt(document.getElementById('time-decrease-select').value, 10);
 
         var settings = {
           variant: variant,
@@ -65,11 +67,16 @@
           diamond_count: diamonds,
           shape_count: variant === 'trails_b' ? 2 : 1,
           bonus_point_count: 40,
-          x_changes_in_level_count: 2,
-          x_diamond_count: 2,
-          y_changes_in_level_count: 2,
+          x_changes_in_level_count: 1,
+          x_diamond_count: 1,
+          y_changes_in_level_count: 1,
           y_shape_count: 1,
+          time_decrease_per_level: timeDecrease,
         };
+        // Only include total_levels if explicitly set (0 = auto/legacy calculation)
+        if (levels > 0) {
+          settings.total_levels = levels;
+        }
         return { activity: { settings: settings } };
       },
 
@@ -200,6 +207,25 @@
         <option value="90" selected>90s</option>
         <option value="120">120s</option>
         <option value="180">180s</option>
+      </select>
+    </label>
+    <label>Levels:
+      <select id="levels-select">
+        <option value="0">Auto</option>
+        <option value="1">1 (TMT)</option>
+        <option value="3">3</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25" selected>25</option>
+      </select>
+    </label>
+    <label>Time Decrease:
+      <select id="time-decrease-select">
+        <option value="0" selected>0s/lvl</option>
+        <option value="5">-5s/lvl</option>
+        <option value="10">-10s/lvl</option>
+        <option value="15">-15s/lvl</option>
+        <option value="20">-20s/lvl</option>
       </select>
     </label>
     <label>Language:

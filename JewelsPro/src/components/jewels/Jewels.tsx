@@ -38,6 +38,9 @@ interface AppState {
   diamondNumbers: Array<number>;
   diamondSpots: Array<number>;
   gameTime: number;
+  initialGameTime: number;
+  initialDiamondCount: number;
+  initialShapeCount: number;
   level: number;
   loaded: boolean;
   noBack: boolean;
@@ -53,6 +56,8 @@ interface AppState {
   time: number;
   totalAttempts: number;
   totalJewelsCollected: number;
+  totalLevels: number;
+  timeDecreasePerLevel: number;
   winnerLine?: Array<number>;
   variant: any;
   isFavoriteActive: boolean;
@@ -116,6 +121,12 @@ class Jewels extends React.Component<any, AppState> {
         ? 2
         : 1
       : 1;
+    const bonusPointsPerLevel = settingsData?.bonus_point_count ?? 40;
+    const defaultTotalLevels = bonusPointsPerLevel > 0
+      ? Math.ceil(1000 / bonusPointsPerLevel)
+      : 25;
+    const totalLevelsVal = settingsData?.total_levels ?? defaultTotalLevels;
+    const timeDecreaseVal = settingsData?.time_decrease_per_level ?? 0;
     const state = {
       bonusPoints: 0,
       current: [],
@@ -124,6 +135,9 @@ class Jewels extends React.Component<any, AppState> {
       diamondNumbers: [],
       diamondSpots: [],
       gameTime: gameTimeVal,
+      initialGameTime: gameTimeVal,
+      initialDiamondCount: diamondCountVal,
+      initialShapeCount: shapeCountVal,
       level: 1,
       loaded: false,
       noBack: props.data.noBack,
@@ -139,6 +153,8 @@ class Jewels extends React.Component<any, AppState> {
       time: new Date().getTime(),
       totalAttempts: 0,
       totalJewelsCollected: 0,
+      totalLevels: totalLevelsVal,
+      timeDecreasePerLevel: timeDecreaseVal,
       winnerLine: undefined,
       variant: settingsData.variant === "trails_b" ? "b" : "a",
       isFavoriteActive: props?.data?.is_favorite ?? false,
@@ -198,71 +214,76 @@ class Jewels extends React.Component<any, AppState> {
     totalAttempts: number,
     pointVal: number
   ) => {
-    const level = Math.floor(
-      (this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count
-    );
     this.updateRoutes(routesValus);
-    if (level > 1) {
-      let levelCount = Math.floor(
-        (level - 1) / this.state.settings.x_changes_in_level_count
-      );
-      const diamondCount =
-        this.state.diamondCount +
-          this.state.settings.x_diamond_count * levelCount >
-        25
-          ? 25
-          : this.state.diamondCount +
-            this.state.settings.x_diamond_count * levelCount;
-      let shapeCount = this.state.shapeCount;
-      if (this.state.settings.variant === "trails_b") {
-        levelCount = Math.floor(
-          (level - 1) / this.state.settings.y_changes_in_level_count
-        );
-        shapeCount =
-          this.state.shapeCount +
-            this.state.settings.y_shape_count * levelCount >
-          4
-            ? 4
-            : this.state.shapeCount +
-              this.state.settings.y_shape_count * levelCount;
-      }
+
+    // Always advance on completion (pointVal=2), stay on timeout (pointVal=1)
+    const nextLevel =
+      pointVal === 2 ? this.state.level + 1 : this.state.level;
+
+    // If we've reached the max level, end the game
+    if (nextLevel > this.state.totalLevels) {
       this.setState(
         {
           bonusPoints: this.state.bonusPoints + bonus,
-          diamondCount,
-          level:
-            this.state.level === level
-              ? this.state.level
-              : this.state.level + 1,
-          loaded: false,
-          shapeCount,
-          totalAttempts: this.state.totalAttempts + totalAttempts,
-          totalJewelsCollected:
-            this.state.totalJewelsCollected + totalJewelsCollected,
-        },
-        () => {
-          this.applyLevelColor(this.state.level);
-          pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
-        }
-      );
-    } else {
-      this.setState(
-        {
-          bonusPoints: this.state.bonusPoints + bonus,
-          level:
-            this.state.level === level
-              ? this.state.level
-              : this.state.level + 1,
           loaded: false,
           totalAttempts: this.state.totalAttempts + totalAttempts,
           totalJewelsCollected:
             this.state.totalJewelsCollected + totalJewelsCollected,
         },
         () => {
-          pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+          this.handleClose(true, 1);
         }
+      );
+      return;
+    }
+
+    // Calculate time for next level (decrease per level, minimum 10s)
+    const newGameTime = Math.max(
+      10,
+      this.state.initialGameTime -
+        (nextLevel - 1) * this.state.timeDecreasePerLevel
+    );
+
+    // Calculate diamond/shape counts from initial values + level scaling
+    // Level 1 = base count, level 2 = base + 1×increment, etc.
+    const xLevelCount = Math.floor(
+      Math.max(0, nextLevel - 1) / (this.state.settings.x_changes_in_level_count || 1)
+    );
+    const diamondCount = Math.min(
+      25,
+      this.state.initialDiamondCount +
+        (this.state.settings.x_diamond_count ?? 0) * xLevelCount
+    );
+
+    let shapeCount = this.state.initialShapeCount;
+    if (this.state.settings.variant === "trails_b") {
+      const yLevelCount = Math.floor(
+        Math.max(0, nextLevel - 1) / (this.state.settings.y_changes_in_level_count || 1)
+      );
+      shapeCount = Math.min(
+        4,
+        this.state.initialShapeCount +
+          (this.state.settings.y_shape_count ?? 0) * yLevelCount
       );
     }
+
+    this.setState(
+      {
+        bonusPoints: this.state.bonusPoints + bonus,
+        diamondCount,
+        gameTime: newGameTime,
+        level: nextLevel,
+        loaded: false,
+        shapeCount,
+        totalAttempts: this.state.totalAttempts + totalAttempts,
+        totalJewelsCollected:
+          this.state.totalJewelsCollected + totalJewelsCollected,
+      },
+      () => {
+        this.applyLevelColor(this.state.level);
+        pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+      }
+    );
   };
 
   // Reset game board
@@ -514,6 +535,7 @@ class Jewels extends React.Component<any, AppState> {
               <Board
                 gameTime={this.state.gameTime}
                 totalDiamonds={this.state.diamondCount}
+                totalLevels={this.state.totalLevels}
                 diamondSpots={this.state.diamondSpots}
                 diamondColor={this.state.diamondColor}
                 currentDiamond={this.state.current}

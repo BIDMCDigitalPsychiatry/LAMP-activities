@@ -13,6 +13,7 @@ import { NegativePoints } from "./NegativePoints";
 
 export interface BoardProps {
   totalDiamonds: number;
+  totalLevels: number;
   diamondSpots: Array<number>;
   currentDiamond: any;
   diamondColor: string;
@@ -46,7 +47,6 @@ interface DiamondState {
   tapCount: number;
   timeout: boolean;
   showConfirmModal: boolean;
-  totalLevels: number;
   showInstruction: boolean;
 }
 
@@ -68,7 +68,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
       tapCount: 0,
       timeout: false,
       showConfirmModal: false,
-      totalLevels: this.getTotalLevels(),
       showInstruction: true,
     };
     i18n.changeLanguage(props.language);
@@ -293,15 +292,6 @@ class Board extends React.Component<BoardProps, DiamondState> {
     this.setState({ showConfirmModal: false });
   };
 
-  getTotalLevels = () => {
-    const maxBonusPoints = 1000;
-    const bonusPointsPerLevel = this.props.settings?.bonus_point_count ?? 40;
-    if (!bonusPointsPerLevel || bonusPointsPerLevel <= 0) {
-      return 0;
-    }
-    return Math.ceil(maxBonusPoints / bonusPointsPerLevel);
-  };
-
   formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
@@ -370,7 +360,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
             {timer}
           </div>
           <div className="level-badge">
-            {i18n.t("LEVEL")} {this.props.level}/{this.state.totalLevels.toString()}
+            {i18n.t("LEVEL")} {this.props.level}/{this.props.totalLevels}
           </div>
         </div>
 
@@ -378,6 +368,21 @@ class Board extends React.Component<BoardProps, DiamondState> {
         {negSection}
         {confirmModal}
         {board}
+
+        {/* Shape sequence guide for trails_b */}
+        {this.props.variant === "b" &&
+          this.state.gameOver === false &&
+          this.state.timeout === false && (
+          <div className="shape-guide">
+            <span className="shape-guide-label">{i18n.t("JEWELS")}:</span>
+            {this.props.currentDiamond.map((shape: string, idx: number) => {
+              const cls = shape + " " + shape + "-" + this.props.diamondColor;
+              return (
+                <div key={idx} className={`diamond-wrapper shape-guide-gem ${cls}`} />
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
