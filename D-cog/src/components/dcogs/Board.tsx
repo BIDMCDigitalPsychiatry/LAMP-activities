@@ -254,15 +254,17 @@ class Board extends React.Component<BoardProps, BoardState> {
             enableTap: true,
           },
           () => {
-            // Phase 3: Auto-advance if no taps after 4s
+            // Phase 3: Auto-advance if no taps after 4s (treat as failure)
             this.autoAdvanceTimeout = setTimeout(() => {
               if (
                 new Date().getTime() - this.state.tapTime > 4000 &&
                 new Date().getTime() - this.state.lastClickTime > 4000 &&
                 this.state.startTimer != 0
               ) {
-                this.resetBoxClass();
-                this.resetState();
+                this.setState({ successCompletion: false }, () => {
+                  this.resetBoxClass();
+                  this.resetState();
+                });
               }
             }, 4000);
           }
