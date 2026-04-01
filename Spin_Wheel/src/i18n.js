@@ -2,151 +2,180 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
-  "da-DK":{
+  "da-DK": {
     translation: {
       CONGRATS: "Tillykke",
-      GAME: "Lotteri",      
+      GAME: "Lotteri",
       GAME_OVER: "Spillet Overstået",
       TIME_OUT: "Tiden er gået",
-      TOTAL_BALANCE: "Samlet saldo",      
+      TOTAL_BALANCE: "Samlet saldo",
       TOTAL_SPINS: "Samlede spins",
       YOU_LOSE: "Du taber",
-      YOU_WON: "Du vandt",  
-    }
+      YOU_WON: "Du vandt",
+      FINAL_BALANCE: "Endelig saldo",
+      NET_GAIN: "Netto gevinst: {{amount}}",
+      NET_LOSS: "Netto tab: {{amount}}",
+      INSTRUCTIONS: "Du får to hjul, der kan drejes ved at vælge en af fire knapper. Hvert spin kan resultere i en gevinst eller et tab. Dit mål er at afslutte med så mange penge som muligt.",
+    },
   },
-  "de-DE":{
+  "de-DE": {
     translation: {
       CONGRATS: "Herzlichen Glückwunsch",
-      GAME: "Lotterie",      
+      GAME: "Lotterie",
       GAME_OVER: "Spiel ist aus",
       TIME_OUT: "Auszeit",
-      TOTAL_BALANCE: "Gesamtsaldo",      
+      TOTAL_BALANCE: "Gesamtsaldo",
       TOTAL_SPINS: "Spins insgesamt",
       YOU_LOSE: "Du verlierst",
-      YOU_WON: "Du hast gewonnen",    
-    }
+      YOU_WON: "Du hast gewonnen",
+      FINAL_BALANCE: "Endguthaben",
+      NET_GAIN: "Nettogewinn: {{amount}}",
+      NET_LOSS: "Nettoverlust: {{amount}}",
+      INSTRUCTIONS: "Sie erhalten zwei Räder, die durch Auswahl einer von vier Tasten gedreht werden können. Jeder Dreh kann einen Gewinn oder Verlust ergeben. Ihr Ziel ist es, mit so viel Geld wie möglich abzuschließen.",
+    },
   },
   "en-US": {
     translation: {
       CONGRATS: "Congrats",
-      GAME: "Lottery",      
+      GAME: "Spin the Wheel",
       GAME_OVER: "Game Over",
       TIME_OUT: "Time Out",
       TOTAL_BALANCE: "Total Balance",
-      TOTAL_SPINS: "Total Spins",
-      YOU_LOSE: "You Lose",
-      YOU_WON: "You Won",   
-      THE_GAME_PRESENTS_YOU_WITH_TWO_WHEELS_THAT_CAN_BE_SPUN_BY_SELECTING_ONE_OF_FOUR_BUTTONS_AT_THE_BOTTOM_OF_THE_SCREEN_THE_COLORS_OF_THE_BUTTONS_DO_NOT_CORRESPOND_TO_THE_COLORS_ON_THE_WHEEL_EACH_SPIN_CAN_RESULT_IN_A_WIN_OR_LOSS_OF_MONEY_WITH_THE_WHEEL_AT_THE_TOP_DISPLAYING_THE_MONEY_YOU_WON_AND_THE_BOTTOM_DISPLAYING_THE_MONEY_YOU_LOST_THE_TOTAL_AMOUNT_REMAINING_IS_DISPLAYED_AT_THE_TOP_OF_THE_SCREEN_YOU_START_WITH_$2000_AND_HAVE_20_SPINS_PER_GAME_BY_DEFAULT_POINTS_AT_THE_END_OF_A_SESSION_ARE_REPRESENTED_IN_THE_AMOUNT_OF_MONEY_YOU_HAVE:
-        "The game presents you with two wheels that can be spun by selecting one of four buttons at the bottom of the screen. The colors of the buttons do not correspond to the colors on the wheel. Each spin can result in a win or loss of money, with the wheel at the top displaying the money you won and the bottom displaying the money you lost. The total amount remaining is displayed at the top of the screen. You start with $2000 and have 20 spins per game by default. Points at the end of a session are represented in the amount of money you have.",
+      TOTAL_SPINS: "Spins Remaining",
+      YOU_LOSE: "Lose",
+      YOU_WON: "Win",
+      FINAL_BALANCE: "Final Balance",
+      NET_GAIN: "Net gain: {{amount}}",
+      NET_LOSS: "Net loss: {{amount}}",
+      INSTRUCTIONS: "You will see two wheels and four numbered buttons. Each button has a different risk level — some lead to bigger wins but also bigger losses. Press a button to spin both wheels. One wheel shows your winnings and the other shows your losses. Try to finish with as much money as possible.",
+      Instructions: "Instructions",
+      Start: "Start",
+      Questionnaire: "Questionnaire",
+      "How clear were the instructions?": "How clear were the instructions?",
+      "How happy would you be to do this again?": "How happy would you be to do this again?",
+      Submit: "Submit",
     },
   },
   "es-ES": {
     translation: {
       CONGRATS: "Felicidades",
-      GAME: "La Lotería",      
+      GAME: "La Lotería",
       GAME_OVER: "Juego Terminado",
       TIME_OUT: "Se acabó el tiempo",
       TOTAL_BALANCE: "Saldo total",
-      TOTAL_SPINS: "Giros totales",      
-      YOU_LOSE: "Tú pierdes",
-      YOU_WON: "Ganaste",
-    
+      TOTAL_SPINS: "Giros restantes",
+      YOU_LOSE: "Pérdida",
+      YOU_WON: "Ganancia",
+      FINAL_BALANCE: "Saldo final",
+      NET_GAIN: "Ganancia neta: {{amount}}",
+      NET_LOSS: "Pérdida neta: {{amount}}",
+      INSTRUCTIONS: "Verás dos ruedas y cuatro botones numerados. Cada botón tiene un nivel de riesgo diferente. Presiona un botón para girar ambas ruedas. Una rueda muestra tus ganancias y la otra tus pérdidas. Intenta terminar con la mayor cantidad de dinero posible.",
     },
   },
-  "fr-FR":{
-      translation: {
-        CONGRATS: "Félicitations",
-        GAME: "Loterie",      
-        GAME_OVER: "Jeu terminé",
-        TIME_OUT: "Temps libre",
-        TOTAL_BALANCE: "Solde total",      
-        TOTAL_SPINS: "Total des tours",
-        YOU_LOSE: "Tu as perdu",
-        YOU_WON: "Tu as gagné",        
-    }
+  "fr-FR": {
+    translation: {
+      CONGRATS: "Félicitations",
+      GAME: "Loterie",
+      GAME_OVER: "Jeu terminé",
+      TIME_OUT: "Temps écoulé",
+      TOTAL_BALANCE: "Solde total",
+      TOTAL_SPINS: "Tours restants",
+      YOU_LOSE: "Perte",
+      YOU_WON: "Gain",
+      FINAL_BALANCE: "Solde final",
+      NET_GAIN: "Gain net : {{amount}}",
+      NET_LOSS: "Perte nette : {{amount}}",
+      INSTRUCTIONS: "Vous verrez deux roues et quatre boutons numérotés. Chaque bouton a un niveau de risque différent. Appuyez sur un bouton pour faire tourner les deux roues. Une roue affiche vos gains et l'autre vos pertes. Essayez de terminer avec le plus d'argent possible.",
+    },
   },
   "hi-IN": {
     translation: {
-      CONGRATS: "बधाई हो ",
-      GAME: "लॉटरी",      
+      CONGRATS: "बधाई हो",
+      GAME: "लॉटरी",
       GAME_OVER: "खेल खत्म",
       TIME_OUT: "समय समाप्त",
-      TOTAL_BALANCE: "कुल शेष",      
-      TOTAL_SPINS: "कुल घुमाव",
-      YOU_LOSE: "आप खोया",
-      YOU_WON: "आप जीता",
-      SPIN_THE_WHEEL: "पहिया घुमाएं",
-      BEGIN: "खेल शुरू करें!",
-      TOTAL_SPIN: "कुल घूमाव",
-      LOTTERY: "लॉटरी",
-      TOTAL_SPIN_20: "कुल घूमाव 20",
-      THE_GAME_PRESENTS_YOU_WITH_TWO_WHEELS_THAT_CAN_BE_SPUN_BY_SELECTING_ONE_OF_FOUR_BUTTONS_AT_THE_BOTTOM_OF_THE_SCREEN_THE_COLORS_OF_THE_BUTTONS_DO_NOT_CORRESPOND_TO_THE_COLORS_ON_THE_WHEEL_EACH_SPIN_CAN_RESULT_IN_A_WIN_OR_LOSS_OF_MONEY_WITH_THE_WHEEL_AT_THE_TOP_DISPLAYING_THE_MONEY_YOU_WON_AND_THE_BOTTOM_DISPLAYING_THE_MONEY_YOU_LOST_THE_TOTAL_AMOUNT_REMAINING_IS_DISPLAYED_AT_THE_TOP_OF_THE_SCREEN_YOU_START_WITH_$2000_AND_HAVE_20_SPINS_PER_GAME_BY_DEFAULT_POINTS_AT_THE_END_OF_A_SESSION_ARE_REPRESENTED_IN_THE_AMOUNT_OF_MONEY_YOU_HAVE:
-        "खेल आपको दो पहियों के साथ प्रस्तुत करता है जो स्क्रीन के नीचे चार बटनों में से एक को चयन करके घूमाया  जा सकता हैं। बटनों के रंग पहियों पर रंग के साथ मेल नहीं खाते हैं। प्रत्येक घूमाव  पैसे जीतने या हारने का परिणाम हो सकता है, जिसमें ऊपर का पहिया आपकी जीती हुई धनराशि और नीचे आपकी हारी हुई धनराशि को दिखाता है। स्क्रीन के शीर्ष पर शेष राशि दिखाई जाती है। आप $2000 के साथ शुरुआत करते हैं और डिफ़ॉल्ट  प्रति खेल आपको 20 घूमाव मिलेंगे । सत्र के अंत में आपके पास होने वाले पॉइंट्स आपकी धनराशि के रूप में प्रतिष्ठित होते हैं।",
-      OK: "ठीक है",
+      TOTAL_BALANCE: "कुल शेष",
+      TOTAL_SPINS: "शेष घुमाव",
+      YOU_LOSE: "हानि",
+      YOU_WON: "लाभ",
+      FINAL_BALANCE: "अंतिम शेष",
+      NET_GAIN: "शुद्ध लाभ: {{amount}}",
+      NET_LOSS: "शुद्ध हानि: {{amount}}",
+      INSTRUCTIONS: "आपको दो पहिये और चार क्रमांकित बटन दिखाई देंगे। प्रत्येक बटन में एक अलग जोखिम स्तर होता है। दोनों पहियों को घुमाने के लिए एक बटन दबाएं। एक पहिया आपकी जीत दिखाता है और दूसरा आपकी हानि। अधिक से अधिक धन के साथ समाप्त करने का प्रयास करें।",
     },
   },
-  "it-IT":{
+  "it-IT": {
     translation: {
       CONGRATS: "Congratulazioni",
-      GAME: "Lotteria",      
-      GAME_OVER: "Fin de partie",
+      GAME: "Lotteria",
+      GAME_OVER: "Fine del gioco",
       TIME_OUT: "Tempo scaduto",
-      TOTAL_BALANCE: "Saldo totale",   
-      TOTAL_SPINS: "Giri totali",
-      YOU_LOSE: "Hai perso",
-      YOU_WON: "Hai vinto",
-      
+      TOTAL_BALANCE: "Saldo totale",
+      TOTAL_SPINS: "Giri rimanenti",
+      YOU_LOSE: "Perdita",
+      YOU_WON: "Vincita",
+      FINAL_BALANCE: "Saldo finale",
+      NET_GAIN: "Guadagno netto: {{amount}}",
+      NET_LOSS: "Perdita netta: {{amount}}",
+      INSTRUCTIONS: "Vedrai due ruote e quattro pulsanti numerati. Ogni pulsante ha un livello di rischio diverso. Premi un pulsante per far girare entrambe le ruote. Una ruota mostra le vincite e l'altra le perdite. Cerca di finire con più soldi possibile.",
     },
   },
-  "ko-KR":{
+  "ko-KR": {
     translation: {
-      CONGRATS: "\ucd95\ud558\ud574\uc694",
-      GAME: "\uc6b4",      
-      GAME_OVER: "\uac8c\uc784\u0020\ub05d",
-      TIME_OUT: "\uc2dc\uac04\u0020\ucd08\uacfc",
-      TOTAL_BALANCE: "\uc804\uccb4\u0020\uade0\ud615",
-      TOTAL_SPINS: "\ucd1d\u0020\uc2a4\ud540",
-      YOU_LOSE: "\ub2f9\uc2e0\uc740\u0020\ud328\ubc30",
-      YOU_WON: "\ub2f9\uc2e0\uc774\u0020\uc774\uacbc\ub2e4",
-      
+      CONGRATS: "축하해요",
+      GAME: "운",
+      GAME_OVER: "게임 끝",
+      TIME_OUT: "시간 초과",
+      TOTAL_BALANCE: "전체 균형",
+      TOTAL_SPINS: "남은 스핀",
+      YOU_LOSE: "손실",
+      YOU_WON: "이익",
+      FINAL_BALANCE: "최종 잔액",
+      NET_GAIN: "순이익: {{amount}}",
+      NET_LOSS: "순손실: {{amount}}",
+      INSTRUCTIONS: "두 개의 휠과 네 개의 번호 버튼이 표시됩니다. 각 버튼은 다른 위험 수준을 가집니다. 버튼을 눌러 두 휠을 돌리세요. 한 휠은 상금을, 다른 휠은 손실을 보여줍니다. 가능한 한 많은 돈으로 끝내세요.",
     },
   },
-  "zh-CN":{
+  "zh-CN": {
     translation: {
       CONGRATS: "恭喜！",
-      GAME: "\u5f69\u7968",      
+      GAME: "彩票",
       GAME_OVER: "游戏结束",
-      TIME_OUT:  "超时",
-      TOTAL_BALANCE: "\u603b\u4f59\u989d",
-      TOTAL_SPINS: "\u603b\u65cb\u8f6c",
-      YOU_LOSE: "\u4f60\u8f93\u4e86",
-      YOU_WON: "\u4f60\u8d62\u4e86",
-      
+      TIME_OUT: "超时",
+      TOTAL_BALANCE: "总余额",
+      TOTAL_SPINS: "剩余旋转",
+      YOU_LOSE: "损失",
+      YOU_WON: "收益",
+      FINAL_BALANCE: "最终余额",
+      NET_GAIN: "净收益：{{amount}}",
+      NET_LOSS: "净损失：{{amount}}",
+      INSTRUCTIONS: "您将看到两个轮盘和四个编号按钮。每个按钮有不同的风险级别。按下按钮旋转两个轮盘。一个轮盘显示您的收益，另一个显示您的损失。尽量以尽可能多的钱结束游戏。",
     },
   },
-    "zh-HK":{
-      translation: {
-        CONGRATS: "恭喜！",
-        GAME: "\u5f69\u7968",      
-        GAME_OVER: "遊戲結束",
-        TIME_OUT:"超時",
-        TOTAL_BALANCE: "\u603b\u4f59\u989d",
-        TOTAL_SPINS: "\u603b\u65cb\u8f6c",
-        YOU_LOSE: "\u4f60\u8f93\u4e86",
-        YOU_WON: "\u4f60\u8d62\u4e86",
-        
-      },
-  }
-}
-  
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    interpolation: {
-      escapeValue: false,
+  "zh-HK": {
+    translation: {
+      CONGRATS: "恭喜！",
+      GAME: "彩票",
+      GAME_OVER: "遊戲結束",
+      TIME_OUT: "超時",
+      TOTAL_BALANCE: "總餘額",
+      TOTAL_SPINS: "剩餘旋轉",
+      YOU_LOSE: "損失",
+      YOU_WON: "收益",
+      FINAL_BALANCE: "最終餘額",
+      NET_GAIN: "淨收益：{{amount}}",
+      NET_LOSS: "淨損失：{{amount}}",
+      INSTRUCTIONS: "您將看到兩個輪盤和四個編號按鈕。每個按鈕有不同的風險級別。按下按鈕旋轉兩個輪盤。一個輪盤顯示您的收益，另一個顯示您的損失。盡量以盡可能多的錢結束遊戲。",
     },
-    keySeparator: false,
-    resources,
-  });
+  },
+};
+
+i18n.use(initReactI18next).init({
+  interpolation: {
+    escapeValue: false,
+  },
+  keySeparator: false,
+  resources,
+});
 
 export default i18n;
