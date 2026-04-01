@@ -6,7 +6,6 @@
 # testing
 /coverage
 .docs/*
-test-harness.html
 yarn.lock
 
 # production
