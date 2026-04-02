@@ -1,8 +1,10 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import PopTheBubbles from "./components/pop_the_bubbles/PopTheBubbles";
 import "./index.css";
+
+let root: ReturnType<typeof createRoot> | null = null;
 
 window.addEventListener(
   "message",
@@ -15,15 +17,20 @@ window.addEventListener(
     ) {
       return;
     }
-    ReactDOM.render(
-      <PopTheBubbles
-        data={data}
-        activity={data.activity}
-        configuration={data.configuration}
-        noBack={data.noBack}
-      />,
-      document.getElementById("root") as HTMLElement
-    );
+    if (!root) {
+      const el = document.getElementById("root");
+      if (el) root = createRoot(el);
+    }
+    if (root) {
+      root.render(
+        <PopTheBubbles
+          data={data}
+          activity={data.activity}
+          configuration={data.configuration}
+          noBack={data.noBack}
+        />
+      );
+    }
   },
   false
 );
