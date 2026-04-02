@@ -14,38 +14,43 @@ interface State {
   showStatus : boolean
 }
 
-export class InstructionModal extends React.Component<Props, State> {    
- 
+export class InstructionModal extends React.Component<Props, State> {
+
     constructor(props: Props) {
       super(props);
       this.state = {
          showStatus : this.props.show
       }
-    }  
+    }
 
-    // Handles modal close 
+    // Handles modal close
     handleClose = () => {
       this.setState({
         showStatus : false
       });
       this.props.modalClose(false);
-    } 
-     
+    }
+
     // Modal render function
-    render() {   
-         return (            
-          <Modal show={this.state.showStatus} onHide={this.handleClose} 
+    render() {
+         return (
+          <Modal show={this.state.showStatus} onHide={this.handleClose}
           animation={false}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
-          centered={true}>               
-              <Modal.Body className='modal-body-section'>{this.props.msg}</Modal.Body>
-              <Modal.Footer className={'footer-cls'}>              
-                  <Button onClick={this.handleClose}>
-                    {i18n.t("Ok")}
+          centered={true}>
+              <Modal.Header className='instruction-modal-header'>
+                <Modal.Title className='instruction-modal-title'>
+                  {i18n.t("Instructions")}
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body className='instruction-modal-body'>{this.props.msg}</Modal.Body>
+              <Modal.Footer className='instruction-modal-footer'>
+                  <Button className='instruction-modal-btn' onClick={this.handleClose}>
+                    {i18n.t("Start")}
                   </Button>
             </Modal.Footer>
-         </Modal>    
+         </Modal>
         );
     }
 }
