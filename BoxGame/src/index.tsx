@@ -1,32 +1,31 @@
-/**
- * @file   index.tsx
- * @brief  Intial component for the react app
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
-require("react-hot-loader/patch") 
-
-import * as React from 'react';
-import { AppContainer } from "react-hot-loader";
-import Boxes from './components/box/Boxes';
-import './index.css';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { createRoot } from "react-dom/client";
+import Board from "./components/Board";
+import "./index.css";
 
-const eventMethod = "addEventListener"
-const eventer = window[eventMethod]
-const messageEvent =  "message"
-eventer(
-    messageEvent, (e: any) => { 
-const rootElement = document.getElementById("root") as HTMLElement;
+let root: ReturnType<typeof createRoot> | null = null;
 
-if(!!rootElement) { 
-const root = createRoot(rootElement);
-      root.render(<AppContainer>
-        <Boxes data={e.data}/>
-      </AppContainer>);
-}
-},
-false
-)
-
+window.addEventListener(
+  "message",
+  (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      (!data.configuration && !data.activity && !data.settings)
+    ) {
+      return;
+    }
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Board data={data} />);
+    }
+  },
+  false
+);
