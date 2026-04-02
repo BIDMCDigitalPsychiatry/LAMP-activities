@@ -346,6 +346,40 @@
   height: 100%;
 }
 
+/* ===== Timeout Flash Overlay ===== */
+.timeout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+.timeout-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 48px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: timeoutPop 0.3s ease-out;
+}
+@keyframes overlayFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes timeoutPop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 500px) {
   .timer-display {

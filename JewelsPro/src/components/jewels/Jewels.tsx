@@ -63,6 +63,7 @@ interface AppState {
   isFavoriteActive: boolean;
   forward: boolean;
   isForwardButton: boolean;
+  showTimeoutFlash: boolean;
   showQuestionnaire: boolean;
   pendingPointVal: number;
 }
@@ -160,6 +161,7 @@ class Jewels extends React.Component<any, AppState> {
       isFavoriteActive: props?.data?.is_favorite ?? false,
       forward: props?.data?.forward ?? false,
       isForwardButton: false,
+      showTimeoutFlash: false,
       showQuestionnaire: false,
       pendingPointVal: 2,
     };
@@ -419,6 +421,12 @@ class Jewels extends React.Component<any, AppState> {
       // Nav exits skip questionnaire
       if (status) {
         this.postResult(pointVal, status, isback);
+      } else if (pointVal === 1) {
+        // Timeout — show "Time's up!" flash, then questionnaire
+        this.setState({ showTimeoutFlash: true, pendingPointVal: pointVal });
+        setTimeout(() => {
+          this.setState({ showTimeoutFlash: false, showQuestionnaire: true });
+        }, 1500);
       } else {
         // Normal game end — show questionnaire
         this.setState({ showQuestionnaire: true, pendingPointVal: pointVal });
@@ -497,6 +505,15 @@ class Jewels extends React.Component<any, AppState> {
 
     return (
       <div>
+        {/* Timeout flash — outside loaded gate so it shows after timeout */}
+        {this.state.showTimeoutFlash && (
+          <div className="timeout-overlay">
+            <div className="timeout-card">
+              {i18n.t("TIMEOUT")}
+            </div>
+          </div>
+        )}
+
         {/* Questionnaire — outside loaded gate so it shows after timeout */}
         {this.state.showQuestionnaire && (
           <Questionnaire
