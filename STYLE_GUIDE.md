@@ -317,8 +317,13 @@ Every activity must define at minimum:
 GAME, INSTRUCTIONS, GAME_OVER,
 Instructions, Start, Questionnaire, Submit,
 "How clear were the instructions?",
-"How happy would you be to do this again?"
+"How happy would you be to do this again?",
+"Time's up!"
 ```
+
+### Standard Timeout Message
+
+Activities that end on a timer must use **"Time's up!"** as the timeout message (i18n key: `"Time's up!"`). Do not use "TIME OUT", "TIMEOUT", or excessive punctuation. The message should appear as a brief overlay (1–2 seconds) before transitioning to the questionnaire.
 
 ---
 
