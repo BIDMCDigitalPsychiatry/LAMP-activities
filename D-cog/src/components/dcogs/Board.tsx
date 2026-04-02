@@ -722,9 +722,7 @@ class Board extends React.Component<BoardProps, BoardState> {
       <InstructionModal
         show={true}
         modalClose={this.handleCloseInstructionModal}
-        msg={`${i18n.t(
-          "Pay attention to where the dogs were on the screen. When the squares turn blue, tap where the dogs were."
-        )}`}
+        msg={i18n.t("INSTRUCTIONS")}
         language={i18n.language}
       />
     ) : null;
