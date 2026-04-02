@@ -16,6 +16,14 @@ let root: ReturnType<typeof createRoot> | null = null;
 window.addEventListener(
   "message",
   (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      (!data.configuration && !data.activity && !data.settings)
+    ) {
+      return;
+    }
     if (!root) {
       const rootElement = document.getElementById("root");
       if (rootElement) {
@@ -23,7 +31,7 @@ window.addEventListener(
       }
     }
     if (root) {
-      root.render(<DCogs data={e.data} />);
+      root.render(<DCogs data={data} />);
     }
   },
   false

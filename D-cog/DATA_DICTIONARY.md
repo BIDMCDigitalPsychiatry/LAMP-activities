@@ -58,19 +58,11 @@ The final entry in `temporal_slices` is always:
 
 ## Game Logic Summary
 
-### Phases
-
-The game progresses through three phases with changing instructions:
-
-1. **Phase 1 — Tap dogs**: Participant taps boxes that have a dog behind them
-2. **Phase 2 — Tap dogs, avoid cats**: Same as Phase 1, but cats are now present as distractors (participant must avoid tapping cats)
-3. **Phase 3 — Tap cats, avoid dogs**: Instructions reverse — participant must tap cats and avoid dogs
-
 ### Round Flow
 
 1. A grid of boxes is displayed (count increases with difficulty)
-2. Boxes "lift" to reveal dogs, cats, or nothing behind them for a brief period
-3. Boxes close, and the participant must tap the boxes where the target animal was
+2. Boxes "lift" to reveal dogs or nothing behind them for a brief period
+3. Boxes close, and the participant must tap the boxes where the dogs were
 4. Correct taps highlight green, incorrect taps highlight red
 5. After tapping, the game evaluates the round and advances
 
@@ -95,6 +87,5 @@ The `score` field uses Item Response Theory (2-parameter logistic model):
 
 - Use `score` (IRT ability estimate) as the primary cognitive measure — it accounts for round difficulty
 - `correct_answers` and `wrong_answers` provide raw tap-level accuracy but do not account for difficulty
-- `total_questions` is the total number of target animals presented, not the number of rounds
-- The `temporal_slices` array can be used to compute per-round performance, reaction times, and error patterns across phases
-- Phase transitions (dog-only → dog+cat → cat-only) can be inferred from changes in the instruction prompts shown during gameplay
+- `total_questions` is the total number of dogs presented, not the number of rounds
+- The `temporal_slices` array can be used to compute per-round performance, reaction times, and error patterns

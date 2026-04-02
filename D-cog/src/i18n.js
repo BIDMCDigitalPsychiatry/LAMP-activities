@@ -5,16 +5,10 @@ const resources = {
   "da-DK": {
     translation: {
       "D-Cog": "Katte og Hunde",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Fortsæt med at trykke på de kasser, der har en hund bag dem. Tryk ikke på kasser med en kat bag dem.",
       GAME_OVER: "Spillet er slut",
       INSTRUCTIONS:
-        "Du vil se en skærm med mange kasser. Kasserne åbner sig og afslører enten en hund, en kat eller ingenting. Tryk på de rigtige kasser baseret på instruktionerne for hvert niveau.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Tryk nu på de kasser, hvor der er en kat bag dem. Tryk ikke på de kasser med en hund bag dem.",
+        "Du vil se en skærm med mange kasser. Kasserne åbner sig og afslører enten en hund eller ingenting bag dem. Husk hvor hundene var, og tryk på de rigtige kasser.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tryk på de kasser, der har en hund bag dem.",
       Instructions: "Instruktioner",
       Start: "Start",
       Questionnaire: "Spørgeskema",
@@ -26,16 +20,10 @@ const resources = {
   "de-DE": {
     translation: {
       "D-Cog": "Katzen und Hunde",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tippe weiter auf die Kästchen, hinter denen sich ein Hund befindet. Tippe nicht auf die Kästchen, hinter denen sich eine Katze befindet.",
       GAME_OVER: "Spiel ist vorbei",
       INSTRUCTIONS:
-        "Sie sehen einen Bildschirm mit vielen Kästchen. Die Kästchen öffnen sich und zeigen entweder einen Hund, eine Katze oder nichts. Tippen Sie auf die richtigen Kästchen basierend auf den Anweisungen für jedes Level.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Tippe nun auf die Kästchen, hinter denen sich eine Katze befindet. Tippe nicht auf die Kästchen, hinter denen sich ein Hund befindet.",
+        "Sie sehen einen Bildschirm mit vielen Kästchen. Die Kästchen öffnen sich und zeigen entweder einen Hund oder nichts dahinter. Merken Sie sich, wo die Hunde waren, und tippen Sie auf die richtigen Kästchen.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tippe auf die Kästchen, hinter denen sich ein Hund befindet.",
       Instructions: "Anleitung",
       Start: "Starten",
       Questionnaire: "Fragebogen",
@@ -46,17 +34,11 @@ const resources = {
   },
   "en-US": {
     translation: {
-      "D-Cog": "Cats and Dogs",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continue to tap the boxes that have a dog behind them. Don't tap the boxes with a cat behind them.",
+      "D-Cog": "D-Cog",
       GAME_OVER: "Game Over",
       INSTRUCTIONS:
-        "You will see a screen with many boxes. The boxes will lift to reveal a dog, a cat, or nothing behind them. Tap the correct boxes based on the instructions for each level.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Now tap the boxes that have a cat behind them. Don't tap the boxes with a dog behind them.",
+        "You will see a screen with many boxes. The boxes will lift to reveal either a dog or nothing behind them. Remember where the dogs were and tap the correct boxes.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Tap the boxes that have a dog behind them.",
       Instructions: "Instructions",
       Start: "Start",
       Questionnaire: "Questionnaire",
@@ -68,16 +50,10 @@ const resources = {
   "es-ES": {
     translation: {
       "D-Cog": "Gatos y Perros",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continúa tocando las cajas que tienen un perro detrás. No toques las cajas que tienen un gato detrás.",
       GAME_OVER: "Juego Terminado",
       INSTRUCTIONS:
-        "Verás una pantalla con muchas cajas. Las cajas se levantarán revelando un perro, un gato o nada detrás. Toca las cajas correctas según las instrucciones de cada nivel.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Ahora toca las cajas que tienen un gato detrás. No toques las cajas que tienen un perro detrás.",
+        "Verás una pantalla con muchas cajas. Las cajas se levantarán revelando un perro o nada detrás. Recuerda dónde estaban los perros y toca las cajas correctas.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Toca las cajas que tienen un perro detrás.",
       Instructions: "Instrucciones",
       Start: "Comenzar",
       Questionnaire: "Cuestionario",
@@ -89,16 +65,10 @@ const resources = {
   "fr-FR": {
     translation: {
       "D-Cog": "Chats et Chiens",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continuez à toucher les cases derrière lesquelles se trouve un chien. Ne touchez pas les cases derrière lesquelles se trouve un chat.",
       GAME_OVER: "Jeu terminé",
       INSTRUCTIONS:
-        "Vous verrez un écran avec de nombreuses cases. Les cases se soulèveront pour révéler un chien, un chat ou rien derrière elles. Touchez les bonnes cases selon les instructions de chaque niveau.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Maintenant, touchez les cases derrière lesquelles se trouve un chat. Ne touchez pas les cases derrière lesquelles se trouve un chien.",
+        "Vous verrez un écran avec de nombreuses cases. Les cases se soulèveront pour révéler un chien ou rien derrière elles. Retenez où se trouvaient les chiens et touchez les bonnes cases.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Touchez les cases derrière lesquelles se trouve un chien.",
       Instructions: "Instructions",
       Start: "Commencer",
       Questionnaire: "Questionnaire",
@@ -110,16 +80,10 @@ const resources = {
   "hi-IN": {
     translation: {
       "D-Cog": "बिल्लियां और कुत्ते",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "उन बॉक्सों को दबाना जारी रखें जिनके पीछे कुत्ता है। उन बॉक्सों को ना दबाएं जिनके पीछे बिल्ली है।",
       GAME_OVER: "खेल खत्म",
       INSTRUCTIONS:
-        "आपको कई बक्सों वाली एक स्क्रीन दिखाई देगी। बक्से खुलेंगे और उनके पीछे कुत्ता, बिल्ली या कुछ नहीं दिखाई देगा। प्रत्येक स्तर के निर्देशों के अनुसार सही बक्सों पर दबाएं।",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "अब उन बॉक्सों को दबाएं जिनके पीछे बिल्ली है। उन बॉक्सों को ना दबाएं जिनके पीछे कुत्ता है।",
+        "आपको कई बक्सों वाली एक स्क्रीन दिखाई देगी। बक्से खुलेंगे और उनके पीछे कुत्ता या कुछ नहीं दिखाई देगा। याद रखें कि कुत्ते कहाँ थे और सही बक्सों पर दबाएं।",
       OK: "ठीक है",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "उन बॉक्सों को दबाएं जिनके पीछे कुत्ता है।",
       Instructions: "निर्देश",
       Start: "शुरू करें",
       Questionnaire: "प्रश्नावली",
@@ -131,16 +95,10 @@ const resources = {
   "it-IT": {
     translation: {
       "D-Cog": "Gatti e Cani",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Continuare a toccare i riquadri dietro cui si trova un cane. Non toccare i riquadri dietro cui si trova un gatto.",
       GAME_OVER: "Fine del gioco",
       INSTRUCTIONS:
-        "Vedrai uno schermo con molti riquadri. I riquadri si solleveranno rivelando un cane, un gatto o niente dietro di essi. Tocca i riquadri corretti in base alle istruzioni di ogni livello.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "Ora toccare i riquadri dietro cui si trova un gatto. Non toccare i riquadri dietro cui si trova un cane.",
+        "Vedrai uno schermo con molti riquadri. I riquadri si solleveranno rivelando un cane o niente dietro di essi. Ricorda dove si trovavano i cani e tocca i riquadri corretti.",
       OK: "Ok",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "Toccare i riquadri dietro cui si trova un cane.",
       Instructions: "Istruzioni",
       Start: "Inizia",
       Questionnaire: "Questionario",
@@ -152,16 +110,10 @@ const resources = {
   "ko-KR": {
     translation: {
       "D-Cog": "고양이와 개들",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "뒤에 개가 있는 박스들을 계속 누르세요. 뒤에 고양이가 있는 박스들은 누르지 마세요.",
       GAME_OVER: "게임 종료",
       INSTRUCTIONS:
-        "많은 상자가 있는 화면이 표시됩니다. 상자가 열리면 뒤에 개, 고양이 또는 아무것도 없는 것이 나타납니다. 각 레벨의 지시에 따라 올바른 상자를 누르세요.",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "뒤에 고양이가 있는 박스들을 이제 누르세요. 뒤에 개가 있는 박스들은 누르지 마세요.",
+        "많은 상자가 있는 화면이 표시됩니다. 상자가 열리면 뒤에 개 또는 아무것도 없는 것이 나타납니다. 개가 어디에 있었는지 기억하고 올바른 상자를 누르세요.",
       OK: "괜찮음",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "뒤에 개가 있는 박스들을 누르세요.",
       Instructions: "지침",
       Start: "시작",
       Questionnaire: "설문지",
@@ -173,16 +125,10 @@ const resources = {
   "zh-CN": {
     translation: {
       "D-Cog": "猫和狗",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "继续点击后面有狗的盒子。不要点击后面有猫的盒子。",
       GAME_OVER: "游戏结束",
       INSTRUCTIONS:
-        "您将看到一个有许多盒子的屏幕。盒子会打开，露出后面的狗、猫或什么都没有。根据每个关卡的说明点击正确的盒子。",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "现在点击后面有猫的盒子。不要点击后面有狗的盒子。",
+        "您将看到一个有许多盒子的屏幕。盒子会打开，露出后面的狗或什么都没有。记住狗在哪里，然后点击正确的盒子。",
       OK: "好的",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "点击后面有狗的盒子。",
       Instructions: "说明",
       Start: "开始",
       Questionnaire: "问卷",
@@ -194,16 +140,10 @@ const resources = {
   "zh-HK": {
     translation: {
       "D-Cog": "貓和狗",
-      CONTINUE_TO_TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "繼續點擊後面有狗的盒子。不要點擊後面有貓的盒子。",
       GAME_OVER: "遊戲結束",
       INSTRUCTIONS:
-        "您將看到一個有許多盒子的屏幕。盒子會打開，露出後面的狗、貓或什麼都沒有。根據每個關卡的說明點擊正確的盒子。",
-      NOW_TAP_THE_BOXES_THAT_HAVE_A_CAT_BEHIND_THEM:
-        "現在點擊後面有貓的盒子。不要點擊後面有狗的盒子。",
+        "您將看到一個有許多盒子的屏幕。盒子會打開，露出後面的狗或什麼都沒有。記住狗在哪裡，然後點擊正確的盒子。",
       OK: "好的",
-      TAP_THE_BOXES_THAT_HAVE_A_DOG_BEHIND_THEM:
-        "點擊後面有狗的盒子。",
       Instructions: "說明",
       Start: "開始",
       Questionnaire: "問卷",

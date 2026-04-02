@@ -773,9 +773,13 @@ class Board extends React.Component<BoardProps, BoardState> {
             <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
           </nav>
         )}
+        {timer && (
+          <div className="status-bar">
+            <div className="timer-display">{timer}</div>
+          </div>
+        )}
         <div className="game-board">
           <div>
-            <div className="timer-div">{timer}</div>
             <div className="mt-30">{boxes}</div>
           </div>
           {audio}
