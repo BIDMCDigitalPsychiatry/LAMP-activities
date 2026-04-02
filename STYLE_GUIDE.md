@@ -45,7 +45,20 @@ Phases always start with `instructions` and end with `questionnaire` → `done`.
 | `i18next` + `react-i18next` | Internationalization |
 | `react-scripts` 5 | Build toolchain |
 
-**Do not use**: MUI (`@material-ui/*`), `react-hot-loader`, direct `webpack` dependency.
+**Do not use**: MUI (`@material-ui/*`), `react-hot-loader`, `@hot-loader/react-dom`, `material-icons`, direct `webpack` dependency, `i18next-http-backend`.
+
+### Dependency Hygiene
+
+When modernizing an activity, audit `package.json` and remove:
+
+- Legacy UI frameworks (`@material-ui/core`, `@material-ui/icons`)
+- Hot-reload tooling (`react-hot-loader`, `@hot-loader/react-dom`, `@types/react-hot-loader`)
+- Redundant build tools (`webpack` — already bundled by `react-scripts`)
+- Icon packs replaced by FontAwesome (`material-icons`)
+- HTTP translation backends (`i18next-http-backend` — use inline translations instead)
+- Unused utilities (`react-circular-progressbar`, etc.)
+
+Run `npm ls --depth=0` to check for packages that are installed but never imported.
 
 ---
 
@@ -290,7 +303,20 @@ Use `500px` as the standard mobile breakpoint. Adapt layouts for narrow screens 
 
 ### Setup
 
-Use `i18next` with `react-i18next`. Define all translations inline in `src/i18n.js` (no external JSON files).
+Use `i18next` with `react-i18next`. Define all translations inline in `src/i18n.js` (no external JSON files, no HTTP backend).
+
+### Translation Completeness
+
+Every user-visible string must go through `i18n.t()`. No hardcoded English in JSX — this includes:
+
+- Activity title in the header
+- Game prompts ("Listen...", "Your turn!", etc.)
+- Level/mode labels
+- Instruction text
+- Transition overlays and timeout messages
+- Button labels
+
+If a string is visible to a participant, it must be translated in all 10 required languages.
 
 ### Required Languages
 
