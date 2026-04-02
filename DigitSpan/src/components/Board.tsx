@@ -385,7 +385,7 @@ export default function Board({ ...props }) {
         <InstructionModal
           show={true}
           modalClose={handleInstructionClose}
-          msg="You will hear a series of numbers. Listen carefully. When the numbers stop, tap them in the same order you heard them."
+          msg={i18n.t("INSTRUCTIONS")}
           language={language}
         />
       )}
@@ -420,13 +420,13 @@ export default function Board({ ...props }) {
           <div className={`digit-prompt ${phase === "listening" ? "digit-prompt-listening" : ""}`}>
             {phase === "listening" && (
               <>
-                Listen...
+                {i18n.t("Listen...")}
                 {currentDigit > 0 && (
                   <span className="digit-prompt-number">{currentDigit}</span>
                 )}
               </>
             )}
-            {phase === "answering" && "Your turn!"}
+            {phase === "answering" && i18n.t("Your turn!")}
           </div>
 
           <NumberGrid

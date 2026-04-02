@@ -1,4 +1,5 @@
 import React from "react";
+import i18n from "../i18n";
 
 interface ModeTransitionOverlayProps {
   onReady: () => void;
@@ -8,13 +9,10 @@ export default function ModeTransitionOverlay({ onReady }: ModeTransitionOverlay
   return (
     <div className="mode-overlay">
       <div className="mode-overlay-card">
-        <div className="mode-overlay-title">Reverse Order</div>
-        <div className="mode-overlay-desc">
-          Now you will hear digits and enter them in <strong>reverse</strong> order.
-          For example, if you hear 3-7-2, enter 2-7-3.
-        </div>
+        <div className="mode-overlay-title">{i18n.t("Reverse Order")}</div>
+        <div className="mode-overlay-desc" dangerouslySetInnerHTML={{ __html: i18n.t("MODE_TRANSITION") }} />
         <button className="mode-overlay-btn" onClick={onReady}>
-          Ready
+          {i18n.t("Ready")}
         </button>
       </div>
     </div>

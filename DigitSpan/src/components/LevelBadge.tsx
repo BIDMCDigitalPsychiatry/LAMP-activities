@@ -1,4 +1,5 @@
 import React from "react";
+import i18n from "../i18n";
 
 interface LevelBadgeProps {
   level: number;
@@ -8,9 +9,9 @@ interface LevelBadgeProps {
 export default function LevelBadge({ level, mode }: LevelBadgeProps) {
   return (
     <div className="level-badge">
-      <div>Level: {level}</div>
+      <div>{i18n.t("Level:")} {level}</div>
       <div className="level-badge-mode">
-        {mode === 0 ? "Forward" : "Backward"}
+        {mode === 0 ? i18n.t("Forward") : i18n.t("Backward")}
       </div>
     </div>
   );
