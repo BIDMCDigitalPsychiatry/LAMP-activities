@@ -5,16 +5,31 @@
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f0f0; }
-    #controls { padding: 10px 16px; background: #333; color: #fff; font-size: 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #controls { background: #333; color: #fff; font-size: 14px; }
+    #controls .row { padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #controls .row-harness { border-bottom: 1px solid #444; }
+    #controls .row-activity { background: #2a2a2a; }
     #controls button { padding: 6px 14px; cursor: pointer; border: none; border-radius: 4px; font-size: 13px; }
     #controls .btn-send { background: #359FFE; color: #fff; }
     #controls .btn-toggle { background: #555; color: #fff; }
     #controls .btn-clear { background: #777; color: #fff; }
     #controls select { padding: 5px 8px; border-radius: 4px; border: 1px solid #555; background: #444; color: #fff; font-size: 13px; }
+    #controls input { width: 50px; }
     #controls label { font-size: 12px; color: #aaa; }
-    #main { display: flex; height: calc(100vh - 44px); }
-    #game-panel { flex: 1; min-width: 0; }
+    #main { display: flex; height: calc(100vh - 80px); }
+    #game-panel { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: auto; }
     #game-panel iframe { width: 100%; height: 100%; border: none; }
+    /* Device preview mode */
+    #game-panel.device-preview { background: #e0e0e0; }
+    #game-panel.device-preview iframe {
+      width: var(--device-w);
+      height: var(--device-h);
+      border-radius: 36px;
+      box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #333, 0 8px 30px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+      transform: scale(var(--device-scale, 1));
+      transform-origin: center center;
+    }
     #data-panel { width: 420px; background: #1e1e1e; color: #d4d4d4; font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; display: flex; flex-direction: column; border-left: 2px solid #444; }
     #data-panel.hidden { display: none; }
     #data-panel .tab-bar { display: flex; background: #2d2d2d; border-bottom: 1px solid #444; flex-shrink: 0; }
@@ -108,32 +123,46 @@
   <!-- ═══════════════════════════════════════════════════════════════ -->
 
   <div id="controls">
-    <strong>LAMP Activity Test Harness</strong>
-    <label>Port:
-      <select id="port-select">
-        <option value="3000" selected>3000</option>
-        <option value="3001">3001</option>
-        <option value="3002">3002</option>
-      </select>
-    </label>
-    <label>Language:
-      <select id="lang-select">
-        <option value="en-US" selected>en-US</option>
-        <option value="da-DK">da-DK</option>
-        <option value="de-DE">de-DE</option>
-        <option value="es-ES">es-ES</option>
-        <option value="fr-FR">fr-FR</option>
-        <option value="hi-IN">hi-IN</option>
-        <option value="it-IT">it-IT</option>
-        <option value="ko-KR">ko-KR</option>
-        <option value="zh-CN">zh-CN</option>
-        <option value="zh-HK">zh-HK</option>
-      </select>
-    </label>
-    <button class="btn-send" onclick="sendConfig()">Send Config</button>
-    <button class="btn-send" onclick="reloadActivity()">Reload Activity</button>
-    <button class="btn-toggle" onclick="togglePanel()">Toggle Data Panel</button>
-    <button class="btn-clear" onclick="clearData()">Clear</button>
+    <div class="row row-harness">
+      <strong>LAMP Activity Test Harness</strong>
+      <label>Port:
+        <select id="port-select">
+          <option value="3000" selected>3000</option>
+          <option value="3001">3001</option>
+          <option value="3002">3002</option>
+        </select>
+      </label>
+      <label>Device:
+        <select id="device-select">
+          <option value="desktop">Desktop</option>
+          <option value="375x812">iPhone SE/13 mini</option>
+          <option value="390x844">iPhone 14</option>
+          <option value="430x932">iPhone 14 Pro Max</option>
+          <option value="360x800">Android (360)</option>
+          <option value="768x1024">iPad Mini</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="reloadActivity()">Reload Activity</button>
+      <button class="btn-toggle" onclick="togglePanel()">Toggle Data Panel</button>
+      <button class="btn-clear" onclick="clearData()">Clear</button>
+    </div>
+    <div class="row row-activity">
+      <label>Language:
+        <select id="lang-select">
+          <option value="en-US" selected>en-US</option>
+          <option value="da-DK">da-DK</option>
+          <option value="de-DE">de-DE</option>
+          <option value="es-ES">es-ES</option>
+          <option value="fr-FR">fr-FR</option>
+          <option value="hi-IN">hi-IN</option>
+          <option value="it-IT">it-IT</option>
+          <option value="ko-KR">ko-KR</option>
+          <option value="zh-CN">zh-CN</option>
+          <option value="zh-HK">zh-HK</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="sendConfig()">Send Config</button>
+    </div>
   </div>
   <div id="main">
     <div id="game-panel">
@@ -329,7 +358,40 @@
       });
     });
 
-    function togglePanel() { document.getElementById('data-panel').classList.toggle('hidden'); }
+    function togglePanel() {
+      document.getElementById('data-panel').classList.toggle('hidden');
+      if (document.getElementById('device-select').value !== 'desktop') {
+        setTimeout(applyDevicePreview, 50);
+      }
+    }
+
+    function applyDevicePreview() {
+      var val = document.getElementById('device-select').value;
+      var panel = document.getElementById('game-panel');
+      if (val === 'desktop') {
+        panel.classList.remove('device-preview');
+        panel.style.removeProperty('--device-w');
+        panel.style.removeProperty('--device-h');
+        panel.style.removeProperty('--device-scale');
+      } else {
+        var parts = val.split('x');
+        var devW = parseInt(parts[0], 10);
+        var devH = parseInt(parts[1], 10);
+        var availH = panel.clientHeight - 60;
+        var availW = panel.clientWidth - 60;
+        var scale = Math.min(1, availH / (devH + 24), availW / (devW + 24));
+        panel.classList.add('device-preview');
+        panel.style.setProperty('--device-w', devW + 'px');
+        panel.style.setProperty('--device-h', devH + 'px');
+        panel.style.setProperty('--device-scale', scale.toFixed(3));
+      }
+      log('Device preview: ' + (val === 'desktop' ? 'off' : val));
+    }
+
+    document.getElementById('device-select').addEventListener('change', applyDevicePreview);
+    window.addEventListener('resize', function() {
+      if (document.getElementById('device-select').value !== 'desktop') applyDevicePreview();
+    });
 
     function clearData() {
       lastResult = null;
@@ -362,7 +424,7 @@
     (function() {
       var cfg = getConfig();
       document.title = cfg.title;
-      document.querySelector('#controls strong').textContent = cfg.title;
+      document.querySelector('#controls .row-harness strong').textContent = cfg.title;
     })();
   </script>
 </body>
