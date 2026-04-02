@@ -1,36 +1,27 @@
-/**
- * @file   index.tsx
- * @brief  Intial component for the react app
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { AppContainer } from "react-hot-loader";
 import PopTheBubbles from "./components/pop_the_bubbles/PopTheBubbles";
 import "./index.css";
 
-const eventMethod =
-  typeof window.addEventListener !== "undefined"
-    ? "addEventListener"
-    : "attachEvent";
-const eventer = window[eventMethod];
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
-eventer(
-  messageEvent,
+window.addEventListener(
+  "message",
   (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      !data.configuration
+    ) {
+      return;
+    }
     ReactDOM.render(
-      <AppContainer>
-        <PopTheBubbles
-          data={e.data}
-          activity={e.data.activity}
-          configuration={e.data.configuration}
-          noBack={e.data.noBack}
-        />
-      </AppContainer>,
+      <PopTheBubbles
+        data={data}
+        activity={data.activity}
+        configuration={data.configuration}
+        noBack={data.noBack}
+      />,
       document.getElementById("root") as HTMLElement
     );
   },
