@@ -122,6 +122,80 @@ A fixed 52px blue bar with white icons. Always present during gameplay.
 
 ---
 
+## Status Bar
+
+A contextual info strip that sits directly below the header. Always visible during gameplay (not conditionally rendered) so that the game area doesn't shift when content changes. Used to display level indicator, timer, score, or any other in-game metadata.
+
+### Structure
+
+```tsx
+<div className="status-bar">
+  <div className="level-badge">
+    {i18n.t("LEVEL_NUMBER", { level: currentLevel })}
+  </div>
+  {/* Optional: timer, score, or other badges */}
+</div>
+```
+
+### CSS
+
+```css
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+```
+
+On mobile (≤500px), badge font shrinks to 11px with tighter padding.
+
+### Optional Timer Display
+
+Activities with a countdown timer place it in the status bar alongside the level badge:
+
+```css
+.timer-display {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+  font-variant-numeric: tabular-nums;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 16px;
+  border-radius: 12px;
+  min-width: 72px;
+  text-align: center;
+}
+```
+
+### Layout Integration
+
+The game area should account for the status bar height. Use a class toggle or fixed offset:
+
+```css
+.game-board {
+  position: fixed;
+  top: 96px;   /* 52px header + 44px status bar */
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+```
+
+---
+
 ## Instruction Modal
 
 Shown at activity start (`phase === "instructions"`). Uses `react-bootstrap` Modal with the D-Cog blue header. Instructions should be **1–3 concise sentences** that tell the participant what they will see and what they should do.
@@ -402,16 +476,74 @@ All activities must include these fields in `static_data` for dashboard compatib
 
 ## Test Harness
 
-Each activity should include a `test-harness.html` that uses the `HARNESS_CONFIG` pattern. Define `window.HARNESS_CONFIG` with a custom `renderScores` function before loading the base harness script.
+Each activity should include a `test-harness.html` that uses the `HARNESS_CONFIG` pattern. The default harness (`test-harness.html` at the repo root) provides all shared infrastructure. Activity-specific harnesses copy this file and override `window.HARNESS_CONFIG`.
+
+### Layout
+
+The harness has two control rows:
+
+| Row | Background | Contents |
+|-----|-----------|----------|
+| **Harness controls** | `#333` | Title, Port selector, Device preview, Reload, Toggle Data, Clear |
+| **Activity config** | `#2a2a2a` | Activity-specific settings (dot counts, timeouts, etc.), Language, Send Config |
+
+### Device Preview
+
+The harness includes a **Device** dropdown that constrains the iframe to phone/tablet dimensions with a rounded bezel. The iframe auto-scales to fit the available panel space. Presets:
+
+| Label | Resolution |
+|-------|-----------|
+| Desktop | Full width (default) |
+| iPhone SE/13 mini | 375 x 812 |
+| iPhone 14 | 390 x 844 |
+| iPhone 14 Pro Max | 430 x 932 |
+| Android (360) | 360 x 800 |
+| iPad Mini | 768 x 1024 |
+
+The activity inside the iframe sees the constrained viewport width, so CSS media queries fire exactly as they would on a real device. This is useful for testing mobile layouts without an emulator.
+
+### Configuration
+
+Define `window.HARNESS_CONFIG` before the base harness script:
 
 ```js
 window.HARNESS_CONFIG = {
-  renderScores: function(data) {
-    // Return HTML string that presents activity-specific scores
-    // in a readable format for developer testing
+  title: 'Activity Name Test Harness',
+
+  // Return extra fields merged into the postMessage config
+  getExtraConfig: function() {
+    return {
+      activity: {
+        settings: { /* activity-specific settings */ }
+      }
+    };
+  },
+
+  // Custom score renderer: function(staticData, fullPayload) => HTML string
+  // If null, uses the generic auto-renderer
+  renderScores: function(s, data) {
+    var html = '';
+    html += sectionTitle('Performance');
+    html += '<div class="score-grid">';
+    html += scoreCard('Score', s.score + '%', true, true);
+    // ... activity-specific cards
+    html += '</div>';
+    return html;
   }
 };
 ```
+
+Activity-specific controls (inputs, checkboxes, selectors) go in the second row (`row-activity`). The `Send Config` button should be the last element in this row.
+
+### Helper Functions
+
+The harness provides these functions for use in `renderScores`:
+
+| Function | Description |
+|----------|-------------|
+| `scoreCard(label, value, highlight, full)` | Renders a dark card with label and value |
+| `sectionTitle(text)` | Renders an uppercase section divider |
+| `formatLabel(key)` | Converts `snake_case`/`camelCase` to Title Case |
 
 The harness sends configuration via `postMessage` to the activity iframe and displays structured results when the activity responds.
 
