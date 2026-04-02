@@ -1,28 +1,35 @@
-/**
- * @file   index.tsx
- * @brief  Intial component for the react app
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
-import React from "react"
-import ReactDOM from "react-dom"
-import { AppContainer } from "react-hot-loader"
-import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution"
-import './index.css'
-import "material-icons"
-const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { createRoot } from "react-dom/client";
+import SymbolDigitSubstitution from "./components/SymbolDigitSubstitution";
+import "./index.css";
 
-eventer(
-  messageEvent, (e) => {  
-    ReactDOM.render(
-      <AppContainer>
-        <SymbolDigitSubstitution data={e.data}/>
-      </AppContainer>,  
-      document.getElementById('root') 
-    ) 
-},
-false
-)
+let root: ReturnType<typeof createRoot> | null = null;
+let configVersion = 0;
+
+window.addEventListener(
+  "message",
+  (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      (!data.configuration && !data.activity && !data.settings)
+    ) {
+      return;
+    }
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      configVersion++;
+      root.render(
+        <SymbolDigitSubstitution key={configVersion} data={data} />
+      );
+    }
+  },
+  false
+);
