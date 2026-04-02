@@ -632,6 +632,7 @@ class Board extends React.Component<BoardProps, BoardState> {
             total_questions: this.state.questionCount,
             wrong_answers: this.state.stateWrongTaps,
             is_favorite: this.state.isFavoriteActive,
+            ...(response && { questionnaire: response }),
           },
           temporal_slices: JSON.parse(this.state.boxes),
           timestamp: new Date().getTime(),

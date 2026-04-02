@@ -26,8 +26,7 @@ This document describes the data emitted by the D-Cog activity via `postMessage`
 | `total_questions` | number | **Total target animals presented** across all rounds. This is the cumulative count of dogs (or cats, depending on the level) that appeared on screen — i.e., the number of boxes the participant should have tapped. |
 | `point` | number | `2` if `score === 100`, else `1` |
 | `is_favorite` | boolean | Whether the activity was marked as a favorite in the dashboard configuration |
-
-**Note:** The questionnaire component is rendered but its responses are not currently included in the postMessage payload.
+| `questionnaire` | object | *(optional)* Post-game self-report. Contains `clarity` (1–5) and `happiness` (1–5) ratings. Only present when the game ends normally (not via early exit). |
 
 ---
 
