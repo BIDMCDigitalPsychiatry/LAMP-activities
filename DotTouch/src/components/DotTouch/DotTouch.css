@@ -1,29 +1,152 @@
-/**
- * @file   jewels.css
- * @brief  style sheet for jewels game
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
-:root {
-  --square-size: 84px;
-  --square-font-size: 72px;
-}
-/* nav.home-link svg {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
-} */
 body {
-  background: rgba(53, 159, 254, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  margin: 0;
+  background: #e8f4fd;
+  overflow: hidden;
 }
 nav a {
   color: #fff;
   padding: 10px;
   display: inline-block;
 }
-.App {
-  padding-top: 2em;
+
+/* Header */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.home-link svg,
+.home-link-forward svg,
+.back-link svg,
+.forward-link svg {
+  color: #fff;
+  cursor: pointer;
+}
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link-forward {
+  position: absolute;
+  right: 48px;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.forward-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.timer-display {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+  font-variant-numeric: tabular-nums;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 16px;
+  border-radius: 12px;
+  min-width: 72px;
   text-align: center;
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Game Board */
+.game-board {
+  position: fixed;
+  top: 52px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.game-board.with-status-bar {
+  top: 96px;
+}
+.dot-field {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+}
+
+/* Dots */
+.dot-style {
+  background: white;
+  border-radius: 50%;
+  text-align: center;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.dot-style.firstclass {
+  border: #f00 solid 2px;
+  background-color: #fff;
+}
+.dot-style.firstclass span {
+  color: #f00;
 }
 .dot-selected {
   background-color: #40bd40 !important;
@@ -35,106 +158,186 @@ nav a {
 .wrong-dot-selection .number-text {
   color: white !important;
 }
-.level-text {
-  text-align: center;
-  color: white;
-}
-
-.footer {
-  text-align: center;
-  color: rgba(53, 159, 254, 1);
-  padding: 15px 0 15px 0;
-  background: #fff;
-  width: 100%;
-  bottom: -1px;
-  position: fixed;
-}
-
-.App-logo {
-  -webkit-animation: App-logo-spin infinite 20s linear;
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-.info-text {
-  padding: 5px;
-}
-.App-header {
-  height: 90px;
-  padding: 20px;
-  color: #fff;
-}
-.App-intro {
-  font-size: large;
-}
-
 .number-text {
   font-size: 20px;
   color: rgba(53, 159, 254, 1);
   line-height: 32px;
 }
 
-.game-over {
-  color: cornsilk;
+
+/* Phase Cards */
+.phase-card-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 52px);
+  padding: 24px 16px;
+}
+.phase-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  overflow: hidden;
+}
+.phase-card-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
   text-align: center;
+  padding: 14px 20px;
+}
+.phase-card-body {
+  padding: 32px 24px;
+  text-align: center;
+}
+.phase-instruction {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.score-ring {
+  font-size: 56px;
+  font-weight: 700;
+  color: rgba(53, 159, 254, 1);
+  margin-bottom: 24px;
+}
+.phase-btn {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 40px;
+  min-width: 140px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase-btn:hover {
+  background: rgba(33, 139, 234, 1);
 }
 
-.game-table {
-  top: 120px;
-  width: 90%;
-  margin: 0 auto;
-  position: fixed;
-  left: 5%;
+/* Instruction Modal */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
 }
-.game-table td {
-  width: 10%;
-  padding: 5px 0;
-}
-.dot-style {
-  background: white;
-  border-radius: 50%;
+.instruction-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
   text-align: center;
-  width: 80px;
-  height: 80px;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 10px 24px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* Questionnaire Modal */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.dot-style.firstclass {
-  border: #f00 solid 2px;
-  background-color: #fff;
+.questionnaire-faces .btn {
+  margin-right: 0;
 }
-.dot-style.firstclass span {
-  color: #f00;
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
 }
-.headerTitleIcon {
-  background: none !important;
-  box-shadow: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  color: #ccc !important;
-  border: 0;
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 10px 24px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
   border-radius: 50%;
-  cursor: pointer;
-  margin-left: 8px !important;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
 }
-.headerTitleIcon .material-icons {
-  font-size: 2rem;
-  color: #666;
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
 }
-.headerTitleIcon svg {
-  width: 20px;
-  height: 20px;
-}
-.header-with-icon {
-  display: flex;
-  align-items: center;
-}
-.headerTitleIcon:hover {
-  background: #f4f4f4 !important;
-}
-
-.headerTitleIcon.active .material-icons {
-  color: #e3b303 !important;
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
 }
 
 @media only screen and (max-width: 500px) {
@@ -142,154 +345,18 @@ nav a {
     width: 60px;
     height: 60px;
   }
-  .game-table td {
-    padding: 5px;
+  .number-text {
+    font-size: 16px;
   }
-}
-
-.heading {
-  text-align: center;
-  color: rgba(53, 159, 254, 1);
-  padding: 15px;
-  background: #fff;
-}
-.home-link {
-  position: absolute;
-  right: 10px;
-  padding: 12px;
-  top: 8px;
-  cursor: pointer;
-}
-.home-link-forward {
-  position: absolute;
-  right: 60px;
-  padding: 12px;
-  top: 8px;
-  cursor: pointer;
-}
-.back-link {
-  position: absolute;
-  left: 10px;
-  padding: 12px;
-  top: 8px;
-  cursor: pointer;
-}
-.forward-link {
-  position: absolute;
-  right: 10px;
-  margin: 12px;
-  top: 8px;
-  cursor: pointer;
-}
-@-webkit-keyframes App-logo-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+  .timer-display {
+    font-size: 16px;
   }
-  to {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
   }
-}
-@keyframes App-logo-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
   }
-  to {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
-}
-body {
-  font: 18px Helvetica, Arial, sans-serif;
-  margin: 30px;
-}
-ol,
-ul {
-  padding-left: 30px;
-}
-.status {
-  margin-bottom: 10px;
-}
-.square {
-  background: #fff;
-  border: 1.7px solid #000;
-  float: left;
-  font-size: var(--square-font-size);
-  font-weight: 700;
-  line-height: var(--square-size);
-  height: var(--square-size);
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  vertical-align: middle;
-  width: var(--square-size);
-  margin-bottom: 0;
-  border-radius: 0;
-}
-.board-row:first-child > .square {
-  border-top: none;
-}
-.board-row:last-child > .square {
-  border-bottom: none;
-}
-.board-row > .square:first-child {
-  border-left: none;
-}
-.board-row > .square:last-child {
-  border-right: none;
-}
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-.game {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
-.board-row,
-.game {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-.board-row {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-}
-.game-info {
-  margin-bottom: 1em;
-}
-.controls {
-  padding: 2em;
-}
-.winner {
-  -webkit-animation: blinker 1s linear infinite;
-  animation: blinker 1s linear infinite;
-  color: green !important;
-}
-@-webkit-keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-.modal-body-section {
-  padding: 15px !important;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 18px;
 }

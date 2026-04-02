@@ -1,30 +1,31 @@
-/**
- * @file   Trails B.tsx
- * @brief  Trails B component which is the initial point of DotTouch game
- * @date   May , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
 import * as React from "react";
-// import Button from '@material-ui/core/Button';
 import { Dot } from "./Dot";
 import {
   getRandomAlphaNumeric,
-  getRandomNumbers,
+  getRandomPositions,
   shuffle,
 } from "../../functions";
-import RefreshRounded from "@material-ui/icons/RefreshRounded";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-// import { Timer } from '../common/Timer';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faRedo, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import "./DotTouch.css";
-import { GeneralInstruction } from "./GeneralInstruction";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import "material-icons";
+import { InstructionModal } from "./InstructionModal";
+import { Questionnaire } from "./Questionnaire";
+import i18n from "../../i18n";
 
 /* eslint-disable no-restricted-globals */
+interface LevelSummary {
+  level: number;
+  duration_ms: number;
+  correct_taps: number;
+  wrong_taps: number;
+  total_items: number;
+  sequence: Array<string>;
+  dot_positions: Array<{x: number, y: number}>;
+}
+
 interface DotState {
   correctTaps: number;
-  dotSpots: Array<number>;
+  dotPositions: Array<{x: number, y: number}>;
   dotValues: Array<string>;
   shuffledValues: Array<string>;
   gameLevel: number;
@@ -47,28 +48,36 @@ interface DotState {
   isFavoriteActive: boolean;
   forward: boolean;
   isForwardButton: boolean;
+  phase: "playing" | "game_over" | "timeout" | "questionnaire";
+  endReason: string;
+  endReasonKey: string;
+  noBack: boolean;
+  language: string;
+  timerEnabled: boolean;
+  timeRemaining: number;
+  levelStartTime: number;
+  levelCorrectTaps: number;
+  levelWrongTaps: number;
+  levelSummaries: Array<LevelSummary>;
 }
 
 class DotTouch extends React.Component<any, DotState> {
+  private timerInterval: any = null;
+
   constructor(props: any) {
     super(props);
     const settingsData =
       props.data.activity?.settings ?? props.data.settings ?? {};
+    const language = settingsData?.language ?? props.data.language ?? "en-US";
+    i18n.changeLanguage(language);
 
-    const maxPlots =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      )
-        ? 40
-        : 55;
     const dotCount = settingsData?.level1_dot_count ?? 12;
-    const randomArray = getRandomNumbers(dotCount, 1, maxPlots);
+    const positions = getRandomPositions(dotCount, 22, 10);
     const values = getRandomAlphaNumeric(dotCount / 2);
 
-    // Initailise state values
     this.state = {
       correctTaps: 0,
-      dotSpots: randomArray,
+      dotPositions: positions,
       dotValues: values,
       gameLevel: 1,
       gameOver: false,
@@ -91,30 +100,91 @@ class DotTouch extends React.Component<any, DotState> {
       isFavoriteActive: props?.data?.is_favorite ?? false,
       forward: props?.data?.forward ?? false,
       isForwardButton: false,
+      phase: "playing",
+      endReason: "",
+      endReasonKey: "",
+      noBack: props?.data?.noBack ?? false,
+      language: language,
+      timerEnabled: settingsData?.timer_enabled ?? false,
+      timeRemaining: (settingsData?.timer_enabled) ? (settingsData?.level1_timeout ?? 60) : 0,
+      levelStartTime: 0,
+      levelCorrectTaps: 0,
+      levelWrongTaps: 0,
+      levelSummaries: [],
     };
-    //  this.resetState()
   }
+
+  componentWillUnmount() {
+    this.clearTimer();
+  }
+
+  clearTimer = () => {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  };
+
+  startLevelTimer = (seconds: number) => {
+    this.clearTimer();
+    if (!(this.state as any).timerEnabled) return;
+    this.setState({ timeRemaining: seconds });
+    this.timerInterval = setInterval(() => {
+      this.setState(
+        (prev) => ({ timeRemaining: prev.timeRemaining - 1 }),
+        () => {
+          if (this.state.timeRemaining <= 0) {
+            this.clearTimer();
+            this.finishLevel();
+            this.setState({
+              timeout: true,
+              gameOver: true,
+              phase: "game_over",
+              endReason: i18n.t("Time's up!"),
+              endReasonKey: "timeout",
+            });
+          }
+        }
+      );
+    }, 1000);
+  };
+
+  formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
+  };
+
+  // Save summary for the current level.
+  // pendingCorrect/pendingWrong account for the last tap whose setState
+  // hasn't been flushed yet when this is called synchronously.
+  finishLevel = (pendingCorrect: number = 0, pendingWrong: number = 0) => {
+    const summary: LevelSummary = {
+      level: this.state.gameLevel,
+      duration_ms: new Date().getTime() - this.state.levelStartTime,
+      correct_taps: this.state.levelCorrectTaps + pendingCorrect,
+      wrong_taps: this.state.levelWrongTaps + pendingWrong,
+      total_items: this.state.dotValues.length,
+      sequence: this.state.dotValues.slice(),
+      dot_positions: this.state.dotPositions.map((p, idx) => ({
+        x: Math.round(p.x * 10) / 10,
+        y: Math.round(p.y * 10) / 10,
+        label: this.state.shuffledValues[idx],
+      })) as any,
+    };
+    this.state.levelSummaries.push(summary);
+  };
 
   // Update each game level
   resetState = () => {
-    let dotCount = 0;
-    const maxPlots =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      )
-        ? 40
-        : 55;
-    let randomArray;
-    dotCount = this.state.settings?.level2_dot_count ?? 24;
-
-    randomArray = getRandomNumbers(dotCount, 1, maxPlots);
+    this.clearTimer();
+    this.finishLevel(1, 0); // last tap was correct (level completed)
+    const dotCount = this.state.settings?.level2_dot_count ?? 24;
+    const positions = getRandomPositions(dotCount, 20, 9);
     const values = getRandomAlphaNumeric(dotCount / 2);
-    Array.from(document.getElementsByClassName("dot-style")).forEach((elem) => {
-      elem.className = "dot-style";
-    });
-    // Set state values for current game level
+    const timerVal = this.state.timerEnabled ? (this.state.settings?.level2_timeout ?? 120) : 0;
     this.setState({
-      dotSpots: randomArray,
+      dotPositions: positions,
       dotValues: values,
       gameLevel: this.state.gameLevel + 1,
       shuffledValues: shuffle(values),
@@ -122,6 +192,9 @@ class DotTouch extends React.Component<any, DotState> {
       stateChange: true,
       tapCount: 0,
       showInstruction: true,
+      timeRemaining: timerVal,
+      levelCorrectTaps: 0,
+      levelWrongTaps: 0,
     });
   };
 
@@ -134,12 +207,20 @@ class DotTouch extends React.Component<any, DotState> {
             ? e.target.closest("div")
             : e.target;
         if (item.className !== "dot-style dot-selected") {
-          const status =
-            i === this.state.dotValues[this.state.tapCount] ? true : false;
+          const expected = this.state.dotValues[this.state.tapCount];
+          const status = i === expected;
 
-          item.className = status
-            ? "dot-style dot-selected"
-            : "dot-style wrong-dot-selection";
+          if (status) {
+            item.className = "dot-style dot-selected";
+          } else {
+            item.className = "dot-style wrong-dot-selection";
+            // Flash red briefly then reset so it can be tapped again
+            setTimeout(() => {
+              if (item.className === "dot-style wrong-dot-selection") {
+                item.className = "dot-style";
+              }
+            }, 500);
+          }
 
           this.setState({
             correctTaps: status
@@ -151,20 +232,31 @@ class DotTouch extends React.Component<any, DotState> {
             mistakeCount: !status
               ? this.state.mistakeCount + 1
               : this.state.mistakeCount,
+            levelCorrectTaps: status
+              ? this.state.levelCorrectTaps + 1
+              : this.state.levelCorrectTaps,
+            levelWrongTaps: !status
+              ? this.state.levelWrongTaps + 1
+              : this.state.levelWrongTaps,
           });
 
           if (!status && this.state.mistakeCount + 1 >= 5) {
+            this.clearTimer();
+            this.finishLevel(0, 1); // last tap was wrong (triggered mistake limit)
             setTimeout(() => {
               this.setState({
                 gameOver: true,
+                phase: "game_over",
+                endReason: i18n.t("TOO_MANY_MISTAKES"),
+                endReasonKey: "too_many_mistakes",
               });
-              this.sendGameResult();
             }, 500);
             return;
           }
 
           let routeList: any;
           if (i === "1") {
+            const now = new Date().getTime();
             const timerVal =
               this.state.gameLevel == 1
                 ? this.state.settings.level1_timeout ?? 60
@@ -176,15 +268,17 @@ class DotTouch extends React.Component<any, DotState> {
             const routes = [];
 
             routes.push({
-              duration: new Date().getTime() - this.state.startTime,
+              duration: now - this.state.startTime,
               item: i,
+              tapped: i,
+              expected: expected,
               level: this.state.gameLevel,
               type: status,
+              correct: status,
               value: null,
             });
-            // state updation for dot 1 click
             this.setState({
-              lastClickTime: new Date().getTime(),
+              lastClickTime: now,
               route: JSON.stringify(routes),
               startGame: true,
               startTime:
@@ -193,19 +287,24 @@ class DotTouch extends React.Component<any, DotState> {
               stateChange: false,
               stateRoutes: JSON.stringify(routeList),
               showInstruction: false,
+              levelStartTime: now,
             });
+            // Start the countdown timer for this level
+            this.startLevelTimer(timerVal);
           } else {
-            // Update the state values for each taps other than dot 1
-            this.updateStateWithTaps(i, status);
+            this.updateStateWithTaps(i, status, expected);
           }
           if (this.state.dotValues.length - 1 === this.state.tapCount) {
-            // When all the dots are correctly tapped
             if (this.state.gameLevel === 3) {
+              this.clearTimer();
+              this.finishLevel(1, 0); // last tap was correct (game completed)
               setTimeout(() => {
                 this.setState({
                   gameOver: true,
+                  phase: "game_over",
+                  endReason: i18n.t("CONGRATULATIONS"),
+                  endReasonKey: "completed",
                 });
-                this.sendGameResult();
               }, 1000);
             } else {
               this.resetState();
@@ -216,21 +315,8 @@ class DotTouch extends React.Component<any, DotState> {
     }
   };
 
-  // To track the timer expiring
-  passTimerUpdate = (timerVal: number) => {
-    //  if(timerVal === 0) {
-    //    this.setState({
-    //      timeout : true
-    //    });
-    //   this.sendGameResult();
-    //  }
-    //  this.setState({
-    //      startTimer : timerVal
-    //  });
-  };
-
   // Update the state values for each taps other than dot 1
-  updateStateWithTaps = (i: string, status: boolean) => {
+  updateStateWithTaps = (i: string, status: boolean, expected: string) => {
     const routes = [];
     const lastclickTime = new Date().getTime() - this.state.lastClickTime;
     if (this.state.route.length > 0) {
@@ -242,11 +328,13 @@ class DotTouch extends React.Component<any, DotState> {
     const route = {
       duration: lastclickTime,
       item: i,
+      tapped: i,
+      expected: expected,
       level: this.state.gameLevel,
       type: status,
+      correct: status,
       value: null,
     };
-    //  const route = {'Alphabet' : i, 'status' : 1, 'TimeTaken' : lastclickTime.toFixed(2)};
     routes.push(route);
 
     this.setState({
@@ -255,52 +343,36 @@ class DotTouch extends React.Component<any, DotState> {
     });
   };
 
-  // To create the game borad with dots on random positions
-  createTable = () => {
-    const table = [];
-    let k = 0;
-    let p = 0;
-    const rows =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      )
-        ? 9
-        : 6;
-    const cols =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      )
-        ? 5
-        : 10;
-    const dotValuesToRender = this.state.shuffledValues;
-    // Outer loop to create parent
-    for (let i = 0; i < rows; i++) {
-      const children = [];
-      // Inner loop to create children
-      for (let j = 0; j < cols; j++) {
-        if (this.state.dotSpots.indexOf(p) > -1) {
-          children.push(
-            <td key={p}>
-              <Dot index={dotValuesToRender[k]} onClick={this.handleClick} />
-            </td>
-          );
-          k++;
-        } else {
-          children.push(<td key={p} />);
-        }
-        p++;
-      }
-      // Create the parent and add the children
-      table.push(<tr key={i}>{children}</tr>);
-    }
-    return table;
+  // Create dots at random absolute positions
+  createDots = () => {
+    return this.state.shuffledValues.map((val, i) => {
+      const pos = this.state.dotPositions[i];
+      return (
+        <div
+          key={`${this.state.gameLevel}-${i}`}
+          style={{
+            position: "absolute",
+            left: pos.x + "%",
+            top: pos.y + "%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Dot index={val} onClick={this.handleClick} />
+        </div>
+      );
+    });
   };
 
   // Call the API to pass game result
-  sendGameResult = (status?: boolean, isBack?:Boolean) => {
+  sendGameResult = (status?: boolean, isBack?: Boolean) => {
+    this.clearTimer();
+    // If exiting mid-game, save the current level summary
+    if (!this.state.gameOver && this.state.levelStartTime > 0) {
+      this.finishLevel();
+      this.setState({ endReasonKey: "manual_exit" });
+    }
     const route = { type: "manual_exit", value: status ?? false };
     const boxes = [];
-    // if (this.state.route !== null) {
     if (this.state.route && this.state.route.length > 0) {
       const r = JSON.parse(this.state.route);
       Object.keys(r).forEach((key) => {
@@ -314,19 +386,20 @@ class DotTouch extends React.Component<any, DotState> {
       },
       () => {
         const totalAttempts = this.state.totalTaps;
-        const gameScore =
-          totalAttempts < 30
-            ? Math.round((this.state.correctTaps / 30) * 100)
-            : Math.round((this.state.correctTaps / totalAttempts) * 100);
-        const points = gameScore === 100 ? 2 : 1;
+        const totalItems = this.state.levelSummaries.reduce(
+          (sum, l) => sum + l.total_items, 0
+        );
         const percentageCorrectOverall =
           totalAttempts > 0
             ? Math.round((this.state.correctTaps / totalAttempts) * 100)
             : 0;
+        const gameScore = percentageCorrectOverall;
+        const points = gameScore === 100 ? 2 : 1;
         parent.postMessage(
           JSON.stringify({
             duration: new Date().getTime() - this.state.startTime,
             static_data: {
+              // Backward-compatible fields
               correct_answers: this.state.correctTaps,
               point: points,
               total_questions: this.state.totalTaps,
@@ -335,12 +408,20 @@ class DotTouch extends React.Component<any, DotState> {
               percentageCorrectOverall: percentageCorrectOverall,
               total_levels: this.state.gameLevel,
               is_favorite: this.state.isFavoriteActive,
+              // New cognitive-test fields
+              total_taps: this.state.totalTaps,
+              total_items: totalItems,
+              end_reason: this.state.endReasonKey || "manual_exit",
+              level_summaries: this.state.levelSummaries,
+              ...((this.state as any).questionnaire && {
+                questionnaire: (this.state as any).questionnaire,
+              }),
             },
             temporal_slices: JSON.parse(this.state.route),
             timestamp: new Date().getTime(),
             ...(this.state.forward && { forward: this.state.isForwardButton }),
             ...(!status && { done: true }),
-            ...(isBack && { clickBack : true }),
+            ...(isBack && { clickBack: true }),
           }),
           "*"
         );
@@ -350,21 +431,13 @@ class DotTouch extends React.Component<any, DotState> {
 
   // Restart button action
   restartState = () => {
-    const maxPlots =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-        navigator.userAgent
-      )
-        ? 40
-        : 55;
-    const randomArray = getRandomNumbers(
-      this.state.dotSpots.length,
-      1,
-      maxPlots
-    );
+    this.clearTimer();
+    const dotCount = this.state.dotPositions.length;
+    const positions = getRandomPositions(dotCount, dotCount > 16 ? 20 : 22, dotCount > 16 ? 9 : 10);
     const routeList = this.updateRouteList();
 
     this.setState({
-      dotSpots: randomArray,
+      dotPositions: positions,
       gameOver: false,
       lastClickTime: 0,
       shuffledValues: shuffle(this.state.dotValues),
@@ -396,6 +469,7 @@ class DotTouch extends React.Component<any, DotState> {
     }));
     this.sendGameResult(true, true);
   };
+
   clickForward = () => {
     this.setState(() => ({
       isForwardButton: true,
@@ -411,67 +485,112 @@ class DotTouch extends React.Component<any, DotState> {
   handleCloseInstructionModal = () => {
     this.setState({ showInstruction: false });
   };
-  
+
+  handleGameOverContinue = () => {
+    this.setState({ phase: "questionnaire" });
+  };
+
+  handleQuestionnaireResponse = (response: any) => {
+    (this.state as any).questionnaire = response;
+    this.sendGameResult();
+  };
+
   // Render the game board
   render() {
-    const alertMsg = this.state.gameOver
-      ? "Congrats !!"
-      : this.state.timeout
-      ? "Timeout !"
-      : this.state.tapCount === 0
-      ? this.state.gameLevel === 1
-        ? "Tap '1' to start the test"
-        : "Tap '1' to begin"
-      : this.state.tapCount === 1
-      ? "Tap on the corresponding letter"
-      : null;
+    // Game over phase card
+    if (this.state.phase === "game_over") {
+      const totalAttempts = this.state.totalTaps;
+      const pct =
+        totalAttempts > 0
+          ? Math.round((this.state.correctTaps / totalAttempts) * 100)
+          : 0;
+      return (
+        <div className="dot-touch-board">
+          <div className="heading">
+            {i18n.t("TRAILS_B")}
+          </div>
+          <div className="phase-card-wrap">
+            <div className="phase-card">
+              <div className="phase-card-header">{i18n.t("GAME_OVER")}</div>
+              <div className="phase-card-body">
+                <div className="phase-instruction">{this.state.endReason}</div>
+                <div className="score-ring">{pct}%</div>
+                <div className="phase-instruction">
+                  {this.state.correctTaps} / {totalAttempts}
+                </div>
+                <button
+                  className="phase-btn"
+                  onClick={this.handleGameOverContinue}
+                >
+                  {i18n.t("CONTINUE")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Questionnaire phase
+    if (this.state.phase === "questionnaire") {
+      return (
+        <div className="dot-touch-board">
+          <div className="heading">
+            {i18n.t("TRAILS_B")}
+          </div>
+          <Questionnaire
+            language={this.state.language}
+            setResponse={this.handleQuestionnaireResponse}
+          />
+        </div>
+      );
+    }
 
     const Instruction = this.state.showInstruction ? (
-      <GeneralInstruction
+      <InstructionModal
         show={true}
         modalClose={this.handleCloseInstructionModal}
-        msg={
-          "For this game, you will alternate between tapping on numbers and letters in increasing order: for instance, 1-A-2-B etc."
-        }
+        msg={i18n.t("INSTRUCTIONS")}
+        language={this.state.language}
       />
     ) : null;
+
     return (
       <div className="dot-touch-board">
-        <nav className="back-link">
-          <ArrowBackIcon color="primary" onClick={this.clickBack} />
-          {/* <ArrowBackIcon icon={faRedo}  onClick={this.undoAction}/> */}
-        </nav>
-
-        <nav
-          className={this.state.forward ? " home-link-forward" : "home-link"}
-        >
-          <RefreshRounded color="primary" onClick={this.clickHome} />
-        </nav>
-        {this.state.forward && (
-          <nav className="forward-link">
-            <ArrowForwardIcon color="primary" onClick={this.clickForward} />
-          </nav>
-        )}
-
         <div className="heading">
-          Trails B          
+          {!this.state.noBack && (
+            <nav className="back-link">
+              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
+            </nav>
+          )}
+
+          {i18n.t("TRAILS_B")}
+
+          <nav
+            className={this.state.forward ? "home-link-forward" : "home-link"}
+          >
+            <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+          </nav>
+          {this.state.forward && (
+            <nav className="forward-link">
+              <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
+            </nav>
+          )}
         </div>
-        <div className="game-board">
-          <div>
-            {/* <div className="countdown-timer mt-10"> 
-             { this.state.startTimer > 0 && !this.state.gameOver &&
-               <Timer passTimerUpdate = {this.passTimerUpdate} stateChange={this.state.stateChange} startTimeInSeconds={this.state.startTimer} startTimer={1}/> 
-             }
-             </div> */}
-            {this.state.startTimer > 0 && !this.state.gameOver && (
-              <div className="level-text">Level {this.state.gameLevel}</div>
-            )}
-            <br />
-            {Instruction}
-            <table className="game-table" id="game-table">
-              <tbody>{this.createTable()}</tbody>
-            </table>
-            <div className="footer">{alertMsg}</div>
+        <div className="status-bar">
+          {this.state.timerEnabled && (
+            <div className="timer-display">
+              {this.formatTime(this.state.timeRemaining)}
+            </div>
+          )}
+          <div className="level-badge">
+            {i18n.t("LEVEL_NUMBER", { level: this.state.gameLevel })}
+          </div>
+        </div>
+        <div className="game-board with-status-bar">
+          {Instruction}
+          <div className="dot-field">
+            {this.createDots()}
           </div>
         </div>
       </div>
