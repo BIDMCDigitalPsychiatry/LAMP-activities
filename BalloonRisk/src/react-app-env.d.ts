@@ -1,2 +1,2 @@
 /// <reference types="react-scripts" />
-declare module 'gaussian';
+declare module "react-dom/client";

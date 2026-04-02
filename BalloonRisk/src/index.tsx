@@ -1,18 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { AppContainer } from "react-hot-loader";
-import Balloon from './components/BallonRisk/Balloon';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { createRoot } from "react-dom/client";
+import Board from "./components/Board";
+import "./index.css";
 
-const eventer = window.addEventListener
-const messageEvent = "message"
-eventer(
-  messageEvent, (e:any) => {  
-    ReactDOM.render(
-      <AppContainer>
-        <Balloon data={e.data}/>
-      </AppContainer>,
-      document.getElementById('root') as HTMLElement
-      ) 
-    },
-false
-)
+let root: ReturnType<typeof createRoot> | null = null;
+
+window.addEventListener(
+  "message",
+  (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      (!data.configuration && !data.activity && !data.settings)
+    ) {
+      return;
+    }
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Board data={data} />);
+    }
+  },
+  false
+);
