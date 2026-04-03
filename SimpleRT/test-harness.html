@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SimpleRT Test Harness</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f0f0; }
+    #controls { background: #333; color: #fff; font-size: 14px; }
+    #controls .row { padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #controls .row-harness { border-bottom: 1px solid #444; }
+    #controls .row-activity { background: #2a2a2a; }
+    #controls button { padding: 6px 14px; cursor: pointer; border: none; border-radius: 4px; font-size: 13px; }
+    #controls .btn-send { background: #359FFE; color: #fff; }
+    #controls .btn-toggle { background: #555; color: #fff; }
+    #controls .btn-clear { background: #777; color: #fff; }
+    #controls select, #controls input { padding: 5px 8px; border-radius: 4px; border: 1px solid #555; background: #444; color: #fff; font-size: 13px; }
+    #controls input[type="number"] { width: 60px; }
+    #controls label { font-size: 12px; color: #aaa; }
+    #main { display: flex; height: calc(100vh - 80px); }
+    #game-panel { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: auto; }
+    #game-panel iframe { width: 100%; height: 100%; border: none; }
+    /* Device preview mode */
+    #game-panel.device-preview { background: #e0e0e0; }
+    #game-panel.device-preview iframe {
+      width: var(--device-w);
+      height: var(--device-h);
+      border-radius: 36px;
+      box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #333, 0 8px 30px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+      transform: scale(var(--device-scale, 1));
+      transform-origin: center center;
+    }
+
+    /* --- Data Panel --- */
+    #data-panel { width: 420px; background: #1e1e1e; color: #d4d4d4; font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; display: flex; flex-direction: column; border-left: 2px solid #444; }
+    #data-panel.hidden { display: none; }
+    #data-panel .tab-bar { display: flex; background: #2d2d2d; border-bottom: 1px solid #444; flex-shrink: 0; }
+    #data-panel .tab { padding: 8px 16px; cursor: pointer; color: #888; font-size: 12px; border-bottom: 2px solid transparent; }
+    #data-panel .tab.active { color: #fff; border-bottom-color: #359FFE; }
+    #data-panel .tab-content { flex: 1; overflow-y: auto; padding: 12px; }
+
+    /* --- Score Cards --- */
+    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .score-card { background: #2a2a2a; border-radius: 6px; padding: 10px 12px; }
+    .score-card.full { grid-column: 1 / -1; }
+    .score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+    .score-value { font-size: 20px; font-weight: 700; color: #fff; }
+    .score-value.highlight { color: #4fc3f7; }
+    .score-value.muted { color: #888; font-size: 16px; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #333; }
+
+    /* --- JSON Viewer --- */
+    pre.json-view { white-space: pre-wrap; word-break: break-word; margin: 0; line-height: 1.5; }
+    .json-key { color: #9cdcfe; }
+    .json-string { color: #ce9178; }
+    .json-number { color: #b5cea8; }
+    .json-bool { color: #569cd6; }
+    .json-null { color: #569cd6; }
+
+    /* --- Log --- */
+    #log-panel { flex: 1; overflow-y: auto; padding: 12px; }
+    .log-entry { padding: 3px 0; border-bottom: 1px solid #2a2a2a; font-size: 11px; color: #888; }
+    .log-entry .log-time { color: #666; }
+    .log-entry .log-msg { color: #0f0; }
+
+    .no-data { color: #666; text-align: center; padding: 40px 20px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div class="row row-harness">
+      <strong>SimpleRT Test Harness</strong>
+      <label>Port:
+        <select id="port-select">
+          <option value="3000" selected>3000</option>
+          <option value="3001">3001</option>
+          <option value="3002">3002</option>
+        </select>
+      </label>
+      <label>Device:
+        <select id="device-select">
+          <option value="desktop">Desktop</option>
+          <option value="375x812">iPhone SE/13 mini</option>
+          <option value="390x844">iPhone 14</option>
+          <option value="430x932">iPhone 14 Pro Max</option>
+          <option value="360x800">Android (360)</option>
+          <option value="768x1024">iPad Mini</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="reloadActivity()">Reload</button>
+      <button class="btn-toggle" onclick="togglePanel()">Toggle Data</button>
+      <button class="btn-clear" onclick="clearData()">Clear</button>
+    </div>
+    <div class="row row-activity" id="activity-controls">
+      <label>Simple trials:
+        <input type="number" id="simple-trials" value="10" min="1" max="100">
+      </label>
+      <label>Choice trials:
+        <input type="number" id="choice-trials" value="10" min="0" max="100">
+      </label>
+      <label>ISI min (ms):
+        <input type="number" id="min-isi" value="1000" min="500" max="5000" step="100">
+      </label>
+      <label>ISI max (ms):
+        <input type="number" id="max-isi" value="4000" min="1000" max="8000" step="100">
+      </label>
+      <label>Language:
+        <select id="lang-select">
+          <option value="en-US" selected>en-US</option>
+          <option value="da-DK">da-DK</option>
+          <option value="de-DE">de-DE</option>
+          <option value="es-ES">es-ES</option>
+          <option value="fr-FR">fr-FR</option>
+          <option value="hi-IN">hi-IN</option>
+          <option value="it-IT">it-IT</option>
+          <option value="ko-KR">ko-KR</option>
+          <option value="zh-CN">zh-CN</option>
+          <option value="zh-HK">zh-HK</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="sendConfig()">Send Config</button>
+    </div>
+  </div>
+  <div id="main">
+    <div id="game-panel">
+      <iframe id="game" src="http://localhost:3000"></iframe>
+    </div>
+    <div id="data-panel">
+      <div class="tab-bar">
+        <div class="tab active" data-tab="scores">Scores</div>
+        <div class="tab" data-tab="slices">Temporal Slices</div>
+        <div class="tab" data-tab="raw">Raw JSON</div>
+        <div class="tab" data-tab="log">Log</div>
+      </div>
+      <div class="tab-content" id="tab-scores">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-slices" style="display:none">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-raw" style="display:none">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-log" style="display:none">
+        <div id="log-panel"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =================================================================
+    // SimpleRT Test Harness
+    //
+    // The activity reads config from:
+    //   - e.data.configuration.language
+    //   - e.data.activity.settings.simple_trials
+    //   - e.data.activity.settings.choice_trials
+    //   - e.data.activity.settings.min_isi_ms
+    //   - e.data.activity.settings.max_isi_ms
+    //   - e.data.noBack
+    //   - e.data.forward
+    // =================================================================
+
+    var lastResult = null;
+
+    // --- Iframe / PostMessage -----------------------------------------
+    function getIframe() {
+      return document.getElementById('game');
+    }
+
+    function sendConfig() {
+      var lang = document.getElementById('lang-select').value;
+      var simpleTrials = parseInt(document.getElementById('simple-trials').value, 10) || 10;
+      var choiceTrials = parseInt(document.getElementById('choice-trials').value, 10) || 10;
+      var minISI = parseInt(document.getElementById('min-isi').value, 10) || 1000;
+      var maxISI = parseInt(document.getElementById('max-isi').value, 10) || 4000;
+
+      var config = {
+        configuration: { language: lang },
+        activity: {
+          settings: {
+            simple_trials: simpleTrials,
+            choice_trials: choiceTrials,
+            min_isi_ms: minISI,
+            max_isi_ms: maxISI
+          }
+        },
+        settings: {
+          simple_trials: simpleTrials,
+          choice_trials: choiceTrials,
+          min_isi_ms: minISI,
+          max_isi_ms: maxISI
+        },
+        noBack: false,
+        forward: true
+      };
+      getIframe().contentWindow.postMessage(config, '*');
+      log('Sent config: simple=' + simpleTrials + ', choice=' + choiceTrials + ', ISI=' + minISI + '-' + maxISI + 'ms, lang=' + lang);
+    }
+
+    function reloadActivity() {
+      var port = document.getElementById('port-select').value;
+      var iframe = getIframe();
+      iframe.src = 'http://localhost:' + port;
+      log('Reloading activity on port ' + port);
+    }
+
+    window.addEventListener('message', function(e) {
+      if (e.source !== getIframe().contentWindow) return;
+      var data;
+      try {
+        data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+      } catch (err) {
+        log('Non-JSON message: ' + String(e.data).substring(0, 100));
+        return;
+      }
+      if (!data.temporal_slices && !data.static_data && !data.forward && !data.clickBack) {
+        log('Non-result message: ' + JSON.stringify(data).substring(0, 100));
+        return;
+      }
+      lastResult = data;
+      log('Game result received' + (data.clickBack ? ' (back nav)' : data.done ? ' (complete)' : ' (forward nav)'));
+      renderScoresTab(data);
+      renderSlicesTab(data);
+      renderRawTab(data);
+    });
+
+    document.getElementById('game').addEventListener('load', function() {
+      log('iframe loaded, sending config...');
+      sendConfig();
+    });
+
+    document.getElementById('port-select').addEventListener('change', function() {
+      reloadActivity();
+    });
+
+    // --- Scores Tab ---------------------------------------------------
+    function renderScoresTab(data) {
+      var s = data.static_data || {};
+      var html = '';
+
+      // Game Info
+      html += sectionTitle('Game Info');
+      html += '<div class="score-grid">';
+      if (data.duration !== undefined) html += scoreCard('Duration', (data.duration / 1000).toFixed(1) + 's', true);
+      html += scoreCard('Done', data.done ? 'Yes' : (data.clickBack ? 'Back' : 'No'), false);
+      html += scoreCard('Simple Trials', s.simple_trials, false);
+      html += scoreCard('Choice Trials', s.choice_trials, false);
+      html += '</div>';
+
+      // Simple RT
+      html += sectionTitle('Simple RT');
+      html += '<div class="score-grid">';
+      html += scoreCard('Mean RT', s.simple_mean_rt + ' ms', true, true);
+      html += scoreCard('Median RT', s.simple_median_rt + ' ms', true);
+      html += scoreCard('SD', s.simple_sd_rt + ' ms', true);
+      html += scoreCard('Correct', s.simple_correct_count + ' / ' + s.simple_trial_count, false);
+      html += '</div>';
+
+      // Choice RT
+      if (s.choice_trial_count > 0) {
+        html += sectionTitle('Choice RT');
+        html += '<div class="score-grid">';
+        html += scoreCard('Mean RT', s.choice_mean_rt + ' ms', true, true);
+        html += scoreCard('Median RT', s.choice_median_rt + ' ms', true);
+        html += scoreCard('SD', s.choice_sd_rt + ' ms', true);
+        html += scoreCard('Correct', s.choice_correct_count + ' / ' + s.choice_trial_count, false);
+        html += scoreCard('Wrong Side', s.choice_error_count, false);
+        html += '</div>';
+      }
+
+      // Overall
+      html += sectionTitle('Overall');
+      html += '<div class="score-grid">';
+      html += scoreCard('Overall Mean RT', s.overall_mean_rt + ' ms', true, true);
+      html += scoreCard('Anticipations', s.anticipation_count, false);
+      html += '</div>';
+
+      // Legacy fields
+      if (s.correct_answers !== undefined || s.score !== undefined) {
+        html += sectionTitle('Legacy Fields');
+        html += '<div class="score-grid">';
+        if (s.score !== undefined) html += scoreCard('Score', s.score + '%', true);
+        if (s.correct_answers !== undefined) html += scoreCard('Correct Answers', s.correct_answers, false);
+        if (s.wrong_answers !== undefined) html += scoreCard('Wrong Answers', s.wrong_answers, false);
+        if (s.total_questions !== undefined) html += scoreCard('Total Questions', s.total_questions, false);
+        if (s.point !== undefined) html += scoreCard('Point', s.point, false);
+        html += '</div>';
+      }
+
+      // Questionnaire
+      if (s.questionnaire) {
+        html += sectionTitle('Questionnaire');
+        html += '<div class="score-grid">';
+        html += scoreCard('Clarity', s.questionnaire.clarity + ' / 5', true);
+        html += scoreCard('Happiness', s.questionnaire.happiness + ' / 5', true);
+        html += '</div>';
+      }
+
+      document.getElementById('tab-scores').innerHTML = html;
+    }
+
+    // --- Temporal Slices Tab ------------------------------------------
+    function renderSlicesTab(data) {
+      var slices = data.temporal_slices;
+      if (!slices || slices.length === 0) {
+        document.getElementById('tab-slices').innerHTML = '<div class="no-data">No temporal slices</div>';
+        return;
+      }
+
+      var html = '<table style="width:100%; border-collapse:collapse; font-size:11px;">';
+      html += '<thead><tr style="color:#888; text-align:left; border-bottom:1px solid #444;">';
+      html += '<th style="padding:4px">#</th>';
+      html += '<th style="padding:4px">Phase</th>';
+      html += '<th style="padding:4px">Trial</th>';
+      html += '<th style="padding:4px">RT (ms)</th>';
+      html += '<th style="padding:4px">Correct</th>';
+      html += '<th style="padding:4px">Stim</th>';
+      html += '<th style="padding:4px">Resp</th>';
+      html += '<th style="padding:4px">ISI</th>';
+      html += '</tr></thead><tbody>';
+
+      slices.forEach(function(entry, i) {
+        if (entry.type === 'manual_exit') {
+          html += '<tr style="color:#666; border-top:1px solid #444;"><td colspan="8" style="padding:4px">Exit (back: ' + entry.value + ')</td></tr>';
+          return;
+        }
+        var isCorrect = entry.type === true;
+        var isAntic = entry.anticipation;
+
+        html += '<tr style="border-bottom:1px solid #2a2a2a;">';
+        html += '<td style="padding:4px; color:#666;">' + (i + 1) + '</td>';
+        html += '<td style="padding:4px; color:#4fc3f7;">' + (entry.phase || '---') + '</td>';
+        html += '<td style="padding:4px;">' + (entry.trial || '---') + '</td>';
+        html += '<td style="padding:4px; font-weight:700; color:' + (isAntic ? '#ff9800' : isCorrect ? '#4caf50' : '#e57373') + ';">' + (isAntic ? 'ANTIC' : entry.duration + 'ms') + '</td>';
+        html += '<td style="padding:4px; color:' + (isCorrect ? '#4caf50' : '#e57373') + ';">' + (isCorrect ? '✓' : '✗') + '</td>';
+        html += '<td style="padding:4px;">' + (entry.stimulus_side || '---') + '</td>';
+        html += '<td style="padding:4px;">' + (entry.response_side || '---') + '</td>';
+        html += '<td style="padding:4px; color:#888;">' + (entry.isi || '---') + '</td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      document.getElementById('tab-slices').innerHTML = html;
+    }
+
+    // --- Raw JSON Tab -------------------------------------------------
+    function renderRawTab(data) {
+      document.getElementById('tab-raw').innerHTML = '<pre class="json-view">' + syntaxHighlight(JSON.stringify(data, null, 2)) + '</pre>';
+    }
+
+    // --- Log ----------------------------------------------------------
+    function log(msg) {
+      var el = document.getElementById('log-panel');
+      el.innerHTML += '<div class="log-entry"><span class="log-time">' + new Date().toLocaleTimeString() + '</span> <span class="log-msg">' + msg + '</span></div>';
+      el.scrollTop = el.scrollHeight;
+    }
+
+    // --- Tab Switching ------------------------------------------------
+    document.querySelectorAll('.tab').forEach(function(t) {
+      t.addEventListener('click', function() {
+        var tabName = t.getAttribute('data-tab');
+        document.querySelectorAll('.tab').forEach(function(tb) { tb.classList.remove('active'); });
+        document.querySelectorAll('.tab-content').forEach(function(c) { c.style.display = 'none'; });
+        t.classList.add('active');
+        document.getElementById('tab-' + tabName).style.display = 'block';
+      });
+    });
+
+    function togglePanel() {
+      document.getElementById('data-panel').classList.toggle('hidden');
+      if (document.getElementById('device-select').value !== 'desktop') {
+        setTimeout(applyDevicePreview, 50);
+      }
+    }
+
+    // --- Device Preview -----------------------------------------------
+    function applyDevicePreview() {
+      var val = document.getElementById('device-select').value;
+      var panel = document.getElementById('game-panel');
+      if (val === 'desktop') {
+        panel.classList.remove('device-preview');
+        panel.style.removeProperty('--device-w');
+        panel.style.removeProperty('--device-h');
+        panel.style.removeProperty('--device-scale');
+      } else {
+        var parts = val.split('x');
+        var devW = parseInt(parts[0], 10);
+        var devH = parseInt(parts[1], 10);
+        var availH = panel.clientHeight - 60;
+        var availW = panel.clientWidth - 60;
+        var scale = Math.min(1, availH / (devH + 24), availW / (devW + 24));
+        panel.classList.add('device-preview');
+        panel.style.setProperty('--device-w', devW + 'px');
+        panel.style.setProperty('--device-h', devH + 'px');
+        panel.style.setProperty('--device-scale', scale.toFixed(3));
+      }
+      log('Device preview: ' + (val === 'desktop' ? 'off' : val));
+    }
+
+    document.getElementById('device-select').addEventListener('change', applyDevicePreview);
+    window.addEventListener('resize', function() {
+      if (document.getElementById('device-select').value !== 'desktop') applyDevicePreview();
+    });
+
+    function clearData() {
+      lastResult = null;
+      document.getElementById('tab-scores').innerHTML = '<div class="no-data">Waiting for game results...</div>';
+      document.getElementById('tab-slices').innerHTML = '<div class="no-data">Waiting for game results...</div>';
+      document.getElementById('tab-raw').innerHTML = '<div class="no-data">Waiting for game results...</div>';
+      document.getElementById('log-panel').innerHTML = '';
+    }
+
+    // --- Helpers ------------------------------------------------------
+    function scoreCard(label, value, highlight, full) {
+      return '<div class="score-card' + (full ? ' full' : '') + '">' +
+        '<div class="score-label">' + label + '</div>' +
+        '<div class="score-value' + (highlight ? ' highlight' : ' muted') + '">' + (value !== null && value !== undefined ? value : '---') + '</div>' +
+        '</div>';
+    }
+
+    function sectionTitle(text) {
+      return '<div class="section-title">' + text + '</div>';
+    }
+
+    function syntaxHighlight(json) {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      json = json.replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:');
+      json = json.replace(/: "(.*?)"/g, ': <span class="json-string">"$1"</span>');
+      json = json.replace(/: (\d+\.?\d*)/g, ': <span class="json-number">$1</span>');
+      json = json.replace(/: (true|false)/g, ': <span class="json-bool">$1</span>');
+      json = json.replace(/: (null)/g, ': <span class="json-null">null</span>');
+      return json;
+    }
+  </script>
+</body>
+</html>
