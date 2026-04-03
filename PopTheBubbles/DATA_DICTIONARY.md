@@ -1,4 +1,34 @@
-# Pop the Bubbles Data Dictionary
+# Pop the Bubbles — Data Dictionary
+
+## Cognitive Test Background
+
+Pop the Bubbles implements a digital **Go/No-Go** paradigm measuring **sustained attention** and **response inhibition**. The participant must tap target bubbles (Go trials) while withholding responses to non-target bubbles (No-Go trials). This is one of the most widely used paradigms in cognitive neuroscience for assessing inhibitory control.
+
+The task generates two key error types with distinct clinical interpretations:
+- **Commission errors** (tapping a No-Go bubble) reflect **impulsivity / failure of response inhibition** — the dominant prepotent response was not suppressed
+- **Omission errors** (failing to tap a Go bubble) reflect **inattention / lapses in sustained attention**
+
+This dissociation between commission and omission errors is central to ADHD assessment and maps directly onto the inattentive vs. hyperactive-impulsive symptom dimensions.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Response inhibition** | Commission error rate (tapping No-Go bubbles) | Go/No-Go task (Donders, 1868); Continuous Performance Test (CPT-II/III, Conners, 2000) |
+| **Sustained attention** | Omission error rate (missing Go bubbles), hit rate | CPT (Rosvold et al., 1956); SART (Robertson et al., 1997) |
+| **Impulsivity** | Commission errors, especially on lure trials | Stop-Signal Task (Logan et al., 1984) |
+| **Processing speed** | Response time on correct Go trials | Simple/choice reaction time tasks |
+| **Vigilance decrement** | Accuracy decline across levels | Mackworth Clock Test; CPT sustained attention indices |
+
+Key references:
+
+> Conners, C. K. (2000). *Conners' Continuous Performance Test II (CPT-II).* Multi-Health Systems.
+
+> Robertson, I. H., Manly, T., Andrade, J., Baddeley, B. T., & Yiend, J. (1997). 'Oops!': Performance correlates of everyday attentional failures in traumatic brain injured and normal subjects. *Neuropsychologia, 35*(6), 747–758.
+
+> Bezdjian, S., Baker, L. A., Lozano, D. I., & Raine, A. (2009). Assessing inattention and impulsivity in children during the Go/NoGo task. *British Journal of Developmental Psychology, 27*(2), 365–383.
+
+---
 
 This document describes the data emitted by the Pop the Bubbles activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 

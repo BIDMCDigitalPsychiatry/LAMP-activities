@@ -1,4 +1,30 @@
-# Symbol Digit Substitution Test (SDST) Data Dictionary
+# Symbol Digit Substitution Test (SDST) — Data Dictionary
+
+## Cognitive Test Background
+
+The SDST implements a digital version of the **Digit Symbol Substitution Test (DSST)**, a subtest of the **Wechsler Adult Intelligence Scale (WAIS-IV)** and one of the most sensitive and widely used measures of **processing speed**. The participant matches abstract symbols to digits using a visible key, under time pressure.
+
+Processing speed is among the first cognitive domains to decline with aging and is impaired across a wide range of neurological and psychiatric conditions (depression, schizophrenia, traumatic brain injury, dementia). The DSST is considered a "gold standard" for detecting cognitive change because of its high sensitivity and low practice effects.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Processing speed** | `score` (CRPM), `number_of_correct_responses` | WAIS-IV Coding/Digit Symbol; DSST (Wechsler, 2008) |
+| **Psychomotor speed** | `avg_correct_response_time` | Finger-tapping speed; simple reaction time tasks |
+| **Incidental learning** | Performance in "Before" mode (key memorized, then hidden) | DSST incidental recall (Joy et al., 2004) |
+| **Sustained attention** | Accuracy and speed across trial blocks | CPT; SART |
+| **Cognitive fatigue** | RT slowing or accuracy decline over the session | Temporal analysis of `temporal_slices` |
+
+Key references:
+
+> Wechsler, D. (2008). *Wechsler Adult Intelligence Scale — Fourth Edition (WAIS-IV).* Pearson.
+
+> Joy, S., Kaplan, E., & Fein, D. (2004). Speed and memory in the WAIS-III Digit Symbol—Coding subtest across the adult lifespan. *Archives of Clinical Neuropsychology, 19*(6), 759–767.
+
+> Jaeger, J. (2018). Digit Symbol Substitution Test: The case for sensitivity over specificity in neuropsychological testing. *Journal of Clinical Psychopharmacology, 38*(5), 513–519.
+
+---
 
 This document describes the data emitted by the SDST activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 
@@ -76,3 +102,15 @@ The final entry in `temporal_slices` is always:
 - `avg_correct_response_time` provides a measure of processing speed per trial
 - The `temporal_slices` array can be used to compute trial-level reaction times, error patterns, or fatigue effects over time
 - `number_of_symbols` minus `number_of_correct_responses` minus `number_of_incorrect_responses` should always equal zero (every trial is scored correct or incorrect)
+
+## Key Analysis Variables
+
+| Research Question | Primary Variable | Notes |
+|---|---|---|
+| Processing speed | `score` (CRPM) | Correct Responses Per Minute; the standard DSST metric. Typical adult range: 50–70 CRPM |
+| Raw performance | `number_of_correct_responses` | Standard DSST raw score; number of correct matches within time limit |
+| Response latency | `avg_correct_response_time` | Per-trial speed; faster responses indicate more efficient symbol-digit mapping |
+| Speed-accuracy tradeoff | `avg_incorrect_response_time` vs. `avg_correct_response_time` | Faster incorrect responses suggest impulsive responding; slower incorrect suggests confusion |
+| Cognitive fatigue | RT trend across `temporal_slices` | Increasing response times over the session indicate fatigue or declining vigilance |
+| Error rate | `number_of_incorrect_responses / number_of_symbols` | High error rate with fast RTs suggests impulsivity; high error rate with slow RTs suggests confusion |
+| Incidental learning | Compare "During" vs. "Before" mode performance | Performance in "Before" mode (key memorized, then hidden) reflects incidental associative learning |

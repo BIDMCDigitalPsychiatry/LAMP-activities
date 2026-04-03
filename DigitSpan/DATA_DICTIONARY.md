@@ -1,4 +1,29 @@
-# DigitSpan Data Dictionary
+# DigitSpan — Data Dictionary
+
+## Cognitive Test Background
+
+DigitSpan implements a digital version of the **Digit Span** subtest from the **Wechsler Adult Intelligence Scale (WAIS-IV)**, the most widely used clinical measure of verbal short-term and working memory. The examiner (computer) presents a sequence of digits; the participant reproduces them. Forward span measures phonological short-term memory; backward span measures working memory (requiring simultaneous storage and mental manipulation).
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Phonological short-term memory** | Forward span (longest correct sequence) | WAIS-IV Digit Span Forward; WMS-IV |
+| **Verbal working memory** | Backward span (longest correct reversed sequence) | WAIS-IV Digit Span Backward |
+| **Executive function (manipulation)** | Forward–backward difference | Backward span requires reordering, engaging central executive (Baddeley, 2003) |
+| **Attentional capacity** | `total_raw_score` | Composite measure sensitive to attentional deficits |
+
+The forward–backward span difference is clinically informative: a large gap (forward much higher than backward) suggests intact storage but impaired executive manipulation, a pattern seen in frontal lobe dysfunction.
+
+Key references:
+
+> Wechsler, D. (2008). *Wechsler Adult Intelligence Scale — Fourth Edition (WAIS-IV).* Pearson.
+
+> Baddeley, A. (2003). Working memory: Looking back and looking forward. *Nature Reviews Neuroscience, 4*(10), 829–839.
+
+> Woods, D. L., Kishiyama, M. M., Yund, E. W., et al. (2011). Improving digit span assessment of short-term verbal memory. *Journal of Clinical and Experimental Neuropsychology, 33*(1), 101–111.
+
+---
 
 This document describes the data emitted by the DigitSpan activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 
@@ -91,3 +116,15 @@ The final entry in `temporal_slices` is always:
 - The `temporal_slices` array can be used to compute reaction times, error patterns, or custom scoring
 - Do **not** use `score`, `correct_answers`, or `wrong_answers` for cognitive analysis — they use non-standard per-digit partial credit
 - `question_sequences` can be cross-referenced with `temporal_slices` to verify data integrity
+
+## Key Analysis Variables
+
+| Research Question | Primary Variable | Notes |
+|---|---|---|
+| Verbal short-term memory | `forward_span` | Standard Digit Span Forward. Typical adult range: 6–8 |
+| Verbal working memory | `backward_span` | Standard Digit Span Backward. Typically 1–2 lower than forward |
+| Executive contribution to working memory | `forward_span - backward_span` | Larger gap suggests intact storage but impaired manipulation (frontal dysfunction) |
+| Overall memory capacity | `total_raw_score` | `forward_trials_correct + backward_trials_correct`; composite measure |
+| Processing speed | `temporal_slices[].duration` | Tap-to-tap response time within a sequence; faster responses may indicate stronger digit encoding |
+| Serial position effects | `temporal_slices` error analysis | Which digit positions are most error-prone (primacy/recency effects) |
+| Fatigue / capacity ceiling | Span at first error | The sequence length where errors first appear marks the functional capacity limit |

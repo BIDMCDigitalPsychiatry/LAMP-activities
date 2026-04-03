@@ -1,4 +1,30 @@
-# Spin the Wheel Data Dictionary
+# Spin the Wheel — Data Dictionary
+
+## Cognitive Test Background
+
+Spin the Wheel implements a **Wheel of Fortune** gambling paradigm for measuring **risk preference**, **reward sensitivity**, and **loss aversion** under conditions of explicit probability. Unlike the Iowa Gambling Task (IGT), which requires learning hidden contingencies through experience, Spin the Wheel presents probabilities visually on the wheel — isolating decision-making preferences from learning ability.
+
+The participant chooses between two wheels on each trial: typically a "safe" option (higher probability of a smaller reward) versus a "risky" option (lower probability of a larger reward). This maps directly onto prospect theory's distinction between risk-averse and risk-seeking behavior, and the pattern of choices across trials reveals individual risk profiles.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Risk preference** | Proportion of risky vs. safe wheel choices | Cambridge Gambling Task (CGT, Rogers et al., 1999); Wheel of Fortune task (Ernst et al., 2004) |
+| **Loss aversion** | Behavior change on trials with potential losses | Prospect theory (Kahneman & Tversky, 1979); mixed gamble tasks |
+| **Reward sensitivity** | Choices after wins vs. losses | IGT (Bechara et al., 1994); reward reactivity measures |
+| **Decision speed** | `temporal_slices[].duration` | Longer deliberation may indicate greater conflict or uncertainty |
+| **Post-outcome adjustment** | Sequential choice analysis (win→risk vs. loss→risk) | Reinforcement learning models; hot-hand / gambler's fallacy |
+
+Key references:
+
+> Ernst, M., Nelson, E. E., McClure, E. B., et al. (2004). Choice selection and reward anticipation: An fMRI study. *Neuropsychologia, 42*(12), 1585–1597.
+
+> Rogers, R. D., Everitt, B. J., Baldacchino, A., et al. (1999). Dissociable deficits in the decision-making cognition of chronic amphetamine abusers, opiate abusers, patients with focal damage to prefrontal cortex, and tryptophan-depleted normal volunteers. *Neuropsychopharmacology, 20*(4), 322–339.
+
+> Kahneman, D., & Tversky, A. (1979). Prospect theory: An analysis of decision under risk. *Econometrica, 47*(2), 263–291.
+
+---
 
 This document describes the data emitted by the Spin the Wheel activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 

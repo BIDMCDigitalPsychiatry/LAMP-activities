@@ -1,4 +1,33 @@
-# JewelsPro Data Dictionary
+# JewelsPro (Trails A & B) — Data Dictionary
+
+## Cognitive Test Background
+
+JewelsPro implements a digital adaptation of the **Trail Making Test (TMT)**, one of the most widely used neuropsychological instruments. In the original paper-and-pencil version, the participant draws lines connecting numbered circles (Part A) or alternates between numbers and letters (Part B). JewelsPro translates this to a tap-based interface with timed levels and dynamic difficulty.
+
+- **Trails A** (`variant="a"`): Tap diamonds in numerical sequence (1→2→3→...). Primarily measures **visuomotor speed** and **visual scanning**.
+- **Trails B** (`variant="b"`): Tap diamonds alternating between shapes in sequence. Adds **cognitive flexibility / set-shifting** demands — the participant must switch between two mental sets while maintaining sequential order.
+
+The Trails B − Trails A difference is a widely used index of executive function: it isolates the set-shifting cost by controlling for the motor and visual scanning demands shared by both conditions.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Visuomotor speed** | `total_jewels_collected`, completion time | TMT Part A (Reitan, 1958) |
+| **Visual scanning** | `temporal_slices[].duration` (inter-tap intervals) | TMT Part A; UFOV |
+| **Cognitive flexibility / set-shifting** | Trails B performance vs. Trails A | TMT Part B; WCST (Heaton, 1993) |
+| **Processing speed under pressure** | `total_bonus_collected` (speed + accuracy composite) | Timed cognitive tasks generally |
+| **Error monitoring** | Incorrect taps (penalty) across levels | TMT error analysis |
+
+Key references:
+
+> Reitan, R. M. (1958). Validity of the Trail Making Test as an indicator of organic brain damage. *Perceptual and Motor Skills, 8*(3), 271–276.
+
+> Arbuthnott, K., & Frank, J. (2000). Trail Making Test, Part B as a measure of executive control: Validation using a set-switching paradigm. *Journal of Clinical and Experimental Neuropsychology, 22*(4), 518–528.
+
+> Sánchez-Cubillo, I., Periáñez, J. A., Adrover-Roig, D., et al. (2009). Construct validity of the Trail Making Test: Role of task-switching, working memory, inhibition/interference control, and visuomotor abilities. *Journal of the International Neuropsychological Society, 15*(3), 438–450.
+
+---
 
 This document describes the data emitted by the JewelsPro activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 
@@ -99,3 +128,15 @@ The final entry in `temporal_slices` is always:
 - `total_bonus_collected` reflects both speed and accuracy — higher bonuses indicate completing levels quickly with few errors
 - The `temporal_slices` array can be used to compute per-level performance, reaction times, error patterns, and fatigue effects
 - Trails A vs Trails B results should be analyzed separately, as Trails B introduces task-switching demands
+
+## Key Analysis Variables
+
+| Research Question | Primary Variable | Notes |
+|---|---|---|
+| Visuomotor speed | `total_jewels_collected` | Primary performance measure; analogous to TMT-A completion time |
+| Accuracy | `score` (accuracy %) | Proportion of correct taps; higher = fewer sequencing errors |
+| Set-shifting cost | Trails B `total_jewels_collected` vs. Trails A | Larger B−A difference = greater executive demand; isolates flexibility from motor speed |
+| Speed-accuracy tradeoff | `total_bonus_collected` | Reflects both speed (time remaining) and accuracy (penalty deduction); composite performance |
+| Error monitoring | `temporal_slices` where `type === false` | Incorrect taps suggest sequencing errors or visual scanning failures |
+| Processing speed trajectory | `temporal_slices[].duration` across levels | Increasing inter-tap intervals may indicate fatigue or increasing cognitive load |
+| Adaptive capacity | Highest level reached before timeout | How well the participant adapts to increasing difficulty and time pressure |

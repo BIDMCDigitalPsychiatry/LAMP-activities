@@ -1,4 +1,27 @@
-# D-Cog (Cats and Dogs) Data Dictionary
+# D-Cog (Cats and Dogs) — Data Dictionary
+
+## Cognitive Test Background
+
+D-Cog implements a digital variant of a **delayed match-to-sample (DMTS) / visual discrimination** paradigm with adaptive difficulty. The participant must identify which boxes contain a target animal (dog) after a brief exposure, testing visuospatial attention, short-term memory encoding, and discrimination ability.
+
+The task is scored using **Item Response Theory (IRT)**, specifically a 2-parameter logistic model, which estimates latent cognitive ability (theta) from the pattern of correct and incorrect rounds at varying difficulty levels. This approach accounts for the fact that correctly identifying 3 dogs in a grid of 12 is harder than identifying 1 dog in a grid of 4.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Visuospatial attention** | Correctly locating target animals after brief exposure | Continuous Performance Test (CPT); visual search paradigms |
+| **Short-term visual memory** | Remembering target locations after boxes close | Delayed Match-to-Sample (DMTS) tasks in CANTAB |
+| **Discrimination ability** | Distinguishing target (dog) from non-target (empty) boxes | Signal detection paradigms (d-prime) |
+| **Adaptive difficulty estimation** | IRT-based scoring across difficulty levels | Computer Adaptive Testing (CAT) methodology |
+
+Key references for the underlying paradigms:
+
+> Sahakian, B. J., & Owen, A. M. (1992). Computerized assessment in neuropsychiatry using CANTAB: Discussion paper. *Journal of the Royal Society of Medicine, 85*(7), 399–402.
+
+> Embretson, S. E., & Reise, S. P. (2000). *Item Response Theory for Psychologists.* Lawrence Erlbaum Associates.
+
+---
 
 This document describes the data emitted by the D-Cog activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
 
@@ -89,3 +112,15 @@ The `score` field uses Item Response Theory (2-parameter logistic model):
 - `correct_answers` and `wrong_answers` provide raw tap-level accuracy but do not account for difficulty
 - `total_questions` is the total number of dogs presented, not the number of rounds
 - The `temporal_slices` array can be used to compute per-round performance, reaction times, and error patterns
+
+## Key Analysis Variables
+
+| Research Question | Primary Variable | Notes |
+|---|---|---|
+| Overall cognitive ability | `score` (IRT theta) | Accounts for difficulty; range 0–10. Higher = better discrimination and memory |
+| Raw accuracy | `correct_answers / total_questions` | Simple hit rate; does not account for difficulty level |
+| Visuospatial memory capacity | `temporal_slices[].level` at failure point | The dog count at which errors begin to appear indicates capacity limits |
+| Processing speed | `temporal_slices[].duration` | Tap-to-tap response time; faster correct responses suggest stronger memory traces |
+| Error patterns | `temporal_slices` where `type === false` | Spatial analysis of where false taps occur relative to targets |
+| Fatigue / vigilance | Accuracy across sequential rounds | Declining accuracy over time may indicate attentional fatigue |
+| Engagement | `questionnaire.happiness` | Low hedonic ratings may correlate with reduced motivation or anhedonia |
