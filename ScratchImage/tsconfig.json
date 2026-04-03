@@ -22,7 +22,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src",
-    "images.d.ts"
+    "src"
   ]
 }
