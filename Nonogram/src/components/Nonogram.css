@@ -1,0 +1,451 @@
+/* ═══════════════════════════════════════════════════════
+   Nonogram.css — Nonogram logic puzzle
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Status Bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.timer-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.timer-badge.warning {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+/* ── Game Shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+/* ── NG Area ────────────────────────────────────────── */
+.ng-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 12px 4px;
+  gap: 12px;
+  position: relative;
+}
+
+/* ── Puzzle + Toolbar wrapper ──────────────────────── */
+.ng-puzzle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  margin-top: -5vh;
+}
+
+/* ── Puzzle Grid ────────────────────────────────────── */
+.ng-puzzle {
+  display: grid;
+  gap: 0;
+  background: transparent;
+}
+
+/* ── Corner ─────────────────────────────────────────── */
+.ng-corner {
+  /* empty top-left corner */
+}
+
+/* ── Column Clues ───────────────────────────────────── */
+.ng-col-clue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1px 4px;
+  font-variant-numeric: tabular-nums;
+}
+.ng-col-clue .clue-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  background: #e8edf2;
+  border-radius: 8px;
+  padding: 3px 4px;
+}
+.ng-col-clue .clue-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a5568;
+  line-height: 1.3;
+}
+
+/* ── Row Clues ──────────────────────────────────────── */
+.ng-row-clue {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+.ng-row-clue .clue-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #e8edf2;
+  border-radius: 8px;
+  padding: 3px 6px;
+}
+.ng-row-clue .clue-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a5568;
+  line-height: 1.3;
+}
+
+/* ── Grid wrapper (thick outer border) ─────────────── */
+.ng-grid-wrap {
+  display: grid;
+  gap: 0;
+  border: 2.5px solid #2c3e50;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ── Cell ───────────────────────────────────────────── */
+.ng-cell {
+  border: 0.5px solid #d0d0d0;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, transform 0.08s;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+}
+
+.ng-cell:active {
+  transform: scale(0.92);
+}
+
+.ng-cell.filled {
+  background: #2c3e50;
+}
+
+.ng-cell.marked {
+  background: #f5f5f5;
+}
+
+.ng-cell.flash-error {
+  background: #E53935 !important;
+  animation: flash-red 0.4s ease-out;
+}
+
+@keyframes flash-red {
+  0% { background: #E53935; transform: scale(1.05); }
+  50% { background: #ef5350; }
+  100% { background: #fff; transform: scale(1); }
+}
+
+/* Thick grouping lines every 5 cells */
+.ng-cell.group-right {
+  border-right: 2px solid #2c3e50;
+}
+.ng-cell.group-bottom {
+  border-bottom: 2px solid #2c3e50;
+}
+
+/* ── X Mark ─────────────────────────────────────────── */
+.ng-x {
+  font-size: 16px;
+  font-weight: 700;
+  color: #bbb;
+  line-height: 1;
+}
+
+/* ── Mode Toggle (circular icon buttons) ───────────── */
+.ng-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  background: #e2e6ea;
+  border-radius: 40px;
+  padding: 6px 12px;
+}
+
+.ng-tool-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #d0d4d8;
+  color: #666;
+  font-size: 20px;
+}
+
+.ng-tool-btn.active {
+  background: #fff;
+  color: #2c3e50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ng-tool-btn svg {
+  font-size: 20px;
+}
+
+/* ── Feedback Overlay ───────────────────────────────── */
+.ng-feedback {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: rgba(248, 249, 251, 0.85);
+}
+
+.ng-feedback-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.ng-feedback-text {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.ng-feedback-text.solved {
+  color: #43A047;
+}
+
+.ng-feedback-text.timeout {
+  color: #E53935;
+}
+
+.ng-feedback-detail {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* ── Game Over Overlay ──────────────────────────────── */
+.ng-overlay-text {
+  background: rgba(53, 159, 254, 0.9);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ── Instruction Modal ──────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .level-badge, .timer-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .ng-col-clue .clue-num,
+  .ng-row-clue .clue-num {
+    font-size: 11px;
+  }
+  .ng-col-clue .clue-badge,
+  .ng-row-clue .clue-badge {
+    border-radius: 6px;
+    padding: 2px 3px;
+  }
+  .ng-row-clue .clue-badge {
+    gap: 3px;
+    padding: 2px 5px;
+  }
+  .ng-x {
+    font-size: 13px;
+  }
+  .ng-tool-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 17px;
+  }
+  .ng-tool-btn svg {
+    font-size: 17px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}
