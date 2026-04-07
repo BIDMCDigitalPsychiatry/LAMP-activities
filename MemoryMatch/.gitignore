@@ -11,6 +11,8 @@
 # production
 /build
 /dist
+dist.html
+dist.html.b64
 
 # misc
 .DS_Store
