@@ -1,0 +1,307 @@
+/* ═══════════════════════════════════════════════════════
+   Flanker.css — All styles for the Flanker Arrow activity
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Status Bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Game Shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* ── Flanker Area ──────────────────────────────────── */
+.flanker-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding-bottom: 15vh;
+}
+
+/* ── Arrow Display Zone ────────────────────────────── */
+.flanker-display-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 140px;
+}
+
+.flanker-fixation {
+  font-size: 48px;
+  font-weight: 300;
+  color: #ccc;
+}
+
+.flanker-arrows {
+  font-size: 56px;
+  font-weight: 400;
+  color: #1a1a2e;
+  letter-spacing: 8px;
+  animation: arrows-appear 0.15s ease-out;
+}
+
+@keyframes arrows-appear {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Feedback ───────────────────────────────────────── */
+.flanker-feedback {
+  font-size: 64px;
+  font-weight: 800;
+}
+.flanker-feedback.correct {
+  color: #43A047;
+}
+.flanker-feedback.incorrect {
+  color: #E53935;
+}
+
+/* ── Direction Buttons ──────────────────────────────── */
+.flanker-buttons {
+  display: flex;
+  gap: 16px;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.flanker-btn {
+  flex: 1;
+  border: none;
+  border-radius: 16px;
+  padding: 20px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.1s, transform 0.1s;
+  background: #359FFE;
+  color: #fff;
+}
+
+.flanker-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.flanker-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.flanker-btn-arrow {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.flanker-btn-label {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Game Over Overlay ──────────────────────────────── */
+.flanker-overlay-text {
+  background: rgba(53, 159, 254, 0.9);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ── Instruction Modal ──────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .flanker-arrows {
+    font-size: 40px;
+    letter-spacing: 4px;
+  }
+  .flanker-btn {
+    padding: 16px 8px;
+  }
+  .flanker-btn-arrow {
+    font-size: 26px;
+  }
+  .flanker-btn-label {
+    font-size: 12px;
+  }
+  .flanker-buttons {
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

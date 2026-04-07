@@ -7,7 +7,6 @@
  */
 
 import * as React from "react";
-import { Animated } from "react-animated-css";
 
 import {
   faArrowLeft,
@@ -19,10 +18,9 @@ import { getRandomNumbers } from "../../functions";
 
 import i18n from "./../../i18n";
 import Board from "./Board";
-import { Bubble } from "./Bubble";
 import "./bubble.css";
 import { InstructionModal } from "./InstructionModal";
-import "material-icons";
+import { Questionnaire } from "./Questionnaire";
 
 interface AppProps {
   configuration: any;
@@ -67,8 +65,11 @@ interface AppState {
   time: number;
   noBack: boolean;
   showDialog: boolean;
+  showQuestionnaire: boolean;
+  questionnaireResponse: any;
   isFavoriteActive: boolean;
   hasForward: boolean;
+  levelStats: any[];
 }
 
 class PopTheBubbles extends React.Component<AppProps, AppState> {
@@ -86,7 +87,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     this.state = {
       allRoutes: [],
       bubble_count: [10, 10, 80],
-      bubble_duration: 1.5, // 0,
+      bubble_duration: 1.5,
       bubble_speed: [30, 40, 50],
       completed: false,
       correctGoCount: 0,
@@ -95,7 +96,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       falseHitsCount: 0,
       gameLevel: 1,
       gameOver: false,
-      intertrial_duration: 1.0,
+      intertrial_duration: 1.5,
       isGameStarted: false,
       lastClickTime: new Date().getTime(),
       level: 0,
@@ -119,8 +120,11 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       yCoords: yValues,
       yPoints: this.getCoordPoints(yValues),
       showDialog: true,
+      showQuestionnaire: false,
+      questionnaireResponse: null,
       isFavoriteActive: props?.data?.is_favorite ?? false,
       hasForward: props?.data?.forward ?? false,
+      levelStats: [],
     };
     this.bubbleCount = this.state.bubble_count[0];
   }
@@ -129,19 +133,11 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       const configuration = this.props.configuration;
       const settings = this.props.activity?.settings ?? undefined;
       this.setState({
-        bubble_count: settings
-          ? settings.bubble_count
-          : this.state.bubble_count,
-        bubble_duration: settings
-          ? settings.bubble_duration
-          : this.state.bubble_duration,
-        bubble_speed: settings
-          ? settings.bubble_speed
-          : this.state.bubble_speed,
+        bubble_count: settings?.bubble_count ?? this.state.bubble_count,
+        bubble_duration: settings?.bubble_duration ?? this.state.bubble_duration,
+        bubble_speed: settings?.bubble_speed ?? this.state.bubble_speed,
         eventRecieved: true,
-        intertrial_duration: settings
-          ? settings.intertrial_duration
-          : this.state.intertrial_duration,
+        intertrial_duration: settings?.intertrial_duration ?? this.state.intertrial_duration,
         noBack: this.props.noBack,
       });
       i18n.changeLanguage(!!configuration ? configuration.language : "en-US");
@@ -270,6 +266,17 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     levelVal: number,
     route: any
   ) => {
+    const levelStat = {
+      level: levelVal,
+      go_correct: correctGoCount,
+      go_total: totalGoCount,
+      go_missed: missedClicks,
+      nogo_correct: correctNoGo,
+      nogo_total: totalNoGoCount,
+      nogo_wrong: wrongNoGoClicks,
+      false_hits: falseHitsCount,
+    };
+
     this.setState((prevState) => ({
       completed,
       correctGoCount,
@@ -278,9 +285,9 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       gameLevel: this.state.gameLevel + 1,
       level: 0,
       levelCompleted: true,
+      levelStats: [...prevState.levelStats, levelStat],
       levelVal,
       missedClicks,
-      // route: [...prevState.route, route],
       score: stateScore > 0 ? stateScore : 0,
       stateSuccessTaps: this.state.stateSuccessTaps + successTaps,
       stateWrongTaps: this.state.stateWrongTaps + wrongTaps,
@@ -296,26 +303,7 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       this.setState({ timeDifference: dif });
     }
     if (levelVal === 3) {
-      const route = { type: "manual_exit", value: false };
-      const values: any = this.state.route ?? [];
-      if (typeof values[this.state.gameLevel - 1] === "undefined") {
-        values[this.state.gameLevel - 1] = [];
-      }
-      values[this.state.gameLevel - 1].push(route);
-      const temporalSlices = [].concat.apply([], this.state.route);
-      setTimeout(() => {
-        parent.postMessage(
-          JSON.stringify({
-            duration: new Date().getTime() - this.state.time,
-            static_data: { is_favorite: this.state.isFavoriteActive },
-            temporal_slices: temporalSlices,
-            timestamp: new Date().getTime(),
-            ...(this.state.hasForward && { forward: true }),
-            done:true,
-          }),
-          "*"
-        );
-      }, 5000);
+      this.setState({ showQuestionnaire: true });
     }
     this.bubbleCount = this.state.bubble_count[1];
   };
@@ -345,8 +333,6 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       );
     }
     let infoSection = null;
-    const x = window.innerWidth - (window.innerWidth * 77) / 100;
-    const y = window.innerHeight - (window.innerHeight * 60) / 100;
 
     this.bubbleCount =
       this.state.gameLevel === 1
@@ -357,193 +343,90 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
     switch (this.state.level) {
       case 0:
-        infoSection =
-          this.state.gameLevel === 1 ? (
-            <div className="pop-the-bubble-board">
-              <div className="mt-30">
-                <Animated
-                  animationIn="bounceInDown"
-                  animationOut="fadeOut"
-                  animationInDuration={1000}
-                  isVisible={true}
-                >
-                  <h1 className="mt-30per">{i18n.t("POP_THE_BUBBLES")}</h1>
-                </Animated>
-                <Animated
-                  animationIn="bounceInUp"
-                  animationInDuration={1500}
-                  className="bubble-blue-large size-l"
-                  animationOut="fadeOut"
-                  isVisible={true}
-                >
-                  <Bubble
-                    text={i18n.t("TAP_TO_CONTINUE")}
-                    bubbleToTap={false}
-                    x={x}
-                    index={0}
-                    y={y}
-                    class="bubble-text"
-                    onClick={this.handleClick}
-                    bubbleDuration={this.state.bubble_duration}
-                  />
-                </Animated>
+        if (this.state.gameLevel === 1) {
+          // Intro screen — tap the bubble to start
+          infoSection = (
+            <div className="phase-card-wrap">
+              <div className="intro-bubble" onClick={this.handleClick}>
+                <div className="intro-bubble-circle">
+                  {i18n.t("TAP_TO_CONTINUE")}
+                </div>
               </div>
             </div>
-          ) : (
-            <div className="pop-the-bubble-board">
-              <div className="mt-30 result-head">
-                <h1>
-                  {i18n.t("LEVEL_NUM_COMPLETED", {
-                    levelNumber: this.state.gameLevel - 1,
-                  })}
-                </h1>
-                <div className="pl-15 game-rule text-center">
-                  <div className="pl-15 game-rule text-center">
-                    <h1>
-                      {i18n.t("YOU_GOT_PERCENT", {
-                        percentage: Math.round(
-                          (this.state.correctGoCount /
-                            this.state.totalGoCount) *
-                            100
-                        ),
-                      })}
-                      %
-                    </h1>
-
-                    <div className="textLabel">
-                      {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_GO_TRIALS", {
-                        correctGoCount: this.state.correctGoCount,
-                        percentage: Math.round(
-                          (this.state.correctGoCount /
-                            this.state.totalGoCount) *
-                            100
-                        ),
-                      })}
-                      %
-                    </div>
-
-                    <div className="textLabel">
-                      {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_GO_TRIALS", {
-                        missedClicks: this.state.missedClicks,
-                        percentage: Math.round(
-                          (this.state.missedClicks / this.state.totalGoCount) *
-                            100
-                        ),
-                      })}
-                      %
-                    </div>
-
-                    <div className="textLabel">
-                      {i18n.t("NUMBER_OF_CORRECTLY_ANSWERED_NO_GO_TRIALS", {
-                        correctNoGo: this.state.correctNoGo,
-                        percentage:
-                          this.state.totalNoGoCount > 0
-                            ? Math.round(
-                                (this.state.correctNoGo /
-                                  this.state.totalNoGoCount) *
-                                  100
-                              )
-                            : 0,
-                      })}
-                      %
-                    </div>
-
-                    <div className="textLabel">
-                      {i18n.t("NUMBER_OF_INCORRECTLY_ANSWERED_NO_GO_TRIALS", {
-                        percentage:
-                          this.state.totalNoGoCount > 0
-                            ? Math.round(
-                                (this.state.wrongNoGoCount /
-                                  this.state.totalNoGoCount) *
-                                  100
-                              )
-                            : 0,
-                        wrongNoGoCount: this.state.wrongNoGoCount,
-                      })}
-                      %
-                    </div>
-
-                    <div className="textLabel">
-                      {i18n.t("NUMBER_OF_FALSE_HITS", {
-                        falseHitsCount: this.state.falseHitsCount,
-                      })}
-                    </div>
-
-                    <div className="textLabel">
-                      {(this.state.timeDifference / 1000).toFixed(2)}{" "}
-                      {i18n.t("MINUTES_TO_COMPLETE")}
-                    </div>
-                  </div>
+          );
+        } else {
+          // Level completed — clean summary
+          const pct = this.state.totalGoCount > 0
+            ? Math.round((this.state.correctGoCount / this.state.totalGoCount) * 100)
+            : 0;
+          infoSection = (
+            <div className="phase-card-wrap">
+              <div className="phase-card">
+                <div className="phase-card-header">
+                  {i18n.t("LEVEL_NUM_COMPLETED", { levelNumber: this.state.gameLevel - 1 })}
                 </div>
-                <div>
-                  {this.state.gameLevel <= 3 ? (
-                    <Bubble
-                      text={i18n.t("TAP_TO_CONTINUE")}
-                      bubbleToTap={false}
-                      x={x}
-                      index={0}
-                      y={y}
-                      class="size-l bubble-blue-large bubble-result"
-                      onClick={this.handleClick}
-                      bubbleDuration={this.state.bubble_duration}
-                    />
-                  ) : (
-                    <Bubble
-                      text={i18n.t("Completed")}
-                      bubbleToTap={false}
-                      x={x}
-                      index={0}
-                      y={y}
-                      class="size-l bubble-blue-large bubble-result"
-                      onClick={this.noClick}
-                      bubbleDuration={this.state.bubble_duration}
-                    />
+                <div className="phase-card-body">
+                  <div className="score-ring">{pct}%</div>
+                  {this.state.gameLevel <= 3 && (
+                    <button className="phase-btn" onClick={this.handleClick}>
+                      {i18n.t("NEXT_LEVEL")}
+                    </button>
                   )}
                 </div>
               </div>
             </div>
           );
+        }
         break;
-      case 1:
-        const alertTextTop =
-          this.state.gameLevel === 1
-            ? i18n.t("TAP_TO_POP_LEVEL_1_BUBBLES_TOP")
-            : i18n.t("TAP_TO_POP_LEVEL_2_3_BUBBLES_TOP");
-        const alertTextBottom =
-          this.state.gameLevel === 1
-            ? i18n.t("TAP_TO_POP_LEVEL_1_BUBBLES_BOTTOM")
-            : this.state.gameLevel === 2
-            ? i18n.t("TAP_TO_POP_LEVEL_2_BUBBLES_BOTTOM")
-            : i18n.t("TAP_TO_POP_LEVEL_3_BUBBLES_BOTTOM");
+      case 1: {
+        // Level instructions — bubble previews + clean text
+        const levelBubbles: { [key: number]: Array<{ cls: string; label: string }> } = {
+          1: [
+            { cls: "bubble-pink", label: i18n.t("COLOR_PINK") },
+            { cls: "bubble-blue", label: i18n.t("COLOR_BLUE") },
+            { cls: "bubble-yellow", label: i18n.t("COLOR_YELLOW") },
+          ],
+          2: [
+            { cls: "bubble-yellow", label: i18n.t("COLOR_YELLOW") },
+            { cls: "bubble-blue", label: i18n.t("COLOR_BLUE") },
+          ],
+          3: [
+            { cls: "bubble-pink", label: i18n.t("COLOR_PINK") },
+            { cls: "bubble-yellow", label: i18n.t("COLOR_YELLOW") },
+            { cls: "bubble-blue", label: i18n.t("COLOR_BLUE") },
+          ],
+        };
+        const bubbles = levelBubbles[this.state.gameLevel] || levelBubbles[1];
+        const showNoRepeatRule = this.state.gameLevel >= 2;
 
         infoSection = (
-          <div className="pop-the-bubble-board">
-            <div className="mt-30">
-              <h1 className="mt-10">
+          <div className="phase-card-wrap">
+            <div className="phase-card">
+              <div className="phase-card-header">
                 {i18n.t("LEVEL_NUMBER", { gameLevel: this.state.gameLevel })}
-              </h1>
-              <div className="pl-30 pr-30 game-rule text-center">
-                <div className="pl-30 pr-30 game-rule text-center">
-                  <p>{alertTextTop}</p>
-                  <p>{alertTextBottom}</p>
-                </div>
               </div>
-              <div>
-                <Bubble
-                  text={i18n.t("TAP_TO_CONTINUE")}
-                  bubbleToTap={false}
-                  x={x}
-                  index={0}
-                  y={y}
-                  class="size-l bubble-blue-large"
-                  onClick={this.handleClick}
-                  bubbleDuration={this.state.bubble_duration}
-                />
+              <div className="phase-card-body">
+                <p className="phase-instruction">{i18n.t("POP_THESE_COLORS")}</p>
+                <div className="color-legend">
+                  {bubbles.map((b, i) => (
+                    <div key={i} className="color-chip">
+                      <span className={"bubble-preview " + b.cls} />
+                      {b.label}
+                    </div>
+                  ))}
+                </div>
+                {showNoRepeatRule && (
+                  <p className="phase-rule">{i18n.t("NO_REPEAT_RULE")}</p>
+                )}
+                <button className="phase-btn" onClick={this.handleClick}>
+                  {i18n.t("GO")}
+                </button>
               </div>
             </div>
           </div>
         );
         break;
+      }
       case 2:
         infoSection = (
           <Board
@@ -582,10 +465,22 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     }
     values[this.state.gameLevel - 1].push(route);
     const temporalSlices = [].concat.apply([], values);
+    const totalTaps = this.state.stateSuccessTaps + this.state.stateWrongTaps;
+    const scorePercent = totalTaps > 0
+      ? Math.round((this.state.stateSuccessTaps / totalTaps) * 100)
+      : 0;
     parent.postMessage(
       JSON.stringify({
         duration: new Date().getTime() - this.state.time,
-        static_data: { is_favorite: this.state.isFavoriteActive },
+        static_data: {
+          score: scorePercent,
+          correct_answers: this.state.stateSuccessTaps,
+          wrong_answers: this.state.stateWrongTaps,
+          total_questions: totalTaps,
+          point: scorePercent === 100 ? 2 : 1,
+          is_favorite: this.state.isFavoriteActive,
+          levels: this.state.levelStats,
+        },
         temporal_slices: temporalSlices,
         timestamp: new Date().getTime(),
         ...(this.state.hasForward && { forward: !isBack }),
@@ -597,7 +492,42 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
 
   handleCloseInstructionModal = () => {
     this.setState({ showDialog: false });
-  };  
+  };
+
+  handleQuestionnaireResponse = (response: any) => {
+    this.setState({ questionnaireResponse: response, showQuestionnaire: false });
+    const route = { type: "manual_exit", value: false };
+    const values: any = this.state.route ?? [];
+    if (typeof values[this.state.gameLevel - 1] === "undefined") {
+      values[this.state.gameLevel - 1] = [];
+    }
+    values[this.state.gameLevel - 1].push(route);
+    const temporalSlices = [].concat.apply([], this.state.route);
+    const totalTaps = this.state.stateSuccessTaps + this.state.stateWrongTaps;
+    const scorePercent = totalTaps > 0
+      ? Math.round((this.state.stateSuccessTaps / totalTaps) * 100)
+      : 0;
+    parent.postMessage(
+      JSON.stringify({
+        duration: new Date().getTime() - this.state.time,
+        static_data: {
+          score: scorePercent,
+          correct_answers: this.state.stateSuccessTaps,
+          wrong_answers: this.state.stateWrongTaps,
+          total_questions: totalTaps,
+          point: scorePercent === 100 ? 2 : 1,
+          is_favorite: this.state.isFavoriteActive,
+          levels: this.state.levelStats,
+          ...(response && { questionnaire: response }),
+        },
+        temporal_slices: temporalSlices,
+        timestamp: new Date().getTime(),
+        ...(this.state.hasForward && { forward: true }),
+        done: true,
+      }),
+      "*"
+    );
+  };
 
   // Game render function
   render() {
@@ -614,35 +544,31 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
     ) : null;
     return (
       <div id="pop-the-bubble-body">
-        {!this.state.noBack && (
-          <nav className="back-link">
-            <FontAwesomeIcon
-              icon={faArrowLeft}
-              onClick={() => this.clickBack(true)}
-            />
-          </nav>
-        )}
-
-        <nav
-          className={`${
-            this.state.hasForward ? "home-link-forward" : "home-link"
-          }`}
-        >
-          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-        </nav>
-        {this.state.hasForward && (
-          <nav className="forward-link">
-            <FontAwesomeIcon
-              icon={faArrowRight}
-              onClick={() => this.clickBack(false)}
-            />
-          </nav>
-        )}
         <div className="heading">
-          {i18n.t("POP_THE_BUBBLES")}          
+          {!this.state.noBack && (
+            <nav className="back-link" onClick={() => this.clickBack(true)}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </nav>
+          )}
+          {i18n.t("POP_THE_BUBBLES")}
+          {this.state.hasForward && (
+            <nav className="home-link-forward" onClick={() => this.clickBack(false)}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </nav>
+          )}
+          <nav className="home-link" onClick={this.clickHome}>
+            <FontAwesomeIcon icon={faRedo} />
+          </nav>
         </div>
         {infoSection}
         {instructionModal}
+        {this.state.showQuestionnaire && (
+          <Questionnaire
+            show={true}
+            language={i18n.language}
+            setResponse={this.handleQuestionnaireResponse}
+          />
+        )}
       </div>
     );
   }

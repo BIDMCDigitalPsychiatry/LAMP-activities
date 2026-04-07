@@ -1,0 +1,302 @@
+/* ═══════════════════════════════════════════════════════
+   ScratchImage.css — All styles for the Scratch Card activity
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+  flex-shrink: 0;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Game Shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* ── Progress Bar ───────────────────────────────────── */
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+.card-counter {
+  font-size: 13px;
+  font-weight: 700;
+  color: #359FFE;
+  white-space: nowrap;
+  min-width: 36px;
+}
+.progress-bar-track {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4D96FF, #6BCB77);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.progress-bar-fill.complete {
+  background: linear-gradient(90deg, #6BCB77, #27ae60);
+}
+.progress-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* ── Scratch Area ───────────────────────────────────── */
+.scratch-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+}
+
+.scratch-container {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: #e0e0e0;
+}
+
+/* Background SVG image — sits behind the canvas */
+.scratch-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Canvas holds only the cover layer — z-index above the image */
+.scratch-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: crosshair;
+}
+
+/* ── Threshold Prompt ───────────────────────────────── */
+.threshold-prompt {
+  margin-top: 16px;
+  animation: slideUp 0.4s ease;
+}
+
+.btn-next-card {
+  background: #6BCB77;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 36px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(107, 203, 119, 0.35);
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-next-card:hover {
+  background: #5ab868;
+}
+.btn-next-card:active {
+  transform: scale(0.97);
+}
+
+/* ── Animations ─────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Instruction Modal ──────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .scratch-container {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+  .scratch-area {
+    padding: 8px;
+  }
+  .progress-label {
+    font-size: 12px;
+    min-width: 32px;
+  }
+  .card-counter {
+    font-size: 12px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

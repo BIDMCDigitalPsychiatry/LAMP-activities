@@ -4,10 +4,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -38,12 +35,5 @@
     "src/setupTests.ts",
     "src/*.d.ts"
   ],
-  "include": [
-    "src",
-    "node_modules/react-scripts",
-    "images.d.ts"
-  ],
-  // "files": [
-  //   "./src/react-app-env.d.ts"
-  // ]
+  "include": ["src"]
 }

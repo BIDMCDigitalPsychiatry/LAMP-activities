@@ -1,0 +1,410 @@
+/* ═══════════════════════════════════════════════════════
+   TowerOfLondon.css — Tower of London planning task
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Status Bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.timer-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.timer-badge.warning {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+/* ── Game Shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* ── TOL Area ─────────────────────────────────────── */
+.tol-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 12px 16px;
+  gap: 8px;
+}
+
+/* ── Goal Section ─────────────────────────────────── */
+.tol-goal-section {
+  width: 100%;
+  max-width: 340px;
+}
+
+.tol-section-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.tol-board {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  position: relative;
+  padding: 0 8px;
+}
+
+.tol-board.goal {
+  height: 110px;
+}
+
+.tol-board.player {
+  height: 190px;
+}
+
+.tol-base {
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 6px;
+  background: #888;
+  border-radius: 3px;
+}
+
+/* ── Peg Column ───────────────────────────────────── */
+.tol-peg {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  position: relative;
+  width: 70px;
+  z-index: 1;
+  padding-bottom: 6px;
+}
+
+.tol-peg.interactive {
+  cursor: pointer;
+}
+
+.tol-rod {
+  position: absolute;
+  bottom: 6px;
+  width: 8px;
+  background: #aaa;
+  border-radius: 4px 4px 0 0;
+}
+
+/* Goal rods (smaller) */
+.tol-board.goal .tol-rod.cap3 { height: 96px; }
+.tol-board.goal .tol-rod.cap2 { height: 66px; }
+.tol-board.goal .tol-rod.cap1 { height: 36px; }
+
+/* Player rods */
+.tol-board.player .tol-rod.cap3 { height: 162px; }
+.tol-board.player .tol-rod.cap2 { height: 110px; }
+.tol-board.player .tol-rod.cap1 { height: 58px; }
+
+/* ── Ball ─────────────────────────────────────────── */
+.tol-ball {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  z-index: 2;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 3px solid transparent;
+}
+
+.tol-board.goal .tol-ball {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.tol-ball.red { background: #E53935; }
+.tol-ball.green { background: #43A047; }
+.tol-ball.blue { background: #359FFE; }
+
+.tol-ball.selected {
+  transform: scale(1.12);
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(53, 159, 254, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tol-ball.top-ball {
+  cursor: pointer;
+}
+
+/* ── Move Counter ─────────────────────────────────── */
+.tol-move-counter {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-top: 8px;
+}
+
+.tol-move-counter.excess {
+  color: #E53935;
+}
+
+/* ── Feedback Overlay ─────────────────────────────── */
+.tol-feedback {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: rgba(248, 249, 251, 0.85);
+}
+
+.tol-feedback-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.tol-feedback-text {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.tol-feedback-text.solved {
+  color: #43A047;
+}
+
+.tol-feedback-text.timeout {
+  color: #E53935;
+}
+
+.tol-feedback-moves {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* ── Game Over Overlay ──────────────────────────────── */
+.tol-overlay-text {
+  background: rgba(53, 159, 254, 0.9);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ── Player Section ───────────────────────────────── */
+.tol-player-section {
+  width: 100%;
+  max-width: 340px;
+  position: relative;
+}
+
+/* ── Instruction Modal ──────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .level-badge, .timer-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .tol-board.player { height: 160px; }
+  .tol-board.goal { height: 95px; }
+  .tol-ball {
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+  }
+  .tol-board.goal .tol-ball {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+  .tol-peg { width: 60px; }
+  .tol-board.player .tol-rod.cap3 { height: 140px; }
+  .tol-board.player .tol-rod.cap2 { height: 96px; }
+  .tol-board.player .tol-rod.cap1 { height: 50px; }
+  .tol-board.goal .tol-rod.cap3 { height: 82px; }
+  .tol-board.goal .tol-rod.cap2 { height: 56px; }
+  .tol-board.goal .tol-rod.cap1 { height: 30px; }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

@@ -1,0 +1,412 @@
+/* ═══════════════════════════════════════════════════════
+   LetterLogic.css — Word Guessing Game
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Status Bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Game Shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+/* ── Game Area ──────────────────────────────────────── */
+.ll-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 8px 4px 4px;
+  overflow: hidden;
+}
+
+/* ── Grid ───────────────────────────────────────────── */
+.ll-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px 0;
+}
+.ll-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+.ll-cell {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 2px solid #d3d6da;
+  border-radius: 4px;
+  background: #fff;
+  color: #1a1a2e;
+  transition: transform 0.1s;
+  font-family: "SF Mono", "Fira Code", "Courier New", monospace;
+}
+.ll-cell.filled {
+  border-color: #878a8c;
+}
+.ll-cell.correct {
+  background: #6aaa64;
+  border-color: #6aaa64;
+  color: #fff;
+}
+.ll-cell.present {
+  background: #c9b458;
+  border-color: #c9b458;
+  color: #fff;
+}
+.ll-cell.absent {
+  background: #787c7e;
+  border-color: #787c7e;
+  color: #fff;
+}
+.ll-cell.reveal {
+  animation: flipIn 0.3s ease forwards;
+}
+@keyframes flipIn {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+.ll-cell.pop {
+  animation: popIn 0.1s ease;
+}
+@keyframes popIn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── Toast ──────────────────────────────────────────── */
+.ll-toast {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+/* ── Keyboard ───────────────────────────────────────── */
+.ll-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 4px 8px;
+  width: 100%;
+  max-width: 500px;
+}
+.ll-kb-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+.ll-key {
+  height: 52px;
+  min-width: 30px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #d3d6da;
+  color: #1a1a2e;
+  flex: 1;
+  max-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.ll-key.wide {
+  max-width: 72px;
+  font-size: 12px;
+  padding: 0 10px;
+}
+.ll-key.correct {
+  background: #6aaa64;
+  color: #fff;
+}
+.ll-key.present {
+  background: #c9b458;
+  color: #fff;
+}
+.ll-key.absent {
+  background: #787c7e;
+  color: #fff;
+}
+.ll-key:active {
+  opacity: 0.8;
+}
+
+/* ── Result Message ─────────────────────────────────── */
+.ll-result {
+  text-align: center;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  min-height: 36px;
+}
+.ll-result.success {
+  color: #6aaa64;
+}
+.ll-result.fail {
+  color: #787c7e;
+}
+
+/* ── Overlay ────────────────────────────────────────── */
+.ll-overlay-text {
+  background: rgba(53, 159, 254, 0.9);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ── Instruction Modal ────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ──────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .ll-cell {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+  .ll-grid {
+    gap: 4px;
+  }
+  .ll-row {
+    gap: 4px;
+  }
+  .ll-key {
+    height: 46px;
+    font-size: 12px;
+  }
+  .ll-keyboard {
+    gap: 4px;
+  }
+  .ll-kb-row {
+    gap: 4px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}
+
+/* ── Short screens (iPhone SE, etc.) ───────────────── */
+@media (max-height: 700px) {
+  .ll-cell {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .ll-grid {
+    gap: 3px;
+  }
+  .ll-row {
+    gap: 3px;
+  }
+  .ll-key {
+    height: 40px;
+    font-size: 11px;
+  }
+  .ll-keyboard {
+    gap: 3px;
+    padding: 2px 4px 4px;
+  }
+  .ll-kb-row {
+    gap: 3px;
+  }
+  .ll-area {
+    gap: 6px;
+    padding: 4px 4px 2px;
+  }
+  .status-bar {
+    padding: 4px 12px;
+    min-height: 32px;
+  }
+  .level-badge {
+    font-size: 11px;
+    padding: 2px 10px;
+  }
+}

@@ -1,241 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {
-  Icon,
-  Typography,
-  makeStyles,
-  createStyles,
-  Theme,
-  IconButton,
-  Box,
-  AppBar,
-  Toolbar,
-  Grid,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from "@material-ui/core";
-
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import i18n from "../i18n";
-import QuestionSection from "./QuestionSection";
-import { useTranslation } from "react-i18next";
+import "./DigitSpan.css";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    header: {
-      background: "#FBF1EF",
-      padding: 20,
-      [theme.breakpoints.up("sm")]: {
-        textAlign: "center",
-      },
-      "& h2": {
-        fontSize: 25,
-        fontWeight: 600,
-        color: "rgba(0, 0, 0, 0.75)",
-      },
-    },
-    activityDesc: {
-      "& p": {
-        fontSize: "17px !important",
-        fontWeight: 600,
-        textAlign: "center",
-      },
-      "& blockquote": {
-        borderLeft: "5px solid #ccc",
-        margin: "1.5em 10px",
-        padding: "0.5em 10px",
-      },
-      "& code": {
-        padding: ".2rem .5rem",
-        margin: "0 .2rem",
-        fontSize: "90%",
-        whiteSpace: "noWrap",
-        background: "#F1F1F1",
-        border: "1px solid #E1E1E1",
-        borderRadius: "4px",
-      },
-    },
-    tipscontentarea: {
-      padding: "40px 20px 20px",
-      "& h3": {
-        fontWeight: "bold",
-        fontSize: "16px",
-        marginBottom: "15px",
-      },
-      "& h2": {
-        fontSize: "35px",
-        fontWeight: 600,
-        textAlign: "center",
-      },
-      "& p": {
-        fontSize: "16px",
-        lineheight: "24px",
-        marginBottom: 20,
-        color: "rgba(0, 0, 0, 0.75)",
-      },
-      "& img": {
-        maxWidth: "100%",
-        marginBottom: 15,
-      },
-      "& h6": { fontSize: 14, fontWeight: 700, fontStyle: "italic" },
-      "& a": { fontSize: 14, fontStyle: "italic" },
-    },
-    btnDelete: {
-      background: "#e5e5e5",
-      padding: "10px 25px 10px 25px",
-      borderRadius: "40px",
-      minWidth: "100px",
-      lineHeight: "22px",
-      display: "inline-block",
-      textTransform: "capitalize",
-      fontSize: "16px",
-      marginLeft: 20,
-      color: "#333",
-      fontWeight: 600,
-      cursor: "pointer",
-      "& span": { cursor: "pointer" },
-      "&:hover": {
-        background: "#e8e8e8",
-        boxShadow:
-          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-        textDecoration: "none",
-      },
-    },
-    btnDone: {
-      background: "#359FFE",
-      padding: "15px 25px 15px 25px",
-      borderRadius: "40px",
-      minWidth: "150px",
-      lineHeight: "22px",
-      display: "inline-block",
-      textTransform: "capitalize",
-      fontSize: "16px",
-      marginTop: 40,
-      color: "#fff",
-      fontWeight: 600,
-      cursor: "pointer",
-      "& span": { cursor: "pointer" },
-      "&:hover": {
-        background: "#0373d8",
-        boxShadow:
-          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-        textDecoration: "none",
-      },
-    },
-    headerIcon: {
-      textAlign: "center",
-      marginBottom: 15,
-      "& img": { maxWidth: "100%", width: "100px" },
-    },
-    mainContainer: { padding: 0 },
-    toolbardashboard: {
-      minHeight: 65,
-      padding: "0 10px",
-      display: "flex",
-      justifyContent: "space-between",
-      "& h5": {
-        color: "#fff",
-        textAlign: "center",
-        fontWeight: "600",
-        fontSize: 18,
-        display: "flex",
-        alignItems: "center",
-        [theme.breakpoints.up("sm")]: {
-          textAlign: "left",
-        },
-      },
-      "& h6": {
-        fontSize: 16,
-        whiteSpace: "nowrap",
-      },
-    },
-    levelMode: {
-      maxWidth: 300,
-      backgroundColor: "#f5f5f5",
-      margin: "20px auto 20px",
-      padding: 15,
-      boxSizing: "border-box",
-      borderRadius: 8,
-    },
-    numberMain: { display: "flex", justifyContent: "center" },
-    numberOuter: { display: "inline-block", border: "#359FFE solid 1px" },
-    numberColumn: {
-      width: 100,
-      height: 100,
-      border: "#359FFE solid 1px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: 28,
-      color: "#359FFE",
-      cursor: "pointer",
-      "&.active": {
-        background: "#359FFE",
-        color: "#fff",
-      },
-    },
-    answerNav: {
-      display: "flex",
-      textAlign: "center",
-      alignItems: "center",
-    },
-    timer: {
-      color: "#359FFE",
-      fontSize: 15,
-      marginTop: 15,
-    },
-    selectedRightItem: {
-      border: "2px solid green",
-    },
-    selectedWrongItem: {
-      border: "2px solid red",
-    },
-    questiontext: {
-      fontWeight: 600,
-      color: "#00a51d",
-      background: "#f5f5f5",
-      width: "45px",
-      height: "45px",
-      borderRadius: "50%",
-      fontSize: "28px",
-      display: "inline-block",
-      marginLeft: 5,
-    },
-    questionh6: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    headerTitleIcon: {
-      background: "none",
-      boxShadow: "none",
-      width: 36,
-      height: 36,
-      color: "#666",
-      marginLeft: 8,
-      "& .material-icons": {
-        fontSize: "2rem",
-      },
-      "&:hover": {
-        background: "#fff",
-      },
-      "&.active": {
-        color: "#e3b303",
-      },
-    },
-  })
-);
+import Header from "./Header";
+import { InstructionModal } from "./InstructionModal";
+import LevelBadge from "./LevelBadge";
+import NumberGrid from "./NumberGrid";
+import ModeTransitionOverlay from "./ModeTransitionOverlay";
+import { Questionnaire } from "./Questionnaire";
+import { playSequence } from "./AudioSequencePlayer";
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// ─── Utilities (preserved) ───────────────────────────────────────────────────
 
-// Split numbers into rows of 3
-const rows: number[][] = [];
-for (let i = 0; i < numbers.length; i += 3) {
-  rows.push(numbers.slice(i, i + 3));
-}
-
-// Get random numbers
 export function getRandomNumbers(dcount: number, min: number, max: number) {
   const randomArray: Array<number> = [];
   for (let i = min; i <= dcount; i++) {
@@ -244,228 +20,309 @@ export function getRandomNumbers(dcount: number, min: number, max: number) {
   return randomArray;
 }
 
-function randomNumber(
-  max: number,
-  min: number,
-  randomArray: Array<number>
-): number {
+function randomNumber(max: number, min: number, randomArray: Array<number>): number {
   const num = Math.floor(Math.random() * (max - min + 1)) + min;
   return randomArray.indexOf(num) >= 0 || num === 0
     ? randomNumber(max, min, randomArray)
     : num;
 }
 
+// ─── Phase state machine ─────────────────────────────────────────────────────
+// instructions -> listening -> answering -> evaluating -> (listening | modeTransition | questionnaire)
+type Phase =
+  | "instructions"
+  | "listening"
+  | "answering"
+  | "evaluating"
+  | "modeTransition"
+  | "questionnaire"
+  | "done";
+
+const ANSWER_TIMEOUT_MS = 30_000;
+
 export default function Board({ ...props }) {
-  const classes = useStyles();
-  // const [startTime, setStartTime] = useState(new Date().getTime())
+  // ─── Config ──────────────────────────────────────────────────────────
+  const [language, setLanguage] = useState("en-US");
+  const [forward] = useState(props?.data?.forward ?? true);
+
+  // ─── Phase ───────────────────────────────────────────────────────────
+  const [phase, setPhase] = useState<Phase>("instructions");
+
+  // ─── Game state ──────────────────────────────────────────────────────
   const [answers, setAnswers] = useState<number[]>([]);
-  const [sequenceCount, setSequenceCount] = useState(3);
+  const [currentDigit, setCurrentDigit] = useState(0); // digit being played (0 = none)
+  const [sequenceLength, setSequenceLength] = useState(3);
   const [questionSequence, setQuestionSequence] = useState<number[]>([]);
-  const [routes, setRoutes] = useState(JSON.stringify([]));
   const [level, setLevel] = useState(0);
+  const [mode, setMode] = useState(0); // 0 = forward, 1 = backward
+  const [errorCount, setErrorCount] = useState(0);
+  const [successTaps, setSuccessTaps] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0); // count of total expected digits across all rounds
+  const [questions, setQuestions] = useState<string[]>([]);
+  // ─── Standard scoring state ─────────────────────────────────────────
+  const [forwardTrialsCorrect, setForwardTrialsCorrect] = useState(0);
+  const [backwardTrialsCorrect, setBackwardTrialsCorrect] = useState(0);
+  const [forwardSpan, setForwardSpan] = useState(0);
+  const [backwardSpan, setBackwardSpan] = useState(0);
+  // ─── Timing / routes ────────────────────────────────────────────────
   const [startTime, setStartTime] = useState(new Date().getTime());
   const [lastClickTime, setLastClickTime] = useState(new Date().getTime());
-  // const [status, setStatus] = useState(false)
-  const [errorState, setErrorState] = useState(0);
-  // const [largeScore, setLargeScore] = useState(0)
-  const [successTaps, setSuccessTaps] = useState(0);
-  const [totalQuestions, setTotal] = useState(3);
-  const [mode, setMode] = useState(0);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [questions, setQuestions] = useState<string[]>([]);  
-  const [forward] = useState(props?.data?.forward ?? true);
+  const routesRef = useRef<any[]>([]);
+
+  // ─── Refs for latest state in callbacks ──────────────────────────────
+  const modeRef = useRef(mode);
+  const levelRef = useRef(level);
+  const errorCountRef = useRef(errorCount);
+  const sequenceLengthRef = useRef(sequenceLength);
+  const successTapsRef = useRef(successTaps);
+  const totalQuestionsRef = useRef(totalQuestions);
+  const questionsRef = useRef(questions);
+  const questionSequenceRef = useRef(questionSequence);
+  const answersRef = useRef(answers);
+  const startTimeRef = useRef(startTime);
+  const forwardTrialsCorrectRef = useRef(forwardTrialsCorrect);
+  const backwardTrialsCorrectRef = useRef(backwardTrialsCorrect);
+  const forwardSpanRef = useRef(forwardSpan);
+  const backwardSpanRef = useRef(backwardSpan);
+
+  // Keep refs in sync
+  useEffect(() => { modeRef.current = mode; }, [mode]);
+  useEffect(() => { levelRef.current = level; }, [level]);
+  useEffect(() => { errorCountRef.current = errorCount; }, [errorCount]);
+  useEffect(() => { sequenceLengthRef.current = sequenceLength; }, [sequenceLength]);
+  useEffect(() => { successTapsRef.current = successTaps; }, [successTaps]);
+  useEffect(() => { totalQuestionsRef.current = totalQuestions; }, [totalQuestions]);
+  useEffect(() => { questionsRef.current = questions; }, [questions]);
+  useEffect(() => { questionSequenceRef.current = questionSequence; }, [questionSequence]);
+  useEffect(() => { answersRef.current = answers; }, [answers]);
+  useEffect(() => { startTimeRef.current = startTime; }, [startTime]);
+  useEffect(() => { forwardTrialsCorrectRef.current = forwardTrialsCorrect; }, [forwardTrialsCorrect]);
+  useEffect(() => { backwardTrialsCorrectRef.current = backwardTrialsCorrect; }, [backwardTrialsCorrect]);
+  useEffect(() => { forwardSpanRef.current = forwardSpan; }, [forwardSpan]);
+  useEffect(() => { backwardSpanRef.current = backwardSpan; }, [backwardSpan]);
+
+  // Timeout ref for no-response
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Abort controller for audio
+  const abortRef = useRef<AbortController | null>(null);
+
+  // ─── Language init ───────────────────────────────────────────────────
   useEffect(() => {
     const configuration = props.data?.configuration ?? null;
-    const langugae = !!configuration
-      ? configuration.hasOwnProperty("language")
-        ? configuration.language
-        : "en-US"
-      : "en-US";
-    i18n.changeLanguage(langugae);
-    setStartTime(new Date().getTime());
-    setSequenceCount(3);
-    if (mode === 1) {
-      setShowOverlay(true);
-      setPopup(false);
-      setTimeout(() => {
-        setShowOverlay(false);
-      }, 5000);
-    }
-  }, [mode]);
+    const lang = configuration?.language ?? "en-US";
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  }, [props.data]);
 
-  const [start, setStart] = useState(false);
+  // ─── Start a new round (generate sequence, play audio) ──────────────
+  const startRound = useCallback((seqLen: number, currentLevel: number, currentMode: number) => {
+    const randomPicks = getRandomNumbers(seqLen, 1, 9);
+    setQuestionSequence(randomPicks);
+    setQuestions(prev => [...prev, randomPicks.join(",")]);
+    setLevel(currentLevel + 1);
+    setTotalQuestions(prev => prev + seqLen); // total expected digits for score/wrong_answers math
+    setAnswers([]);
+    setLastClickTime(new Date().getTime());
+    setPhase("listening");
 
-  const gameSetUp = () => {
-    if (sequenceCount > 0) {
-      setStartGame(false);
-      setLevel(level + 1);
-      const randomPicks: number[] = getRandomNumbers(sequenceCount, 1, 9);
-      setQuestionSequence(randomPicks);
-      const stringified = randomPicks.join(",");
-      setQuestions((prev) => [...prev, stringified]);
-    }
-  };
+    // Play audio sequence, then transition to answering
+    const controller = new AbortController();
+    abortRef.current = controller;
 
-  useEffect(() => {
-    if (answers.length > 0 && answers.length === questionSequence.length) {
-      setSequenceCount(0);
-      setTimeout(() => {
-        setStartGame(false);
-        // if (mode == 0 && JSON.stringify(answers) == JSON.stringify(questionSequence))
-        //   setLargeScore(questionSequence.length)
-        const rev = [...answers].reverse();
-        let error = errorState;
-        let newCount = questionSequence.length ?? 5;
-        if (
-          (mode == 0 &&
-            JSON.stringify(answers) != JSON.stringify(questionSequence)) ||
-          (mode == 1 && JSON.stringify(rev) != JSON.stringify(questionSequence))
-        ) {
-          setErrorState(errorState + 1);
-          error = errorState + 1;
+    playSequence(randomPicks, 400, controller.signal, (digit) => setCurrentDigit(digit))
+      .then(() => {
+        if (!controller.signal.aborted) {
+          setPhase("answering");
+          setLastClickTime(new Date().getTime());
+
+          // BUG FIX: 30-second timeout for no response
+          timeoutRef.current = setTimeout(() => {
+            // Treat as wrong answer
+            handleSequenceComplete([], randomPicks, currentMode, seqLen);
+          }, ANSWER_TIMEOUT_MS);
         }
-        if (
-          (mode == 0 &&
-            JSON.stringify(answers) == JSON.stringify(questionSequence)) ||
-          (mode == 1 && JSON.stringify(rev) == JSON.stringify(questionSequence))
-        ) {
-          newCount = ++newCount;
-        }
-        if (error > 1 || newCount === 10) {
-          if (mode == 0) {
-            setSequenceCount(-1);
-            setErrorState(0);
-            setMode(1);
-          } else {
-            sendGameResult();
-          }
+      })
+      .catch(() => {
+        // Audio was aborted (e.g., user navigated away)
+      });
+  }, []);
+
+  // ─── Evaluate completed sequence ────────────────────────────────────
+  const handleSequenceComplete = useCallback((
+    currentAnswers: number[],
+    currentSequence: number[],
+    currentMode: number,
+    currentSeqLen: number
+  ) => {
+    // Clear timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    setPhase("evaluating");
+
+    const isCorrect = currentMode === 0
+      ? JSON.stringify(currentAnswers) === JSON.stringify(currentSequence)
+      : JSON.stringify([...currentAnswers].reverse()) === JSON.stringify(currentSequence);
+
+    let newErrorCount = errorCountRef.current;
+    let newSeqLen = currentSeqLen;
+
+    if (isCorrect) {
+      newSeqLen = currentSeqLen + 1;
+      // Standard scoring: count trial pass + update longest span
+      if (currentMode === 0) {
+        setForwardTrialsCorrect(prev => prev + 1);
+        setForwardSpan(prev => Math.max(prev, currentSeqLen));
+      } else {
+        setBackwardTrialsCorrect(prev => prev + 1);
+        setBackwardSpan(prev => Math.max(prev, currentSeqLen));
+      }
+    } else {
+      newErrorCount = errorCountRef.current + 1;
+      setErrorCount(newErrorCount);
+    }
+
+    // Legacy per-digit scoring (for dashboard backward compatibility)
+    if (isCorrect) {
+      setSuccessTaps(prev => prev + currentSequence.length);
+    } else {
+      const expected = currentMode === 0 ? currentSequence : [...currentSequence].reverse();
+      let correct = 0;
+      for (let i = 0; i < currentAnswers.length; i++) {
+        if (currentAnswers[i] === expected[i]) correct++;
+      }
+      setSuccessTaps(prev => prev + correct);
+    }
+
+    setTimeout(() => {
+      // Check end conditions: 2 errors or max 9 digits
+      if (newErrorCount > 1 || newSeqLen > 9) {
+        if (currentMode === 0) {
+          // Switch to backward mode
+          setErrorCount(0);
+          setMode(1);
+          setSequenceLength(2);
+          setPhase("modeTransition");
         } else {
-          setSequenceCount(newCount);
+          // Game over - show questionnaire
+          setPhase("questionnaire");
         }
-        if (newCount == 0) {
-          sendGameResult();
-        }
-      }, 500);
-    }
-  }, [answers]);
+      } else {
+        // Continue with next round
+        setSequenceLength(newSeqLen);
+        startRound(newSeqLen, levelRef.current, currentMode);
+      }
+    }, 500);
+  }, [startRound]);
 
-  useEffect(() => {
-    if (mode == 1) {
-      setSequenceCount(2);
-    }
-  }, [mode]);
+  // ─── Handle digit tap (no feedback, no undo — matches standardized administration) ──
+  const handleTap = useCallback((num: number): void => {
+    const currentAnswers = [...answersRef.current, num];
+    const currentSequence = questionSequenceRef.current;
 
-  useEffect(() => {
-    if (sequenceCount > 0) {
-      if (level > 1) setTotal(totalQuestions + sequenceCount);
-      gameSetUp();
+    // Don't accept more taps than slots
+    if (currentAnswers.length > currentSequence.length) return;
+
+    setAnswers(currentAnswers);
+
+    const currentMode = modeRef.current;
+    const expected = currentMode === 0 ? currentSequence : [...currentSequence].reverse();
+    const idx = currentAnswers.length - 1;
+    const isCorrect = idx < expected.length && currentAnswers[idx] === expected[idx];
+
+    // Record route
+    const now = new Date().getTime();
+    routesRef.current.push({
+      duration: now - lastClickTime,
+      item: num,
+      level: levelRef.current,
+      type: isCorrect,
+      value: null,
+      mode: currentMode,
+    });
+    setLastClickTime(now);
+
+    // Auto-submit when all slots filled
+    if (currentAnswers.length === currentSequence.length) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
       setTimeout(() => {
-        setAnswers([]);
-        setStart(true);
+        handleSequenceComplete(
+          currentAnswers,
+          currentSequence,
+          currentMode,
+          sequenceLengthRef.current
+        );
       }, 300);
     }
-  }, [sequenceCount]);
+  }, [lastClickTime, handleSequenceComplete]);
 
-  const updateAnswer = (num: number) => {
-    const data = [...answers, num];
-    setAnswers(data);
-    const statusVal =
-      mode == 0
-        ? questionSequence.indexOf(num) === data.indexOf(num)
-        : [...questionSequence].reverse().indexOf(num) === data.indexOf(num);
-    if (!!statusVal) setSuccessTaps(successTaps + 1);
-    updateRoute(num, statusVal);
-    setLastClickTime(new Date().getTime());
-  };
-
-  // Call the API to pass game result
-  const sendGameResult = (status?: boolean, isBack?: Boolean) => {
+  // ─── Send game result ───────────────────────────────────────────────
+  const sendGameResult = useCallback((status?: boolean, isBack?: boolean, questionnaireData?: any) => {
+    const boxes = [...routesRef.current];
     const route = { type: "manual_exit", value: status ?? false };
-    const boxes: any[] = [];
-    if (routes !== null) {
-      const r = JSON.parse(routes);
-      Object.keys(r).forEach((key) => {
-        boxes.push(r[key]);
-      });
-    }
     boxes.push(route);
 
-    const gameScore = Math.round((successTaps / totalQuestions) * 100);
-    let points = 0;
-    if (gameScore === 100) {
-      points = points + 2;
-    } else {
-      points = points + 1;
-    }
+    const tq = totalQuestionsRef.current;
+    const st = successTapsRef.current;
+    const gameScore = tq > 0 ? Math.round((st / tq) * 100) : 0;
+    let points = gameScore === 100 ? 2 : 1;
 
+    // Best span calculation
     let bestForward = { span: 0, duration: Infinity, details: [] as any[] };
     let bestBackward = { span: 0, duration: Infinity, details: [] as any[] };
-
     const groupedByLevel: Record<string, any[]> = {};
 
     boxes.forEach((entry) => {
       if (entry.type === "manual_exit") return;
-      if (
-        !entry.item ||
-        typeof entry.level !== "number" ||
-        typeof entry.mode !== "number"
-      )
-        return;
-
+      if (!entry.item || typeof entry.level !== "number" || typeof entry.mode !== "number") return;
       const key = `${entry.mode}-${entry.level}`;
       if (!groupedByLevel[key]) groupedByLevel[key] = [];
       groupedByLevel[key].push(entry);
     });
 
-    Object.entries(groupedByLevel).forEach(([key, entries]) => {
+    Object.entries(groupedByLevel).forEach(([_, entries]) => {
       const allCorrect = entries.every((e) => e.type === true);
       if (!allCorrect) return;
-
-      const totalDuration = entries.reduce(
-        (sum, e) => sum + (e.duration || 0),
-        0
-      );
+      const totalDuration = entries.reduce((sum, e) => sum + (e.duration || 0), 0);
       const spanLength = entries.length;
-      const mode = entries[0].mode;
+      const entryMode = entries[0].mode;
 
-      if (mode === 0) {
-        if (
-          spanLength > bestForward.span ||
-          (spanLength === bestForward.span &&
-            totalDuration < bestForward.duration)
-        ) {
-          bestForward = {
-            span: spanLength,
-            duration: totalDuration,
-            details: entries,
-          };
+      if (entryMode === 0) {
+        if (spanLength > bestForward.span || (spanLength === bestForward.span && totalDuration < bestForward.duration)) {
+          bestForward = { span: spanLength, duration: totalDuration, details: entries };
         }
-      } else if (mode === 1) {
-        if (
-          spanLength > bestBackward.span ||
-          (spanLength === bestBackward.span &&
-            totalDuration < bestBackward.duration)
-        ) {
-          bestBackward = {
-            span: spanLength,
-            duration: totalDuration,
-            details: entries,
-          };
+      } else if (entryMode === 1) {
+        if (spanLength > bestBackward.span || (spanLength === bestBackward.span && totalDuration < bestBackward.duration)) {
+          bestBackward = { span: spanLength, duration: totalDuration, details: entries };
         }
       }
     });
+
     parent.postMessage(
       JSON.stringify({
-        duration: new Date().getTime() - startTime,
+        duration: new Date().getTime() - startTimeRef.current,
         static_data: {
-          correct_answers: successTaps,
+          // ── Standard Digit Span scores ──
+          forward_span: forwardSpanRef.current,
+          backward_span: backwardSpanRef.current,
+          forward_trials_correct: forwardTrialsCorrectRef.current,
+          backward_trials_correct: backwardTrialsCorrectRef.current,
+          total_raw_score: forwardTrialsCorrectRef.current + backwardTrialsCorrectRef.current,
+          // ── Legacy fields (dashboard compatibility) ──
+          correct_answers: st,
           point: points,
           score: gameScore,
-          total_questions: totalQuestions,
-          wrong_answers: totalQuestions - successTaps,
+          total_questions: tq,
+          wrong_answers: tq - st,
           bestForwardDigitSpan: bestForward.details,
           bestBackwardDigitSpan: bestBackward.details,
-          question_sequences: questions,
+          question_sequences: questionsRef.current,
+          ...(questionnaireData && { questionnaire: questionnaireData }),
         },
         temporal_slices: boxes,
         timestamp: new Date().getTime(),
@@ -475,220 +332,110 @@ export default function Board({ ...props }) {
       }),
       "*"
     );
-  };
+  }, [forward]);
 
-  const updateRoute = (num: number | string, statusVal: boolean) => {
-    const boxes = [];
-    const lastclickTime = new Date().getTime() - lastClickTime;
-    if (routes !== null) {
-      const r = JSON.parse(routes);
-      Object.keys(r).forEach((key) => {
-        boxes.push(r[key]);
-      });
-    }
-    const route = {
-      duration: lastclickTime,
-      item: num,
-      level: level,
-      type: statusVal,
-      value: null,
-      mode: mode,
-    };
-    boxes.push(route);
-    setRoutes(JSON.stringify(boxes));
-  };
+  // ─── Questionnaire callback ─────────────────────────────────────────
+  const handleQuestionnaireResponse = useCallback((response: any) => {
+    setPhase("done");
+    sendGameResult(false, false, response);
+  }, [sendGameResult]);
 
-  const deleteLast = () => {
-    updateRoute("delete", false);
-    const data = [...answers];
-    data.pop();
-    setAnswers(data);
-  };
+  // ─── Navigation callbacks ───────────────────────────────────────────
+  const handleBack = useCallback(() => {
+    if (abortRef.current) abortRef.current.abort();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    sendGameResult(true, true);
+  }, [sendGameResult]);
 
-  const [popup, setPopup] = useState(true);
-  const { t } = useTranslation();
-  const [startGame, setStartGame] = useState(false);
+  const handleRefresh = useCallback(() => {
+    window.location.reload();
+  }, []);
 
-  
-
-  const handleForwardClick = () => {
+  const handleForward = useCallback(() => {
+    if (abortRef.current) abortRef.current.abort();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     sendGameResult(true, false);
-  };
+  }, [sendGameResult]);
 
+  // ─── Instruction modal close → start first round ────────────────────
+  const handleInstructionClose = useCallback(() => {
+    setStartTime(new Date().getTime());
+    startRound(3, 0, 0);
+  }, [startRound]);
+
+  // ─── Mode transition → start backward rounds ────────────────────────
+  const handleModeReady = useCallback(() => {
+    setStartTime(new Date().getTime());
+    startRound(2, levelRef.current, 1);
+  }, [startRound]);
+
+  // ─── Cleanup on unmount ─────────────────────────────────────────────
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  // ─── Render ─────────────────────────────────────────────────────────
   return (
     <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
-      {showOverlay && start ? (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            color: "white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontSize: "3rem",
-            fontWeight: "bold",
-            zIndex: 10000,
-            pointerEvents: "all",
-          }}
-        >
-          <Typography
-            variant="h4"
-            style={{ fontWeight: "bold", color: " #0373d8" }}
-          >
-            Now enter digits in reverse order
-          </Typography>
-        </div>
-      ) : (
-        <React.Fragment>
-          <Dialog
-            open={popup}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {
-                  "Remember the sequence of digits presented to you. When prompted, repeat the sequence in order."
-                }
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  setPopup(false);
-                  setStart(true);
-                }}
-                color="primary"
-              >{`${t("Ok")}`}</Button>
-            </DialogActions>
-          </Dialog>
-          {!!start && !popup && (
-            <Box>
-              <AppBar
-                position="static"
-                style={{
-                  background: "rgba(53, 159, 254, 1)",
-                  boxShadow: "none",
-                }}
-              >
-                <Toolbar className={classes.toolbardashboard}>
-                  <Grid container alignItems="center">
-                    <IconButton
-                      onClick={() => {
-                      
-                        sendGameResult(true, true);
-                      }}
-                      color="default"
-                      aria-label="Menu"
-                    >
-                      <Icon style={{ color: "white" }}>arrow_back</Icon>
-                    </IconButton>
-                    <Typography variant="h5">
-                      Digit Span{" "}                      
-                    </Typography>
-                  </Grid>
+      {/* Instruction Modal */}
+      {phase === "instructions" && (
+        <InstructionModal
+          show={true}
+          modalClose={handleInstructionClose}
+          msg={i18n.t("INSTRUCTIONS")}
+          language={language}
+        />
+      )}
 
-                  <IconButton
-                    onClick={() => {
-                      window.location.reload();
-                    }}
-                    color="default"
-                    aria-label="Menu"
-                  >
-                    <Icon style={{ color: "white" }}>refresh</Icon>
-                  </IconButton>
-                  {forward && (
-                    <IconButton onClick={handleForwardClick}>
-                      <Icon style={{ color: "white" }}>arrow_forward</Icon>
-                    </IconButton>
-                  )}
-                </Toolbar>
-              </AppBar>
-              <Box
-                textAlign="center"
-                className={classes.levelMode}
-                justifyContent="center"
-              >
-                <Typography>Level: {level}</Typography>
-              </Box>
-              <Typography
-                variant="h6"
-                align="center"
-                className={classes.questionh6}
-              >
-                Enter the digits in {mode == 1 && " reverse "}order:{" "}
-                <span className={classes.questiontext}>
-                  <QuestionSection
-                    complete={() => setStartGame(true)}
-                    count={sequenceCount}
-                    questionSequence={questionSequence}
-                  />
-                </span>
-              </Typography>
-              <Box className={classes.numberMain} my={3}>
-                <Box className={classes.numberOuter}>
-                  {rows.map((row, rowIndex) => (
-                    <Grid container key={rowIndex}>
-                      {row.map((num) => (
-                        <Grid
-                          item
-                          className={classes.numberColumn}
-                          // className={classes.numberColumn + " " +
-                          //   (!answers.includes(num) ? "" :
-                          //     (((mode == 0) && questionSequence.indexOf(num) === answers.indexOf(num)) ||
-                          //       ((mode == 1) && [...questionSequence].reverse().indexOf(num) === [...answers].indexOf(num))) ?
-                          //       classes.selectedRightItem : classes.selectedWrongItem)}
-                          onClick={() => {
-                            if (!!startGame) updateAnswer(num);
-                          }}
-                        >
-                          <Typography
-                            variant="h6"
-                            align="center"
-                            style={{ fontSize: "3rem" }}
-                          >
-                            {num}{" "}
-                          </Typography>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  ))}
-                </Box>
-              </Box>
-              <Grid justifyContent="center" container alignItems="center">
-                <Box className={classes.answerNav}>
-                  <Typography variant="h5" align="center">
-                    {" "}
-                    Current Answer:{" "}
-                    <span style={{ fontSize: "2rem", fontWeight: "bold" }}>
-                      {answers.toString().replace(/,/g, "")}
-                    </span>
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    className={classes.btnDelete}
-                    onClick={() => deleteLast()}
-                  >
-                    Delete
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid justifyContent="center" container>
-                <Button
-                  variant="contained"
-                  className={classes.btnDone}
-                  onClick={() => sendGameResult()}
-                >
-                  Exit
-                </Button>
-              </Grid>
-            </Box>
-          )}
-        </React.Fragment>
+      {/* Mode Transition Overlay */}
+      {phase === "modeTransition" && (
+        <ModeTransitionOverlay onReady={handleModeReady} />
+      )}
+
+      {/* Questionnaire */}
+      {phase === "questionnaire" && (
+        <Questionnaire
+          show={true}
+          language={language}
+          setResponse={handleQuestionnaireResponse}
+        />
+      )}
+
+      {/* Main game UI - show when not in instructions/done */}
+      {phase !== "instructions" && phase !== "done" && (
+        <div>
+          <Header
+            onBack={handleBack}
+            onRefresh={handleRefresh}
+            onForward={forward ? handleForward : undefined}
+            showForward={forward}
+          />
+
+          <LevelBadge level={level} mode={mode} />
+
+          {/* Digit prompt: "Listen..." with visible digit beside it, then "Your turn!" */}
+          <div className={`digit-prompt ${phase === "listening" ? "digit-prompt-listening" : ""}`}>
+            {phase === "listening" && (
+              <>
+                {i18n.t("Listen...")}
+                {currentDigit > 0 && (
+                  <span className="digit-prompt-number">{currentDigit}</span>
+                )}
+              </>
+            )}
+            {phase === "answering" && i18n.t("Your turn!")}
+          </div>
+
+          <NumberGrid
+            disabled={phase !== "answering"}
+            answers={answers}
+            totalSlots={questionSequence.length}
+            onTap={handleTap}
+          />
+        </div>
       )}
     </div>
   );

@@ -1,11 +1,7 @@
 /**
  * @file   Diamond.tsx
- * @brief  diamond component to load jewels
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
+ * @brief  Individual jewel component with centered number overlay
  */
-
 import * as React from "react";
 
 interface DiamondProps {
@@ -28,8 +24,8 @@ export class Diamond extends React.Component<DiamondProps> {
       "-" +
       this.props.diamondColor;
     return (
-      <div onClick={this.onClick} key={this.props.index} className={classVal}>
-        <span className="number-text"> {this.props.index}</span>
+      <div onClick={this.onClick} key={this.props.index} className={`diamond-wrapper ${classVal}`}>
+        <span className="number-text">{this.props.index}</span>
       </div>
     );
   }

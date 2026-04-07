@@ -1,9 +1,6 @@
 /**
  * @file   Jewels.tsx
- * @brief  Jewels component which is the initial point of jewels game
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
+ * @brief  Jewels orchestrator component (D-Cog pattern)
  */
 
 import {
@@ -14,14 +11,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRandomNumbers } from "../../functions";
 import { InfoModal } from "./InfoModal";
+import { Questionnaire } from "./Questionnaire";
 
 import i18n from "./../../i18n";
 import "./jewels.css";
 
 import * as React from "react";
-// import { isUndefined } from "util";
 import Board from "./Board";
-import "material-icons";
 
 /* eslint-disable no-restricted-globals */
 const colors = [
@@ -41,8 +37,10 @@ interface AppState {
   diamondColor: string;
   diamondNumbers: Array<number>;
   diamondSpots: Array<number>;
-  // events: any;
   gameTime: number;
+  initialGameTime: number;
+  initialDiamondCount: number;
+  initialShapeCount: number;
   level: number;
   loaded: boolean;
   noBack: boolean;
@@ -58,16 +56,24 @@ interface AppState {
   time: number;
   totalAttempts: number;
   totalJewelsCollected: number;
+  totalLevels: number;
+  timeDecreasePerLevel: number;
   winnerLine?: Array<number>;
   variant: any;
   isFavoriteActive: boolean;
   forward: boolean;
   isForwardButton: boolean;
+  showTimeoutFlash: boolean;
+  showQuestionnaire: boolean;
+  pendingPointVal: number;
 }
 
 class Jewels extends React.Component<any, AppState> {
+  private boardRef: React.RefObject<HTMLDivElement>;
+
   constructor(props: any) {
     super(props);
+    this.boardRef = React.createRef();
     const settingsData =
       props.data.activity?.settings ?? props.data.settings ?? {};
     const configuration = props.data.configuration;
@@ -116,6 +122,12 @@ class Jewels extends React.Component<any, AppState> {
         ? 2
         : 1
       : 1;
+    const bonusPointsPerLevel = settingsData?.bonus_point_count ?? 40;
+    const defaultTotalLevels = bonusPointsPerLevel > 0
+      ? Math.ceil(1000 / bonusPointsPerLevel)
+      : 25;
+    const totalLevelsVal = settingsData?.total_levels ?? defaultTotalLevels;
+    const timeDecreaseVal = settingsData?.time_decrease_per_level ?? 0;
     const state = {
       bonusPoints: 0,
       current: [],
@@ -124,6 +136,9 @@ class Jewels extends React.Component<any, AppState> {
       diamondNumbers: [],
       diamondSpots: [],
       gameTime: gameTimeVal,
+      initialGameTime: gameTimeVal,
+      initialDiamondCount: diamondCountVal,
+      initialShapeCount: shapeCountVal,
       level: 1,
       loaded: false,
       noBack: props.data.noBack,
@@ -139,81 +154,20 @@ class Jewels extends React.Component<any, AppState> {
       time: new Date().getTime(),
       totalAttempts: 0,
       totalJewelsCollected: 0,
+      totalLevels: totalLevelsVal,
+      timeDecreasePerLevel: timeDecreaseVal,
       winnerLine: undefined,
       variant: settingsData.variant === "trails_b" ? "b" : "a",
       isFavoriteActive: props?.data?.is_favorite ?? false,
       forward: props?.data?.forward ?? false,
       isForwardButton: false,
+      showTimeoutFlash: false,
+      showQuestionnaire: false,
+      pendingPointVal: 2,
     };
     this.state = state;
     this.reset(true);
   }
-
-  // messageEvent = () => {
-  //   const eventMethod ="addEventListener"
-  //   const eventer = window[eventMethod]
-  //   const messageEvent =  "onmessage"
-  //   // Listen to message from child window
-  //   eventer(
-  //     messageEvent,
-  //     (e: any) => {
-  //       if(!!e.data) {
-  //       const settingsData = e.data.activity?.settings ?? (e.data.settings ?? {});
-  //       const configuration = e.data.configuration;
-  //         const mode = settingsData ? settingsData.mode : 1
-  //         let gameTimeVal = settingsData ? (settingsData.beginner_seconds ? settingsData.beginner_seconds : 90) : 90;
-  //         switch (mode) {
-  //           case 1:
-  //             gameTimeVal = settingsData ? (settingsData.beginner_seconds ? settingsData.beginner_seconds : 90) : 90;
-  //             break;
-  //           case 2:
-  //             gameTimeVal = settingsData.intermediate_seconds;
-  //             break;
-  //           case 3:
-  //             gameTimeVal = settingsData.advanced_seconds;
-  //             break;
-  //           case 4:
-  //             gameTimeVal = settingsData.expert_seconds;
-  //             break;
-  //           default:
-  //             gameTimeVal = settingsData.beginner_seconds;
-  //             break;
-  //         }
-  //         const langugae = configuration ? (configuration.hasOwnProperty("language") ? configuration.language : "en-US") : "en-US"
-  //         i18n.changeLanguage(langugae);
-  //         const diamondCountVal = settingsData ? (settingsData.diamond_count ? settingsData.diamond_count : 15 ) : 15
-  //         const shapeCountVal =  settingsData ? (settingsData.shape_count ? settingsData.shape_count :
-  //           settingsData.variant && settingsData.variant === "trails_b" ? 2 : 1 ) : 1;
-  //         const state = {
-  //           bonusPoints:0,
-  //           current: [],
-  //           diamondColor: "",
-  //           diamondCount: diamondCountVal,
-  //           diamondNumbers: [],
-  //           diamondSpots: [],
-  //           gameTime: gameTimeVal,
-  //           level: 1,
-  //           loaded: false,
-  //           noBack: e.data.noBack,
-  //           orderNumbers: [],
-  //           pauseTime: 0,
-  //           routes: [],
-  //           settings: settingsData,
-  //           shapeCount: shapeCountVal,
-  //           shapes: [],
-  //           showModal: 0,
-  //           time: new Date().getTime(),
-  //           totalAttempts: 0,
-  //           totalJewelsCollected:0,
-  //           winnerLine: undefined,
-  //         };
-  //         this.state=state
-  //         this.reset(true)
-  //       }
-  //     },
-  //     false
-  //   );
-  // }
 
   componentDidMount = () => {
     this.reset(true);
@@ -222,30 +176,21 @@ class Jewels extends React.Component<any, AppState> {
   getLevelColor = (level: number) => {
     switch (level) {
       case 1:
-        return "#BDD2FA";
+        return "#E8F0FE";
       case 2:
-        return "#5E92F2";
+        return "#D0E2FC";
       case 3:
-        return "#1257D9";
+        return "#B8D4FA";
       default:
-        return "#1A4493";
+        return "#A0C6F8";
     }
   };
 
-  // updateRoutes = ( routesValus: any) => {
-  //   const routeData:any = []
-  //   if (this.state.routes.length > 0) {
-  //     const r = JSON.parse(this.state.routes);
-  //     Object.keys(r).forEach((key) => {
-  //       routeData.push(r[key]);
-  //     });
-  //   }
-  //   const r1 = JSON.parse(routesValus)
-  //   Object.keys(r1).forEach((key) => {
-  //     routeData.push(r1[key]);
-  //   });
-  //   this.setState({routes: JSON.stringify(routeData)})
-  // }
+  applyLevelColor = (level: number) => {
+    if (this.boardRef.current) {
+      this.boardRef.current.style.backgroundColor = this.getLevelColor(level);
+    }
+  };
 
   updateRoutes = (routesValues: any) => {
     let routeData: any[] = [];
@@ -271,74 +216,76 @@ class Jewels extends React.Component<any, AppState> {
     totalAttempts: number,
     pointVal: number
   ) => {
-    const level = Math.floor(
-      (this.state.bonusPoints + bonus) / this.state.settings.bonus_point_count
-    );
     this.updateRoutes(routesValus);
-    if (level > 1) {
-      let levelCount = Math.floor(
-        (level - 1) / this.state.settings.x_changes_in_level_count
-      );
-      const diamondCount =
-        this.state.diamondCount +
-          this.state.settings.x_diamond_count * levelCount >
-        25
-          ? 25
-          : this.state.diamondCount +
-            this.state.settings.x_diamond_count * levelCount;
-      let shapeCount = this.state.shapeCount;
-      if (this.state.settings.variant === "trails_b") {
-        levelCount = Math.floor(
-          (level - 1) / this.state.settings.y_changes_in_level_count
-        );
-        shapeCount =
-          this.state.shapeCount +
-            this.state.settings.y_shape_count * levelCount >
-          4
-            ? 4
-            : this.state.shapeCount +
-              this.state.settings.y_shape_count * levelCount;
-      }
-      this.setState(
-        {
-          bonusPoints: this.state.bonusPoints + bonus,
-          diamondCount,
-          level:
-            this.state.level === level
-              ? this.state.level
-              : this.state.level + 1,
-          loaded: false,
-          shapeCount,
-          totalAttempts: this.state.totalAttempts + totalAttempts,
-          totalJewelsCollected:
-            this.state.totalJewelsCollected + totalJewelsCollected,
-        },
-        () => {
-          document.body.style.backgroundColor = this.getLevelColor(
-            this.state.level
-          );
 
-          pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
-        }
-      );
-    } else {
+    // Always advance on completion (pointVal=2), stay on timeout (pointVal=1)
+    const nextLevel =
+      pointVal === 2 ? this.state.level + 1 : this.state.level;
+
+    // If we've reached the max level, end the game
+    if (nextLevel > this.state.totalLevels) {
       this.setState(
         {
           bonusPoints: this.state.bonusPoints + bonus,
-          level:
-            this.state.level === level
-              ? this.state.level
-              : this.state.level + 1,
           loaded: false,
           totalAttempts: this.state.totalAttempts + totalAttempts,
           totalJewelsCollected:
             this.state.totalJewelsCollected + totalJewelsCollected,
         },
         () => {
-          pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+          this.handleClose(true, 1);
         }
+      );
+      return;
+    }
+
+    // Calculate time for next level (decrease per level, minimum 10s)
+    const newGameTime = Math.max(
+      10,
+      this.state.initialGameTime -
+        (nextLevel - 1) * this.state.timeDecreasePerLevel
+    );
+
+    // Calculate diamond/shape counts from initial values + level scaling
+    // Level 1 = base count, level 2 = base + 1×increment, etc.
+    const xLevelCount = Math.floor(
+      Math.max(0, nextLevel - 1) / (this.state.settings.x_changes_in_level_count || 1)
+    );
+    const diamondCount = Math.min(
+      25,
+      this.state.initialDiamondCount +
+        (this.state.settings.x_diamond_count ?? 0) * xLevelCount
+    );
+
+    let shapeCount = this.state.initialShapeCount;
+    if (this.state.settings.variant === "trails_b") {
+      const yLevelCount = Math.floor(
+        Math.max(0, nextLevel - 1) / (this.state.settings.y_changes_in_level_count || 1)
+      );
+      shapeCount = Math.min(
+        4,
+        this.state.initialShapeCount +
+          (this.state.settings.y_shape_count ?? 0) * yLevelCount
       );
     }
+
+    this.setState(
+      {
+        bonusPoints: this.state.bonusPoints + bonus,
+        diamondCount,
+        gameTime: newGameTime,
+        level: nextLevel,
+        loaded: false,
+        shapeCount,
+        totalAttempts: this.state.totalAttempts + totalAttempts,
+        totalJewelsCollected:
+          this.state.totalJewelsCollected + totalJewelsCollected,
+      },
+      () => {
+        this.applyLevelColor(this.state.level);
+        pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+      }
+    );
   };
 
   // Reset game board
@@ -409,17 +356,11 @@ class Jewels extends React.Component<any, AppState> {
       winnerLine: undefined,
     };
 
-    // if (isUndefined(this.state)) {
-    //   this.state = state;
-    //   document.body.style.backgroundColor = this.getLevelColor(this.state.level)
-    // } else {
     this.setState(state, () => {
-      document.body.style.backgroundColor = this.getLevelColor(
-        this.state.level
-      );
+      this.applyLevelColor(this.state.level);
     });
-    // }
   };
+
   // Shuffle the diamond numbers
   shuffle = (numbers: Array<number>) => {
     numbers.sort(() => Math.random() - 0.5);
@@ -453,7 +394,7 @@ class Jewels extends React.Component<any, AppState> {
     const rand = Math.round(1 + Math.random() * (colors.length - 1));
     return colors[rand - 1];
   };
-  // To refresh the game
+
   clickHome = () => {
     window.location.reload();
   };
@@ -465,7 +406,7 @@ class Jewels extends React.Component<any, AppState> {
     this.sendDataToDashboard(2, true, true);
   };
 
-  sendDataToDashboard = (pointVal: number, status?: boolean, isback?:boolean) => {
+  sendDataToDashboard = (pointVal: number, status?: boolean, isback?: boolean) => {
     const route = { type: "manual_exit", value: status ?? false };
     let routeData: any[] = [];
 
@@ -477,30 +418,51 @@ class Jewels extends React.Component<any, AppState> {
     }
     routeData.push(route);
     this.setState({ routes: JSON.stringify(routeData) }, () => {
-      const scoreVal = (
-        (this.state.totalJewelsCollected / this.state.totalAttempts) *
-        100
-      ).toFixed(2);
-      parent.postMessage(
-        JSON.stringify({
-          static_data: {
-            point: pointVal,
-            score: scoreVal,
-            total_attempts: this.state.totalAttempts,
-            total_bonus_collected: this.state.bonusPoints,
-            total_jewels_collected: this.state.totalJewelsCollected,
-            is_favorite: this.state.isFavoriteActive,
-          },
-          temporal_slices: JSON.parse(this.state.routes),
-          timestamp: new Date().getTime(),
-          duration: new Date().getTime() - this.state.time,
-          ...(this.state.forward && { forward: this.state.isForwardButton }),
-          ...(!status && { done: true }),
-          ...(isback && { clickBack: true }),
-        }),
-        "*"
-      );
+      // Nav exits skip questionnaire
+      if (status) {
+        this.postResult(pointVal, status, isback);
+      } else if (pointVal === 1) {
+        // Timeout — show "Time's up!" flash, then questionnaire
+        this.setState({ showTimeoutFlash: true, pendingPointVal: pointVal });
+        setTimeout(() => {
+          this.setState({ showTimeoutFlash: false, showQuestionnaire: true });
+        }, 1500);
+      } else {
+        // Normal game end — show questionnaire
+        this.setState({ showQuestionnaire: true, pendingPointVal: pointVal });
+      }
     });
+  };
+
+  postResult = (pointVal: number, status?: boolean, isback?: boolean, questionnaireData?: any) => {
+    const scoreVal = this.state.totalAttempts > 0
+      ? ((this.state.totalJewelsCollected / this.state.totalAttempts) * 100).toFixed(2)
+      : "0.00";
+    parent.postMessage(
+      JSON.stringify({
+        static_data: {
+          point: pointVal,
+          score: scoreVal,
+          total_attempts: this.state.totalAttempts,
+          total_bonus_collected: this.state.bonusPoints,
+          total_jewels_collected: this.state.totalJewelsCollected,
+          is_favorite: this.state.isFavoriteActive,
+          ...(questionnaireData && { questionnaire: questionnaireData }),
+        },
+        temporal_slices: JSON.parse(this.state.routes),
+        timestamp: new Date().getTime(),
+        duration: new Date().getTime() - this.state.time,
+        ...(this.state.forward && { forward: this.state.isForwardButton }),
+        ...(!status && { done: true }),
+        ...(isback && { clickBack: true }),
+      }),
+      "*"
+    );
+  };
+
+  handleQuestionnaireSubmit = (response: any) => {
+    this.setState({ showQuestionnaire: false });
+    this.postResult(this.state.pendingPointVal, false, false, response);
   };
 
   handleClose = (status: boolean, pointVal: number) => {
@@ -519,7 +481,7 @@ class Jewels extends React.Component<any, AppState> {
           );
     }
     this.setState({ showModal: 0 });
-  };  
+  };
 
   clickForward = () => {
     this.setState(() => ({
@@ -543,32 +505,54 @@ class Jewels extends React.Component<any, AppState> {
 
     return (
       <div>
+        {/* Timeout flash — outside loaded gate so it shows after timeout */}
+        {this.state.showTimeoutFlash && (
+          <div className="timeout-overlay">
+            <div className="timeout-card">
+              {i18n.t("TIMEOUT")}
+            </div>
+          </div>
+        )}
+
+        {/* Questionnaire — outside loaded gate so it shows after timeout */}
+        {this.state.showQuestionnaire && (
+          <Questionnaire
+            show={true}
+            language={i18n.language}
+            setResponse={this.handleQuestionnaireSubmit}
+          />
+        )}
+
         {this.state && this.state.loaded && (
-          <div>
+          <div className="game-shell">
             {modal}
-            <nav className="back-link">
-              <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-            </nav>
-            <div className="header-right-nav">
-              <nav className="home-link">
-                <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
+
+            {/* D-Cog Header */}
+            <div className="heading">
+              <nav className="back-link" onClick={this.clickBack}>
+                <FontAwesomeIcon icon={faArrowLeft} />
               </nav>
+              {i18n.t("JEWELS")}
               {this.state.forward && (
-                <nav className="forward-link">
-                  <FontAwesomeIcon
-                    icon={faArrowRight}
-                    onClick={this.clickForward}
-                  />
+                <nav className="home-link-forward" onClick={this.clickForward}>
+                  <FontAwesomeIcon icon={faArrowRight} />
                 </nav>
               )}
+              <nav className="home-link" onClick={this.clickHome}>
+                <FontAwesomeIcon icon={faRedo} />
+              </nav>
             </div>
-            <div className="heading">
-              {i18n.t("JEWELS")}{" "}              
-            </div>
-            <div className="game-board">
+
+            {/* Game board with level-colored background */}
+            <div
+              className="game-board-container"
+              ref={this.boardRef}
+              style={{ backgroundColor: this.getLevelColor(this.state.level) }}
+            >
               <Board
                 gameTime={this.state.gameTime}
                 totalDiamonds={this.state.diamondCount}
+                totalLevels={this.state.totalLevels}
                 diamondSpots={this.state.diamondSpots}
                 diamondColor={this.state.diamondColor}
                 currentDiamond={this.state.current}

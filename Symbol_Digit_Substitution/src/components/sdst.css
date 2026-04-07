@@ -1,0 +1,421 @@
+/* ============================================================
+   Symbol-Digit Substitution Test — Style Modernization
+   ============================================================ */
+
+/* --- Header ------------------------------------------------ */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+  flex-shrink: 0;
+}
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link-forward {
+  position: absolute;
+  right: 48px;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* --- Game Shell --------------------------------------------- */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+.game-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px 12px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* --- Timer / Status Bar ------------------------------------ */
+.sdst-timer {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.sdst-timer h4 {
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.sdst-timer .timer-pill {
+  display: inline-block;
+  background: #fff;
+  border-radius: 20px;
+  padding: 6px 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* --- Legend (symbol-digit mapping) -------------------------- */
+.sdst-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+.sdst-legend-cell {
+  border: 2px solid #359ffe;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 44px;
+  background: #fff;
+}
+.sdst-legend-symbol {
+  font-size: 20px;
+  padding: 6px 8px 2px;
+  color: #333;
+  font-weight: 600;
+}
+.sdst-legend-divider {
+  border-top: 2px solid #359ffe;
+  margin: 0;
+}
+.sdst-legend-number {
+  font-size: 18px;
+  padding: 2px 8px 6px;
+  color: #359ffe;
+  font-weight: 700;
+}
+
+/* --- Current Symbol Display -------------------------------- */
+.sdst-current-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 16px 0;
+}
+.sdst-symbol-card {
+  border: 3px solid #359ffe;
+  border-radius: 12px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: #333;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Button Feedback Highlights ----------------------------- */
+.sdst-num-btn.btn-correct {
+  background: #27AE60;
+  border-color: #27AE60;
+  color: #fff;
+  animation: feedbackPop 0.2s ease-out;
+}
+.sdst-num-btn.btn-incorrect {
+  background: #E74C3C;
+  border-color: #E74C3C;
+  color: #fff;
+  animation: feedbackPop 0.2s ease-out;
+}
+
+@keyframes feedbackPop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* --- Number Buttons ---------------------------------------- */
+.sdst-btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  width: 100%;
+}
+.sdst-num-btn {
+  width: 64px;
+  height: 64px;
+  border: 2px solid #359ffe;
+  border-radius: 12px;
+  background: #fff;
+  color: #359ffe;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sdst-num-btn:hover {
+  background: #359ffe;
+  color: #fff;
+}
+.sdst-num-btn:active {
+  transform: scale(0.95);
+}
+.sdst-num-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* --- Before-mode memorize prompt --------------------------- */
+.sdst-memorize-prompt {
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* --- Start Button ------------------------------------------ */
+.sdst-start-btn {
+  background: #359ffe;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  padding: 12px 40px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-top: 16px;
+  transition: background 0.15s;
+}
+.sdst-start-btn:hover {
+  background: #218bea;
+}
+
+/* --- Hint text --------------------------------------------- */
+.sdst-hint {
+  background: #fff;
+  padding: 8px 16px;
+  display: inline-block;
+  font-size: 14px;
+  color: #359ffe;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* --- Timeout Flash Overlay --------------------------------- */
+.sdst-timeout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+.sdst-timeout-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 48px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: feedbackPop 0.3s ease-out;
+}
+@keyframes overlayFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* --- Instruction Modal ------------------------------------- */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+}
+.instruction-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.instruction-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  color: #333;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 36px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* --- Questionnaire Modal ----------------------------------- */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 36px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Responsive -------------------------------------------- */
+@media (max-width: 500px) {
+  .sdst-num-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+  }
+  .sdst-symbol-card {
+    width: 80px;
+    height: 80px;
+    font-size: 38px;
+  }
+  .sdst-legend-cell {
+    min-width: 36px;
+  }
+  .sdst-legend-symbol {
+    font-size: 16px;
+    padding: 4px 6px 1px;
+  }
+  .sdst-legend-number {
+    font-size: 15px;
+    padding: 1px 6px 4px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

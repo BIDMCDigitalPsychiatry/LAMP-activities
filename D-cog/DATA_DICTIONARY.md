@@ -1,0 +1,126 @@
+# D-Cog (Cats and Dogs) — Data Dictionary
+
+## Cognitive Test Background
+
+D-Cog implements a digital variant of a **delayed match-to-sample (DMTS) / visual discrimination** paradigm with adaptive difficulty. The participant must identify which boxes contain a target animal (dog) after a brief exposure, testing visuospatial attention, short-term memory encoding, and discrimination ability.
+
+The task is scored using **Item Response Theory (IRT)**, specifically a 2-parameter logistic model, which estimates latent cognitive ability (theta) from the pattern of correct and incorrect rounds at varying difficulty levels. This approach accounts for the fact that correctly identifying 3 dogs in a grid of 12 is harder than identifying 1 dog in a grid of 4.
+
+### Related Tests and Constructs
+
+| Construct | How Measured | Related Standardized Test |
+|-----------|-------------|--------------------------|
+| **Visuospatial attention** | Correctly locating target animals after brief exposure | Continuous Performance Test (CPT); visual search paradigms |
+| **Short-term visual memory** | Remembering target locations after boxes close | Delayed Match-to-Sample (DMTS) tasks in CANTAB |
+| **Discrimination ability** | Distinguishing target (dog) from non-target (empty) boxes | Signal detection paradigms (d-prime) |
+| **Adaptive difficulty estimation** | IRT-based scoring across difficulty levels | Computer Adaptive Testing (CAT) methodology |
+
+Key references for the underlying paradigms:
+
+> Sahakian, B. J., & Owen, A. M. (1992). Computerized assessment in neuropsychiatry using CANTAB: Discussion paper. *Journal of the Royal Society of Medicine, 85*(7), 399–402.
+
+> Embretson, S. E., & Reise, S. P. (2000). *Item Response Theory for Psychologists.* Lawrence Erlbaum Associates.
+
+---
+
+This document describes the data emitted by the D-Cog activity via `postMessage` when the game ends. The payload is a JSON string with the following top-level structure.
+
+## Top-Level Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `duration` | number | Total elapsed time in milliseconds from game start to result submission |
+| `static_data` | object | Summary scores and metadata (see below) |
+| `temporal_slices` | array | Per-tap event log (see below) |
+| `timestamp` | number | Unix timestamp (ms) when the result was sent |
+| `forward` | boolean | *(optional)* If the activity was configured with a forward nav button, indicates whether the user advanced forward (`true`) or clicked back (`false`) |
+| `done` | boolean | *(optional)* `true` when the game ended normally (not via back/forward navigation) |
+| `clickBack` | boolean | *(optional)* `true` when the user exited via the back arrow |
+
+---
+
+## static_data
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `score` | number | **IRT-based ability estimate.** Computed using a maximum likelihood estimation (MLE) approach: the score is the theta value (on a 0–10 scale, step 0.1) whose expected score most closely matches the participant's actual number of correct rounds. Higher values indicate greater cognitive ability. |
+| `correct_answers` | number | **Total correct taps** across all rounds. A tap is correct if the participant tapped a box that had the target animal behind it. |
+| `wrong_answers` | number | **Total incorrect taps** across all rounds. A tap is incorrect if the participant tapped a box that did not have the target animal behind it. |
+| `total_questions` | number | **Total target animals presented** across all rounds. This is the cumulative count of dogs (or cats, depending on the level) that appeared on screen — i.e., the number of boxes the participant should have tapped. |
+| `point` | number | `2` if `score === 100`, else `1` |
+| `is_favorite` | boolean | Whether the activity was marked as a favorite in the dashboard configuration |
+| `questionnaire` | object | *(optional)* Post-game self-report. Contains `clarity` (1–5) and `happiness` (1–5) ratings. Only present when the game ends normally (not via early exit). |
+
+---
+
+## temporal_slices — Event Log
+
+An array of event objects, one per tap plus a final exit event.
+
+### Tap Entry
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `item` | number | The box index that was tapped (position on the grid) |
+| `level` | number | The number of dogs on screen in the current round (reflects difficulty) |
+| `type` | boolean | Whether the tap was correct (`true`) or incorrect (`false`) |
+| `duration` | number | Milliseconds since the previous tap (or since the round started, for the first tap) |
+| `value` | null | Reserved, always `null` |
+
+### Exit Entry
+
+The final entry in `temporal_slices` is always:
+
+```json
+{ "type": "manual_exit", "value": false }
+```
+
+`value` is `true` if the user exited via navigation (back/forward), `false` for normal game completion.
+
+---
+
+## Game Logic Summary
+
+### Round Flow
+
+1. A grid of boxes is displayed (count increases with difficulty)
+2. Boxes "lift" to reveal dogs or nothing behind them for a brief period
+3. Boxes close, and the participant must tap the boxes where the dogs were
+4. Correct taps highlight green, incorrect taps highlight red
+5. After tapping, the game evaluates the round and advances
+
+### Difficulty Progression
+
+- The number of dogs on screen increases as the game progresses
+- Box grid size increases with dog count
+- Each round's difficulty (dog count) is recorded in `temporal_slices[].level`
+- Round outcomes (pass/fail) feed into the IRT scoring model
+
+### Scoring Algorithm (IRT)
+
+The `score` field uses Item Response Theory (2-parameter logistic model):
+1. Each round is scored binary: pass (all target animals tapped correctly) or fail
+2. Round difficulty = number of dogs on screen
+3. MLE finds the ability theta (0–10 range) whose expected score best matches the participant's actual correct-round count
+4. The score is `Math.round(theta * 10) / 10`
+
+---
+
+## Scoring Guidance for Analysts
+
+- Use `score` (IRT ability estimate) as the primary cognitive measure — it accounts for round difficulty
+- `correct_answers` and `wrong_answers` provide raw tap-level accuracy but do not account for difficulty
+- `total_questions` is the total number of dogs presented, not the number of rounds
+- The `temporal_slices` array can be used to compute per-round performance, reaction times, and error patterns
+
+## Key Analysis Variables
+
+| Research Question | Primary Variable | Notes |
+|---|---|---|
+| Overall cognitive ability | `score` (IRT theta) | Accounts for difficulty; range 0–10. Higher = better discrimination and memory |
+| Raw accuracy | `correct_answers / total_questions` | Simple hit rate; does not account for difficulty level |
+| Visuospatial memory capacity | `temporal_slices[].level` at failure point | The dog count at which errors begin to appear indicates capacity limits |
+| Processing speed | `temporal_slices[].duration` | Tap-to-tap response time; faster correct responses suggest stronger memory traces |
+| Error patterns | `temporal_slices` where `type === false` | Spatial analysis of where false taps occur relative to targets |
+| Fatigue / vigilance | Accuracy across sequential rounds | Declining accuracy over time may indicate attentional fatigue |
+| Engagement | `questionnaire.happiness` | Low hedonic ratings may correlate with reduced motivation or anhedonia |

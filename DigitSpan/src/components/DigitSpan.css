@@ -1,0 +1,352 @@
+/**
+ * @file   DigitSpan.css
+ * @brief  Styles for DigitSpan activity (D-Cog pattern)
+ */
+
+/* ===== Header ===== */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link-forward {
+  position: absolute;
+  right: 48px;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ===== Level Badge ===== */
+.level-badge {
+  max-width: 300px;
+  background-color: #f5f5f5;
+  margin: 16px auto;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.level-badge-mode {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* ===== Digit Prompt ===== */
+.digit-prompt {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #359FFE;
+  margin: 12px 0 8px;
+  height: 48px;
+  line-height: 48px;
+  position: relative;
+}
+.digit-prompt-listening {
+  padding-right: 0;
+}
+
+/* ===== Number Grid ===== */
+.number-grid-container {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+.number-grid {
+  display: inline-block;
+  border: 1px solid #359FFE;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.number-grid-row {
+  display: flex;
+}
+.number-grid-cell {
+  width: 90px;
+  height: 90px;
+  border: 1px solid #359FFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: #359FFE;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  background-color: #fff;
+}
+.number-grid-cell.disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+.number-grid-cell:active:not(.disabled) {
+  background-color: #e8f0fe;
+}
+/* ===== Answer Slots ===== */
+.answer-slots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 12px;
+  min-height: 48px;
+}
+.answer-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 2px dashed #bbb;
+  background: #fafafa;
+  color: transparent;
+  font-size: 1.4rem;
+  font-weight: 700;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.answer-slot-filled {
+  border: 2px solid #359FFE;
+  background: #e8f0fe;
+  color: #359FFE;
+}
+
+/* ===== Visible Digit During Playback ===== */
+.digit-prompt-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #359FFE;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  position: relative;
+  top: -2px;
+  margin-left: 10px;
+}
+
+/* ===== Mode Transition Overlay ===== */
+.mode-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+.mode-overlay-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.mode-overlay-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+.mode-overlay-desc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+.mode-overlay-btn {
+  background: #359FFE;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 14px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mode-overlay-btn:hover {
+  background: #0373d8;
+}
+
+/* ===== Instruction Modal (D-Cog pattern) ===== */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+  color: #fff;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ===== Questionnaire Modal (D-Cog pattern) ===== */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-faces .btn {
+  margin-right: 0;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+  color: #fff;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+  margin-right: 15px;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .number-grid-cell {
+    width: 72px;
+    height: 72px;
+    font-size: 1.8rem;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

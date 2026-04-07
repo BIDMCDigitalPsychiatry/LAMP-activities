@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WCST Test Harness</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f0f0; }
+    #controls { background: #333; color: #fff; font-size: 14px; }
+    #controls .row { padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #controls .row-harness { border-bottom: 1px solid #444; }
+    #controls .row-activity { background: #2a2a2a; }
+    #controls button { padding: 6px 14px; cursor: pointer; border: none; border-radius: 4px; font-size: 13px; }
+    #controls .btn-send { background: #359FFE; color: #fff; }
+    #controls .btn-toggle { background: #555; color: #fff; }
+    #controls .btn-clear { background: #777; color: #fff; }
+    #controls select, #controls input { padding: 5px 8px; border-radius: 4px; border: 1px solid #555; background: #444; color: #fff; font-size: 13px; }
+    #controls input { width: 50px; }
+    #controls label { font-size: 12px; color: #aaa; }
+    #main { display: flex; height: calc(100vh - 80px); }
+    #game-panel { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: auto; }
+    #game-panel iframe { width: 100%; height: 100%; border: none; }
+    #game-panel.device-preview { background: #e0e0e0; }
+    #game-panel.device-preview iframe {
+      width: var(--device-w);
+      height: var(--device-h);
+      border-radius: 36px;
+      box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #333, 0 8px 30px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+      transform: scale(var(--device-scale, 1));
+      transform-origin: center center;
+    }
+    #data-panel { width: 420px; background: #1e1e1e; color: #d4d4d4; font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; display: flex; flex-direction: column; border-left: 2px solid #444; }
+    #data-panel.hidden { display: none; }
+    #data-panel .tab-bar { display: flex; background: #2d2d2d; border-bottom: 1px solid #444; flex-shrink: 0; }
+    #data-panel .tab { padding: 8px 16px; cursor: pointer; color: #888; font-size: 12px; border-bottom: 2px solid transparent; }
+    #data-panel .tab.active { color: #fff; border-bottom-color: #359FFE; }
+    #data-panel .tab-content { flex: 1; overflow-y: auto; padding: 12px; }
+    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .score-card { background: #2a2a2a; border-radius: 6px; padding: 10px 12px; }
+    .score-card.full { grid-column: 1 / -1; }
+    .score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+    .score-value { font-size: 20px; font-weight: 700; color: #fff; }
+    .score-value.highlight { color: #4fc3f7; }
+    .score-value.muted { color: #888; font-size: 16px; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #333; }
+    pre.json-view { white-space: pre-wrap; word-break: break-word; margin: 0; line-height: 1.5; }
+    .json-key { color: #9cdcfe; }
+    .json-string { color: #ce9178; }
+    .json-number { color: #b5cea8; }
+    .json-bool { color: #569cd6; }
+    .json-null { color: #569cd6; }
+    #log-panel { flex: 1; overflow-y: auto; padding: 12px; }
+    .log-entry { padding: 3px 0; border-bottom: 1px solid #2a2a2a; font-size: 11px; color: #888; }
+    .log-entry .log-time { color: #666; }
+    .log-entry .log-msg { color: #0f0; }
+    .no-data { color: #666; text-align: center; padding: 40px 20px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <script>
+    window.HARNESS_CONFIG = {
+      title: 'WCST Test Harness',
+
+      getExtraConfig: function() {
+        return {
+          activity: {
+            settings: {
+              deck_size: parseInt(document.getElementById('deck-select').value, 10),
+              time_limit_per_trial_s: parseInt(document.getElementById('timelimit-input').value, 10) || 0,
+            }
+          }
+        };
+      },
+
+      renderScores: function(s, data) {
+        var html = '';
+
+        html += sectionTitle('Categories');
+        html += '<div class="score-grid">';
+        html += scoreCard('Categories Completed', s.categories_completed + ' / 6', true, true);
+        html += scoreCard('Trials to First Category', s.trials_to_first_category, true);
+        html += '</div>';
+
+        html += sectionTitle('Performance');
+        html += '<div class="score-grid">';
+        html += scoreCard('Accuracy', s.score + '%', true);
+        html += scoreCard('Total Trials', s.total_trials, false);
+        html += scoreCard('Total Correct', s.total_correct, true);
+        html += scoreCard('Total Errors', s.total_errors, true);
+        html += '</div>';
+
+        html += sectionTitle('Error Analysis');
+        html += '<div class="score-grid">';
+        html += scoreCard('Perseverative Responses', s.perseverative_responses, true, true);
+        html += scoreCard('Perseverative Errors', s.perseverative_errors, true);
+        html += scoreCard('Non-Perseverative Errors', s.non_perseverative_errors, true);
+        html += scoreCard('Conceptual Level', s.conceptual_level_responses, true);
+        html += scoreCard('Failure to Maintain Set', s.failure_to_maintain_set, true);
+        html += '</div>';
+
+        html += sectionTitle('Reaction Time');
+        html += '<div class="score-grid">';
+        html += scoreCard('Mean RT (Correct)', s.mean_rt_correct_ms ? s.mean_rt_correct_ms + 'ms' : '\u2014', true, true);
+        html += '</div>';
+
+        if (data.duration !== undefined) {
+          html += sectionTitle('Duration');
+          html += '<div class="score-grid">';
+          html += scoreCard('Total', (data.duration / 1000).toFixed(1) + 's', false);
+          html += '</div>';
+        }
+
+        if (data.temporal_slices) {
+          var trials = data.temporal_slices.filter(function(e) { return e.type !== 'exit'; });
+          if (trials.length > 0) {
+            html += sectionTitle('Per-Trial Detail');
+            html += '<table style="width:100%; border-collapse:collapse; font-size:11px;">';
+            html += '<thead><tr style="color:#888; text-align:left; border-bottom:1px solid #444;">';
+            html += '<th style="padding:4px">#</th><th style="padding:4px">Card</th><th style="padding:4px">Rule</th><th style="padding:4px">Match</th><th style="padding:4px">Correct</th><th style="padding:4px">Persev</th><th style="padding:4px">RT</th>';
+            html += '</tr></thead><tbody>';
+            trials.forEach(function(t) {
+              var color = t.correct ? '#4caf50' : '#e57373';
+              html += '<tr style="border-bottom:1px solid #2a2a2a;">';
+              html += '<td style="padding:4px; color:#666">' + t.trial_number + '</td>';
+              html += '<td style="padding:4px">' + t.card_number + ' ' + t.card_color + ' ' + t.card_shape + '</td>';
+              html += '<td style="padding:4px; color:#888">' + t.current_rule + '</td>';
+              html += '<td style="padding:4px; color:#888">' + t.match_dimension + '</td>';
+              html += '<td style="padding:4px; color:' + color + '; font-weight:600;">' + (t.correct ? 'Y' : 'N') + '</td>';
+              html += '<td style="padding:4px; color:' + (t.perseverative_error ? '#e57373' : '#666') + '">' + (t.perseverative ? 'Y' : '') + '</td>';
+              html += '<td style="padding:4px; color:#888;">' + t.rt_ms + 'ms</td>';
+              html += '</tr>';
+            });
+            html += '</tbody></table>';
+          }
+        }
+
+        if (s.questionnaire) {
+          html += sectionTitle('Questionnaire');
+          html += '<div class="score-grid">';
+          html += scoreCard('Clarity', s.questionnaire.clarity + ' / 5', true);
+          html += scoreCard('Happiness', s.questionnaire.happiness + ' / 5', true);
+          html += '</div>';
+        }
+
+        return html;
+      }
+    };
+  </script>
+
+  <div id="controls">
+    <div class="row row-harness">
+      <strong>WCST Test Harness</strong>
+      <label>Port:
+        <select id="port-select">
+          <option value="3000" selected>3000</option>
+          <option value="3001">3001</option>
+          <option value="3002">3002</option>
+        </select>
+      </label>
+      <label>Device:
+        <select id="device-select">
+          <option value="desktop">Desktop</option>
+          <option value="375x812">iPhone SE/13 mini</option>
+          <option value="390x844">iPhone 14</option>
+          <option value="430x932">iPhone 14 Pro Max</option>
+          <option value="360x800">Android (360)</option>
+          <option value="768x1024">iPad Mini</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="reloadActivity()">Reload</button>
+      <button class="btn-toggle" onclick="togglePanel()">Toggle Data</button>
+      <button class="btn-clear" onclick="clearData()">Clear</button>
+    </div>
+    <div class="row row-activity">
+      <label>Deck size:
+        <select id="deck-select">
+          <option value="64" selected>64 cards</option>
+          <option value="128">128 cards</option>
+        </select>
+      </label>
+      <label>Time limit (s, 0=none):
+        <input type="number" id="timelimit-input" value="0" min="0" max="120" style="width:50px">
+      </label>
+      <label>Language:
+        <select id="lang-select">
+          <option value="en-US" selected>en-US</option>
+          <option value="da-DK">da-DK</option>
+          <option value="de-DE">de-DE</option>
+          <option value="es-ES">es-ES</option>
+          <option value="fr-FR">fr-FR</option>
+          <option value="hi-IN">hi-IN</option>
+          <option value="it-IT">it-IT</option>
+          <option value="ko-KR">ko-KR</option>
+          <option value="zh-CN">zh-CN</option>
+          <option value="zh-HK">zh-HK</option>
+        </select>
+      </label>
+      <button class="btn-send" onclick="sendConfig()">Send Config</button>
+    </div>
+  </div>
+  <div id="main">
+    <div id="game-panel">
+      <iframe id="game" src="http://localhost:3000"></iframe>
+    </div>
+    <div id="data-panel">
+      <div class="tab-bar">
+        <div class="tab active" data-tab="scores">Scores</div>
+        <div class="tab" data-tab="slices">Temporal Slices</div>
+        <div class="tab" data-tab="raw">Raw JSON</div>
+        <div class="tab" data-tab="log">Log</div>
+      </div>
+      <div class="tab-content" id="tab-scores">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-slices" style="display:none">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-raw" style="display:none">
+        <div class="no-data">Waiting for game results...</div>
+      </div>
+      <div class="tab-content" id="tab-log" style="display:none">
+        <div id="log-panel"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var lastResult = null;
+    var lastSentConfig = null;
+    var DEFAULTS = { title: 'LAMP Activity Test Harness', port: 3000, extraConfig: {}, getExtraConfig: null, renderScores: null };
+    function getConfig() { return Object.assign({}, DEFAULTS, window.HARNESS_CONFIG || {}); }
+    function getIframe() { return document.getElementById('game'); }
+    function sendConfig() {
+      var cfg = getConfig();
+      var lang = document.getElementById('lang-select').value;
+      var extra = cfg.getExtraConfig ? cfg.getExtraConfig() : cfg.extraConfig;
+      var config = Object.assign({ configuration: { language: lang }, noBack: false, forward: true }, extra);
+      lastSentConfig = config;
+      getIframe().contentWindow.postMessage(config, '*');
+      log('Sent config: ' + JSON.stringify(config));
+    }
+    function reloadActivity() {
+      var port = document.getElementById('port-select').value;
+      getIframe().src = 'http://localhost:' + port;
+      log('Reloading on port ' + port);
+    }
+    window.addEventListener('message', function(e) {
+      if (e.source !== getIframe().contentWindow) return;
+      var data;
+      try { data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; } catch (err) { log('Non-JSON: ' + String(e.data).substring(0, 100)); return; }
+      if (!data.static_data && !data.temporal_slices) { log('Non-result: ' + JSON.stringify(data).substring(0, 100)); return; }
+      data._sentConfig = lastSentConfig;
+      lastResult = data;
+      log('Game result received');
+      renderScoresTab(data); renderSlicesTab(data); renderRawTab(data);
+    });
+    document.getElementById('game').addEventListener('load', function() { setTimeout(function() { log('iframe loaded'); sendConfig(); }, 500); });
+    document.getElementById('port-select').addEventListener('change', function() { reloadActivity(); });
+    function renderScoresTab(data) { var cfg = getConfig(); if (cfg.renderScores) { document.getElementById('tab-scores').innerHTML = cfg.renderScores(data.static_data, data); return; } document.getElementById('tab-scores').innerHTML = genericScoreRenderer(data); }
+    function genericScoreRenderer(data) { var s = data.static_data; var html = ''; html += sectionTitle('Scores'); html += '<div class="score-grid">'; Object.keys(s).forEach(function(k) { var v = s[k]; if (v !== null && v !== undefined && typeof v !== 'object') html += scoreCard(formatLabel(k), v, true); }); html += '</div>'; return html; }
+    function renderSlicesTab(data) {
+      var slices = data.temporal_slices;
+      if (!slices || !slices.length) { document.getElementById('tab-slices').innerHTML = '<div class="no-data">No temporal slices</div>'; return; }
+      var sample = slices.find(function(s) { return s.type !== 'exit'; }) || slices[0];
+      var columns = Object.keys(sample);
+      var html = '<table style="width:100%;border-collapse:collapse;font-size:11px;"><thead><tr style="color:#888;text-align:left;border-bottom:1px solid #444;"><th style="padding:4px">#</th>';
+      columns.forEach(function(c) { html += '<th style="padding:4px">' + formatLabel(c) + '</th>'; });
+      html += '</tr></thead><tbody>';
+      slices.forEach(function(entry, i) {
+        if (entry.type === 'exit') { html += '<tr style="color:#666;border-top:1px solid #444;"><td colspan="' + (columns.length+1) + '" style="padding:4px">Exit</td></tr>'; return; }
+        html += '<tr style="border-bottom:1px solid #2a2a2a;"><td style="padding:4px;color:#666">' + (i+1) + '</td>';
+        columns.forEach(function(c) { var v = entry[c]; var st = 'padding:4px;'; if (c === 'correct') { st += 'color:' + (v ? '#4caf50' : '#e57373') + ';font-weight:700;'; v = v ? 'Yes' : 'No'; } html += '<td style="' + st + '">' + (v != null ? v : '\u2014') + '</td>'; });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      document.getElementById('tab-slices').innerHTML = html;
+    }
+    function renderRawTab(data) { document.getElementById('tab-raw').innerHTML = '<pre class="json-view">' + syntaxHighlight(JSON.stringify(data, null, 2)) + '</pre>'; }
+    function log(msg) { var el = document.getElementById('log-panel'); el.innerHTML += '<div class="log-entry"><span class="log-time">' + new Date().toLocaleTimeString() + '</span> <span class="log-msg">' + msg + '</span></div>'; el.scrollTop = el.scrollHeight; }
+    document.querySelectorAll('.tab').forEach(function(t) { t.addEventListener('click', function() { var n = t.getAttribute('data-tab'); document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); }); document.querySelectorAll('.tab-content').forEach(function(c) { c.style.display = 'none'; }); t.classList.add('active'); document.getElementById('tab-' + n).style.display = 'block'; }); });
+    function togglePanel() { document.getElementById('data-panel').classList.toggle('hidden'); if (document.getElementById('device-select').value !== 'desktop') setTimeout(applyDevicePreview, 50); }
+    function applyDevicePreview() { var v = document.getElementById('device-select').value; var p = document.getElementById('game-panel'); if (v === 'desktop') { p.classList.remove('device-preview'); p.style.removeProperty('--device-w'); p.style.removeProperty('--device-h'); p.style.removeProperty('--device-scale'); } else { var parts = v.split('x'); var dw = parseInt(parts[0]); var dh = parseInt(parts[1]); var s = Math.min(1, (p.clientHeight-60)/(dh+24), (p.clientWidth-60)/(dw+24)); p.classList.add('device-preview'); p.style.setProperty('--device-w', dw+'px'); p.style.setProperty('--device-h', dh+'px'); p.style.setProperty('--device-scale', s.toFixed(3)); } }
+    document.getElementById('device-select').addEventListener('change', applyDevicePreview);
+    window.addEventListener('resize', function() { if (document.getElementById('device-select').value !== 'desktop') applyDevicePreview(); });
+    function clearData() { lastResult = null; ['scores','slices','raw'].forEach(function(t) { document.getElementById('tab-'+t).innerHTML = '<div class="no-data">Waiting...</div>'; }); document.getElementById('log-panel').innerHTML = ''; }
+    function scoreCard(l, v, h, f) { return '<div class="score-card' + (f?' full':'') + '"><div class="score-label">' + l + '</div><div class="score-value' + (h?' highlight':' muted') + '">' + (v!=null?v:'\u2014') + '</div></div>'; }
+    function sectionTitle(t) { return '<div class="section-title">' + t + '</div>'; }
+    function formatLabel(k) { return k.replace(/_/g,' ').replace(/([a-z])([A-Z])/g,'$1 $2').replace(/\b\w/g, function(c){return c.toUpperCase();}); }
+    function syntaxHighlight(j) { j=j.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); j=j.replace(/"([^"]+)":/g,'<span class="json-key">"$1"</span>:'); j=j.replace(/: "(.*?)"/g,': <span class="json-string">"$1"</span>'); j=j.replace(/: (\d+\.?\d*)/g,': <span class="json-number">$1</span>'); j=j.replace(/: (true|false)/g,': <span class="json-bool">$1</span>'); j=j.replace(/: (null)/g,': <span class="json-null">null</span>'); return j; }
+    (function() { var c = getConfig(); document.title = c.title; document.querySelector('#controls .row-harness strong').textContent = c.title; })();
+  </script>
+</body>
+</html>

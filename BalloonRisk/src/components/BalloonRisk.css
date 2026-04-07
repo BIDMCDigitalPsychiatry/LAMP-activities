@@ -1,0 +1,410 @@
+/* ═══════════════════════════════════════════════════════
+   BalloonRisk.css — All styles for the Balloon Risk (BART) activity
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Header ─────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+.back-link {
+  position: absolute; left: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link {
+  position: absolute; right: 0; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+.home-link-forward {
+  position: absolute; right: 48px; top: 0;
+  height: 52px; display: flex; align-items: center;
+  padding: 0 16px; color: white; cursor: pointer; z-index: 10;
+}
+
+/* ── Status Bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Game Shell & Container ─────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='700' viewBox='0 0 500 700'%3E%3Cg opacity='0.07'%3E%3Cellipse cx='50' cy='70' rx='22' ry='30' fill='%23e74c3c' transform='rotate(-10 50 70)'/%3E%3Cline x1='50' y1='100' x2='45' y2='135' stroke='%23e74c3c' stroke-width='1.5'/%3E%3Cellipse cx='420' cy='120' rx='18' ry='25' fill='%23f39c12' transform='rotate(8 420 120)'/%3E%3Cline x1='420' y1='145' x2='425' y2='175' stroke='%23f39c12' stroke-width='1.5'/%3E%3Cellipse cx='230' cy='50' rx='20' ry='28' fill='%239b59b6' transform='rotate(-5 230 50)'/%3E%3Cline x1='230' y1='78' x2='227' y2='110' stroke='%239b59b6' stroke-width='1.5'/%3E%3Cellipse cx='130' cy='280' rx='19' ry='26' fill='%232ecc71' transform='rotate(12 130 280)'/%3E%3Cline x1='130' y1='306' x2='135' y2='338' stroke='%232ecc71' stroke-width='1.5'/%3E%3Cellipse cx='370' cy='340' rx='21' ry='29' fill='%233498db' transform='rotate(-7 370 340)'/%3E%3Cline x1='370' y1='369' x2='366' y2='402' stroke='%233498db' stroke-width='1.5'/%3E%3Cellipse cx='460' cy='480' rx='17' ry='24' fill='%23e74c3c' transform='rotate(6 460 480)'/%3E%3Cline x1='460' y1='504' x2='463' y2='535' stroke='%23e74c3c' stroke-width='1.5'/%3E%3Cellipse cx='40' cy='450' rx='20' ry='27' fill='%23f39c12' transform='rotate(-8 40 450)'/%3E%3Cline x1='40' y1='477' x2='36' y2='510' stroke='%23f39c12' stroke-width='1.5'/%3E%3Cellipse cx='280' cy='200' rx='18' ry='25' fill='%23e74c3c' transform='rotate(15 280 200)'/%3E%3Cline x1='280' y1='225' x2='284' y2='255' stroke='%23e74c3c' stroke-width='1.5'/%3E%3Cellipse cx='70' cy='580' rx='21' ry='28' fill='%233498db' transform='rotate(-12 70 580)'/%3E%3Cline x1='70' y1='608' x2='65' y2='640' stroke='%233498db' stroke-width='1.5'/%3E%3Cellipse cx='350' cy='620' rx='19' ry='26' fill='%239b59b6' transform='rotate(10 350 620)'/%3E%3Cline x1='350' y1='646' x2='354' y2='678' stroke='%239b59b6' stroke-width='1.5'/%3E%3Cellipse cx='200' cy='430' rx='17' ry='24' fill='%232ecc71' transform='rotate(-6 200 430)'/%3E%3Cline x1='200' y1='454' x2='197' y2='485' stroke='%232ecc71' stroke-width='1.5'/%3E%3Cellipse cx='470' cy='260' rx='20' ry='27' fill='%239b59b6' transform='rotate(9 470 260)'/%3E%3Cline x1='470' y1='287' x2='474' y2='318' stroke='%239b59b6' stroke-width='1.5'/%3E%3Crect x='160' y='140' width='8' height='3' rx='1' fill='%23e74c3c' transform='rotate(35 164 141)'/%3E%3Crect x='310' y='60' width='7' height='3' rx='1' fill='%23f39c12' transform='rotate(55 313 61)'/%3E%3Crect x='400' y='200' width='9' height='3' rx='1' fill='%239b59b6' transform='rotate(20 404 201)'/%3E%3Crect x='90' y='180' width='7' height='3' rx='1' fill='%232ecc71' transform='rotate(65 93 181)'/%3E%3Crect x='450' y='400' width='8' height='3' rx='1' fill='%233498db' transform='rotate(40 454 401)'/%3E%3Crect x='180' y='350' width='7' height='3' rx='1' fill='%23e74c3c' transform='rotate(70 183 351)'/%3E%3Crect x='480' y='30' width='8' height='3' rx='1' fill='%232ecc71' transform='rotate(25 484 31)'/%3E%3Crect x='20' y='320' width='9' height='3' rx='1' fill='%233498db' transform='rotate(50 24 321)'/%3E%3Crect x='330' y='500' width='7' height='3' rx='1' fill='%23f39c12' transform='rotate(15 333 501)'/%3E%3Crect x='110' y='520' width='8' height='3' rx='1' fill='%239b59b6' transform='rotate(45 114 521)'/%3E%3Crect x='250' y='300' width='8' height='3' rx='1' fill='%23e74c3c' transform='rotate(30 254 301)'/%3E%3Crect x='60' y='250' width='7' height='3' rx='1' fill='%23f39c12' transform='rotate(60 63 251)'/%3E%3Crect x='430' y='550' width='9' height='3' rx='1' fill='%232ecc71' transform='rotate(10 434 551)'/%3E%3Crect x='170' y='600' width='7' height='3' rx='1' fill='%233498db' transform='rotate(75 173 601)'/%3E%3Crect x='290' y='450' width='8' height='3' rx='1' fill='%239b59b6' transform='rotate(42 294 451)'/%3E%3Crect x='380' y='150' width='7' height='3' rx='1' fill='%23e74c3c' transform='rotate(58 383 151)'/%3E%3Crect x='140' y='480' width='9' height='3' rx='1' fill='%23f39c12' transform='rotate(22 144 481)'/%3E%3Crect x='480' y='650' width='8' height='3' rx='1' fill='%232ecc71' transform='rotate(48 484 651)'/%3E%3Crect x='30' y='100' width='7' height='3' rx='1' fill='%233498db' transform='rotate(68 33 101)'/%3E%3Crect x='220' y='550' width='8' height='3' rx='1' fill='%23e74c3c' transform='rotate(38 224 551)'/%3E%3Ccircle cx='190' cy='250' r='3' fill='%23f39c12'/%3E%3Ccircle cx='340' cy='280' r='2.5' fill='%23e74c3c'/%3E%3Ccircle cx='100' cy='400' r='3' fill='%239b59b6'/%3E%3Ccircle cx='430' cy='450' r='2.5' fill='%232ecc71'/%3E%3Ccircle cx='260' cy='130' r='3' fill='%233498db'/%3E%3Ccircle cx='50' cy='550' r='2.5' fill='%23e74c3c'/%3E%3Ccircle cx='310' cy='380' r='3' fill='%23f39c12'/%3E%3Ccircle cx='150' cy='660' r='2.5' fill='%232ecc71'/%3E%3Ccircle cx='410' cy='80' r='3' fill='%239b59b6'/%3E%3Ccircle cx='240' cy='500' r='2.5' fill='%233498db'/%3E%3Cpath d='M355 170 Q360 155 365 170 Q370 155 375 170' fill='none' stroke='%23e74c3c' stroke-width='1.5'/%3E%3Cpath d='M85 140 Q90 125 95 140 Q100 125 105 140' fill='none' stroke='%23f39c12' stroke-width='1.5'/%3E%3Cpath d='M200 330 Q205 315 210 330 Q215 315 220 330' fill='none' stroke='%239b59b6' stroke-width='1.5'/%3E%3Cpath d='M440 360 Q445 345 450 360 Q455 345 460 360' fill='none' stroke='%232ecc71' stroke-width='1.5'/%3E%3Cpath d='M25 480 Q30 465 35 480 Q40 465 45 480' fill='none' stroke='%233498db' stroke-width='1.5'/%3E%3Cpath d='M300 590 Q305 575 310 590 Q315 575 320 590' fill='none' stroke='%23e74c3c' stroke-width='1.5'/%3E%3Cpath d='M160 220 Q165 205 170 220 Q175 205 180 220' fill='none' stroke='%23f39c12' stroke-width='1.5'/%3E%3Cpolygon points='120,90 124,80 128,90 124,84' fill='%23f39c12'/%3E%3Cpolygon points='390,240 394,230 398,240 394,234' fill='%23e74c3c'/%3E%3Cpolygon points='250,400 254,390 258,400 254,394' fill='%232ecc71'/%3E%3Cpolygon points='60,360 64,350 68,360 64,354' fill='%239b59b6'/%3E%3Cpolygon points='460,580 464,570 468,580 464,574' fill='%233498db'/%3E%3Cpolygon points='320,50 324,40 328,50 324,44' fill='%232ecc71'/%3E%3C/g%3E%3C/svg%3E")
+    center / 500px 700px
+    #f8f9fb;
+}
+.game-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px 24px;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Balloon Area ───────────────────────────────────── */
+.balloon-area {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.balloon-visual {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.balloon-visual svg {
+  transition: width 0.15s ease;
+}
+.balloon-burst {
+  opacity: 0.3;
+  filter: grayscale(50%);
+}
+
+/* ── Balloon + String wrapper ─────────────────────── */
+.balloon-with-string {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.balloon-string {
+  margin-top: -2px;
+}
+
+/* ── Float-Up Animation (balloon + string together) ── */
+@keyframes balloon-float-up {
+  0%   { transform: translateY(0); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+.balloon-floating {
+  animation: balloon-float-up 0.9s ease-in forwards;
+}
+
+/* ── Pop Animation (replaces burst text) ──────────── */
+@keyframes balloon-pop {
+  0%   { transform: scale(1); opacity: 1; }
+  30%  { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.balloon-popping {
+  animation: balloon-pop 0.35s ease-out forwards;
+}
+
+.pop-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@keyframes pop-ring {
+  0%   { width: 10px; height: 10px; opacity: 0.8; }
+  100% { width: 180px; height: 180px; opacity: 0; }
+}
+.pop-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid rgba(53, 159, 254, 0.5);
+  transform: translate(-50%, -50%);
+  animation: pop-ring 0.6s ease-out forwards;
+}
+
+@keyframes pop-scatter {
+  0%   { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.4); opacity: 0; }
+}
+.pop-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pop-scatter 0.55s ease-out forwards;
+}
+.p1 { --dx:  90px; --dy: -50px; background: #e74c3c; }
+.p2 { --dx: -80px; --dy: -60px; background: #3498db; }
+.p3 { --dx:  70px; --dy:  55px; background: #f39c12; }
+.p4 { --dx: -60px; --dy:  70px; background: #2ecc71; }
+.p5 { --dx:  30px; --dy: -90px; background: #9b59b6; }
+.p6 { --dx: -40px; --dy: -80px; background: #e74c3c; }
+.p7 { --dx:  85px; --dy:  20px; background: #3498db; }
+.p8 { --dx: -90px; --dy:  10px; background: #f39c12; }
+
+/* ── Pump Handle (above pump button) ──────────────── */
+.pump-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.pump-handle {
+  display: block;
+  margin-bottom: -4px;
+  z-index: 1;
+  transition: transform 0.1s ease-out;
+}
+@keyframes pump-press {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(22px); }
+  100% { transform: translateY(0); }
+}
+.pump-handle.pump-pressed {
+  animation: pump-press 0.3s ease-in-out;
+}
+.pump-wrapper .btn-pump {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* ── Overlay (burst / game over) ────────────────────── */
+.balloon-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.balloon-overlay-text {
+  background: rgba(53, 159, 254, 0.9);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ── Current Pumps Indicator ────────────────────────── */
+.current-pumps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+}
+.current-pumps-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: #359FFE;
+  line-height: 1;
+}
+.current-pumps-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ── Action Buttons ─────────────────────────────────── */
+.action-buttons {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+.btn-pump, .btn-collect {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.btn-pump {
+  padding: 16px 12px;
+  background: #359FFE;
+  color: #fff;
+}
+.btn-pump:hover:not(:disabled) {
+  background: #218BEA;
+}
+.btn-collect {
+  padding: 16px 12px;
+  background: #27AE60;
+  color: #fff;
+}
+.btn-collect:hover:not(:disabled) {
+  background: #1E8E4E;
+}
+.btn-pump:disabled, .btn-collect:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Instruction Modal ──────────────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ── Questionnaire Modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .game-container {
+    padding: 0 12px 16px;
+  }
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .current-pumps-value {
+    font-size: 28px;
+  }
+  .btn-pump, .btn-collect {
+    font-size: 14px;
+    padding: 14px 8px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}

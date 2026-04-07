@@ -1,28 +1,31 @@
-/**
- * @file   index.tsx
- * @brief  Intial component for the react app
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
- */
-import React from "react"
-import ReactDOM from "react-dom"
-import { AppContainer } from "react-hot-loader"
-import ScratchImage from './components/ScratchImage'
-import './index.css';
-   
-const eventMethod = typeof window.addEventListener !== "undefined" ? "addEventListener" : "attachEvent"
-const eventer = window[eventMethod]
-const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message"
-eventer(
-    messageEvent, (e:any) => {
-		ReactDOM.render(
-  <AppContainer>
-    <ScratchImage  data={e.data}/>
-  </AppContainer>,  
-  document.getElementById('root') as HTMLElement
-  );
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { createRoot } from "react-dom/client";
+import Board from "./components/Board";
+import "./index.css";
+
+let root: ReturnType<typeof createRoot> | null = null;
+
+window.addEventListener(
+  "message",
+  (e: any) => {
+    const data = e.data;
+    if (
+      !data ||
+      typeof data !== "object" ||
+      (!data.configuration && !data.activity && !data.settings)
+    ) {
+      return;
+    }
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Board data={data} />);
+    }
   },
   false
-)
-
+);

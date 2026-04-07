@@ -421,11 +421,22 @@ class Board extends React.Component<BoardProps, BoardState> {
           }
         });
 
+        // Compute correct sequential render indexes from final bubble colors
+        const finalGoIdxs: any = [];
+        const finalNoGoIdxs: any = [];
+        for (let idx = 0; idx < this.props.bubbleCount; idx++) {
+          if (goArray.includes(goNewArray[idx])) {
+            finalGoIdxs.push(idx);
+          } else if (goNewArray[idx]) {
+            finalNoGoIdxs.push(idx);
+          }
+        }
+        this.totalGoCount = finalGoIdxs.length;
         setTimeout(() => {
           this.setState({
-            goIndexes: copyNewGoArrayIndx,
-            noGoArray: noGoDataIndxArr,
-            noGoIndexes: noGoDataIndxArr,
+            goIndexes: finalGoIdxs,
+            noGoArray: finalNoGoIdxs,
+            noGoIndexes: finalNoGoIdxs,
           });
         }, 10);
         randomArray = goNewArray;
@@ -662,13 +673,17 @@ class Board extends React.Component<BoardProps, BoardState> {
           }
         });
 
+        // Filter indexes to valid render range (0..bubbleCount-1)
+        const validGoIndexesL2 = copyNewGoIndexes.filter((v: number) => v >= 0 && v < this.props.bubbleCount);
+        const validNoGoIndexesL2 = arrayInx.filter((v: number) => v >= 0 && v < this.props.bubbleCount);
+        this.totalGoCount = validGoIndexesL2.length;
         setTimeout(() => {
           this.setState({
-            goIndexes: copyNewGoIndexes,
-            noGoConstantArray: constNoGoArrIndx,
-            noGoIndexes: arrayInx,
-            noGoLureArray: lureArrIndx,
-            noGoTwoInRowArray: twoInRowArrIndx,
+            goIndexes: validGoIndexesL2,
+            noGoConstantArray: constNoGoArrIndx.filter((v: number) => v >= 0 && v < this.props.bubbleCount),
+            noGoIndexes: validNoGoIndexesL2,
+            noGoLureArray: lureArrIndx.filter((v: number) => v >= 0 && v < this.props.bubbleCount),
+            noGoTwoInRowArray: twoInRowArrIndx.filter((v: number) => v >= 0 && v < this.props.bubbleCount),
           });
         }, 10);
 
@@ -884,12 +899,16 @@ class Board extends React.Component<BoardProps, BoardState> {
           }
         });
 
+        // Filter indexes to valid render range (0..bubbleCount-1)
+        const validGoIndexesL3 = copyNewGoArrayIndexes.filter((v: number) => v >= 0 && v < this.props.bubbleCount);
+        const validNoGoIndexesL3 = arrayIndx.filter((v: number) => v >= 0 && v < this.props.bubbleCount);
+        this.totalGoCount = validGoIndexesL3.length;
         setTimeout(() => {
           this.setState({
-            goIndexes: copyNewGoArrayIndexes,
-            noGoConstantArray: constNoGoArrIndxes,
-            noGoIndexes: arrayIndx,
-            noGoTwoInRowArray: twoInRowIndxArr,
+            goIndexes: validGoIndexesL3,
+            noGoConstantArray: constNoGoArrIndxes.filter((v: number) => v >= 0 && v < this.props.bubbleCount),
+            noGoIndexes: validNoGoIndexesL3,
+            noGoTwoInRowArray: twoInRowIndxArr.filter((v: number) => v >= 0 && v < this.props.bubbleCount),
           });
         }, 10);
 

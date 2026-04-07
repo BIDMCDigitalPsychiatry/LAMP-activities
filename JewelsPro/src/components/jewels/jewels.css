@@ -1,315 +1,405 @@
 /**
  * @file   jewels.css
- * @brief  style sheet for jewels game
- * @date   Feb , 2020
- * @author ZCO Engineer
- * @copyright (c) 2020, ZCO
+ * @brief  Styles for JewelsPro activity (D-Cog pattern)
  */
-:root {
-  --square-size: 84px;
-  --square-font-size: 72px;
-}
 
-nav a {
-  color: rgba(53, 159, 254, 1);
-  padding: 10px;
-  display: inline-block;
-}
-.App {
-  padding-top: 2em;
-  text-align: center;
-}
-.App-logo {
-  -webkit-animation: App-logo-spin infinite 20s linear;
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-.info-text {
-  padding: 5px;
-}
-.jewel-info div {
-  display: inline-block;
-  /* margin-top: -1%; */
-}
-.App-header {
-  height: 90px;
-  padding: 20px;
-  color: #fff;
-}
-.App-intro {
-  font-size: large;
-}
-.diamond-style {
-  background-position: center;
-  background-size: contain;
-  width: 32px;
-  height: 32px;
-  background-repeat: no-repeat;
-  text-align: center;
-
-  font-size: 20px;
-}
-.number-text {
-  font-size: 20px;
-  color: white;
-  line-height: 43px;
-}
-.jewel-info {
-  text-align: center;
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  padding: 7px;
-  background-color: #fff;
-  color: black;
-  height: 55px;
-}
-
-.jewel-info .diamond-style {
-  display: inline-block;
-}
-
-.game-over {
-  color: cornsilk;
-  text-align: center;
-}
-
-.game-table {
-  position: fixed;
-  top: 70px;
-  width: 100%;
-  bottom: 110px;
-}
-@media only screen and (max-width: 460px) {
-  .game-table {
-    top: 220px;
-  }
-}
-.negative-points {
-  padding: 5px;
-  background-color: red;
-  color: white;
-  width: 33px;
-  font-size: 12px;
-  border-radius: 11px;
-  text-align: center;
-  position: absolute;
-  margin-left: 100px;
-  margin-top: -8px;
-  /* margin: 0 auto;
-	margin-left: 5px;
-	position: absolute;
-    left: 57%; */
-}
-.footer-cls {
-  margin-top: 10px;
-}
-.modal-body-section {
-  padding: 15px !important;
-  margin-bottom: 10px;
-  font-size: 18px;
-}
-
-.footer-cls button {
-  font-size: 14px;
-}
-
+/* ===== Header ===== */
 .heading {
-  color: rgba(53, 159, 254, 1);
-  padding: 15px 15px 15px 65px;
-  background: #fff;
   display: flex;
   align-items: center;
-}
-
-.home-link {
-  background: #f4f4f4;
-  width: 40px;
-  height: 40px;
-  padding: 11px 12px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  z-index: 999;
-  cursor: pointer;
-}
-.header-right-nav {
-  position: absolute;
-  top: 6px;
-  right: 10px;
-  display: flex;
-}
-.home-link-forward {
-  background: #f4f4f4;
-  width: 40px;
-  height: 40px;
-  padding: 11px 12px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  z-index: 999;
-  cursor: pointer;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
   position: relative;
 }
 .back-link {
   position: absolute;
-  left: 10px;
-  top: 6px;
-  background: #f4f4f4;
-  width: 40px;
-  height: 40px;
-  padding: 11px 12px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  z-index: 999;
+  left: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
   cursor: pointer;
+  z-index: 10;
+}
+.home-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+.home-link-forward {
+  position: absolute;
+  right: 48px;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
 }
 
-.forward-link {
-  position: relative;
-  background: #f4f4f4;
-  width: 40px;
-  height: 40px;
-  padding: 11px 12px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  z-index: 999;
-  cursor: pointer;
-  margin-left: 10px;
+/* ===== Game Shell (vertical centering) ===== */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-@-webkit-keyframes App-logo-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
+
+/* ===== Status Bar (timer + level) ===== */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
 }
-@keyframes App-logo-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
-}
-body {
-  font: 18px Helvetica, Arial, sans-serif;
-  margin: 30px;
-}
-ol,
-ul {
-  padding-left: 30px;
-}
-.status {
-  margin-bottom: 10px;
-}
-.square {
-  background: #fff;
-  border: 1.7px solid #000;
-  float: left;
-  font-size: var(--square-font-size);
+.timer-display {
+  font-size: 22px;
   font-weight: 700;
-  line-height: var(--square-size);
-  height: var(--square-size);
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
+  color: #1a1a2e;
+  font-variant-numeric: tabular-nums;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 16px;
+  border-radius: 12px;
+  min-width: 72px;
+  text-align: center;
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ===== Game Board ===== */
+.game-board-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background-color 0.5s ease;
+}
+
+.game-table {
+  flex: 1;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.game-table td {
   text-align: center;
   vertical-align: middle;
-  width: var(--square-size);
-  margin-bottom: 0;
-  border-radius: 0;
+  padding: 2px;
 }
-.board-row:first-child > .square {
-  border-top: none;
-}
-.board-row:last-child > .square {
-  border-bottom: none;
-}
-.board-row > .square:first-child {
-  border-left: none;
-}
-.board-row > .square:last-child {
-  border-right: none;
-}
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-.game {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
-.board-row,
-.game {
-  display: -webkit-box;
-  display: -ms-flexbox;
+
+/* ===== Shape Guide (trails_b) ===== */
+.shape-guide {
   display: flex;
-}
-.board-row {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #e0e0e0;
 }
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+.shape-guide-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
 }
-.game-info {
-  margin-bottom: 1em;
+.shape-guide-gem {
+  transform: scale(0.8);
 }
-.controls {
-  padding: 2em;
+
+/* ===== Diamond Styles ===== */
+.diamond-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.winner {
-  -webkit-animation: blinker 1s linear infinite;
-  animation: blinker 1s linear infinite;
-  color: green !important;
+.diamond-wrapper:active {
+  transform: scale(0.9);
 }
-.modal-content {
-  position: static;
-  width: 600px;
-  left: 300px;
+.number-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  line-height: 1;
 }
-.btn-primary {
-  background: none;
-  color: #007bff;
-  border: none;
+
+
+/* ===== Negative Points ===== */
+.negative-points {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 20px;
+  text-align: center;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
 }
-.btn-outline-secondary {
-  background: none;
-  color: #007bff;
-  border: none;
-}
-.modal-title {
-  border: none;
-}
-.modal-header {
+
+
+/* ===== Instruction Modal (D-Cog pattern) ===== */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
   border-bottom: none;
-  height: 30px;
+  padding: 16px 20px;
 }
-.modal-footer {
+.instruction-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.instruction-modal-footer {
   border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
 }
-.modal-body {
-  height: 40px;
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+  color: #fff;
 }
-@-webkit-keyframes blinker {
-  50% {
-    opacity: 0;
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+
+/* ===== Confirm Modal ===== */
+.confirm-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.confirm-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.confirm-modal-body {
+  padding: 24px 20px !important;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+.confirm-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+  gap: 12px;
+}
+.confirm-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 100px;
+  color: #fff;
+}
+.confirm-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.confirm-modal-btn.secondary {
+  background: #999;
+}
+.confirm-modal-btn.secondary:hover {
+  background: #777;
+}
+
+/* ===== Questionnaire Modal (D-Cog pattern) ===== */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-faces .btn {
+  margin-right: 0;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+  color: #fff;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+  margin-right: 15px;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Timeout Flash Overlay ===== */
+.timeout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+.timeout-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 48px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: timeoutPop 0.3s ease-out;
+}
+@keyframes overlayFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes timeoutPop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 500px) {
+  .timer-display {
+    font-size: 16px;
   }
-}
-@keyframes blinker {
-  50% {
-    opacity: 0;
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .number-text {
+    font-size: 13px;
+  }
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
   }
 }
 
+/* ===== Diamond Shape & Color Definitions ===== */
+/* Preserved from original — inline SVG data URIs for 8 shapes × 8 colors */
 .diamond-disable {
   opacity: 0.5;
 }
@@ -584,117 +674,4 @@ ul {
 }
 .diamond-08-brown {
   background-position: -395px -2px;
-}
-svg.svg-inline--fa.fa-redo.fa-w-16 {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
-  z-index: 9999;
-}
-svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
-  color: rgba(53, 159, 254, 1);
-}
-.countdown-timer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 60px;
-  top: 11px;
-}
-.countdown-timer-forward {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 60px;
-  top: 11px;
-}
-.countdown-timer__text {
-  color: rgba(53, 159, 254, 1) !important;
-  display: flex;
-  text-align: center;
-  color: #fff;
-  font-size: 14px;
-  min-height: 25px;
-  align-items: center;
-  padding: 5px 15px;
-}
-.headerTitleIcon {
-  background: none !important;
-  box-shadow: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  color: #ccc !important;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-left: 8px !important;
-}
-.headerTitleIcon .material-icons {
-  font-size: 2rem;
-  color: #666;
-}
-.headerTitleIcon svg {
-  width: 20px;
-  height: 20px;
-}
-.header-with-icon {
-  display: flex;
-  align-items: center;
-}
-.headerTitleIcon:hover {
-  background: #f4f4f4 !important;
-}
-.headerTitleIcon.active .material-icons {
-  color: #e3b303 !important;
-}
-
-@media only screen and (max-width: 460px) {
-  /* .countdown-timer__text {
-    position: fixed;
-    left: 50px;
-    top: 13px;
-  } */
-
-  .footer-cls {
-    margin-top: 30px;
-  }
-}
-@media only screen and (min-width: 1000px) {
-  .modal-content {
-    margin-left: 20%;
-  }
-
-}
-@media only screen and (min-width: 768px) {
-    .heading {
-    justify-content: center;
-  }
-}
-.level {
-  background-color: #f4f4f4;
-  color: rgba(53, 159, 254, 1);
-  padding: 5px 10px;
-  border-radius: 15px;
-  white-space: nowrap;
-  font-size: 16px;
-}
-.instruction1 {
-  background-color: white;
-  color: rgba(53, 159, 254, 1);
-  margin: 0 auto;
-  padding-bottom: 10px;
-  font-size: 15px;
-  text-align: center;
-}
-.instruction2 {
-  background-color: white;
-  text-align: center;
-  font-size: 15px;
-}
-.instruction2 p {
-  color: rgba(53, 159, 254, 1);
-  width: 75%;
-  margin: 0 auto;
-  padding-bottom: 10px;
 }

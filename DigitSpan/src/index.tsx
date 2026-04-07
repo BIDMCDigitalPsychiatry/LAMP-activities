@@ -1,27 +1,31 @@
 /**
  * @file   index.tsx
- * @brief  Intial component for the react app
+ * @brief  Initial component for the react app
  * @date   Feb , 2020
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-import React from "react"
-import ReactDOM from "react-dom"
-import { AppContainer } from "react-hot-loader"
-import Board from './components/Board'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import * as React from 'react';
+import Board from './components/Board';
 import './index.css';
-import "material-icons"
-const eventer = window.addEventListener
-const messageEvent = "message"
-eventer(
-  messageEvent, (e:any) => {    
-		ReactDOM.render(
-      <AppContainer>
-        <Board data={e.data}/> 
-      </AppContainer>
-      , 		  
-		  document.getElementById("root")
-		);
+import { createRoot } from "react-dom/client";
+
+let root: ReturnType<typeof createRoot> | null = null;
+
+window.addEventListener(
+  "message", (e: any) => {
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Board data={e.data} />);
+    }
   },
   false
- )
+);

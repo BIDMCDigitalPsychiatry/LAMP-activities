@@ -5,156 +5,221 @@ const resources = {
   "da-DK": {
     translation: {
       CONGRATS: "Tillykke",
-      CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      CONTINUE: "Vil du fortsætte til næste niveau?",
+      GAME: "Smykker",
+      GAME_OVER: "Spil slut",
       JEWELS: "Smykker",
-      No: "Ingen",
-      TIMEOUT: "Tiden er udl\u00f8bet",
+      LEVEL: "Niveau",
+      No: "Nej",
+      TIMEOUT: "Tiden er udløbet!",
       Yes: "Ja",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      Instructions: "Instruktioner",
+      Start: "Start",
+      Questionnaire: "Spørgeskema",
+      Submit: "Indsend",
+      "How clear were the instructions?": "Hvor klare var instruktionerne?",
+      "How happy would you be to do this again?": "Hvor glad ville du være for at gøre dette igen?",
+      INSTRUCTIONS_A: "Tryk på juvelerne i nummerrækkefølge, startende med nummer 1.",
+      INSTRUCTIONS_B: "Se på bunden af skærmen for at se, hvilken juvel du skal samle først. Tryk nummer 1 af den form, derefter nummer 1 af den næste form. Fortsæt med at skifte mellem former i nummerrækkefølge.",
     },
-  },"de-DE": {
+  },
+  "de-DE": {
     translation: {
-      CONGRATS: "Gl\u00fcckwunsch",
-      CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      CONGRATS: "Glückwunsch",
+      CONTINUE: "Möchten Sie zum nächsten Level fortfahren?",
+      GAME: "Juwelen",
+      GAME_OVER: "Spiel vorbei",
       JEWELS: "Juwelen",
+      LEVEL: "Stufe",
       No: "Nein",
-      TIMEOUT: "Zeit abgelaufen",
+      TIMEOUT: "Zeit abgelaufen!",
       Yes: "Ja",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      Instructions: "Anweisungen",
+      Start: "Start",
+      Questionnaire: "Fragebogen",
+      Submit: "Absenden",
+      "How clear were the instructions?": "Wie klar waren die Anweisungen?",
+      "How happy would you be to do this again?": "Wie gerne würden Sie dies erneut tun?",
+      INSTRUCTIONS_A: "Tippen Sie die Juwelen in numerischer Reihenfolge an, beginnend mit Nummer 1.",
+      INSTRUCTIONS_B: "Schauen Sie auf den unteren Bildschirmrand, um zu sehen, welchen Juwel Sie zuerst sammeln sollen. Tippen Sie Nummer 1 dieser Form an, dann Nummer 1 der nächsten Form. Wechseln Sie weiterhin zwischen den Formen in numerischer Reihenfolge.",
     },
-  },"en-US": {
+  },
+  "en-US": {
     translation: {
       CONGRATS: "Congrats",
       CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      GAME: "Jewels",
+      GAME_OVER: "Game Over",
       JEWELS: "Jewels",
+      LEVEL: "Level",
       No: "No",
-      TIMEOUT: "Timeout",
+      TIMEOUT: "Time's up!",
       Yes: "Yes",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      Instructions: "Instructions",
+      Start: "Start",
+      Questionnaire: "Questionnaire",
+      Submit: "Submit",
+      "How clear were the instructions?": "How clear were the instructions?",
+      "How happy would you be to do this again?": "How happy would you be to do this again?",
+      INSTRUCTIONS_A: "Tap the jewels in numeric order, starting with number 1.",
+      INSTRUCTIONS_B: "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape, then number 1 of the next shape. Keep alternating shapes in numeric order.",
     },
-  }, "es-ES": {
+  },
+  "es-ES": {
     translation: {
       CONGRATS: "Felicidades",
       CONTINUE: "¿Quieres continuar al siguiente nivel?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "¿Quieres guardar los resultados de tu juego antes de continuar?",
+      GAME: "Joyas",
+      GAME_OVER: "Juego terminado",
       JEWELS: "Joyas",
+      LEVEL: "Nivel",
       No: "No",
-      TIMEOUT: "el tiempo muerto",
-      Yes: "SÌ",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      TIMEOUT: "¡Se acabó el tiempo!",
+      Yes: "Sí",
+      Instructions: "Instrucciones",
+      Start: "Comenzar",
+      Questionnaire: "Cuestionario",
+      Submit: "Enviar",
+      "How clear were the instructions?": "¿Qué tan claras fueron las instrucciones?",
+      "How happy would you be to do this again?": "¿Qué tan contento estarías de hacerlo de nuevo?",
+      INSTRUCTIONS_A: "Toca las joyas en orden numérico, comenzando con el número 1.",
+      INSTRUCTIONS_B: "Mira la parte inferior de la pantalla para ver qué joya recoger primero. Toca el número 1 de esa forma, luego el número 1 de la siguiente forma. Sigue alternando las formas en orden numérico.",
     },
-  }, "fr-FR": {
+  },
+  "fr-FR": {
     translation: {
       CONGRATS: "Bravo\u2009!",
-      CONTINUE: "Voulez-vous continuer au niveau suivant ?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "\u202fBijoux",
-      No:"Non",
-      TIMEOUT: "Timeout",
+      CONTINUE: "Voulez-vous continuer au niveau suivant ?",
+      GAME: "Bijoux",
+      GAME_OVER: "Jeu terminé",
+      JEWELS: "Bijoux",
+      LEVEL: "Niveau",
+      No: "Non",
+      TIMEOUT: "Temps écoulé !",
       Yes: "Oui",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
-
+      Instructions: "Instructions",
+      Start: "Commencer",
+      Questionnaire: "Questionnaire",
+      Submit: "Envoyer",
+      "How clear were the instructions?": "Les instructions étaient-elles claires ?",
+      "How happy would you be to do this again?": "Seriez-vous content de refaire cela ?",
+      INSTRUCTIONS_A: "Appuyez sur les bijoux dans l'ordre numérique, en commençant par le numéro 1.",
+      INSTRUCTIONS_B: "Regardez en bas de l'écran pour voir quel bijou collecter en premier. Appuyez sur le numéro 1 de cette forme, puis le numéro 1 de la forme suivante. Continuez à alterner les formes dans l'ordre numérique.",
     },
-  }, "hi-IN": {
+  },
+  "hi-IN": {
     translation: {
       CONGRATS: "बधाई हो",
       CONTINUE: "क्या आप अगले स्तर तक जारी रखना चाहते हैं?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "क्या आप आगे बढ़ने से पहले अपने गेम के परिणाम सहेजना चाहते हैं?",
+      GAME: "गहने",
+      GAME_OVER: "खेल खत्म",
       JEWELS: "गहने",
-      No: "नहीं",
-      TIMEOUT: "समय समाप्त",
-      Yes: "हाँ",
-      Jewels_A: "जवाहरात-A",
-      BEGIN: "शरू करें",
-      LEVEL_1: "स्तर 1",
-      LEVEL_2: "स्तर 2",
-      DO_YOU_WANT_TO_CONTINUE_TO_NEXT_LEVEL: "क्या आप अगले स्तर तक जारी रखना चाहते हैं?",
-      Jewels_B: "जवाहरात B",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED: 
-        "स्क्रीन के नीचे देखें कि सबसे पहले कौन सा जवाहरात जमा करना है। उस आकार के नंबर 1 को दबाए  और फिर  दूसरे आकार  के नंबर 1 को दबाए । इसी क्रम में जवाहरात पैटर्न को संख्या  एक से जमा करना शुरू करें और तब तक जमा करें जब तक उस संख्या के सारे जावाहरात जमा न हो ।",
-      DO_YOU_WANT_TO_MOVE_TO_THE_NEXT_LEVEL: "क्या आप अगले स्तर पर जाना चाहते हैं?",
       LEVEL: "स्तर",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "संख्या 1 से शुरू करके, संख्यात्मक क्रम में गहनों पर टैप करें" 
+      No: "नहीं",
+      TIMEOUT: "समय समाप्त!",
+      Yes: "हाँ",
+      Instructions: "निर्देश",
+      Start: "शुरू करें",
+      Questionnaire: "प्रश्नावली",
+      Submit: "जमा करें",
+      "How clear were the instructions?": "निर्देश कितने स्पष्ट थे?",
+      "How happy would you be to do this again?": "आप इसे दोबारा करने में कितने खुश होंगे?",
+      INSTRUCTIONS_A: "संख्या 1 से शुरू करके, संख्यात्मक क्रम में गहनों पर टैप करें।",
+      INSTRUCTIONS_B: "स्क्रीन के नीचे देखें कि सबसे पहले कौन सा गहना जमा करना है। उस आकार के नंबर 1 पर टैप करें, फिर अगले आकार के नंबर 1 पर टैप करें। संख्यात्मक क्रम में आकारों के बीच बदलते रहें।",
     },
-  },"it-IT": {
+  },
+  "it-IT": {
     translation: {
       CONGRATS: "Congratulazioni",
-      CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      CONTINUE: "Vuoi continuare al prossimo livello?",
+      GAME: "Gioielli",
+      GAME_OVER: "Fine del gioco",
       JEWELS: "Gioielli",
-      No : "NO",
-      TIMEOUT: "Tempo scaduto",
-      Yes: "SÌ",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      LEVEL: "Livello",
+      No: "No",
+      TIMEOUT: "Tempo scaduto!",
+      Yes: "Sì",
+      Instructions: "Istruzioni",
+      Start: "Inizia",
+      Questionnaire: "Questionario",
+      Submit: "Invia",
+      "How clear were the instructions?": "Quanto erano chiare le istruzioni?",
+      "How happy would you be to do this again?": "Quanto saresti felice di rifarlo?",
+      INSTRUCTIONS_A: "Tocca i gioielli in ordine numerico, iniziando dal numero 1.",
+      INSTRUCTIONS_B: "Guarda in fondo allo schermo per vedere quale gioiello raccogliere per primo. Tocca il numero 1 di quella forma, poi il numero 1 della forma successiva. Continua ad alternare le forme in ordine numerico.",
     },
-  },"ko-KR": {
+  },
+  "ko-KR": {
     translation: {
-      CONGRATS: "\ucd95\ud558\ud574\uc694",
-      CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-      JEWELS: "\ubcf4\uc11d\ub4e4",
-      No: "\uc544\ub2c8\uc694",
-      TIMEOUT: "\uc2dc\uac04 \uc885\ub8cc",
-      Yes: "\uc608",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      CONGRATS: "축하해요",
+      CONTINUE: "다음 레벨로 계속하시겠습니까?",
+      GAME: "보석",
+      GAME_OVER: "게임 끝",
+      JEWELS: "보석",
+      LEVEL: "레벨",
+      No: "아니요",
+      TIMEOUT: "시간 종료!",
+      Yes: "예",
+      Instructions: "지침",
+      Start: "시작",
+      Questionnaire: "설문지",
+      Submit: "제출",
+      "How clear were the instructions?": "지침이 얼마나 명확했습니까?",
+      "How happy would you be to do this again?": "이것을 다시 하면 얼마나 기쁘시겠습니까?",
+      INSTRUCTIONS_A: "번호 1부터 시작하여 숫자 순서대로 보석을 탭하세요.",
+      INSTRUCTIONS_B: "화면 하단을 보고 어떤 보석을 먼저 수집할지 확인하세요. 해당 모양의 번호 1을 탭한 다음, 다음 모양의 번호 1을 탭하세요. 숫자 순서대로 모양을 번갈아 가며 계속하세요.",
     },
-  },  "zh-CN": {
+  },
+  "zh-CN": {
     translation: {
       CONGRATS: "恭喜！",
-      CONTINUE: "Do you want to continue to next level?",
-      DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
+      CONTINUE: "您要继续到下一个级别吗？",
+      GAME: "珠宝",
+      GAME_OVER: "游戏结束",
       JEWELS: "珠宝",
+      LEVEL: "级别",
       No: "否",
-      TIMEOUT:  "超时",
+      TIMEOUT: "时间到！",
       Yes: "是",
-      TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-      LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
+      Instructions: "说明",
+      Start: "开始",
+      Questionnaire: "问卷调查",
+      Submit: "提交",
+      "How clear were the instructions?": "说明有多清楚？",
+      "How happy would you be to do this again?": "您再做一次会有多高兴？",
+      INSTRUCTIONS_A: "从数字1开始，按数字顺序点击宝石。",
+      INSTRUCTIONS_B: "看屏幕底部，找到首先要收集的宝石。点击该形状的数字1，然后点击下一个形状的数字1。按数字顺序交替切换形状。",
     },
   },
-    "zh-HK": {
-      translation: {
-        CONGRATS: "恭喜！",
-        CONTINUE: "Do you want to continue to next level?",
-        DO_YOU_WANT_TO_SAVE_YOUR_GAME_RESULTS_BEFORE_PROCEEDING: "Do you want to save your game results before proceeding?",
-        JEWELS: "珠寶",
-        No: "否",
-        TIMEOUT: "超時",
-        Yes: "是",
-        TAP_THE_JEWELS_IN_NUMERIC_ORDER_STARTING_WITH_NUMBER_1: "Tap the jewels in numeric order starting with number 1",
-        LOOK_AT_THE_BOTTOM_OF_THE_SCREEN_TO_SEE_WHICH_JEWEL_TO_COLLECT_FIRST_TAP_NUMBER_1_OF_THAT_SHAPE_AND_THEN_NUMBER_1_OF_THE_SECOND_SHAPE_CONTINUE_ALTERNATING_THE_JEWEL_PATTERN_IN_CHRONOLOGICAL_ORDER_UNTIL_ALL_OF_THE_JEWELS_HAVE_BEEN_COLLECTED:
-        "Look at the bottom of the screen to see which jewel to collect first. Tap number 1 of that shape and then number 1 of the second shape. Continue alternating the jewel pattern in chronological order until all of the jewels have been collected"
-      },
+  "zh-HK": {
+    translation: {
+      CONGRATS: "恭喜！",
+      CONTINUE: "您要繼續到下一個級別嗎？",
+      GAME: "珠寶",
+      GAME_OVER: "遊戲結束",
+      JEWELS: "珠寶",
+      LEVEL: "級別",
+      No: "否",
+      TIMEOUT: "時間到！",
+      Yes: "是",
+      Instructions: "說明",
+      Start: "開始",
+      Questionnaire: "問卷調查",
+      Submit: "提交",
+      "How clear were the instructions?": "說明有多清楚？",
+      "How happy would you be to do this again?": "您再做一次會有多高興？",
+      INSTRUCTIONS_A: "從數字1開始，按數字順序點擊寶石。",
+      INSTRUCTIONS_B: "看螢幕底部，找到首先要收集的寶石。點擊該形狀的數字1，然後點擊下一個形狀的數字1。按數字順序交替切換形狀。",
+    },
   },
-
-  
 };
 
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    interpolation: {
-      escapeValue: false,
-    },
-    keySeparator: false,
-    resources,
-  });
+i18n.use(initReactI18next).init({
+  interpolation: {
+    escapeValue: false,
+  },
+  keySeparator: false,
+  resources,
+});
 
 export default i18n;

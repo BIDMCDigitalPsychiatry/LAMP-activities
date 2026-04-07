@@ -1,62 +1,31 @@
-// Core Imports
-import React from "react"
-import {
-    makeStyles,
-    Grid,
-    ListItem,
-} from "@material-ui/core"
+import React from "react";
 
-const useStyles = makeStyles((theme) => ({
+interface BoxProps {
+  data?: Array<string>;
+  currentSymbol?: string;
+  className?: string;
+}
 
-    box: {
-        margin: "10px",
-        border: "3px solid white",
-        textAlign: "center",
-        color: "white",
-        borderRadius: 10,
-        [theme.breakpoints.down('md')]: {
-            margin: "5px",
-        },
-        "& li": {
-            fontSize: 22,
-            justifyContent: "center"
-        },
-
-    },
-
-    divider: {
-        borderTop: "2px solid white",
-        margin: "3px 0",
-    },
-    btnstyle: {
-        width: 50,
-        height: 50,
-        border: "#fff solid 1px",
-        borderRadius: 50,
-        '&:hover': {
-            color: 'black',
-        },
-    },
-
-}))
-
-export default function Box({ ...props }) {
-
-    const classes = useStyles()
+export default function Box({ data, currentSymbol, className }: BoxProps) {
+  if (data) {
+    // Legend mode: show symbol-to-number mapping
     return (
-        <Grid container className={props.className}>
-            {!!props?.data ? props?.data.map((value: any, index: number) => (
-                <Grid className={props.boxClass} item xs={2} sm={2} md={1} key={index}>
-                    <ListItem>{value}</ListItem>
-                    <div className={classes.divider} />
-                    <ListItem>{index + 1}</ListItem>
-                </Grid>
-            )) : (
-            <Grid className={props.boxClass} item xs={2} sm={2} md={1} >
-                <ListItem>{props?.currentSymbol}</ListItem>
-            </Grid>
-            )}
-        </Grid>
+      <div className={`sdst-legend ${className || ""}`}>
+        {data.map((value: string, index: number) => (
+          <div className="sdst-legend-cell" key={index}>
+            <div className="sdst-legend-symbol">{value}</div>
+            <div className="sdst-legend-divider" />
+            <div className="sdst-legend-number">{index + 1}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-    )
+  // Single symbol display mode
+  return (
+    <div className={`sdst-current-symbol ${className || ""}`}>
+      <div className="sdst-symbol-card">{currentSymbol}</div>
+    </div>
+  );
 }
