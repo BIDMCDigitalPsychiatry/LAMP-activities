@@ -59,6 +59,7 @@ export default function SymbolDigitSubstitution({ ...props }) {
     setCurrentSymbol(symbols[randomIndex]);
     setCurrentNumber(randomIndex + 1);
     setDisplayedSymbol((prevHistory) => [...prevHistory, symbols[randomIndex]]);
+    setClickedIndex(-1);
   };
 
   const getRandomNumber = (): number => {
