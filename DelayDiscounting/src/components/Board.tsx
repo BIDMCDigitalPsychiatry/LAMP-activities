@@ -335,7 +335,7 @@ const Board: React.FC<Props> = ({ data }) => {
       };
 
       setPhase("done");
-      parent.postMessage(payload, "*");
+      parent.postMessage(JSON.stringify(payload), "*");
     },
     [delays, delayedAmount, trialsPerDelay, totalTrials]
   );
@@ -355,7 +355,7 @@ const Board: React.FC<Props> = ({ data }) => {
       <div className="heading">
         <span
           className="back-link"
-          onClick={() => parent.postMessage({ abort: true }, "*")}
+          onClick={() => parent.postMessage(JSON.stringify({ timestamp: new Date().getTime(), clickBack: true }), "*")}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
@@ -365,7 +365,7 @@ const Board: React.FC<Props> = ({ data }) => {
         </span>
         <span
           className="home-link"
-          onClick={() => parent.postMessage({ abort: true }, "*")}
+          onClick={() => parent.postMessage(JSON.stringify({ timestamp: new Date().getTime(), clickBack: true }), "*")}
         >
           <FontAwesomeIcon icon={faHome} />
         </span>
