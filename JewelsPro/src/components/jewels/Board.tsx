@@ -287,7 +287,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
     if (status === true) {
       this.sendGameResult(2);
     } else {
-      this.sendGameResult(1);
+      this.sendGameResult(2); // User declined — normal end, not timeout
     }
     this.setState({ showConfirmModal: false });
   };
