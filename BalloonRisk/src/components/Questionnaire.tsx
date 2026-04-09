@@ -64,7 +64,7 @@ export class Questionnaire extends React.Component<Props, State> {
               {i18n.t("How clear were the instructions?")}
             </div>
             <div className="smileynav questionnaire-faces">
-              {[5, 4, 3, 2, 1].map((n) => {
+              {[1, 2, 3, 4, 5].map((n) => {
                 const Star = [Star1, Star2, Star3, Star4, Star5][n - 1];
                 return (
                   <Button
@@ -83,7 +83,7 @@ export class Questionnaire extends React.Component<Props, State> {
               {i18n.t("How happy would you be to do this again?")}
             </div>
             <div className="smileynav questionnaire-faces">
-              {[5, 4, 3, 2, 1].map((n) => {
+              {[1, 2, 3, 4, 5].map((n) => {
                 const Star = [Star1, Star2, Star3, Star4, Star5][n - 1];
                 return (
                   <Button
