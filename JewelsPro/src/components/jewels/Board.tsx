@@ -285,9 +285,9 @@ class Board extends React.Component<BoardProps, DiamondState> {
 
   handleConfirmClose = (status: boolean, pointVal: number) => {
     if (status === true) {
-      this.sendGameResult(2);
+      this.sendGameResult(2); // User accepted — advance to next level
     } else {
-      this.sendGameResult(2); // User declined — normal end, not timeout
+      this.sendGameResult(1); // User declined — end game at current level
     }
     this.setState({ showConfirmModal: false });
   };
