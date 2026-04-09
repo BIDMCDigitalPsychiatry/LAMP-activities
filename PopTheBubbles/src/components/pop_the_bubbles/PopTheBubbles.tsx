@@ -303,7 +303,8 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
       this.setState({ timeDifference: dif });
     }
     if (levelVal === 3) {
-      this.setState({ showQuestionnaire: true });
+      // Don't show questionnaire immediately — let the score screen display first.
+      // The score screen's "Finish" button will trigger the questionnaire.
     }
     this.bubbleCount = this.state.bubble_count[1];
   };
@@ -367,9 +368,13 @@ class PopTheBubbles extends React.Component<AppProps, AppState> {
                 </div>
                 <div className="phase-card-body">
                   <div className="score-ring">{pct}%</div>
-                  {this.state.gameLevel <= 3 && (
+                  {this.state.gameLevel <= 3 ? (
                     <button className="phase-btn" onClick={this.handleClick}>
                       {i18n.t("NEXT_LEVEL")}
+                    </button>
+                  ) : (
+                    <button className="phase-btn" onClick={() => this.setState({ showQuestionnaire: true })}>
+                      {i18n.t("Submit")}
                     </button>
                   )}
                 </div>
