@@ -92,8 +92,10 @@ export class Bubble extends React.Component<BubbleProps, BubbleState> {
           transform:
             this.state.tapped && this.state.visible ? "scale(1.5)" : "",
           transition: "opacity 100ms ease, transform 100ms ease",
+          touchAction: "manipulation",
         }}
-        onClick={() => {
+        onPointerDown={(e) => {
+          e.preventDefault();
           this.onPop(this)
         }}
       >

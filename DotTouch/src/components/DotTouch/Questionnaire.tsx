@@ -69,22 +69,10 @@ export class Questionnaire extends React.Component<Props, State> {
             </div>
             <div className="smileynav questionnaire-faces">
               <Button
-                onClick={(e) => this.setClarity(e, 5)}
-                className={this.state.clarity === 5 ? "active" : ""}
+                onClick={(e) => this.setClarity(e, 1)}
+                className={this.state.clarity === 1 ? "active" : ""}
               >
-                <Star5 />
-              </Button>
-              <Button
-                onClick={(e) => this.setClarity(e, 4)}
-                className={this.state.clarity === 4 ? "active" : ""}
-              >
-                <Star4 />
-              </Button>
-              <Button
-                onClick={(e) => this.setClarity(e, 3)}
-                className={this.state.clarity === 3 ? "active" : ""}
-              >
-                <Star3 />
+                <Star1 />
               </Button>
               <Button
                 onClick={(e) => this.setClarity(e, 2)}
@@ -93,10 +81,22 @@ export class Questionnaire extends React.Component<Props, State> {
                 <Star2 />
               </Button>
               <Button
-                onClick={(e) => this.setClarity(e, 1)}
-                className={this.state.clarity === 1 ? "active" : ""}
+                onClick={(e) => this.setClarity(e, 3)}
+                className={this.state.clarity === 3 ? "active" : ""}
               >
-                <Star1 />
+                <Star3 />
+              </Button>
+              <Button
+                onClick={(e) => this.setClarity(e, 4)}
+                className={this.state.clarity === 4 ? "active" : ""}
+              >
+                <Star4 />
+              </Button>
+              <Button
+                onClick={(e) => this.setClarity(e, 5)}
+                className={this.state.clarity === 5 ? "active" : ""}
+              >
+                <Star5 />
               </Button>
             </div>
           </div>
@@ -106,22 +106,10 @@ export class Questionnaire extends React.Component<Props, State> {
             </div>
             <div className="smileynav questionnaire-faces">
               <Button
-                onClick={(e) => this.setHappiness(e, 5)}
-                className={this.state.happiness === 5 ? "active" : ""}
+                onClick={(e) => this.setHappiness(e, 1)}
+                className={this.state.happiness === 1 ? "active" : ""}
               >
-                <Star5 />
-              </Button>
-              <Button
-                onClick={(e) => this.setHappiness(e, 4)}
-                className={this.state.happiness === 4 ? "active" : ""}
-              >
-                <Star4 />
-              </Button>
-              <Button
-                onClick={(e) => this.setHappiness(e, 3)}
-                className={this.state.happiness === 3 ? "active" : ""}
-              >
-                <Star3 />
+                <Star1 />
               </Button>
               <Button
                 onClick={(e) => this.setHappiness(e, 2)}
@@ -130,10 +118,22 @@ export class Questionnaire extends React.Component<Props, State> {
                 <Star2 />
               </Button>
               <Button
-                onClick={(e) => this.setHappiness(e, 1)}
-                className={this.state.happiness === 1 ? "active" : ""}
+                onClick={(e) => this.setHappiness(e, 3)}
+                className={this.state.happiness === 3 ? "active" : ""}
               >
-                <Star1 />
+                <Star3 />
+              </Button>
+              <Button
+                onClick={(e) => this.setHappiness(e, 4)}
+                className={this.state.happiness === 4 ? "active" : ""}
+              >
+                <Star4 />
+              </Button>
+              <Button
+                onClick={(e) => this.setHappiness(e, 5)}
+                className={this.state.happiness === 5 ? "active" : ""}
+              >
+                <Star5 />
               </Button>
             </div>
           </div>
