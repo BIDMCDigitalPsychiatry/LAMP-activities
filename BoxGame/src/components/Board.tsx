@@ -138,6 +138,7 @@ const Board: React.FC<Props> = ({ data }) => {
 
   // ── Handle instruction modal close ──
   const handleInstructionClose = useCallback(() => {
+    startTime.current = Date.now();
     startLevel(1, startingSpan);
   }, [startLevel, startingSpan]);
 
@@ -277,6 +278,11 @@ const Board: React.FC<Props> = ({ data }) => {
         wrong_answers: totalWrong,
         score,
         point: score === 100 ? 2 : 1,
+        // Legacy fields — kept for backward compatibility, may not be reliable
+        max_score: 100,
+        type: 1,
+        StartTime: new Date(startTime.current),
+        EndTime: new Date(),
         ...(q && { questionnaire: q }),
       },
       temporal_slices: temporalSlices,
@@ -320,6 +326,11 @@ const Board: React.FC<Props> = ({ data }) => {
           wrong_answers: totalWrong,
           score,
           point: score === 100 ? 2 : 1,
+          // Legacy fields — kept for backward compatibility, may not be reliable
+          max_score: 100,
+          type: 1,
+          StartTime: new Date(startTime.current),
+          EndTime: new Date(),
         },
         temporal_slices: temporalSlices,
         clickBack: true,
@@ -353,6 +364,11 @@ const Board: React.FC<Props> = ({ data }) => {
           wrong_answers: totalWrong,
           score,
           point: score === 100 ? 2 : 1,
+          // Legacy fields — kept for backward compatibility, may not be reliable
+          max_score: 100,
+          type: 1,
+          StartTime: new Date(startTime.current),
+          EndTime: new Date(),
         },
         temporal_slices: temporalSlices,
         forward: true,
