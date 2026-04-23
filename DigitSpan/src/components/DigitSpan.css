@@ -128,9 +128,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
-  margin: 16px 0 12px;
+  margin: 16px auto 12px;
   min-height: 48px;
+  max-width: 320px;
+  padding: 0 8px;
 }
 .answer-slot {
   display: inline-flex;
@@ -336,6 +339,66 @@
 .smileynav .btn svg {
   width: 100%;
   height: 100%;
+}
+
+/* ===== Delete Button (inline with answer slots) ===== */
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background: #fafafa;
+  color: #999;
+  font-size: 1.4rem;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 4px;
+  padding: 2px 1px 0 0;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.delete-btn:not(.disabled) {
+  border-color: #359FFE;
+  color: #359FFE;
+  background: #fff;
+}
+.delete-btn:hover:not(.disabled) {
+  background-color: #e8f0fe;
+  border-color: #0373d8;
+  color: #0373d8;
+}
+.delete-btn:active:not(.disabled) {
+  background-color: #d0e3fc;
+}
+.delete-btn.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ===== Submit Button ===== */
+.submit-btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+.submit-btn {
+  background: #359FFE;
+  border: none;
+  border-radius: 40px;
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 12px 48px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+.submit-btn:hover {
+  background: #0373d8;
+}
+.submit-btn:active {
+  background: #025bb0;
 }
 
 /* ===== Responsive ===== */

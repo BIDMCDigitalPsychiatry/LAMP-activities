@@ -11,9 +11,11 @@ interface NumberGridProps {
   answers: number[];
   totalSlots: number;
   onTap: (num: number) => void;
+  onDelete?: () => void;
+  onSubmit?: () => void;
 }
 
-export default function NumberGrid({ disabled, answers, totalSlots, onTap }: NumberGridProps) {
+export default function NumberGrid({ disabled, answers, totalSlots, onTap, onDelete, onSubmit }: NumberGridProps) {
   const handleTap = useCallback((num: number) => {
     if (disabled) return;
     onTap(num);
@@ -27,7 +29,7 @@ export default function NumberGrid({ disabled, answers, totalSlots, onTap }: Num
 
   return (
     <div>
-      {/* Answer slots */}
+      {/* Answer slots + delete */}
       <div className="answer-slots">
         {slots.map((digit, i) => (
           <span
@@ -37,6 +39,15 @@ export default function NumberGrid({ disabled, answers, totalSlots, onTap }: Num
             {digit !== null ? digit : ""}
           </span>
         ))}
+        {onDelete && !disabled && (
+          <button
+            className={`delete-btn ${answers.length === 0 ? "disabled" : ""}`}
+            onClick={onDelete}
+            disabled={answers.length === 0}
+          >
+            &#x232B;
+          </button>
+        )}
       </div>
 
       {/* Keypad */}
@@ -46,12 +57,12 @@ export default function NumberGrid({ disabled, answers, totalSlots, onTap }: Num
             <div className="number-grid-row" key={rowIndex}>
               {row.map((num) => {
                 let cls = "number-grid-cell";
-                if (disabled) cls += " disabled";
+                if (disabled || answers.length >= totalSlots) cls += " disabled";
                 return (
                   <div
                     key={num}
                     className={cls}
-                    onClick={() => handleTap(num)}
+                    onClick={() => answers.length < totalSlots ? handleTap(num) : undefined}
                   >
                     {num}
                   </div>
@@ -61,6 +72,15 @@ export default function NumberGrid({ disabled, answers, totalSlots, onTap }: Num
           ))}
         </div>
       </div>
+
+      {/* Submit button — visible when all slots filled and delete is enabled */}
+      {onSubmit && answers.length === totalSlots && !disabled && (
+        <div className="submit-btn-container">
+          <button className="submit-btn" onClick={onSubmit}>
+            &#x2713;
+          </button>
+        </div>
+      )}
     </div>
   );
 }

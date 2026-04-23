@@ -152,6 +152,12 @@
           <option value="fr-FR">fr-FR</option>
         </select>
       </label>
+      <label>Delete:
+        <select id="allow-delete-select">
+          <option value="true" selected>Enabled</option>
+          <option value="false">Disabled</option>
+        </select>
+      </label>
       <button class="btn-send" onclick="sendConfig()">Send Config</button>
     </div>
   </div>
@@ -201,8 +207,10 @@
 
     function sendConfig() {
       var lang = document.getElementById('lang-select').value;
+      var allowDelete = document.getElementById('allow-delete-select').value === 'true';
       var config = Object.assign({
         configuration: { language: lang },
+        activity: { settings: { allow_delete: allowDelete } },
         noBack: false,
         forward: true,
       }, getConfig().extraConfig);
