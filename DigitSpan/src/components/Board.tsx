@@ -44,6 +44,8 @@ export default function Board({ ...props }) {
   // ─── Config ──────────────────────────────────────────────────────────
   const [language, setLanguage] = useState("en-US");
   const [forward] = useState(props?.data?.forward ?? true);
+  const settings = props?.data?.activity?.settings ?? props?.data?.settings ?? {};
+  const allowDelete = settings.allow_delete !== undefined ? settings.allow_delete : true;
 
   // ─── Phase ───────────────────────────────────────────────────────────
   const [phase, setPhase] = useState<Phase>("instructions");
@@ -244,22 +246,61 @@ export default function Board({ ...props }) {
     });
     setLastClickTime(now);
 
-    // Auto-submit when all slots filled
+    // When all slots filled
     if (currentAnswers.length === currentSequence.length) {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
-      setTimeout(() => {
-        handleSequenceComplete(
-          currentAnswers,
-          currentSequence,
-          currentMode,
-          sequenceLengthRef.current
-        );
-      }, 300);
+      // If delete is disabled, auto-submit like before
+      if (!allowDelete) {
+        setTimeout(() => {
+          handleSequenceComplete(
+            currentAnswers,
+            currentSequence,
+            currentMode,
+            sequenceLengthRef.current
+          );
+        }, 300);
+      }
     }
-  }, [lastClickTime, handleSequenceComplete]);
+  }, [lastClickTime, handleSequenceComplete, allowDelete]);
+
+  // ─── Handle delete (remove last entered digit) ─────────────────────
+  const handleDelete = useCallback(() => {
+    if (!allowDelete || phase !== "answering") return;
+    const current = answersRef.current;
+    if (current.length === 0) return;
+
+    const updated = current.slice(0, -1);
+    setAnswers(updated);
+
+    // Record delete in routes
+    const now = new Date().getTime();
+    routesRef.current.push({
+      duration: now - lastClickTime,
+      item: "delete",
+      level: levelRef.current,
+      type: false,
+      value: null,
+      mode: modeRef.current,
+    });
+    setLastClickTime(now);
+  }, [allowDelete, phase, lastClickTime]);
+
+  // ─── Handle submit (user confirms answer) ──────────────────────────
+  const handleSubmit = useCallback(() => {
+    if (phase !== "answering") return;
+    const currentAnswers = answersRef.current;
+    const currentSequence = questionSequenceRef.current;
+    if (currentAnswers.length !== currentSequence.length) return;
+    handleSequenceComplete(
+      currentAnswers,
+      currentSequence,
+      modeRef.current,
+      sequenceLengthRef.current
+    );
+  }, [phase, handleSequenceComplete]);
 
   // ─── Send game result ───────────────────────────────────────────────
   const sendGameResult = useCallback((status?: boolean, isBack?: boolean, questionnaireData?: any) => {
@@ -434,6 +475,8 @@ export default function Board({ ...props }) {
             answers={answers}
             totalSlots={questionSequence.length}
             onTap={handleTap}
+            onDelete={allowDelete ? handleDelete : undefined}
+            onSubmit={allowDelete ? handleSubmit : undefined}
           />
         </div>
       )}
