@@ -116,9 +116,12 @@ const Board: React.FC<Props> = ({ data }) => {
 
   // Parse conditions
   const conditionSetting = settings.conditions ?? "congruent,incongruent,neutral";
-  const conditions: Condition[] = (typeof conditionSetting === "string"
-    ? conditionSetting.split(",").map((s: string) => s.trim())
-    : conditionSetting
+  const conditions: Condition[] = (
+    Array.isArray(conditionSetting)
+      ? conditionSetting
+      : typeof conditionSetting === "string"
+      ? conditionSetting.split(",").map((s: string) => s.trim())
+      : ["congruent", "incongruent", "neutral"]
   ).filter((c: string) => ["congruent", "incongruent", "neutral"].includes(c)) as Condition[];
   if (conditions.length === 0) conditions.push("congruent", "incongruent", "neutral");
 
