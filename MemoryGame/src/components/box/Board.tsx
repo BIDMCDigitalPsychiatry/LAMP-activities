@@ -7,6 +7,7 @@
  */
 import * as React from "react";
 import getImages from "./RandomImage";
+import { STIMULUS_SET_VERSION } from "./MemoryImageLibrary";
 
 import { faArrowLeft, faRedo, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -706,6 +707,7 @@ class Board extends React.Component<BoardProps, BoardState> {
           "timestamp/Date+Time": Date.now(),
           "duration/total_time_taken": Date.now() - this.props.time,
           "static_data": Object.assign(this.state.staticData ?? {}, {
+            "stimulus_set_version": STIMULUS_SET_VERSION,
             "target_sequence": target_sequence,
             "images_in_selection_grid": images_in_selection_grid,
             "per_round": per_round,
