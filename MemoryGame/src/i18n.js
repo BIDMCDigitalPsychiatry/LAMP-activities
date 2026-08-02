@@ -44,7 +44,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Spørgeskema",
+      Submit: "Indsend",
+      "How clear were the instructions?": "Hvor klare var instruktionerne?",
+      "How happy would you be to do this again?": "Hvor glad ville du være for at gøre dette igen?",
+},
   },
   "de-DE": {
     translation: {
@@ -88,7 +92,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Fragebogen",
+      Submit: "Absenden",
+      "How clear were the instructions?": "Wie klar waren die Anweisungen?",
+      "How happy would you be to do this again?": "Wie gerne würden Sie das noch einmal machen?",
+},
   },
   "en-US": {
     translation: {
@@ -132,7 +140,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Questionnaire",
+      Submit: "Submit",
+      "How clear were the instructions?": "How clear were the instructions?",
+      "How happy would you be to do this again?": "How happy would you be to do this again?",
+},
   },
   "es-ES": {
     translation: {
@@ -176,7 +188,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Cuestionario",
+      Submit: "Enviar",
+      "How clear were the instructions?": "¿Qué tan claras fueron las instrucciones?",
+      "How happy would you be to do this again?": "¿Qué tan feliz estarías de hacer esto de nuevo?",
+},
   },
   "fr-FR": {
     translation: {
@@ -220,7 +236,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Questionnaire",
+      Submit: "Soumettre",
+      "How clear were the instructions?": "Les instructions étaient-elles claires ?",
+      "How happy would you be to do this again?": "Seriez-vous heureux de refaire cet exercice ?",
+},
   },
   "hi-IN": {
     translation: {
@@ -265,7 +285,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "प्रश्नावली",
+      Submit: "जमा करें",
+      "How clear were the instructions?": "निर्देश कितने स्पष्ट थे?",
+      "How happy would you be to do this again?": "आप इसे दोबारा करने में कितने खुश होंगे?",
+},
   },
   "it-IT": {
     translation: {
@@ -309,7 +333,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "Questionario",
+      Submit: "Invia",
+      "How clear were the instructions?": "Quanto erano chiare le istruzioni?",
+      "How happy would you be to do this again?": "Quanto saresti felice di farlo di nuovo?",
+},
   },
   "ko-KR": {
     translation: {
@@ -353,7 +381,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "설문지",
+      Submit: "제출",
+      "How clear were the instructions?": "지침이 얼마나 명확했나요?",
+      "How happy would you be to do this again?": "이것을 다시 하게 된다면 얼마나 기쁘겠습니까?",
+},
   },
   "zh-CN": {
     translation: {
@@ -397,7 +429,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "问卷",
+      Submit: "提交",
+      "How clear were the instructions?": "说明有多清楚？",
+      "How happy would you be to do this again?": "您愿意再做一次吗？",
+},
   },
   "zh-HK": {
     translation: {
@@ -441,7 +477,11 @@ const resources = {
       START_GAME: "Start Game",
       INSTRUCTIONAL_VIDEO: "Instructional Video",
       VIDEO_ERROR : "Sorry, your browser does not support embedded videos.",
-    },
+          Questionnaire: "問卷",
+      Submit: "提交",
+      "How clear were the instructions?": "說明有多清楚？",
+      "How happy would you be to do this again?": "您願意再做一次嗎？",
+},
   },
 };
 

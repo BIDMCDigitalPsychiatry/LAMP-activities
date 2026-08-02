@@ -69,7 +69,20 @@ below the 18 available categories.
 | `target_sequence` | object | See below |
 | `images_in_selection_grid` | object[] | See below |
 | `per_round` | array[] | See below |
+| `questionnaire` | object | Self-report ratings. Present **only** when the session ends normally, not when exited via the back or forward arrows |
 | `is_favorite` | boolean | Dashboard favourite flag |
+
+### `questionnaire`
+
+Collected after the final recall round, on a 5-point emoji scale running sad (1) on the left to
+happy (5) on the right.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `clarity` | 1–5 | "How clear were the instructions?" |
+| `happiness` | 1–5 | "How happy would you be to do this again?" |
+
+`0` means the participant submitted without selecting that scale.
 
 ### `target_sequence`
 
@@ -149,6 +162,11 @@ alters the shape of already-collected data.
 survive `JSON.stringify` as `{ type, key, props, ... }`. The `key` field is the stimulus ID and
 is the only reliable part; prefer `target_sequence.image_id` and
 `images_in_selection_grid.item_id`. These fields are retained for backward compatibility.
+
+**The instructional video shows the previous UI.** `InstructionVideo` streams a ~22 MB recording
+(confusingly named `TicTacToe.mp4`, but the content is genuinely MemoryGame) that was captured
+against the old blue colour scheme. The activity now uses the standard light shell, so the video
+no longer matches what participants see and should be re-recorded.
 
 **Stimulus ID ranges changed in `memory-game-v2-2026-08`.** `images[].category` now spans 1–18
 (previously 1–12) and `images[].index` spans 1–6 (previously 1–4). Stimulus IDs span

@@ -573,3 +573,83 @@ button.primary:hover {
 .instructionvideo h5 {
   margin: 25px 0;
 }
+
+/* ── Questionnaire modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+@media only screen and (max-width: 500px) {
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
+}
