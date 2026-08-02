@@ -9,9 +9,6 @@
   --square-size: 84px;
   --square-font-size: 72px;
 }
-body {
-  background: rgba(53, 159, 254, 1) !important;
-}
 nav a {
   color: rgba(53, 159, 254, 1);
   padding: 10px;
@@ -19,16 +16,47 @@ nav a {
 }
 .timer-div {
   margin-top: 10px;
-  min-height: 60px;
-  color: rgb(253, 254, 255);
+  color: #1a1a2e;
 }
-svg.svg-inline--fa.fa-redo.fa-w-16 {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
-}
+/* Header icons sit on the blue bar and inherit its white from .back-link /
+   .home-link. These previously forced blue, which the bar would swallow. */
+svg.svg-inline--fa.fa-redo.fa-w-16,
 svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
+  color: inherit;
+}
+
+/* ── Game shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* ── Status bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 500px) {
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
 }
 .App {
   padding-top: 2em;
@@ -48,60 +76,57 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
   font-size: large;
 }
 .heading {
-  text-align: center;
-  color: rgba(53, 159, 254, 1);
-  padding: 15px;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
 }
 .home-link {
   position: absolute;
-  right: 10px;
-  top: 12px;
+  right: 0;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .home-link-forward {
   position: absolute;
-  right: 60px;
-  top: 12px;
+  right: 48px;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .back-link {
   position: absolute;
-  left: 10px;
-  top: 12px;
+  left: 0;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-}
-.forward-link {
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .box-white {
   height: 128px;
   width: 128px;
   background-color: white;
-  border: medium #a8a5a5;
+  border: 1px solid #d5d9e0;
 }
 .box-white svg,
 .box-white img {
@@ -152,7 +177,7 @@ box-result-table {
   width: 100%;
 }
 .game-board {
-  color: #fff;
+  color: #1a1a2e;
   text-align: center;
 }
 .box-square {
@@ -175,7 +200,7 @@ box-result-table {
 }
 body {
   font: 18px Helvetica, Arial, sans-serif;
-  margin: 30px;
+  margin: 0;
 }
 ol,
 ul {
@@ -245,7 +270,7 @@ ul {
 .box-info {
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: #1a1a2e;
   padding: 10px;
 }
 .box-alert {
@@ -286,9 +311,9 @@ td {
   background-position: center;
 }
 .next-button button {
-  border: #fff solid 1px;
+  border: 0;
   padding: 10px 20px;
-  background: transparent;
+  background: #359ffe;
   color: #fff;
   min-width: 170px;
   border-radius: 25px;
@@ -514,7 +539,7 @@ button.primary:hover {
   .box-info {
     bottom: auto;
     background: transparent;
-    color: #fff;
+    color: #1a1a2e;
   }
   .box-white {
     width: 85px;

@@ -79,7 +79,6 @@ interface BoardState {
   sendResponse: boolean;
   images: any;
   loading: boolean;
-  supportsSidebar: boolean;
   completedIndex: number;
   totalLearningScore: number;
   totalRecallScore: number;
@@ -160,7 +159,6 @@ class Board extends React.Component<BoardProps, BoardState> {
       successStages: 0,
       successTapImage: false,
       successTaps: 0,
-      supportsSidebar: window.matchMedia("(min-width: 768px)").matches,
       trail: 0,
       wrongTaps: 0,
       completedIndex: 0,
@@ -300,7 +298,6 @@ class Board extends React.Component<BoardProps, BoardState> {
           successStages: 0,
           successTaps: 0,
           playInstructionVideo: false,
-          supportsSidebar: window.matchMedia("(min-width: 768px)").matches,
           trail:
             typeof type !== "undefined"
               ? this.state.trail
@@ -1123,22 +1120,32 @@ class Board extends React.Component<BoardProps, BoardState> {
       ) : null;
 
     return (
-      <div>
-        {!this.props.noBack && (
-          <nav className="back-link">
-            <FontAwesomeIcon icon={faArrowLeft} onClick={this.clickBack} />
-          </nav>
-        )}
-        <nav className={`${this.state.forward ? "home-link-forward" : "home-link"}`}>
-          <FontAwesomeIcon icon={faRedo} onClick={this.clickHome} />
-        </nav>
-        {this.state.forward &&
-          <nav className="forward-link">
-            <FontAwesomeIcon icon={faArrowRight} onClick={this.clickForward} />
-          </nav>
-        }
+      <div className="game-shell">
         <div className="heading">
-          {i18n.t("MEMORY_GAME")}{" "}          
+          {!this.props.noBack && (
+            <nav className="back-link" onClick={this.clickBack}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </nav>
+          )}
+          {i18n.t("MEMORY_GAME")}
+          {this.state.forward && (
+            <nav className="home-link-forward" onClick={this.clickForward}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </nav>
+          )}
+          <nav className="home-link" onClick={this.clickHome}>
+            <FontAwesomeIcon icon={faRedo} />
+          </nav>
+        </div>
+        {/* Always rendered so the game area does not shift as content changes. */}
+        <div className="status-bar">
+          {!!this.state.autoCorrect &&
+            this.state.trail <= this.props.encodingTrials && (
+              <div className="level-badge">
+                {i18n.t("TRIAL")} {this.state.trail}
+              </div>
+            )}
+          {alertText}
         </div>
         <div className="game-board">
           <div>
@@ -1206,16 +1213,6 @@ class Board extends React.Component<BoardProps, BoardState> {
               />
             ) : (
               <div>
-                <div className="timer-div">
-                  {!!this.state.autoCorrect &&
-                    this.state.trail <= this.props.encodingTrials && (
-                      <div>
-                        {"Trial " + this.state.trail}
-                        <br />
-                      </div>
-                    )}
-                  {this.state.supportsSidebar === false && alertText}
-                </div>
                 <div className="mt-30 box-game">
                   <div style={{ float: "left" }}> {board}</div>
                   <div className="secondbox">
@@ -1225,7 +1222,6 @@ class Board extends React.Component<BoardProps, BoardState> {
                   </div>
                   {audio}
                 </div>
-                {this.state.supportsSidebar === true && alertText}
               </div>
             )}
             {this.state.loading && (
