@@ -214,13 +214,14 @@ class Jewels extends React.Component<any, AppState> {
     routesValus: any,
     totalJewelsCollected: number,
     totalAttempts: number,
-    pointVal: number
+    pointVal: number,
+    advanceLevel: boolean
   ) => {
     this.updateRoutes(routesValus);
 
-    // Always advance on completion (pointVal=2), stay on timeout (pointVal=1)
-    const nextLevel =
-      pointVal === 2 ? this.state.level + 1 : this.state.level;
+    // Whether to move on is independent of pointVal: a user who completes a
+    // level and declines to continue reports point 2 but stays put.
+    const nextLevel = advanceLevel ? this.state.level + 1 : this.state.level;
 
     // If we've reached the max level, end the game
     if (nextLevel > this.state.totalLevels) {
@@ -233,7 +234,7 @@ class Jewels extends React.Component<any, AppState> {
             this.state.totalJewelsCollected + totalJewelsCollected,
         },
         () => {
-          this.handleClose(true, 1);
+          this.handleClose(true, pointVal);
         }
       );
       return;
@@ -283,7 +284,7 @@ class Jewels extends React.Component<any, AppState> {
       },
       () => {
         this.applyLevelColor(this.state.level);
-        pointVal === 1 ? this.handleClose(true, 1) : this.reset(true);
+        advanceLevel ? this.reset(true) : this.handleClose(true, pointVal);
       }
     );
   };
