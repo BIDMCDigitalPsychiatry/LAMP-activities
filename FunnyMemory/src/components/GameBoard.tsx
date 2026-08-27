@@ -5,7 +5,6 @@
  * @author ZCO Engineer
  * @copyright (c) 2024, ZCO
  */
-import { Backdrop, CircularProgress } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import {
   getMonthIndex,
@@ -20,6 +19,7 @@ import Questions from "./Questions";
 import InfoModal from "./uielements/InfoModal";
 import ShowImage from "./ShowImage";
 import FinalRecognitionPhase from "./FinalRecognitionPhase";
+import { STIMULUS_SET_VERSION } from "./DataForEachMonth/stimulusData";
 
 const GameBoard = ({ ...props }: any) => {
   const [showModalInfo, setShowModalInfo] = useState(false);
@@ -49,6 +49,24 @@ const GameBoard = ({ ...props }: any) => {
   const timeForRecognition2Ref = useRef(0);
   const [recognitionPhase2Completed, setRecognitionPhase2Completed] =
     useState(false);
+  const imageLoadFailures = useRef<string[]>([]);
+
+  // Stimuli are fetched over the network. Record any that fail so affected
+  // trials can be excluded at analysis time instead of being scored as if the
+  // participant had seen the image.
+  const handleImageError = (src: string) => {
+    if (src && !imageLoadFailures.current.includes(src)) {
+      imageLoadFailures.current.push(src);
+    }
+  };
+
+  // Shuffle once per trial. Calling shuffleArray inline during render reordered
+  // the grid on every re-render, so the highlighted tile could drift onto a
+  // different image than the one the participant tapped.
+  const shuffledOptions = React.useMemo(
+    () => shuffleArray(data?.option),
+    [data]
+  );
 
   useEffect(() => {
     if (trial === 0) {
@@ -83,6 +101,8 @@ const GameBoard = ({ ...props }: any) => {
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
           image_set_shown: getMonthIndex(),
+          image_load_failures: imageLoadFailures.current.length,
+          stimulus_set_version: STIMULUS_SET_VERSION,
           learning_trials: numberOfTrials,
           delay_time: delayBeforeRecall,
           timeTakenForTrial: isTimestamp(timeTakenForTrial)
@@ -119,6 +139,8 @@ const GameBoard = ({ ...props }: any) => {
         static_data: Object.assign(staticdata ?? {}, {
           image_exposure_time: imageExposureTime,
           image_set_shown: getMonthIndex(),
+          image_load_failures: imageLoadFailures.current.length,
+          stimulus_set_version: STIMULUS_SET_VERSION,
           learning_trials: numberOfTrials,
           delay_time: delayBeforeRecall,
           timeTakenForTrial: isTimestamp(timeTakenForTrial)
@@ -221,6 +243,8 @@ const GameBoard = ({ ...props }: any) => {
           image_exposure_time: imageExposureTime,
           learning_trials: numberOfTrials,
           image_set_shown: getMonthIndex(),
+          image_load_failures: imageLoadFailures.current.length,
+          stimulus_set_version: STIMULUS_SET_VERSION,
           delay_time: delayBeforeRecall,
           timeTakenForTrial: timeTakenForTrial,
           timeTakenForRecall: timeTakenForRecall,
@@ -286,6 +310,7 @@ const GameBoard = ({ ...props }: any) => {
           setShowImage={setShowImage}
           setShowAudioRecorder={setShowAudioRecorder}
           imageExposureTime={imageExposureTime}
+          onImageError={handleImageError}
         />
       );
     } else if (showAudioRecorder) {
@@ -361,11 +386,12 @@ const GameBoard = ({ ...props }: any) => {
     } else if (phase === "recognition2") {
       return (
         <FinalRecognitionPhase
-          options={shuffleArray(data?.option)}
+          options={shuffledOptions}
           handleImageSelection={handleImageSelection}
           setTimeTaken={setTimeTaken}
           language={i18n.language}
           currentIndex={randomNumberArray.current[currentIndex]}
+          onImageError={handleImageError}
         />
       );
     } else {
@@ -391,14 +417,20 @@ const GameBoard = ({ ...props }: any) => {
   return (
     <>
       <div className="game_board">
-        {getPhaseTitle() != "" && (
-          <div className="timer-div">{getPhaseTitle()}</div>
-        )}
+        {/* Always rendered, so the content below keeps a fixed offset even when
+            the phase has no title. */}
+        <div className="status-bar">
+          {getPhaseTitle() !== "" && (
+            <div className="level-badge">{getPhaseTitle()}</div>
+          )}
+        </div>
         {data ? renderContent() : <></>}
       </div>
-      <Backdrop className="backdrop" open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      {loading && (
+        <div className="backdrop">
+          <div className="spinner" />
+        </div>
+      )}
       <InfoModal
         show={showModalInfo}
         modalClose={() => {
