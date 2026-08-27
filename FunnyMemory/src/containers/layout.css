@@ -39,73 +39,84 @@ nav a {
   font-size: large;
 }
 
+/* Fixed 52px header per the style guide. The nav controls are children of the
+   bar rather than siblings, so they position against it instead of the page. */
 .heading {
-  text-align: center;
-  background: rgba(53, 159, 254, 1);
-  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
   color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
+}
+
+/* The nav controls are absolutely positioned over the bar, so the centred
+   title has to be bounded away from them; without this it slides under the
+   refresh icon at 375px and narrower. */
+.heading-title {
+  max-width: calc(100% - 200px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 420px) {
+  .heading {
+    font-size: 16px;
+  }
+}
+
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .home-link {
   position: absolute;
-  right: 10px;
-  top: 12px;
-  color: white;
+  right: 0;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-}
-.home-link-forward {
-  position: absolute;
-  right: 60px;
-  top: 12px;
+  padding: 0 16px;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 
-.home-link svg path {
+.home-link-forward {
+  position: absolute;
+  right: 48px;
+  top: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-link svg path,
+.home-link svg path,
+.home-link-forward svg path {
   fill: #fff;
 }
 
 .game-board {
   color: #fff;
   text-align: center;
-}
-
-.back-link {
-  position: absolute;
-  left: 10px;
-  top: 12px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-}
-.forward-link {
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-}
-.back-link svg path {
-  fill: #fff;
 }
 
 .btn-primary:hover {
@@ -215,39 +226,64 @@ input[type="checkbox"] {
   border: none;
 }
 
-.timer-div {
-  margin-top: 10px;
-  min-height: 60px;
-  color: #359ffe;
-}
-.headerTitleIcon {
-  background: none !important;
-  box-shadow: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  color: #ccc !important;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-left: 8px !important;
-}
-.headerTitleIcon .material-icons {
-  font-size: 2rem;
-  color: #666;
-}
-.headerTitleIcon svg {
-  width: 20px;
-  height: 20px;
-}
-.header-with-icon {
+/* Status bar per the style guide. Rendered unconditionally so the game area
+   below it does not shift when the phase label changes or empties. */
+.status-bar {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
 }
-.headerTitleIcon:hover {
-  background: #f4f4f4 !important;
+
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
-.headerTitleIcon.active .material-icons {
-  color: #e3b303 !important;
+
+@media only screen and (max-width: 500px) {
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+}
+/* Loading overlay, replacing the Material-UI Backdrop/CircularProgress pair. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.backdrop .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: backdrop-spin 1s linear infinite;
+}
+
+@keyframes backdrop-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop .spinner {
+    animation-duration: 3s;
+  }
 }
 
 @media only screen and (min-width: 500px) {
@@ -346,19 +382,64 @@ input[type="checkbox"] {
   flex-wrap: wrap;
   width: 100%;
   max-width: 500px;
+  justify-content: center;
+  gap: 12px;
 }
 
+/* The v2 library mixes portrait, square and landscape sources, so each option
+   sits in a fixed square frame and the image is contained rather than cropped.
+   Without this, differently-shaped stimuli render at different sizes in the
+   recognition grid. */
 #img-wrapper img {
+  width: 100%;
+  height: 100%;
   max-width: 200px;
   max-height: 200px;
-  width: 100%;
-  margin-top: 20px;
+  object-fit: contain;
+  background: #f5f5f5;
   cursor: pointer;
 }
 
 #img-wrapper > div {
-  flex: 0 1 50%;
-  padding: 0 15px;
+  flex: 0 1 calc(50% - 6px);
+  aspect-ratio: 1 / 1;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 420px) {
+  #img-wrapper {
+    gap: 8px;
+  }
+
+  #img-wrapper > div {
+    flex-basis: calc(50% - 4px);
+  }
+}
+
+/* Placeholder for a stimulus that could not be fetched, so the remaining
+   options stay selectable instead of the whole grid staying hidden. Sizing is
+   inherited from the option rule above; border-box keeps the padding and
+   border inside that square, otherwise the tile outgrows its neighbours and
+   wraps onto a row of its own. */
+#img-wrapper > div.option-unavailable {
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px dashed #c4c4c4;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #767676;
+  font-size: 0.85rem;
+  text-align: center;
+  cursor: default;
+}
+
+.image-load-error {
+  color: #767676;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 #img-wrapper div.active img {
