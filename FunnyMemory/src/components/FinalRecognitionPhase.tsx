@@ -9,16 +9,18 @@ import React, { useEffect, useState } from "react";
 import i18n from "src/i18n";
 
 const FinalRecognitionPhase = ({ ...props }) => {
-  const { options, handleImageSelection, currentIndex } = props;
+  const { options, handleImageSelection, currentIndex, onImageError } = props;
   i18n.changeLanguage(!props.language ? "en-US" : props.language);
 
   const [selectedImg, setSelectedImg] = useState(-1);
   const [loadedImages, setLoadedImages] = useState<any>([]);
+  const [failedImages, setFailedImages] = useState<any>([]);
 
   // Reset selected image when currentIndex changes
   useEffect(() => {
     setSelectedImg(-1);
     setLoadedImages([]); // Reset loaded images when the index changes
+    setFailedImages([]);
   }, [currentIndex]);
 
   // Handle when an image finishes loading
@@ -28,8 +30,19 @@ const FinalRecognitionPhase = ({ ...props }) => {
     }
   };
 
-  // Check if all images are loaded
-  const allImagesLoaded = loadedImages.length === options?.length;
+  // A single unreachable stimulus used to leave every option hidden forever,
+  // because the grid only rendered once all of them reported onLoad. Failures
+  // now settle the option instead, so the remaining choices stay usable.
+  const handleImageError = (index: number, img: string) => {
+    if (!failedImages.includes(index)) {
+      setFailedImages((prev: any) => [...prev, index]);
+      if (onImageError) onImageError(img);
+    }
+  };
+
+  // Check whether every option has settled, whether it loaded or failed
+  const allImagesSettled =
+    loadedImages.length + failedImages.length === options?.length;
 
   return (
     <div className="box-game mt-30">
@@ -38,6 +51,13 @@ const FinalRecognitionPhase = ({ ...props }) => {
         <div id="img-wrapper">
           {options && options.length > 0 ? (
             options?.map((img: string, index: number) => {
+              if (failedImages.includes(index)) {
+                return (
+                  <div key={index} className="option-unavailable">
+                    <span>{i18n.t("IMAGE_LOAD_ERROR")}</span>
+                  </div>
+                );
+              }
               return (
                 <div
                   key={index}
@@ -49,8 +69,9 @@ const FinalRecognitionPhase = ({ ...props }) => {
                 >
                   <img
                     src={img}
-                    className={allImagesLoaded ? "" : "d-none"} // Hide images until all are loaded
+                    className={allImagesSettled ? "" : "d-none"} // Hide images until all have settled
                     onLoad={() => handleImageLoad(index)}
+                    onError={() => handleImageError(index, img)}
                     alt=""
                   ></img>
                 </div>
