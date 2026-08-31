@@ -179,6 +179,28 @@ box-result-table {
 .game-board {
   color: #1a1a2e;
   text-align: center;
+  margin-top: 16px;
+}
+/* Gameplay instructions: below the grid on desktop, in the top status bar on
+   mobile (where the stacked grids make the below-grid copy require scrolling). */
+.instructions-below {
+  clear: both;
+}
+.instructions-top {
+  display: none;
+}
+@media only screen and (max-width: 768px) {
+  .instructions-below {
+    display: none;
+  }
+  .instructions-top {
+    display: block;
+    width: 100%;
+  }
+  /* On mobile the instructions take the status-bar slot instead of the trial. */
+  .status-bar .level-badge {
+    display: none;
+  }
 }
 .box-square {
   transform: translateY(50px);
@@ -572,6 +594,44 @@ button.primary:hover {
 }
 .instructionvideo h5 {
   margin: 25px 0;
+}
+
+/* ── Instruction modal (opening) ────────────────────── */
+.instruction-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.instruction-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.instruction-modal-body {
+  padding: 24px 20px !important;
+  text-align: center;
+  font-size: 17px;
+  color: #333;
+  line-height: 1.5;
+}
+.instruction-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.instruction-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.instruction-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
 }
 
 /* ── Questionnaire modal ────────────────────────────── */
