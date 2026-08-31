@@ -16,7 +16,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
 import i18n from "src/i18n";
-import "material-icons";
 
 const Layout = ({ ...props }: any) => {
   const configuration = props?.data?.configuration;
@@ -34,22 +33,25 @@ const Layout = ({ ...props }: any) => {
 
   return (
     <div className="main-class">
-      <nav className="back-link">
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          onClick={() => setClickBack(true)}
-        />
-      </nav>
-      <nav className={forward ? " home-link-forward" : "home-link"}>
-        <FontAwesomeIcon icon={faRedo} onClick={reloadPage} />
-      </nav>
-      {forward && (
-        <nav className="forward-link">
-          <FontAwesomeIcon icon={faArrowRight}   onClick={() => setIsForwardButton(true)}/>
-        </nav>
-      )}
       <div className="heading">
-        {i18n.t("FUNNY_MEMORY_GAME")}       
+        <nav className="back-link" onClick={() => setClickBack(true)}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </nav>
+        <span className="heading-title">{i18n.t("FUNNY_MEMORY_GAME")}</span>
+        <nav
+          className={forward ? "home-link-forward" : "home-link"}
+          onClick={reloadPage}
+        >
+          <FontAwesomeIcon icon={faRedo} />
+        </nav>
+        {forward && (
+          <nav
+            className="home-link"
+            onClick={() => setIsForwardButton(true)}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </nav>
+        )}
       </div>
       <Container>
         <Row>

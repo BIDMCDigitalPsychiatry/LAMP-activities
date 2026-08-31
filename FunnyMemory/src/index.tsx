@@ -7,23 +7,26 @@
  */
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { AppContainer } from "react-hot-loader";
+import { createRoot } from "react-dom/client";
 import Layout from "./containers/Layout";
 import "./index.css";
 
-const eventMethod = "addEventListener";
-const eventer = window[eventMethod];
-const messageEvent = "message";
-eventer(
-  messageEvent,
+let root: ReturnType<typeof createRoot> | null = null;
+
+window.addEventListener(
+  "message",
   (e: any) => {
-    ReactDOM.render(
-      <AppContainer>
-        <Layout data={e.data} />
-      </AppContainer>,
-      document.getElementById("root")
-    );
+    // Ignore non-config messages (e.g., webpack HMR)
+    if (!e.data || typeof e.data !== "object" || !e.data.configuration) return;
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Layout data={e.data} />);
+    }
   },
   false
 );
