@@ -45,16 +45,21 @@
          show={this.state.showStatus}
          onHide={this.handleClose}
          animation={false}
+         size="lg"
          aria-labelledby="contained-modal-title-vcenter"
          centered={true}
          backdrop="static"
        >
-         <Modal.Header closeButton={true}>
-           <Modal.Title>mindLamp</Modal.Title>
+         <Modal.Header className="instruction-modal-header">
+           <Modal.Title className="instruction-modal-title">
+             {i18n.t("Instructions")}
+           </Modal.Title>
          </Modal.Header>
-         <Modal.Body>{i18n.t(this.props.msg)}</Modal.Body>
-         <Modal.Footer>
-           <Button variant="link" onClick={this.handleClose}>
+         <Modal.Body className="instruction-modal-body">
+           {i18n.t(this.props.msg)}
+         </Modal.Body>
+         <Modal.Footer className="instruction-modal-footer">
+           <Button className="instruction-modal-btn" onClick={this.handleClose}>
              {i18n.t("OK")}
            </Button>
          </Modal.Footer>
