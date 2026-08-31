@@ -37,7 +37,14 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "src/*.d.ts"
+    "src/*.d.ts",
+    // Tests run under `react-scripts test`, which transpiles via babel and
+    // ignores this config. They are excluded here because `npm run build`
+    // type-checks everything under src/, and @types/jest is not installed —
+    // adding it would mean regenerating package-lock.json, which CI's Node 16
+    // cannot parse. See CONTRIBUTING.md, "The package-lock.json requirement".
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
   ],
   "include": [
     "src",

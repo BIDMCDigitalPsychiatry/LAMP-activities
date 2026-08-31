@@ -5,30 +5,27 @@
  * @author ZCO Engineer
  * @copyright (c) 2020, ZCO
  */
-require("react-hot-loader/patch");
 import * as React from "react";
-import { AppContainer } from "react-hot-loader";
 import Boxes from "./components/box/Boxes";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createRoot } from "react-dom/client";
 
-const eventMethod = "addEventListener";
-const eventer = window[eventMethod];
-const messageEvent = "message";
+let root: ReturnType<typeof createRoot> | null = null;
 
-eventer(
-  messageEvent,
+window.addEventListener(
+  "message",
   (e: any) => {
-    const rootElement = document.getElementById("root") as HTMLElement;
-
-    if (!!rootElement) {
-      const root = createRoot(rootElement);
-      root.render(
-        <AppContainer>
-          <Boxes data={e.data} />
-        </AppContainer>
-      );
+    // Ignore non-config messages (e.g., webpack HMR)
+    if (!e.data || typeof e.data !== "object" || !e.data.configuration) return;
+    if (!root) {
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        root = createRoot(rootElement);
+      }
+    }
+    if (root) {
+      root.render(<Boxes data={e.data} />);
     }
   },
   false

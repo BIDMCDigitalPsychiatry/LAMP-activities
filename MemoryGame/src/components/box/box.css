@@ -9,9 +9,6 @@
   --square-size: 84px;
   --square-font-size: 72px;
 }
-body {
-  background: rgba(53, 159, 254, 1) !important;
-}
 nav a {
   color: rgba(53, 159, 254, 1);
   padding: 10px;
@@ -19,16 +16,47 @@ nav a {
 }
 .timer-div {
   margin-top: 10px;
-  min-height: 60px;
-  color: rgb(253, 254, 255);
+  color: #1a1a2e;
 }
-svg.svg-inline--fa.fa-redo.fa-w-16 {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
-}
+/* Header icons sit on the blue bar and inherit its white from .back-link /
+   .home-link. These previously forced blue, which the bar would swallow. */
+svg.svg-inline--fa.fa-redo.fa-w-16,
 svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
-  color: rgba(53, 159, 254, 1);
-  margin: 16px 18px 0 10px;
+  color: inherit;
+}
+
+/* ── Game shell ─────────────────────────────────────── */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* ── Status bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.level-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a2e;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 500px) {
+  .level-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
 }
 .App {
   padding-top: 2em;
@@ -48,60 +76,57 @@ svg.svg-inline--fa.fa-arrow-left.fa-w-14 {
   font-size: large;
 }
 .heading {
-  text-align: center;
-  color: rgba(53, 159, 254, 1);
-  padding: 15px;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(53, 159, 254, 1);
+  position: relative;
 }
 .home-link {
   position: absolute;
-  right: 10px;
-  top: 12px;
+  right: 0;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .home-link-forward {
   position: absolute;
-  right: 60px;
-  top: 12px;
+  right: 48px;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .back-link {
   position: absolute;
-  left: 10px;
-  top: 12px;
+  left: 0;
+  top: 0;
+  height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 16px;
+  color: #fff;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-}
-.forward-link {
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
 }
 .box-white {
   height: 128px;
   width: 128px;
   background-color: white;
-  border: medium #a8a5a5;
+  border: 1px solid #d5d9e0;
 }
 .box-white svg,
 .box-white img {
@@ -152,7 +177,7 @@ box-result-table {
   width: 100%;
 }
 .game-board {
-  color: #fff;
+  color: #1a1a2e;
   text-align: center;
 }
 .box-square {
@@ -175,7 +200,7 @@ box-result-table {
 }
 body {
   font: 18px Helvetica, Arial, sans-serif;
-  margin: 30px;
+  margin: 0;
 }
 ol,
 ul {
@@ -245,7 +270,7 @@ ul {
 .box-info {
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: #1a1a2e;
   padding: 10px;
 }
 .box-alert {
@@ -286,71 +311,12 @@ td {
   background-position: center;
 }
 .next-button button {
-  border: #fff solid 1px;
+  border: 0;
   padding: 10px 20px;
-  background: transparent;
+  background: #359ffe;
   color: #fff;
   min-width: 170px;
   border-radius: 25px;
-}
-.headerTitleIcon {
-  background: none !important;
-  box-shadow: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  color: #ccc !important;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-left: 8px !important;
-}
-.headerTitleIcon .material-icons {
-  font-size: 2rem;
-  color: #666;
-}
-.headerTitleIcon svg {
-  width: 20px;
-  height: 20px;
-}
-.header-with-icon {
-  display: flex;
-  align-items: center;
-}
-.headerTitleIcon:hover {
-  background: #f4f4f4 !important;
-}
-.headerTitleIcon.active .material-icons {
-  color: #e3b303 !important;
-}
-
-.headerTitleIcon {
-  background: none !important;
-  box-shadow: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  color: #ccc !important;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-left: 8px !important;
-}
-.headerTitleIcon .material-icons {
-  font-size: 2rem;
-  color: #666;
-}
-.headerTitleIcon svg {
-  width: 20px;
-  height: 20px;
-}
-.header-with-icon {
-  display: flex;
-  align-items: center;
-}
-.headerTitleIcon:hover {
-  background: #f4f4f4 !important;
-}
-.headerTitleIcon.active .material-icons {
-  color: #e3b303 !important;
 }
 @media only screen and (min-width: 768px) {
   .box-info,
@@ -467,9 +433,19 @@ td {
 .react-datepicker--time-only .react-datepicker__triangle {
   left: -40px !important;
 }
-.backdrop {
-  z-index: 9999 !important;
-  color: "#fff";
+/* Replaces the MUI <Backdrop>, which supplied the overlay styling itself. */
+.loading-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
 }
 .inactive {
   background-color: #fff;
@@ -563,7 +539,7 @@ button.primary:hover {
   .box-info {
     bottom: auto;
     background: transparent;
-    color: #fff;
+    color: #1a1a2e;
   }
   .box-white {
     width: 85px;
@@ -596,4 +572,84 @@ button.primary:hover {
 }
 .instructionvideo h5 {
   margin: 25px 0;
+}
+
+/* ── Questionnaire modal ────────────────────────────── */
+.questionnaire-modal-header {
+  background: rgba(53, 159, 254, 1);
+  color: #fff;
+  border-bottom: none;
+  padding: 16px 20px;
+}
+.questionnaire-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.questionnaire-modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+.questionnaire-modal-body {
+  padding: 24px 20px !important;
+}
+.questionnaire-question {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.questionnaire-question:last-child {
+  margin-bottom: 0;
+}
+.questionnaire-label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.questionnaire-faces {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.questionnaire-modal-footer {
+  border-top: none;
+  justify-content: center;
+  padding: 8px 20px 20px;
+}
+.questionnaire-modal-btn {
+  background: rgba(53, 159, 254, 1);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 140px;
+}
+.questionnaire-modal-btn:hover {
+  background: rgba(33, 139, 234, 1);
+}
+.smileynav .btn {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #333;
+  border: 0;
+}
+.smileynav .btn.active {
+  background-color: rgba(53, 159, 254, 1);
+  border: 2px solid rgba(53, 159, 254, 1);
+}
+.smileynav .btn svg {
+  width: 100%;
+  height: 100%;
+}
+@media only screen and (max-width: 500px) {
+  .smileynav .btn {
+    width: 41px;
+    height: 41px;
+  }
 }
