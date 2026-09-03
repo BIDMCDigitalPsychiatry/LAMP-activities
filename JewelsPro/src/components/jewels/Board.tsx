@@ -149,7 +149,7 @@ class Board extends React.Component<BoardProps, DiamondState> {
           endTime: new Date(),
         },
         () => {
-          this.sendGameResult(1);
+          this.sendGameResult(1, false); // Timed out — stay on this level and end the game
         }
       );
     }
@@ -267,7 +267,10 @@ class Board extends React.Component<BoardProps, DiamondState> {
     return table;
   };
 
-  sendGameResult = (pointVal: number) => {
+  // pointVal is the `point` reported to the dashboard: 2 when the level was
+  // completed, 1 only when the clock ran out. advanceLevel is a separate
+  // decision — the user can complete a level and still choose to stop.
+  sendGameResult = (pointVal: number, advanceLevel: boolean) => {
     const totalBonusCollected =
       this.state.stepNumber === this.props.totalDiamonds
         ? this.state.startTimer - Math.abs(this.state.negativePoints)
@@ -279,15 +282,16 @@ class Board extends React.Component<BoardProps, DiamondState> {
       this.state.route,
       totalJewelsCollected,
       totalAttempts,
-      pointVal
+      pointVal,
+      advanceLevel
     );
   };
 
   handleConfirmClose = (status: boolean, pointVal: number) => {
     if (status === true) {
-      this.sendGameResult(2); // User accepted — advance to next level
+      this.sendGameResult(2, true); // User accepted — advance to next level
     } else {
-      this.sendGameResult(1); // User declined — end game at current level
+      this.sendGameResult(2, false); // User declined — level completed, but end here
     }
     this.setState({ showConfirmModal: false });
   };
