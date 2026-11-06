@@ -28,8 +28,8 @@ eventer(
           <SurveyQuestions data={e.data} />
         </AppContainer>
       </SnackbarProvider>,
-      document.getElementById("root")
+      document.getElementById("root"),
     );
   },
-  false
+  false,
 );
