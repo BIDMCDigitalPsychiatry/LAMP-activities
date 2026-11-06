@@ -124,6 +124,9 @@ const useStyles = makeStyles((theme) => ({
       bottom: "5%",
     },
   },
+  snapping: {
+    transition: "left 80ms ease-out, box-shadow 150ms",
+  },
   radioroot: {
     padding: "20px",
   },
@@ -260,6 +263,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       width: "82%",
     },
+    marginTop: "2px",
   },
   btnBack: {
     borderRadius: "40px",
@@ -505,6 +509,16 @@ function LinkRenderer(data: any) {
     </a>
   );
 }
+
+const renderers = {
+  link: LinkRenderer,
+  sub: (props) => {
+    return <sub>{props?.children}</sub>;
+  },
+  sup: (props) => {
+    return <sup>{props.children}</sup>;
+  },
+};
 
 function RadioOption({ onChange, options, value, ...props }) {
   const [selectedValue, setSelectedValue] = useState(value);
@@ -1005,15 +1019,11 @@ function Rating({ onChange, options, value, ...props }) {
     onChange(sliderValue);
   }, []);
 
-  const valuetext = (value: number) => {
-    return `${options[value]}`;
-  };
   const getSliderValue = (val) => {
     let sliderValue = null;
     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
-    const slValue = val;
     options.map((mark) => {
-      if (parseInt(mark.value, 10) === slValue) {
+      if (parseInt(mark.value, 9) === val) {
         sliderValue =
           !!mark.description && mark.description.trim().length > 0
             ? mark.description
@@ -1030,21 +1040,10 @@ function Rating({ onChange, options, value, ...props }) {
       <Slider
         defaultValue={sliderValue}
         value={sliderValue}
-        getAriaValueText={valuetext}
+        getAriaValueText={() => valueText}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={
-          parseInt(options[0].value, 10) < 0 &&
-          parseInt(options[1]?.value, 10 ?? 0) < 0
-            ? Math.abs(parseInt(options[0].value, 10)) +
-              parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[0].value, 10) < 0 &&
-                parseInt(options[1].value ?? 0, 10) > 0
-              ? Math.abs(parseInt(options[0].value, 10)) -
-                parseInt(options[1]?.value ?? 0, 10)
-              : parseInt(options[1]?.value ?? 0, 10) -
-                parseInt(options[0].value, 10)
-        }
+        step={0.1}
         marks={options}
         min={parseInt(options[0].value, 10)}
         max={parseInt(options[options.length - 1].value, 10)}
@@ -1177,6 +1176,121 @@ function Rating({ onChange, options, value, ...props }) {
               },
             }}
           />
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+function SmoothSlider({ onChange, options, value }) {
+  const classes = useStyles();
+  const { t } = useTranslation();
+  const last = options.length - 1;
+
+  const labelFor = (option) =>
+    option.description?.trim() ? option.description : option.value;
+  const indexOf = (val) =>
+    options.findIndex((o) => parseInt(o.value, 10) === parseInt(val, 10));
+
+  // Track current thumb position.
+  // Initialize with loaded saved value, or null if no saved state
+  const [position, setPosition] = useState<number | null>(() => {
+    const i = value !== null ? indexOf(value) : -1;
+    return i >= 0 ? i : null;
+  });
+  const savedAnswerIndex = position === null ? null : Math.round(position);
+  const [snapping, setSnapping] = useState(false);
+
+  useEffect(() => {
+    onChange(
+      savedAnswerIndex === null
+        ? null
+        : parseInt(options[savedAnswerIndex].value, 10),
+    );
+  }, []);
+
+  const commit = (i: number) => {
+    setSnapping(true);
+    setPosition(i);
+    onChange(parseInt(options[i].value, 10));
+  };
+
+  const Text = ({ children }) => (
+    <ReactMarkdown
+      children={String(children)}
+      skipHtml={false}
+      plugins={[gfm, emoji]}
+      renderers={renderers}
+    />
+  );
+
+  const Caption = ({ option }) => (
+    <Typography
+      variant="caption"
+      className={classes.textCaption}
+      display="block"
+      gutterBottom
+    >
+      <Text>{labelFor(option)}</Text>
+    </Typography>
+  );
+
+  return (
+    <Box textAlign="center" mt={5}>
+      <Slider
+        value={position ?? Math.ceil(options.length / 2) - 1}
+        min={0}
+        max={last}
+        step={0.01}
+        marks={options.map((_, i) => ({ value: i }))}
+        getAriaValueText={(p) => String(labelFor(options[Math.round(p)]))}
+        valueLabelDisplay="auto"
+        valueLabelFormat={(p) => options[Math.round(p)].value}
+        track={false}
+        classes={{
+          root: classes.slider,
+          rail: classes.centerBar,
+          mark: classes.customTrack,
+          thumb: classnames(classes.customThumb, {
+            [classes.noInitialVal]: position === null,
+            [classes.snapping]: snapping,
+          }),
+          valueLabel: classes.countlabel,
+        }}
+        onChange={(_, p) => {
+          setSnapping(false);
+          setPosition(p as number);
+        }}
+        onChangeCommitted={(_, p) => {
+          commit(Math.round(p as number));
+        }}
+      />
+      <Grid
+        container
+        className={classes.sliderValueLabel}
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
+        <Grid item>
+          <Caption option={options[0]} />
+        </Grid>
+        {/* <Grid item> */}
+        {/*   {options.length > 2 && ( */}
+        {/*     <Caption option={options[Math.ceil(options.length) - 1]} /> */}
+        {/*   )} */}
+        {/* </Grid> */}
+        <Grid item>
+          <Caption option={options[last]} />
+        </Grid>
+      </Grid>
+      <Box className={classes.sliderResponse}>
+        <Typography variant="caption" display="block" gutterBottom>
+          {t("Your response")}
+          <span>:</span>
+        </Typography>
+        <Typography variant="h4">
+          <Text>{labelFor(options[Math.round(position)])}</Text>
         </Typography>
       </Box>
     </Box>
@@ -1797,6 +1911,7 @@ function Question({
   ...props
 }) {
   const { t } = useTranslation();
+  const last = options === null ? -1 : options.length - 1;
   const onChange = (value) => {
     onResponse({ item: text, value });
   };
@@ -1830,7 +1945,7 @@ function Question({
             : 0,
       );
       component = (
-        <Rating
+        <SmoothSlider
           options={options}
           onChange={onChange}
           value={!!value ? value.value : undefined}
@@ -1939,11 +2054,11 @@ function Question({
                         ? options[0].description
                         : options[0].value
                     }, 
-                  ${options[options.length - 1].value} being ${
-                    !!options[options.length - 1].description &&
-                    options[options.length - 1].description.trim().length > 0
-                      ? options[options.length - 1].description
-                      : options[options.length - 1].value
+                  ${options[last].value} being ${
+                    !!options[last].description &&
+                    options[last].description.trim().length > 0
+                      ? options[last].description
+                      : options[last].value
                   }`,
                   )
                 : !!desc && t(`${desc}`)
@@ -2060,6 +2175,7 @@ const updateResponses = (
   setActiveStep,
   total,
 ) => {
+  console.log("response: " + response.value);
   responses.current[idx] = response;
   if (x.type !== "multiselect") {
     setActiveStep((prev) => prev + 1);
@@ -2096,7 +2212,8 @@ function Section({
   ...props
 }) {
   const activityId = value?.id;
-  const base = value.settings.map((x, index) =>
+
+  const base = (value?.settings || []).map((x, index) =>
     !!activityVal && activityVal[index]
       ? activityVal[index]
       : { item: x.text, value: null, duration: 0 },
@@ -2570,4 +2687,3 @@ export default function SurveyQuestions({ ...props }) {
     </Box>
   );
 }
-
