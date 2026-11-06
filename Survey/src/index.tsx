@@ -22,6 +22,7 @@ const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 eventer(
   messageEvent,
   (e) => {
+    if (!e.data || typeof e.data !== "object" || !e.data.configuration) return;
     ReactDOM.render(
       <SnackbarProvider>
         <AppContainer>
