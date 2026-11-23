@@ -22,14 +22,15 @@ const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 eventer(
   messageEvent,
   (e) => {
+    if (!e.data || typeof e.data !== "object" || !e.data.configuration) return;
     ReactDOM.render(
       <SnackbarProvider>
         <AppContainer>
           <SurveyQuestions data={e.data} />
         </AppContainer>
       </SnackbarProvider>,
-      document.getElementById("root")
+      document.getElementById("root"),
     );
   },
-  false
+  false,
 );
