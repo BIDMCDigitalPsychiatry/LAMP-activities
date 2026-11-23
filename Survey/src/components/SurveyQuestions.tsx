@@ -1613,8 +1613,9 @@ function Matrix({
                           </TableCell>
                         ))
                       ) : x.type === "slider" ? (
+                        // use new slider
                         <TableCell className={classes.textCenter}>
-                          <Rating
+                          <SmoothSlider
                             options={getSorted(x.options)}
                             onChange={(val) => {
                               setSelectedValue({
@@ -2627,6 +2628,8 @@ export default function SurveyQuestions({ ...props }) {
           activity.settings[index + 1]?.type === "matrix" ||
           (index === 0 && question?.type === "matrix")
         ) {
+          // First question becomes the "header", and subsequent questions with
+          // type "matrix" are included and adopt the same options as the header
           const desc = question?.description ?? "";
           const options =
             question?.type === "boolean"
