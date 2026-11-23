@@ -1191,6 +1191,7 @@ function SmoothSlider({ onChange, options, value }) {
     option.description?.trim() ? option.description : option.value;
   const indexOf = (val) =>
     options.findIndex((o) => parseInt(o.value, 10) === parseInt(val, 10));
+  const nearest = (p: number) => Math.round(p);
 
   // Track current thumb position.
   // Initialize with loaded saved value, or null if no saved state
@@ -1243,9 +1244,9 @@ function SmoothSlider({ onChange, options, value }) {
         max={last}
         step={0.01}
         marks={options.map((_, i) => ({ value: i }))}
-        getAriaValueText={(p) => String(labelFor(options[Math.round(p)]))}
-        valueLabelDisplay="auto"
-        valueLabelFormat={(p) => options[Math.round(p)].value}
+        getAriaValueText={(p) => String(labelFor(options[nearest(p)]))}
+        valueLabelDisplay="on"
+        valueLabelFormat={(p) => options[nearest(p)].value}
         track={false}
         classes={{
           root: classes.slider,
@@ -1262,7 +1263,17 @@ function SmoothSlider({ onChange, options, value }) {
           setPosition(p as number);
         }}
         onChangeCommitted={(_, p) => {
-          commit(Math.round(p as number));
+          commit(nearest(p as number));
+        }}
+        onKeyDown={(e) => {
+          // Arrow keys would otherwise move only .001 at a time
+          const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[
+            e.key
+          ];
+          if (d === undefined) return;
+          e.preventDefault();
+          const i = Math.max(0, Math.min(last, nearest(position ?? 0) + d));
+          commit(i);
         }}
       />
       <Grid
