@@ -1295,9 +1295,11 @@ function SmoothSlider({ onChange, options, value }) {
           {t("Your response")}
           <span>:</span>
         </Typography>
-        <Typography variant="h4">
-          <Text>{labelFor(options[nearest(position)])}</Text>
-        </Typography>
+        {position !== null && (
+          <Typography variant="h4">
+            <Text>{labelFor(options[nearest(position)])}</Text>
+          </Typography>
+        )}
       </Box>
     </Box>
   );
