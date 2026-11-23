@@ -1199,7 +1199,7 @@ function SmoothSlider({ onChange, options, value }) {
     const i = value !== null ? indexOf(value) : -1;
     return i >= 0 ? i : null;
   });
-  const savedAnswerIndex = position === null ? null : Math.round(position);
+  const savedAnswerIndex = position === null ? null : nearest(position);
   const [snapping, setSnapping] = useState(false);
 
   useEffect(() => {
@@ -1266,7 +1266,7 @@ function SmoothSlider({ onChange, options, value }) {
           commit(nearest(p as number));
         }}
         onKeyDown={(e) => {
-          // Arrow keys would otherwise move only .001 at a time
+          // Arrow keys would otherwise move only .01 at a time
           const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[
             e.key
           ];
@@ -1286,11 +1286,6 @@ function SmoothSlider({ onChange, options, value }) {
         <Grid item>
           <Caption option={options[0]} />
         </Grid>
-        {/* <Grid item> */}
-        {/*   {options.length > 2 && ( */}
-        {/*     <Caption option={options[Math.ceil(options.length) - 1]} /> */}
-        {/*   )} */}
-        {/* </Grid> */}
         <Grid item>
           <Caption option={options[last]} />
         </Grid>
@@ -1301,7 +1296,7 @@ function SmoothSlider({ onChange, options, value }) {
           <span>:</span>
         </Typography>
         <Typography variant="h4">
-          <Text>{labelFor(options[Math.round(position)])}</Text>
+          <Text>{labelFor(options[nearest(position)])}</Text>
         </Typography>
       </Box>
     </Box>
