@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "left 80ms ease-out, box-shadow 150ms",
   },
   radioroot: {
-    padding: "20px",
+    padding: "16px",
   },
   mradioroot: {
     padding: "20px",
@@ -297,6 +297,24 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  scrollShadows: {
+    "--bgRGB": "240,240,240",
+    "--bg": "rgba(var(--bgRGB))",
+    "--bgTrans": "rgba(var(--bgRGB),0)",
+    "--shadow": "rgba(139,140,141,0.3)",
+
+    overflow: "auto",
+    backgroundImage: [
+      "linear-gradient(var(--bg) 30%, var(--bgTrans))",
+      "linear-gradient(var(--bgTrans), var(--bg) 70%)",
+      "radial-gradient(farthest-side at top center, var(--shadow), rgba(0,0,0,0))",
+      "radial-gradient(farthest-side at bottom center, var(--shadow), rgba(0,0,0,0))",
+    ].join(", "),
+    backgroundPosition: "top, bottom, top, bottom",
+    backgroundAttachment: "local, local, scroll, scroll",
+    backgroundSize: "100% 40px, 100% 40px, 100% 14px, 100% 14px",
+    backgroundRepeat: "no-repeat",
+  },
   textAreaControl: {
     width: "100%",
     marginTop: 25,
@@ -423,6 +441,12 @@ const useStyles = makeStyles((theme) => ({
       overflow: "auto",
       width: "100%",
     },
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "55%",
+      position: "absolute",
+      overflow: "auto",
+      width: "100%",
+    },
   },
   surveyQuestionMatrixAlign: {
     [theme.breakpoints.down("xs")]: {
@@ -441,6 +465,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
     [theme.breakpoints.down("xs")]: {
       overflow: "auto",
+      padding: "0px 12px",
     },
   },
   fieldGroup: {
@@ -1019,11 +1044,15 @@ function Rating({ onChange, options, value, ...props }) {
     onChange(sliderValue);
   }, []);
 
+  const valuetext = (value: number) => {
+    return `${options[value]}`;
+  };
   const getSliderValue = (val) => {
     let sliderValue = null;
     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
+    const slValue = val;
     options.map((mark) => {
-      if (parseInt(mark.value, 9) === val) {
+      if (parseInt(mark.value, 10) === slValue) {
         sliderValue =
           !!mark.description && mark.description.trim().length > 0
             ? mark.description
@@ -1043,7 +1072,18 @@ function Rating({ onChange, options, value, ...props }) {
         getAriaValueText={() => valueText}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={0.1}
+        step={
+          parseInt(options[0].value, 10) < 0 &&
+          parseInt(options[1]?.value, 10 ?? 0) < 0
+            ? Math.abs(parseInt(options[0].value, 10)) +
+              parseInt(options[1]?.value ?? 0, 10)
+            : parseInt(options[0].value, 10) < 0 &&
+                parseInt(options[1].value ?? 0, 10) > 0
+              ? Math.abs(parseInt(options[0].value, 10)) -
+                parseInt(options[1]?.value ?? 0, 10)
+              : parseInt(options[1]?.value ?? 0, 10) -
+                parseInt(options[0].value, 10)
+        }
         marks={options}
         min={parseInt(options[0].value, 10)}
         max={parseInt(options[options.length - 1].value, 10)}
@@ -2110,6 +2150,11 @@ function Questions({
   const classes = useStyles();
   const supportsSidebar = useMediaQuery(useTheme().breakpoints.up("md"));
   const { t } = useTranslation();
+  const isListType: boolean =
+    x.type === "likert" ||
+    x.type === "boolean" ||
+    x.type === "select" ||
+    x.type === "list";
   return (
     <Box style={{ marginTop: "100px" }}>
       <Box textAlign="center">
@@ -2129,7 +2174,10 @@ function Questions({
           lg={4}
           sm={10}
           xs={12}
-          className={classes.surveyQuestionAlign}
+          className={classnames(
+            classes.surveyQuestionAlign,
+            isListType ? classes.scrollShadows : "",
+          )}
         >
           <Question
             text={x.text}
@@ -2185,7 +2233,6 @@ const updateResponses = (
   setActiveStep,
   total,
 ) => {
-  console.log("response: " + response.value);
   responses.current[idx] = response;
   if (x.type !== "multiselect") {
     setActiveStep((prev) => prev + 1);
@@ -2222,7 +2269,6 @@ function Section({
   ...props
 }) {
   const activityId = value?.id;
-
   const base = (value?.settings || []).map((x, index) =>
     !!activityVal && activityVal[index]
       ? activityVal[index]
