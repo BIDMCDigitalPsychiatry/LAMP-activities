@@ -1920,7 +1920,8 @@ function Question({
   ...props
 }) {
   const { t } = useTranslation();
-  const last = options === null ? -1 : options.length - 1;
+  // options is missing (undefined) on most non-slider questions
+  const last = options == null ? -1 : options.length - 1;
   const onChange = (value) => {
     onResponse({ item: text, value });
   };
