@@ -1044,15 +1044,11 @@ function Rating({ onChange, options, value, ...props }) {
     onChange(sliderValue);
   }, []);
 
-  const valuetext = (value: number) => {
-    return `${options[value]}`;
-  };
   const getSliderValue = (val) => {
     let sliderValue = null;
     // !!options[0].description && options[0].description.trim().length > 0 ? options[0].description : options[0].value
-    const slValue = val;
     options.map((mark) => {
-      if (parseInt(mark.value, 10) === slValue) {
+      if (parseInt(mark.value, 9) === val) {
         sliderValue =
           !!mark.description && mark.description.trim().length > 0
             ? mark.description
@@ -1072,18 +1068,7 @@ function Rating({ onChange, options, value, ...props }) {
         getAriaValueText={() => valueText}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={
-          parseInt(options[0].value, 10) < 0 &&
-          parseInt(options[1]?.value, 10 ?? 0) < 0
-            ? Math.abs(parseInt(options[0].value, 10)) +
-              parseInt(options[1]?.value ?? 0, 10)
-            : parseInt(options[0].value, 10) < 0 &&
-                parseInt(options[1].value ?? 0, 10) > 0
-              ? Math.abs(parseInt(options[0].value, 10)) -
-                parseInt(options[1]?.value ?? 0, 10)
-              : parseInt(options[1]?.value ?? 0, 10) -
-                parseInt(options[0].value, 10)
-        }
+        step={0.1}
         marks={options}
         min={parseInt(options[0].value, 10)}
         max={parseInt(options[options.length - 1].value, 10)}
